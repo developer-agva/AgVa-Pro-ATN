@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="20dp"
+    android:background="@drawable/rounded_snack_bar">
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvConfMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
+            android:padding="10dp"
+            android:text=""
+            android:textAlignment="textStart"
+            android:textColor="@color/light_white"
+            android:textSize="@dimen/_6sdp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:padding="5dp"
+            android:paddingStart="@dimen/_3sdp"
+            android:paddingEnd="@dimen/_3sdp"
+            android:text="@string/please_select_the_mode_with_knob"
+            android:textAlignment="textStart"
+            android:textAllCaps="true"
+            android:textColor="@color/light_white"
+            android:textSize="@dimen/_6sdp"
+            android:visibility="gone" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    <!--twobutton-->
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:columnCount="2"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnNo"
+            android:layout_columnWeight="1"
+            android:background="@drawable/style_bordered_btn_white"
+            android:padding="20dp"
+            android:text="No"
+            android:textColor="@android:color/white"
+            android:textSize="16dp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnYes"
+            android:layout_columnWeight="1"
+            android:background="@android:color/white"
+            android:padding="20dp"
+            android:text="Yes"
+            android:textColor="@color/light_black"
+            android:textSize="16dp" />
+    </GridLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>
+

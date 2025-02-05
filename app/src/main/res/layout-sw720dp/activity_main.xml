@@ -1,0 +1,818 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainViewPanelMain"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/focusLayoutMain"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/background_transparent_border_yellow"
+        android:translationZ="@dimen/_1sdp"
+        tools:ignore="MissingConstraints" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/mainHorizontal1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.25" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/mainHorizontal2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.40" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/mainHorizontal3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.45" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/mainHorizontal4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.68" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/mainHorizontal5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.71" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/mainHorizontal6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.79" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/mainVertical1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.20" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/mainVerticalGenderStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.28" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/mainVerticalGenderEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.72" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/mainVertical2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.35" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/mainVertical3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.65" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/mainVertical4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.80" />
+
+
+    <!--    top panel-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/topPanelLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/yellow_dark"
+        app:layout_constraintBottom_toTopOf="@+id/mainHorizontal1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textStandBy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:paddingStart="@dimen/_20sdp"
+            android:paddingEnd="@dimen/_20sdp"
+            android:text="@string/hint_stand_by"
+            android:textAllCaps="true"
+            android:textSize="@dimen/_36sdp"
+            android:theme="@style/heading_text_style"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/layoutPanelMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.442"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.478">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textNoVentDelivered"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:gravity="right"
+                android:text="@string/hint_no_vent_del"
+                android:textAllCaps="true"
+                android:textSize="@dimen/_11sdp"
+                android:theme="@style/main_heading_text_style" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textDelivery"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="@string/hint_delivery"
+                android:textAllCaps="true"
+                android:textSize="@dimen/_11sdp"
+                android:theme="@style/main_heading_text_style" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textModeType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAllCaps="true"
+                android:textSize="@dimen/_15sdp"
+                android:theme="@style/heading_text_style"
+                android:visibility="gone" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textTimer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="50dp"
+            android:text="@string/hint_timer"
+            android:textAllCaps="true"
+            android:textSize="@dimen/_36sdp"
+            android:theme="@style/subheading_text_style"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.751"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.527" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/mainInfoPanel"
+        android:layout_width="320dp"
+        android:layout_height="0dp"
+        android:background="@color/black"
+        android:orientation="vertical"
+        android:paddingHorizontal="0dp"
+        app:layout_constraintBottom_toTopOf="@id/mainHorizontal1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/existinglabel"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:text="Current Mode"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@id/mainInfoPanel"
+        app:layout_constraintEnd_toEndOf="@id/mainInfoPanel"
+        app:layout_constraintTop_toTopOf="@id/mainInfoPanel"
+        app:layout_constraintBottom_toTopOf="@id/checkMode"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/checkMode"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center_horizontal"
+        android:text="Mode Name"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@id/mainInfoPanel"
+        app:layout_constraintEnd_toEndOf="@id/mainInfoPanel"
+        app:layout_constraintTop_toBottomOf="@id/existinglabel"
+        app:layout_constraintBottom_toTopOf="@id/batteryLayout"
+        android:textSize="40dp" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/batteryLayout"
+        android:layout_width="0dp"
+        android:layout_height="62dp"
+        android:layout_gravity="center"
+        app:layout_constraintStart_toStartOf="@id/mainInfoPanel"
+        app:layout_constraintEnd_toStartOf="@id/neonateIconLayout"
+        app:layout_constraintBottom_toBottomOf="@id/mainInfoPanel"
+        android:gravity="center">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/batteryStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:layout_weight="1" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/neonateIconLayout"
+        android:layout_width="0dp"
+        android:layout_height="62dp"
+        android:layout_gravity="center"
+        android:visibility="invisible"
+        app:layout_constraintStart_toEndOf="@id/batteryLayout"
+        app:layout_constraintEnd_toStartOf="@id/chargingLayout"
+        app:layout_constraintBottom_toBottomOf="@id/mainInfoPanel"
+        android:gravity="center">
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/neonate"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/neonate_icon" />
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/chargingLayout"
+        android:layout_width="0dp"
+        android:layout_height="62dp"
+        android:layout_gravity="center"
+        app:layout_constraintStart_toEndOf="@id/neonateIconLayout"
+        app:layout_constraintEnd_toEndOf="@id/mainInfoPanel"
+        app:layout_constraintBottom_toBottomOf="@id/mainInfoPanel"
+        android:gravity="center">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/powerStatus"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_plug_in" />
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    <!--    middle panel-->
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/layouterrorsensor"
+        android:layout_width="@dimen/_250sdp"
+        android:layout_height="@dimen/_17sdp"
+        android:background="@color/ack_red"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/includeFemale"
+        app:layout_constraintEnd_toEndOf="@id/layoutPanelGender"
+        app:layout_constraintStart_toStartOf="@id/layoutPanelGender"
+        app:layout_constraintTop_toBottomOf="@id/mainHorizontal1">
+
+        <TextView
+            android:id="@+id/tvsensor"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical|center"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="@dimen/_9sdp"
+            android:visibility="visible" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <include
+        android:id="@+id/includeMale"
+        layout="@layout/content_male_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_5sdp"
+        app:layout_constraintStart_toStartOf="@id/mainVerticalGenderStart"
+        app:layout_constraintEnd_toStartOf="@id/uhidLayout"
+        app:layout_constraintBottom_toTopOf="@id/mainHorizontal2"
+        android:foreground="?attr/selectableItemBackgroundBorderless" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="265dp"
+        android:layout_height="66dp"
+        android:background="@color/light_grey"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:hint=""
+        android:id="@+id/uhidLayout"
+        app:counterEnabled="true"
+        app:counterMaxLength="10"
+        app:hintAnimationEnabled="false"
+        app:hintEnabled="false"
+        app:hintTextColor="@color/black"
+        app:prefixText="UHID : "
+        app:prefixTextAppearance="@style/prefix_style"
+        app:layout_constraintStart_toEndOf="@id/includeMale"
+        app:layout_constraintEnd_toStartOf="@id/includeFemale"
+        app:layout_constraintBottom_toTopOf="@id/mainHorizontal2"
+        app:prefixTextColor="@color/black">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_uhid"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@color/uhid_grey"
+            android:cursorVisible="false"
+            android:gravity="top"
+            android:hint="ENTER UHID"
+            android:inputType="textNoSuggestions|textCapCharacters"
+            android:lines="1"
+            android:maxLength="10"
+            android:maxLines="1"
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textCursorDrawable="@drawable/color_cursor"
+            android:textSize="@dimen/_6sdp"
+            android:textStyle="bold"
+            android:theme="@style/button_normal_style" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <include
+        android:id="@+id/includeFemale"
+        layout="@layout/content_female_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="@id/mainVerticalGenderEnd"
+        app:layout_constraintStart_toEndOf="@id/uhidLayout"
+        app:layout_constraintBottom_toTopOf="@id/mainHorizontal2"
+        android:foreground="?attr/selectableItemBackgroundBorderless" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/layoutPanelGender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/mainHorizontal2"
+        app:layout_constraintEnd_toStartOf="@id/mainVerticalGenderEnd"
+        app:layout_constraintStart_toEndOf="@id/mainVerticalGenderStart">
+
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonModes"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/light_grey"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:text="@string/hint_mode"
+        android:textSize="@dimen/_8sdp"
+        android:theme="@style/subheading_text_style_unit"
+        app:layout_constraintEnd_toStartOf="@id/mainVertical1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mainHorizontal3" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonControls"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:background="@color/light_grey"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:text="@string/hint_controls"
+        android:textSize="@dimen/_8sdp"
+        android:theme="@style/subheading_text_style_unit"
+        app:layout_constraintEnd_toEndOf="@id/buttonModes"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/buttonModes" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonPreopCheck"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:background="@color/light_grey"
+        android:text="@string/hint_system"
+        android:textColor="#CFD8DC"
+        android:textSize="@dimen/_8sdp"
+        android:theme="@style/subheading_text_style_unit"
+        app:layout_constraintEnd_toEndOf="@id/buttonControls"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/buttonControls" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/layoutPanelPatientHeightMain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toStartOf="@id/layoutPanelPatientAgeMain"
+        app:layout_constraintStart_toStartOf="@id/mainVertical2"
+        app:layout_constraintTop_toBottomOf="@id/mainHorizontal3">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_1sdp"
+            android:gravity="center"
+            android:text="@string/hint_patientHeight"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_7sdp"
+            android:theme="@style/subheading_text_style_unit" />
+
+        <include
+            android:id="@+id/includeProgressHeight"
+            layout="@layout/knob_progress_view"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginVertical="@dimen/_4sdp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_minus10sdp"
+            android:gravity="center"
+            android:text="cm"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_6sdp"
+            android:theme="@style/subheading_text_style" />
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/layoutPanelPatientAgeMain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toStartOf="@id/layoutPanelPatientWeightMain"
+        app:layout_constraintStart_toEndOf="@id/layoutPanelPatientHeightMain"
+        app:layout_constraintTop_toBottomOf="@id/mainHorizontal3">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_1sdp"
+            android:gravity="center"
+            android:text="@string/hint_patientAge"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_7sdp"
+            android:theme="@style/subheading_text_style_unit" />
+
+        <include
+            android:id="@+id/includeProgressAge"
+            layout="@layout/knob_progress_view"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginVertical="@dimen/_4sdp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/age"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_minus10sdp"
+            android:gravity="center"
+            android:text="Years"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_6sdp"
+            android:theme="@style/subheading_text_style" />
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/layoutPanelPatientWeightMain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="@id/mainVertical3"
+        app:layout_constraintStart_toEndOf="@id/layoutPanelPatientAgeMain"
+        app:layout_constraintTop_toBottomOf="@id/mainHorizontal3">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_1sdp"
+            android:gravity="center"
+            android:text="@string/hint_patientWeight"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_7sdp"
+            android:theme="@style/subheading_text_style_unit" />
+
+        <include
+            android:id="@+id/includeProgressWeight"
+            layout="@layout/knob_progress_view"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginVertical="@dimen/_4sdp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_minus10sdp"
+            android:gravity="center"
+            android:text="kg"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_6sdp"
+            android:theme="@style/subheading_text_style" />
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonAdult"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/light_grey"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:text="@string/hint_adult"
+        android:textSize="@dimen/_8sdp"
+        android:theme="@style/subheading_text_style_unit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/mainVertical4"
+        app:layout_constraintTop_toBottomOf="@id/mainHorizontal3" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonPediatric"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:background="@color/light_grey"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:text="@string/hint_ped"
+        android:textSize="@dimen/_8sdp"
+        android:theme="@style/subheading_text_style_unit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/buttonAdult"
+        app:layout_constraintTop_toBottomOf="@id/buttonAdult" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonNeonatal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:background="@color/light_grey"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:text="@string/hint_neonatal"
+        android:textSize="@dimen/_8sdp"
+        android:theme="@style/subheading_text_style_unit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/buttonAdult"
+        app:layout_constraintTop_toBottomOf="@id/buttonPediatric" />
+
+
+    <com.akexorcist.roundcornerprogressbar.indeterminate.IndeterminateRoundCornerProgressBar
+        android:id="@+id/progressIndicator"
+        android:layout_width="0dp"
+        android:layout_height="8dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toStartOf="@id/mainVertical3"
+        app:layout_constraintStart_toEndOf="@id/mainVertical2"
+        app:layout_constraintTop_toBottomOf="@id/mainHorizontal4"
+        app:rcAnimationSpeedScale="3"
+        app:rcBackgroundColor="@color/white"
+        app:rcProgressColor="@color/light_grey" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonStartExistingVentilation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/light_grey"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:text="@string/hint_start_existing_ventilation"
+        android:textSize="@dimen/_8sdp"
+        android:textStyle="bold"
+        android:theme="@style/subheading_text_style_unit"
+        app:layout_constraintEnd_toStartOf="@id/mainVertical3"
+        app:layout_constraintStart_toEndOf="@id/mainVertical2"
+        app:layout_constraintTop_toBottomOf="@id/mainHorizontal5" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonStartNewVentilation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/light_grey"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:text="@string/hint_start_new_ventilation"
+        android:textColor="#CFD8DC"
+        android:textSize="@dimen/_8sdp"
+        android:textStyle="bold"
+        android:theme="@style/subheading_text_style_unit"
+        app:layout_constraintEnd_toStartOf="@id/mainVertical3"
+        app:layout_constraintStart_toEndOf="@id/mainVertical2"
+        app:layout_constraintTop_toBottomOf="@id/mainHorizontal6" />
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/calibrateLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|center_vertical"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/buttonStartNewVentilation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:gravity="center"
+            android:text="* Calibrate breathing circuit before ventilation "
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_6sdp"
+            android:theme="@style/button_normal_style"
+            android:visibility="visible" />
+
+        <include
+            android:id="@+id/includeButtonCalibrate"
+            layout="@layout/content_button_profile"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:foreground="?attr/selectableItemBackgroundBorderless" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    <!-- bottom panel-->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/connectionLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/_3sdp"
+        app:layout_constraintBottom_toBottomOf="@id/buttonServiceCheck"
+        app:layout_constraintTop_toTopOf="@id/buttonServiceCheck"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/cvHideConnectionMain"
+            android:layout_width="@dimen/_4sdp"
+            android:layout_height="@dimen/_4sdp"
+            android:layout_marginHorizontal="@dimen/_7sdp"
+            android:src="@color/red"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/cvVentilatorConnectionMain"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/cvVentilatorConnectionMain"
+            android:layout_width="@dimen/_4sdp"
+            android:layout_height="@dimen/_4sdp"
+            android:layout_marginHorizontal="@dimen/_7sdp"
+            android:src="@color/red"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/cvHideConnectionMain"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonServiceCheck"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_2sdp"
+        android:background="@color/preCalib_amber"
+        android:text="@string/hint_service"
+        android:textColor="#000000"
+        android:textSize="@dimen/_8sdp"
+        android:theme="@style/subheading_text_style_unit"
+        app:layout_constraintEnd_toStartOf="@id/mainVertical1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/qrCodeLayout"
+        android:layout_width="@dimen/_122sdp"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_marginEnd="@dimen/_2sdp"
+        android:layout_marginBottom="@dimen/_2sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/scanText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SCAN FOR SUPPORT "
+            android:textColor="@color/light_grey_scan_text"
+            android:textSize="@dimen/_6sdp"
+            android:theme="@style/button_normal_style"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/contactTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:text="Emergency Contact"
+            android:textAllCaps="true"
+            android:textColor="@color/light_grey_scan_text"
+            android:textSize="@dimen/_6sdp"
+            android:theme="@style/button_normal_style"
+            app:layout_constraintBottom_toTopOf="@id/contactNumberValue"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/scanText" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/contactNumberValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+91-73 30 40 50 60 "
+            android:textAllCaps="true"
+            android:textColor="@color/light_grey_scan_text"
+            android:textSize="@dimen/_7sdp"
+            android:theme="@style/button_normal_style"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+        <ImageView
+            android:id="@+id/qrCodeStandby"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_marginTop="@dimen/_1sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            app:layout_constraintEnd_toEndOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

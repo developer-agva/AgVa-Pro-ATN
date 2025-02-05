@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/monitoring_navigation"
+    app:startDestination="@+id/navigation_pv_tool">
+
+    <fragment
+        android:id="@+id/navigation_pv_tool"
+        android:name="com.agvahealthcare.ventilator_ext.maneuvers.pv_tool.PvToolFragment"
+        tools:layout="@layout/fragment_pv_tool" />
+
+    <fragment
+        android:id="@+id/navigation_hold"
+        android:name="com.agvahealthcare.ventilator_ext.maneuvers.hold.HoldFragment"
+        tools:layout="@layout/fragment_hold" />
+
+    <fragment
+        android:id="@+id/navigation_utilities"
+        android:name="com.agvahealthcare.ventilator_ext.maneuvers.utilities.NebulizerFragment"
+        tools:layout="@layout/fragment_utilities" />
+
+
+</navigation>

@@ -1,0 +1,856 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".system.diagnosticCheck.DiagnosticCheckFragment"
+    tools:ignore="MissingDefaultResource">
+
+
+    <TextView
+        android:id="@+id/txtWait"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/avenir_next_lt_pro_medium"
+        android:text="Please Wait...."
+        android:textColor="@color/black"
+        android:textSize="@dimen/_8sdp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mainViewPanelDiagnostic"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/focusLayoutDiagnostic"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/background_transparent_border_yellow"
+            android:translationZ="@dimen/_1sdp"
+            tools:ignore="MissingConstraints" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.01" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.27" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.45" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.67" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.86" />
+
+        <View
+            android:id="@+id/horizontalView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:background="@color/dolphin_grey"
+            android:layout_marginTop="@dimen/_2sdp"
+            app:layout_constraintTop_toBottomOf="@id/txtHeading"/>
+
+        <View
+            android:id="@+id/VerticalView"
+            android:layout_width="@dimen/_1sdp"
+            android:layout_height="0dp"
+            android:background="@color/dolphin_grey"
+            app:layout_constraintStart_toStartOf="@id/guideline5"
+            app:layout_constraintEnd_toEndOf="@id/guideline5"
+            app:layout_constraintTop_toBottomOf="@id/horizontalView"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:id="@+id/txtHeading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:fontFamily="@font/avenir_next_lt_pro_medium"
+            android:text="@string/diagnostic_tool_check"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_10sdp"
+            android:textAllCaps="true"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!--  insp section-->
+        <TextView
+            android:id="@+id/txtInspPressureRaw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="INSP Pressure Raw"
+            android:theme="@style/subheading_text_style_diag"
+            app:layout_constraintStart_toStartOf="@id/guideline0"
+            app:layout_constraintTop_toBottomOf="@id/horizontalView" />
+
+        <TextView
+            android:id="@+id/txtInspPressueRawValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/subheading_text_style_diag"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/guideline"
+            app:layout_constraintTop_toTopOf="@+id/txtInspPressureRaw"
+            android:text="value1" />
+
+        <TextView
+            android:id="@+id/txtInspPressure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:text="INSP Pressure"
+            android:theme="@style/subheading_text_style_diag"
+            app:layout_constraintStart_toStartOf="@id/guideline0"
+            app:layout_constraintTop_toBottomOf="@id/txtInspPressureRaw" />
+
+        <TextView
+            android:id="@+id/txtInspPressueValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:theme="@style/subheading_text_style_diag"
+            app:layout_constraintStart_toStartOf="@id/guideline"
+            app:layout_constraintTop_toTopOf="@+id/txtInspPressure"
+            android:text="value1" />
+
+
+        <TextView
+            android:id="@+id/txtInspFlow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:text="INSP Flow"
+            android:theme="@style/subheading_text_style_diag"
+            app:layout_constraintStart_toStartOf="@id/guideline0"
+            app:layout_constraintTop_toBottomOf="@id/txtInspPressure" />
+
+        <TextView
+            android:id="@+id/txtInspFlowValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:theme="@style/subheading_text_style_diag"
+            app:layout_constraintStart_toStartOf="@id/guideline"
+            app:layout_constraintTop_toTopOf="@+id/txtInspFlow"
+            android:text="value1" />
+
+        <TextView
+            android:id="@+id/txtInspFlowVoltage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:text="INSP Flow Voltage"
+            android:theme="@style/subheading_text_style_diag"
+            app:layout_constraintStart_toStartOf="@id/guideline0"
+            app:layout_constraintTop_toBottomOf="@id/txtInspFlow" />
+
+        <TextView
+            android:id="@+id/txtInspFlowVoltageValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:theme="@style/subheading_text_style_diag"
+            app:layout_constraintStart_toStartOf="@id/guideline"
+            app:layout_constraintTop_toTopOf="@+id/txtInspFlowVoltage"
+            android:text="value1" />
+
+
+        <!--        exp section-->
+        <TextView
+            android:id="@+id/txtExpPressureRaw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:text="EXP Pressure Raw"
+            android:theme="@style/subheading_text_style_diag"
+            app:layout_constraintStart_toStartOf="@id/guideline0"
+            app:layout_constraintTop_toBottomOf="@id/txtInspFlowVoltage" />
+
+        <TextView
+            android:id="@+id/txtExpPressueRawValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/subheading_text_style_diag"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/guideline"
+            app:layout_constraintTop_toTopOf="@+id/txtExpPressureRaw"
+            android:text="value1" />
+
+        <TextView
+            android:id="@+id/txtExpPressure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:text="EXP Pressure"
+            android:theme="@style/subheading_text_style_diag"
+            app:layout_constraintStart_toStartOf="@id/guideline0"
+            app:layout_constraintTop_toBottomOf="@id/txtExpPressureRaw" />
+
+        <TextView
+            android:id="@+id/txtExpPressueValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/subheading_text_style_diag"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/guideline"
+            app:layout_constraintTop_toTopOf="@+id/txtExpPressure"
+            android:text="value1" />
+
+
+        <TextView
+            android:id="@+id/txtExpFlow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:text="EXP Flow"
+            android:theme="@style/subheading_text_style_diag"
+            app:layout_constraintStart_toStartOf="@id/guideline0"
+            app:layout_constraintTop_toBottomOf="@id/txtExpPressure" />
+
+        <TextView
+            android:id="@+id/txtExpFlowValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/subheading_text_style_diag"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/guideline"
+            app:layout_constraintTop_toTopOf="@+id/txtExpFlow"
+            android:text="value1" />
+
+        <TextView
+            android:id="@+id/txtExpDpRaw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:text="EXP DP Raw"
+            android:theme="@style/subheading_text_style_diag"
+            app:layout_constraintStart_toStartOf="@id/guideline0"
+            app:layout_constraintTop_toBottomOf="@id/txtExpFlow" />
+
+        <TextView
+            android:id="@+id/txtExpDpRawValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="value1"
+            android:theme="@style/subheading_text_style_diag"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/guideline"
+            app:layout_constraintTop_toTopOf="@+id/txtExpDpRaw" />
+
+        <!--        oxy section-->
+
+        <TextView
+            android:id="@+id/txtOxyRawPressure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:text="OXY Pressure Raw"
+            android:theme="@style/subheading_text_style_diag"
+            app:layout_constraintStart_toStartOf="@id/guideline0"
+            app:layout_constraintTop_toBottomOf="@id/txtExpDpRaw" />
+
+        <TextView
+            android:id="@+id/txtOxyRawPressureValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="value1"
+            android:theme="@style/subheading_text_style_diag"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/guideline"
+            app:layout_constraintTop_toTopOf="@+id/txtOxyRawPressure" />
+
+        <TextView
+            android:id="@+id/txtOxyPressure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:text="OXY Pressure"
+            android:theme="@style/subheading_text_style_diag"
+            app:layout_constraintStart_toStartOf="@id/guideline0"
+            app:layout_constraintTop_toBottomOf="@id/txtOxyRawPressure" />
+
+        <TextView
+            android:id="@+id/txtOxyPressureValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="value1"
+            android:theme="@style/subheading_text_style_diag"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/guideline"
+            app:layout_constraintTop_toTopOf="@+id/txtOxyPressure" />
+
+        <TextView
+            android:id="@+id/txtOxySensorVoltage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:text="OXY Sensor Voltage"
+            android:theme="@style/subheading_text_style_diag"
+            app:layout_constraintStart_toStartOf="@id/guideline0"
+            app:layout_constraintTop_toBottomOf="@id/txtOxyPressure" />
+
+        <TextView
+            android:id="@+id/txtOxySensorVoltageValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="value1"
+            android:theme="@style/subheading_text_style_diag"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/guideline"
+            app:layout_constraintTop_toTopOf="@+id/txtOxySensorVoltage" />
+
+<!--        battery section-->
+        <TextView
+            android:id="@+id/txtBatteryCurrent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:text="Battery Current"
+            android:theme="@style/subheading_text_style_diag"
+            app:layout_constraintStart_toStartOf="@id/guideline0"
+            app:layout_constraintTop_toBottomOf="@id/txtOxySensorVoltage" />
+
+        <TextView
+            android:id="@+id/txtBatteryCurrentValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="value1"
+            android:theme="@style/subheading_text_style_diag"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/guideline"
+            app:layout_constraintTop_toTopOf="@+id/txtBatteryCurrent" />
+
+        <TextView
+            android:id="@+id/txtBatteryVoltage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:text="Battery Voltage"
+            android:theme="@style/subheading_text_style_diag"
+            app:layout_constraintStart_toStartOf="@id/guideline0"
+            app:layout_constraintTop_toBottomOf="@id/txtBatteryCurrent" />
+
+        <TextView
+            android:id="@+id/txtBatteryVoltageValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="value1"
+            android:theme="@style/subheading_text_style_diag"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/guideline"
+            app:layout_constraintTop_toTopOf="@+id/txtBatteryVoltage" />
+
+        <TextView
+            android:id="@+id/txtBatterySoc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:text="Battery SOC"
+            android:theme="@style/subheading_text_style_diag"
+            app:layout_constraintStart_toStartOf="@id/guideline0"
+            app:layout_constraintTop_toBottomOf="@id/txtBatteryVoltage" />
+
+        <TextView
+            android:id="@+id/txtBatterySocValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="value1"
+            android:theme="@style/subheading_text_style_diag"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/guideline"
+            app:layout_constraintTop_toTopOf="@+id/txtBatterySoc" />
+
+        <TextView
+            android:id="@+id/txtBatteryRemainingTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:text="Battery Remaining Time"
+            android:theme="@style/subheading_text_style_diag"
+            app:layout_constraintStart_toStartOf="@id/guideline0"
+            app:layout_constraintTop_toBottomOf="@id/txtBatterySoc" />
+
+        <TextView
+            android:id="@+id/txtBatteryRemainingTimeValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="value1"
+            android:theme="@style/subheading_text_style_diag"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/guideline"
+            app:layout_constraintTop_toTopOf="@+id/txtBatteryRemainingTime" />
+
+        <TextView
+            android:id="@+id/txtBatteryState"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:text="Battery Charging Status"
+            android:theme="@style/subheading_text_style_diag"
+            app:layout_constraintStart_toStartOf="@id/guideline0"
+            app:layout_constraintTop_toBottomOf="@id/txtBatteryRemainingTime" />
+
+        <TextView
+            android:id="@+id/txtBatteryStateValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="value1"
+            android:theme="@style/subheading_text_style_diag"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/guideline"
+            app:layout_constraintTop_toTopOf="@+id/txtBatteryState" />
+
+
+<!--        power section -->
+        <TextView
+            android:id="@+id/txtPowerConnection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Power Connection"
+            android:theme="@style/subheading_text_style_diag"
+            app:layout_constraintStart_toStartOf="@id/guideline1"
+            app:layout_constraintTop_toTopOf="@id/txtInspPressureRaw" />
+
+        <TextView
+            android:id="@+id/txtPowerConnectionValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/subheading_text_style_diag"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/guideline2"
+            app:layout_constraintTop_toTopOf="@+id/txtPowerConnection"
+            android:text="value1" />
+
+        <TextView
+            android:id="@+id/txtMainSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mains Switch"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:theme="@style/subheading_text_style_diag"
+            app:layout_constraintStart_toStartOf="@id/guideline1"
+            app:layout_constraintTop_toBottomOf="@id/txtPowerConnection" />
+
+        <TextView
+            android:id="@+id/txtMainSwitchValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/subheading_text_style_diag"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/guideline2"
+            app:layout_constraintTop_toTopOf="@+id/txtMainSwitch"
+            android:text="value1" />
+
+<!--        spo2 section-->
+        <TextView
+            android:id="@+id/txtSpo2Status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SpO₂ Connection"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:theme="@style/subheading_text_style_diag"
+            app:layout_constraintStart_toStartOf="@id/guideline1"
+            app:layout_constraintTop_toBottomOf="@id/txtMainSwitch" />
+
+        <TextView
+            android:id="@+id/txtSpo2StatusValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/subheading_text_style_diag"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/guideline2"
+            app:layout_constraintTop_toTopOf="@+id/txtSpo2Status"
+            android:text="value1" />
+
+        <TextView
+            android:id="@+id/txtHR"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Heart Rate"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:theme="@style/subheading_text_style_diag"
+            app:layout_constraintStart_toStartOf="@id/guideline1"
+            app:layout_constraintTop_toBottomOf="@id/txtSpo2Status" />
+
+        <TextView
+            android:id="@+id/txtHRValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/subheading_text_style_diag"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/guideline2"
+            app:layout_constraintTop_toTopOf="@+id/txtHR"
+            android:text="value1" />
+
+        <TextView
+            android:id="@+id/txtSpo2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SpO₂"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:theme="@style/subheading_text_style_diag"
+            app:layout_constraintStart_toStartOf="@id/guideline1"
+            app:layout_constraintTop_toBottomOf="@id/txtHR" />
+
+        <TextView
+            android:id="@+id/txtSpo2Value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/subheading_text_style_diag"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/guideline2"
+            app:layout_constraintTop_toTopOf="@+id/txtSpo2"
+            android:text="value1" />
+
+<!--        pi and knob section-->
+        <TextView
+            android:id="@+id/txtPiTemp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pi Temp"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:theme="@style/subheading_text_style_diag"
+            app:layout_constraintStart_toStartOf="@id/guideline1"
+            app:layout_constraintTop_toBottomOf="@id/txtSpo2" />
+
+        <TextView
+            android:id="@+id/txtPiTempValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/subheading_text_style_diag"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/guideline2"
+            app:layout_constraintTop_toTopOf="@+id/txtPiTemp"
+            android:text="value1" />
+
+        <TextView
+            android:id="@+id/txtScreenCpuTemp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Screen CPU Temp"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:theme="@style/subheading_text_style_diag"
+            app:layout_constraintStart_toStartOf="@id/guideline1"
+            app:layout_constraintTop_toBottomOf="@id/txtPiTemp" />
+
+        <TextView
+            android:id="@+id/txtScreenCpuTempValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/subheading_text_style_diag"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/guideline2"
+            app:layout_constraintTop_toTopOf="@+id/txtScreenCpuTemp"
+            android:text="value1" />
+
+        <TextView
+            android:id="@+id/txtPiCpuLoad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pi CPU Load"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:theme="@style/subheading_text_style_diag"
+            app:layout_constraintStart_toStartOf="@id/guideline1"
+            app:layout_constraintTop_toBottomOf="@id/txtScreenCpuTemp" />
+
+        <TextView
+            android:id="@+id/txtPiCpuLoadValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/subheading_text_style_diag"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/guideline2"
+            app:layout_constraintTop_toTopOf="@+id/txtPiCpuLoad"
+            android:text="value1" />
+
+        <TextView
+            android:id="@+id/txtKnobPcbType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Knob PCB Type"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:theme="@style/subheading_text_style_diag"
+            app:layout_constraintStart_toStartOf="@id/guideline1"
+            app:layout_constraintTop_toBottomOf="@id/txtPiCpuLoad" />
+
+        <TextView
+            android:id="@+id/txtKnobPcbTypeValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/subheading_text_style_diag"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/guideline2"
+            app:layout_constraintTop_toTopOf="@+id/txtKnobPcbType"
+            android:text="value1" />
+
+
+        <!--   versions section-->
+
+        <TextView
+            android:id="@+id/txtKnobPCBVersion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Knob PCB Version"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:theme="@style/subheading_text_style_diag"
+            app:layout_constraintStart_toStartOf="@id/guideline1"
+            app:layout_constraintTop_toBottomOf="@id/txtKnobPcbType" />
+
+        <TextView
+            android:id="@+id/txtKnobPCBVersionValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/subheading_text_style_diag"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/guideline2"
+            app:layout_constraintTop_toTopOf="@+id/txtKnobPCBVersion"
+            android:text="value1" />
+
+
+        <TextView
+            android:id="@+id/txtHardwareVersion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hardware Version"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:theme="@style/subheading_text_style_diag"
+            app:layout_constraintStart_toStartOf="@id/guideline1"
+            app:layout_constraintTop_toBottomOf="@id/txtKnobPCBVersion" />
+
+        <TextView
+            android:id="@+id/txtHardwareVersionValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/subheading_text_style_diag"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/guideline2"
+            app:layout_constraintTop_toTopOf="@+id/txtHardwareVersion"
+            android:text="value1" />
+
+
+<!--        ranges section-->
+
+        <TextView
+            android:id="@+id/txtTurbineRanges"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Turbine PWM"
+            android:theme="@style/subheading_text_style_diag"
+            app:layout_constraintStart_toStartOf="@id/guideline1"
+            app:layout_constraintTop_toTopOf="@id/btnTurbineRanges"
+            app:layout_constraintBottom_toBottomOf="@id/btnTurbineRanges"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/btnTurbineRanges"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:background="@drawable/background_light_grey"
+            app:layout_constraintStart_toStartOf="@id/guideline2"
+            app:layout_constraintTop_toBottomOf="@id/txtHardwareVersionValue">
+
+            <TextView
+                android:id="@+id/textViewTurbineRangesValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:translationZ="@dimen/_3sdp"
+                android:text=""
+                android:theme="@style/subheading_text_style_diag"
+                android:textStyle="bold"
+                android:textSize="@dimen/_7sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <TextView
+            android:id="@+id/txtExhaleValveRanges"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Exhale Valve PWM"
+            android:theme="@style/subheading_text_style_diag"
+            app:layout_constraintStart_toStartOf="@id/guideline1"
+            app:layout_constraintTop_toTopOf="@id/btnExhaleValveRanges"
+            app:layout_constraintBottom_toBottomOf="@id/btnExhaleValveRanges" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/btnExhaleValveRanges"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:background="@drawable/background_light_grey"
+            app:layout_constraintStart_toStartOf="@id/guideline2"
+            app:layout_constraintTop_toBottomOf="@id/btnTurbineRanges">
+
+            <TextView
+                android:id="@+id/textViewExhaleValveRangesValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:translationZ="@dimen/_3sdp"
+                android:text=""
+                android:theme="@style/subheading_text_style_diag"
+                android:textStyle="bold"
+                android:textSize="@dimen/_7sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <TextView
+            android:id="@+id/txtOxygenValveRanges"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Oxygen Valve PWM"
+            android:theme="@style/subheading_text_style_diag"
+            app:layout_constraintStart_toStartOf="@id/guideline1"
+            app:layout_constraintTop_toTopOf="@id/btnOxygenValveRanges"
+            app:layout_constraintBottom_toBottomOf="@id/btnOxygenValveRanges" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/btnOxygenValveRanges"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:background="@drawable/background_light_grey"
+            app:layout_constraintStart_toStartOf="@id/guideline2"
+            app:layout_constraintTop_toBottomOf="@id/btnExhaleValveRanges">
+
+            <TextView
+                android:id="@+id/textViewOxygenValveRangesValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:translationZ="@dimen/_3sdp"
+                android:text=""
+                android:theme="@style/subheading_text_style_diag"
+                android:textStyle="bold"
+                android:textSize="@dimen/_7sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <!--  buttons section-->
+
+        <include
+            android:id="@+id/includeButtonTurbine"
+            layout="@layout/content_button_center_layout"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintStart_toStartOf="@id/VerticalView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/txtInspPressureRaw"/>
+
+        <include
+            android:id="@+id/includeButtonExhaleValve"
+            layout="@layout/content_button_center_layout"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_7sdp"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintStart_toStartOf="@id/VerticalView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/includeButtonTurbine"/>
+
+        <include
+            android:id="@+id/includeButtonOxyValve"
+            layout="@layout/content_button_center_layout"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_7sdp"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintStart_toStartOf="@id/VerticalView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/includeButtonExhaleValve"/>
+
+        <include
+            android:id="@+id/includeButtonPurge"
+            layout="@layout/content_button_center_layout"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_7sdp"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintStart_toStartOf="@id/VerticalView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/includeButtonOxyValve"/>
+
+        <include
+            android:id="@+id/includeButtonNebulizer"
+            layout="@layout/content_button_center_layout"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_7sdp"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintStart_toStartOf="@id/VerticalView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/includeButtonPurge"/>
+
+
+        <include
+            android:id="@+id/includeButtonRedLED"
+            layout="@layout/content_button_center_layout"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_7sdp"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintStart_toStartOf="@id/VerticalView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/includeButtonNebulizer"/>
+
+        <include
+            android:id="@+id/includeButtonAmberLED"
+            layout="@layout/content_button_center_layout"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_7sdp"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintStart_toStartOf="@id/VerticalView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/includeButtonRedLED"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

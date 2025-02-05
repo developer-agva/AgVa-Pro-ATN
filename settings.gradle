@@ -1,0 +1,3 @@
+rootProject.name = "ventilator_ext"
+include ':app'
+

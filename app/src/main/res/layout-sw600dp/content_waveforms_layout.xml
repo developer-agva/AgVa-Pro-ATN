@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mainLayoutPanel"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_grey_border_white">
+
+    <include
+        android:id="@+id/includeButtonPressure"
+        layout="@layout/content_button_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_3sdp"
+        app:layout_constraintEnd_toStartOf="@+id/includeButtonPCo2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <include
+        android:id="@+id/includeButtonPCo2"
+        layout="@layout/content_button_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_3sdp"
+        app:layout_constraintEnd_toStartOf="@+id/includeButtonPes"
+        app:layout_constraintStart_toEndOf="@+id/includeButtonPressure"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <include
+        android:id="@+id/includeButtonPes"
+        layout="@layout/content_button_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_3sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/includeButtonPCo2"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <include
+        android:id="@+id/includeButtonFlow"
+        layout="@layout/content_button_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_3sdp"
+        app:layout_constraintEnd_toStartOf="@+id/includeButtonFCo2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/includeButtonPressure" />
+
+    <include
+        android:id="@+id/includeButtonFCo2"
+        layout="@layout/content_button_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_3sdp"
+        app:layout_constraintEnd_toStartOf="@+id/includeButtonPtranspulm"
+        app:layout_constraintStart_toEndOf="@+id/includeButtonFlow"
+        app:layout_constraintTop_toBottomOf="@+id/includeButtonPCo2" />
+
+    <include
+        android:id="@+id/includeButtonPtranspulm"
+        layout="@layout/content_button_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_3sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/includeButtonFCo2"
+        app:layout_constraintTop_toBottomOf="@+id/includeButtonPes" />
+
+    <include
+        android:id="@+id/includeButtonVolume"
+        layout="@layout/content_button_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_3sdp"
+        app:layout_constraintEnd_toStartOf="@+id/includeButtonPlethysmogram"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/includeButtonFlow" />
+
+    <include
+        android:id="@+id/includeButtonPlethysmogram"
+        layout="@layout/content_button_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_3sdp"
+        app:layout_constraintEnd_toStartOf="@+id/includeButtonOff"
+        app:layout_constraintStart_toEndOf="@+id/includeButtonVolume"
+        app:layout_constraintTop_toBottomOf="@+id/includeButtonFCo2" />
+
+    <include
+        android:id="@+id/includeButtonOff"
+        layout="@layout/content_button_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_3sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/includeButtonPlethysmogram"
+        app:layout_constraintTop_toBottomOf="@+id/includeButtonPtranspulm" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

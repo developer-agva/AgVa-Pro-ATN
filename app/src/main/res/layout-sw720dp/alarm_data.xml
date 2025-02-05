@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainLayoutPanel"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="20dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewValueAlarm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/hint_pPeak"
+            android:textColor="@color/black"
+            android:alpha="0.6"
+            android:textAllCaps="true"
+            android:theme="@style/subheading_text_style_unit"
+            android:textSize="@dimen/_5sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/textViewUnit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:background="@android:color/transparent"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ProgressBar
+                android:id="@+id/progress_bar_upperlimit"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:indeterminateOnly="false"
+                android:maxWidth="@dimen/_4sdp"
+                android:scaleX="1"
+                android:progressDrawable="@drawable/progresscircle" />
+
+            <TextView
+                android:id="@+id/textView_upperlimit"
+                android:layout_width="115dp"
+                android:layout_height="115dp"
+                android:gravity="center"
+                android:textAppearance="@style/subheading_text_style_graph"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_6sdp"
+                tools:text="0" />
+
+        </RelativeLayout>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    <!--<include
+        android:id="@+id/upperLimitItem"
+        android:layout_marginTop="7dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/textViewUnit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        layout="@layout/knob_progress_view"/>-->
+    <include
+        android:id="@+id/includePressure"
+        layout="@layout/content_vertical_progress_bar_layout"
+        android:layout_width="10dp"
+        android:layout_height="180dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_5sdp" />
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:background="@android:color/transparent"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ProgressBar
+                android:id="@+id/progress_bar_lowerlimit"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:indeterminateOnly="false"
+                android:maxWidth="@dimen/_4sdp"
+                android:scaleX="1"
+                android:progressDrawable="@drawable/progresscircle" />
+
+            <TextView
+                android:id="@+id/textViewlowerlimit"
+                android:layout_width="115dp"
+                android:layout_height="115dp"
+                android:gravity="center"
+                android:textAppearance="@style/subheading_text_style_graph"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_6sdp"
+                tools:text="0" />
+
+        </RelativeLayout>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    <!--<include
+        android:id="@+id/lowerLimitItem"
+        android:layout_marginTop="7dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/textViewUnit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        layout="@layout/knob_progress_view"/>-->
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textViewUnitAlarm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:text="@string/hint_cmH2o"
+        android:textColor="@color/black"
+        android:layout_gravity="center"
+        android:alpha="0.6"
+        android:theme="@style/subheading_text_style_graph"
+        android:textSize="@dimen/_4sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewValue" />
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

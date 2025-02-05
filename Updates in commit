@@ -1,0 +1,42 @@
+*/ This is the file containing all the changes done in files and in the method calls. /*
+
+1.In configs new Mode Types are Mentioned for Auto-Ventilation and NIV TYPE.
+
+2. In Mode dialog Fragment, in OnClick() for BPAP and CPAP new Mode Type Assigned.
+
+3. For VGV Toggle, the temporary variable is stated for the toggle temporary scope state amd for permanent scope the preference
+is updated but only at ACK_CODE_5006 same for the Smart FiO2.
+// Reason if the VTAS is on and user changed the mode without turning off the toggle of the V-TAS then user will not be
+able to switch off the V-TAS if user is in Volume Mode.
+
+TAG to search for SPO2 timer Process
+//SPO2 AND HR process
+
+
+VERSION 1.3 ->
+----------------------------------------------------------------------------------------------------
+ALARM ICON CHANGE
+APRV MODE ADDED
+TUBE COMPLIANCE AND RESISTANCE UI CHANGE
+OPERATIONAL HOURS ISSUE RESOLVED
+STARTUP CHECK ADDED
+LEAK TEST ADDED
+ADDED NOTE IN EVENTS AND ALARMS
+LIMIT ONE FRAGMENT MVi -> MVe
+SOCKET CODE ADDED FOR THE UPDATE OF VALUES ON SERVER
+CUSTOM ROLLOVER MODIFIER WITH PATIENT TRIGGER COLOR AND FIFO CAPACITY ADDED IN GRAPH.
+NC-CPAP ADDED
+RADIO BUTTON SELECTION ADDED FOR NASAL PRONG
+SHUTDOWN ACTIVITY VERSION NUMBER FIX.
+ALTERNATIVE TO KNOB ADDED IN SYSTEM FRAGMENT.
+
+
+----------------------------------------------------------------------------------------------------
+
+
+In the Main Activity the method of showing the fragments is from fragment.show() and in the Dashboard it is via Fragment Transaction.
+
+In the version after 1.3 PRVC Mode Added.
+The Logs data to be read from the internal file this will be the same for the Alarms and events
+
+

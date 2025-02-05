@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_20sdp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/otaLayout">
+
+
+    <TextView
+        android:id="@+id/txtOta"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/_7sdp"
+        android:textColor="@color/black"
+        android:singleLine="false"
+        android:text="2.1.1"
+        android:layout_marginHorizontal="@dimen/_3sdp"
+        android:fontFamily="@font/avenir_next_lt_pro_regular"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/txtOtaDateTime"
+        app:layout_constraintTop_toTopOf="@id/btnIntall"
+        app:layout_constraintBottom_toBottomOf="@id/btnIntall"/>
+
+    <TextView
+        android:id="@+id/txtOtaDateTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/_7sdp"
+        android:textColor="@color/black"
+        android:singleLine="false"
+        android:text="19 November 2024"
+        android:layout_marginHorizontal="@dimen/_3sdp"
+        android:fontFamily="@font/avenir_next_lt_pro_regular"
+        app:layout_constraintStart_toEndOf="@id/txtOta"
+        app:layout_constraintEnd_toStartOf="@id/btnIntall"
+        app:layout_constraintTop_toTopOf="@id/btnIntall"
+        app:layout_constraintBottom_toBottomOf="@id/btnIntall"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/btnIntall"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_15sdp"
+        android:background="@color/ack_green"
+        android:layout_marginEnd="@dimen/_3sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/txtInstall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_7sdp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/avenir_next_lt_pro_medium"
+            android:text="Install"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

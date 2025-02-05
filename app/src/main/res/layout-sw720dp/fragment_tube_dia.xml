@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainViewPanelTube"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_light_grey_border_grey"
+    android:orientation="vertical"
+    tools:ignore="MissingDefaultResource">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/focusLayoutTube"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/background_transparent_border_yellow"
+        android:translationZ="@dimen/_1sdp"
+        tools:ignore="MissingConstraints" />
+
+    <RelativeLayout
+        android:id="@+id/topBarTube"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/preCalib_amber"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvMainTitleTube"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="3dp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Pre-Calibration Check"
+        android:textAllCaps="true"
+        android:textColor="@color/light_grey"
+        android:textSize="25dp"
+        android:textStyle="normal"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/topBarTube"
+        app:layout_constraintEnd_toEndOf="@id/topBarTube"
+        app:layout_constraintStart_toStartOf="@id/topBarTube"
+        app:layout_constraintTop_toTopOf="@id/topBarTube" />
+
+    <ImageView
+        android:id="@+id/backBtnTube"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/topBarTube"
+        app:layout_constraintStart_toStartOf="@id/topBarTube"
+        app:layout_constraintTop_toTopOf="@id/topBarTube"
+        app:srcCompat="@drawable/back_button_calib" />
+
+
+    <TextView
+        android:id="@+id/tubeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginBottom="@dimen/_12sdp"
+        android:fontFamily="@font/avenir_next_lt_pro_medium"
+        android:text="Calibration"
+        android:textAllCaps="true"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_10sdp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <!--    compliance layout-->
+
+    <include
+        android:id="@+id/includeButtonCompliance"
+        layout="@layout/content_button_layout"
+        android:layout_width="@dimen/_75sdp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/tubeText"
+        app:layout_constraintTop_toBottomOf="@id/tubeText" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivCompensationStatus"
+        android:layout_width="@dimen/_10sdp"
+        android:layout_height="@dimen/_10sdp"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:src="@drawable/ic_red_cross"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/includeButtonCompliance"
+        app:layout_constraintStart_toEndOf="@id/includeButtonCompliance"
+        app:layout_constraintTop_toTopOf="@id/includeButtonCompliance" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvCompensation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/grey_dark"
+        android:theme="@style/subheading_text_style"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@id/tvCompensationDate"
+        app:layout_constraintBottom_toBottomOf="@id/includeButtonCompliance"
+        app:layout_constraintStart_toEndOf="@id/ivCompensationStatus"
+        app:layout_constraintTop_toTopOf="@id/includeButtonCompliance" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvCompensationDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/grey_dark"
+        android:theme="@style/subheading_text_style"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/includeButtonCompliance"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tvCompensation"
+        app:layout_constraintTop_toTopOf="@id/includeButtonCompliance" />
+
+
+    <!--    resistance layout-->
+    <include
+        android:id="@+id/includeButtonResistance"
+        layout="@layout/content_button_layout"
+        android:layout_width="@dimen/_75sdp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/includeButtonCompliance"
+        app:layout_constraintTop_toBottomOf="@id/includeButtonCompliance" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivResistanceStatus"
+        android:layout_width="@dimen/_10sdp"
+        android:layout_height="@dimen/_10sdp"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:src="@drawable/ic_red_cross"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/includeButtonResistance"
+        app:layout_constraintStart_toEndOf="@id/includeButtonResistance"
+        app:layout_constraintTop_toTopOf="@id/includeButtonResistance" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvResistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/grey_dark"
+        android:theme="@style/subheading_text_style"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/includeButtonResistance"
+        app:layout_constraintStart_toEndOf="@id/ivResistanceStatus"
+        app:layout_constraintEnd_toStartOf="@id/tvResistanceDate"
+        app:layout_constraintTop_toTopOf="@id/includeButtonResistance" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvResistanceDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/grey_dark"
+        android:theme="@style/subheading_text_style"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/includeButtonResistance"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tvResistance"
+        app:layout_constraintTop_toTopOf="@id/includeButtonResistance" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/tubeVertical1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.45" />
+
+
+    <!--    profile layout-->
+    <include
+        android:id="@+id/includeButtonAdultProfile"
+        layout="@layout/content_button_center_layout"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:visibility="gone"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintBottom_toBottomOf="@id/includeButtonPediatricProfile"
+        app:layout_constraintEnd_toStartOf="@id/includeButtonPediatricProfile"
+        app:layout_constraintStart_toEndOf="@id/tubeVertical1"
+        app:layout_constraintTop_toTopOf="@id/includeButtonPediatricProfile" />
+
+    <include
+        android:id="@+id/includeButtonPediatricProfile"
+        layout="@layout/content_button_center_layout"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintEnd_toStartOf="@id/includeButtonNeonatalProfile"
+        app:layout_constraintStart_toEndOf="@id/includeButtonAdultProfile"
+        app:layout_constraintTop_toBottomOf="@id/topBarTube" />
+
+    <include
+        android:id="@+id/includeButtonNeonatalProfile"
+        layout="@layout/content_button_center_layout"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/includeButtonPediatricProfile"
+        app:layout_constraintTop_toBottomOf="@id/topBarTube" />
+
+    <TextView
+        android:id="@+id/tvtubelength"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:text="* Select tube diameter"
+        android:textColor="@color/light_grey"
+        android:textSize="21dp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/includeButtonAdultProfile" />
+
+    <include
+        android:id="@+id/includetubeAdult"
+        layout="@layout/content_button_center_layout"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/tvtubelength"
+        app:layout_constraintTop_toBottomOf="@id/tvtubelength"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:foreground="?attr/selectableItemBackgroundBorderless" />
+
+    <include
+        android:id="@+id/includetubePediatric"
+        layout="@layout/content_button_center_layout"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@id/includetubeAdult"
+        app:layout_constraintTop_toTopOf="@id/includetubeAdult"
+        app:layout_constraintBottom_toBottomOf="@id/includetubeAdult"
+        android:foreground="?attr/selectableItemBackgroundBorderless" />
+
+    <include
+        android:id="@+id/includetubeNeoNate"
+        layout="@layout/content_button_center_layout"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@id/includetubePediatric"
+        app:layout_constraintTop_toTopOf="@id/includetubeAdult"
+        app:layout_constraintBottom_toBottomOf="@id/includetubeAdult"
+        android:foreground="?attr/selectableItemBackgroundBorderless" />
+
+    <!--    content section layout -->
+
+
+    <!--    gif layout-->
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/ventigifCompliance"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:background="#fff"
+        android:src="@drawable/ichandclose"
+        android:layout_marginEnd="@dimen/_2sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvtextHeadingTube"
+        android:visibility="gone" />
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/ventigifResistance"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:background="#fff"
+        android:src="@drawable/ichandopen"
+        android:layout_marginEnd="@dimen/_2sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvtextHeadingTube"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tvtextHeadingTube"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:text=" * Please ensure the following -"
+        android:textColor="@color/light_grey"
+        android:textSize="21dp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/includetubeAdult" />
+
+    <TextView
+        android:id="@+id/tvtext1Tube"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:text="Remove tubing if connected"
+        android:textColor="@color/light_grey"
+        android:textSize="15dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/tvtextHeadingTube"
+        app:layout_constraintTop_toBottomOf="@id/tvtextHeadingTube" />
+
+    <TextView
+        android:id="@+id/tvtext2Tube"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:text="Insert the cap at the inspiration port"
+        android:textColor="@color/light_grey"
+        android:textSize="15dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/tvtextHeadingTube"
+        app:layout_constraintTop_toBottomOf="@id/tvtext1Tube" />
+
+    <TextView
+        android:id="@+id/tvtext3Tube"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:text="Make sure ventilator is connected to the mains supply"
+        android:textColor="@color/light_grey"
+        android:textSize="15dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/tvtextHeadingTube"
+        app:layout_constraintTop_toBottomOf="@id/tvtext2Tube" />
+
+
+    <include
+        android:id="@+id/includeButtoncmdSend"
+        layout="@layout/content_button_layout"
+        android:layout_width="@dimen/_75sdp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|bottom"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/tvtextHeadingTube"
+        app:layout_constraintTop_toBottomOf="@id/tvtext3Tube" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

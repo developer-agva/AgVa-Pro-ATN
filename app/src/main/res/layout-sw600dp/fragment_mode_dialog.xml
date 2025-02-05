@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainLayoutPanelMode"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dolphin_grey">
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/ModeHorizontal1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.10" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/ModeHorizontal2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.25" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/ModeHorizontal3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.40" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/ModeHorizontal4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.55" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/ModeHorizontal5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.70" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/ModeHorizontal6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.85" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/focusLayoutMode"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/background_transparent_border_yellow"
+        android:translationZ="@dimen/_1sdp"
+        tools:ignore="MissingConstraints" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imageViewCrossMode"
+        android:layout_width="@dimen/_15sdp"
+        android:layout_height="@dimen/_15sdp"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:src="@drawable/ic_cross_grey"
+        app:layout_constraintBottom_toBottomOf="@id/ModeHorizontal1"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="ImageContrastCheck" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/colorLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/background_red_stroke"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/radioLayout"
+        app:layout_constraintEnd_toEndOf="@id/radioLayout"
+        app:layout_constraintStart_toStartOf="@id/radioLayout"
+        app:layout_constraintTop_toTopOf="@id/radioLayout" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/radioLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:background="@drawable/background_transparent_for_selection"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@id/ModeHorizontal1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/rbInvasive"
+        app:layout_constraintTop_toTopOf="@id/imageViewCrossMode" />
+
+
+    <androidx.appcompat.widget.AppCompatRadioButton
+        android:id="@+id/rbNonInvasive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:fontFamily="@font/avenir_next_lt_pro_regular"
+        android:text="@string/hint_noninvasive_mask"
+        android:textAllCaps="true"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_5sdp"
+        android:textStyle="bold"
+        android:theme="@style/SCBSwitch"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewCrossMode"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/imageViewCrossMode"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <androidx.appcompat.widget.AppCompatRadioButton
+        android:id="@+id/rbInvasive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:fontFamily="@font/avenir_next_lt_pro_regular"
+        android:text="@string/hint_invasive"
+        android:textAllCaps="true"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_5sdp"
+        android:textStyle="bold"
+        android:theme="@style/SCBSwitch"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/rbNonInvasive"
+        app:layout_constraintStart_toEndOf="@id/rbNonInvasive"
+        app:layout_constraintTop_toTopOf="@+id/rbNonInvasive"
+        tools:ignore="TouchTargetSizeCheck" />
+
+
+    <!--    volume layout-->
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textViewVolumeControl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:text="@string/hint_volume_controlled"
+        android:textStyle="bold"
+        android:theme="@style/subheading_text_style"
+        app:layout_constraintStart_toStartOf="@id/radioLayout"
+        app:layout_constraintTop_toBottomOf="@+id/ModeHorizontal1"
+        app:textAllCaps="true" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonVcCmv"
+        android:layout_width="160dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_2sdp"
+        android:layout_marginBottom="@dimen/_2sdp"
+        android:background="@drawable/background_primary_btn_rounded"
+        android:paddingStart="@dimen/_5sdp"
+        android:paddingEnd="@dimen/_5sdp"
+        android:stateListAnimator="@null"
+        android:text="@string/hint_vc_cmv"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:theme="@style/button_normal_style"
+        app:layout_constraintStart_toStartOf="@id/radioLayout"
+        app:layout_constraintTop_toBottomOf="@id/textViewVolumeControl" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonVcSimv"
+        android:layout_width="160dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:background="@drawable/background_primary_btn_rounded"
+        android:paddingStart="@dimen/_5sdp"
+        android:paddingEnd="@dimen/_5sdp"
+        android:stateListAnimator="@null"
+        android:text="@string/hint_vc_simv"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:theme="@style/button_normal_style"
+        app:layout_constraintBottom_toBottomOf="@id/buttonVcCmv"
+        app:layout_constraintStart_toEndOf="@id/buttonVcCmv"
+        app:layout_constraintTop_toTopOf="@id/buttonVcCmv" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonAcv"
+        android:layout_width="160dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:background="@drawable/background_primary_btn_rounded"
+        android:paddingStart="@dimen/_5sdp"
+        android:paddingEnd="@dimen/_5sdp"
+        android:stateListAnimator="@null"
+        android:text="@string/hint_vc_cv"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:theme="@style/button_normal_style"
+        app:layout_constraintBottom_toBottomOf="@id/buttonVcSimv"
+        app:layout_constraintStart_toEndOf="@id/buttonVcSimv"
+        app:layout_constraintTop_toTopOf="@id/buttonVcSimv" />
+
+    <!--    pressure layout-->
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textViewPressureControl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:text="@string/hint_pressure_controlled"
+        android:textStyle="bold"
+        android:theme="@style/subheading_text_style"
+        app:layout_constraintStart_toStartOf="@id/radioLayout"
+        app:layout_constraintTop_toBottomOf="@+id/ModeHorizontal2"
+        app:textAllCaps="true" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonPcCmv"
+        android:layout_width="160dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_2sdp"
+        android:layout_marginBottom="@dimen/_2sdp"
+        android:background="@drawable/background_primary_btn_rounded"
+        android:paddingStart="@dimen/_5sdp"
+        android:paddingEnd="@dimen/_5sdp"
+        android:stateListAnimator="@null"
+        android:text="@string/hint_pc_cmv"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:theme="@style/button_normal_style"
+        app:layout_constraintStart_toStartOf="@id/radioLayout"
+        app:layout_constraintTop_toBottomOf="@id/textViewPressureControl" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonPcSimv"
+        android:layout_width="160dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:background="@drawable/background_primary_btn_rounded"
+        android:paddingStart="@dimen/_5sdp"
+        android:paddingEnd="@dimen/_5sdp"
+        android:stateListAnimator="@null"
+        android:text="@string/hint_pc_imv"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:theme="@style/button_normal_style"
+        app:layout_constraintBottom_toBottomOf="@id/buttonPcCmv"
+        app:layout_constraintStart_toEndOf="@id/buttonPcCmv"
+        app:layout_constraintTop_toTopOf="@id/buttonPcCmv" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonPcac"
+        android:layout_width="160dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:background="@drawable/background_primary_btn_rounded"
+        android:paddingStart="@dimen/_9sdp"
+        android:paddingEnd="@dimen/_9sdp"
+        android:stateListAnimator="@null"
+        android:text="@string/hint_spont"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:theme="@style/button_normal_style"
+        app:layout_constraintBottom_toBottomOf="@id/buttonPcSimv"
+        app:layout_constraintStart_toEndOf="@id/buttonPcSimv"
+        app:layout_constraintTop_toTopOf="@id/buttonPcSimv" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonPsv"
+        android:layout_width="160dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:background="@drawable/background_primary_btn_rounded"
+        android:paddingStart="@dimen/_13sdp"
+        android:paddingEnd="@dimen/_13sdp"
+        android:stateListAnimator="@null"
+        android:text="@string/hint_psv"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:theme="@style/button_normal_style"
+        app:layout_constraintBottom_toBottomOf="@id/buttonPcac"
+        app:layout_constraintStart_toEndOf="@id/buttonPcac"
+        app:layout_constraintTop_toTopOf="@id/buttonPcac" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonPrvc"
+        android:layout_width="160dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:background="@drawable/background_primary_btn_rounded"
+        android:paddingStart="@dimen/_13sdp"
+        android:paddingEnd="@dimen/_13sdp"
+        android:stateListAnimator="@null"
+        android:text="@string/hint_prvc"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:theme="@style/button_normal_style"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/buttonPsv"
+        app:layout_constraintStart_toEndOf="@id/buttonPsv"
+        app:layout_constraintTop_toTopOf="@id/buttonPsv" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonAprv"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:background="@drawable/background_primary_btn_rounded"
+        android:paddingStart="@dimen/_12sdp"
+        android:paddingEnd="@dimen/_12sdp"
+        android:stateListAnimator="@null"
+        android:text="@string/hint_pc_aprv"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:theme="@style/button_normal_style"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/buttonPrvc"
+        app:layout_constraintStart_toEndOf="@id/buttonPrvc"
+        app:layout_constraintTop_toTopOf="@id/buttonPrvc" />
+
+
+    <!--    ai vent layout-->
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textViewIntelligentVentilation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:text="@string/hint_intelligent_ventilation"
+        android:textStyle="bold"
+        android:theme="@style/subheading_text_style"
+        app:layout_constraintStart_toStartOf="@id/radioLayout"
+        app:layout_constraintTop_toBottomOf="@+id/ModeHorizontal3"
+        app:textAllCaps="true" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonAIVent"
+        android:layout_width="160dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_2sdp"
+        android:layout_marginBottom="@dimen/_2sdp"
+        android:background="@drawable/background_primary_btn_rounded"
+        android:paddingStart="@dimen/_5sdp"
+        android:paddingEnd="@dimen/_5sdp"
+        android:stateListAnimator="@null"
+        android:text="@string/hint_ai_vent"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:theme="@style/button_normal_style"
+        app:layout_constraintStart_toStartOf="@id/radioLayout"
+        app:layout_constraintTop_toBottomOf="@id/textViewIntelligentVentilation" />
+
+
+    <!--    cpap bpap layout-->
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textViewSpontaneous"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:text="@string/hint_niv"
+        android:textStyle="bold"
+        android:theme="@style/subheading_text_style"
+        app:layout_constraintStart_toStartOf="@id/radioLayout"
+        app:layout_constraintTop_toBottomOf="@+id/ModeHorizontal4"
+        app:textAllCaps="true" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonBpap"
+        android:layout_width="160dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:background="@drawable/background_primary_btn_rounded"
+        android:paddingStart="@dimen/_5sdp"
+        android:paddingEnd="@dimen/_5sdp"
+        android:stateListAnimator="@null"
+        android:text="@string/hint_bpap"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:theme="@style/button_normal_style"
+        app:layout_constraintStart_toStartOf="@id/radioLayout"
+        app:layout_constraintTop_toBottomOf="@id/textViewSpontaneous" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonCpap"
+        android:layout_width="160dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:background="@drawable/background_primary_btn_rounded"
+        android:paddingEnd="@dimen/_5sdp"
+        android:stateListAnimator="@null"
+        android:text="@string/hint_cpap"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:theme="@style/button_normal_style"
+        app:layout_constraintBottom_toBottomOf="@id/buttonBpap"
+        app:layout_constraintStart_toEndOf="@id/buttonBpap"
+        app:layout_constraintTop_toTopOf="@id/buttonBpap" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonNCBpap"
+        android:layout_width="160dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:background="@drawable/background_primary_btn_rounded"
+        android:paddingStart="@dimen/_5sdp"
+        android:paddingEnd="@dimen/_5sdp"
+        android:stateListAnimator="@null"
+        android:text="@string/hint_nc_cpap"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:theme="@style/button_normal_style"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/buttonCpap"
+        app:layout_constraintStart_toEndOf="@id/buttonCpap"
+        app:layout_constraintTop_toTopOf="@id/buttonCpap" />
+
+
+    <!--    hfnc layout-->
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textViewHFNC"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:text="@string/hint_hfnc_mode"
+        android:textStyle="bold"
+        android:theme="@style/subheading_text_style"
+        app:layout_constraintStart_toStartOf="@id/radioLayout"
+        app:layout_constraintTop_toBottomOf="@+id/ModeHorizontal5"
+        app:textAllCaps="true" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonHFNC"
+        android:layout_width="160dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:background="@drawable/background_primary_btn_rounded"
+        android:paddingStart="@dimen/_5sdp"
+        android:paddingEnd="@dimen/_5sdp"
+        android:stateListAnimator="@null"
+        android:text="@string/hfnc"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:theme="@style/button_normal_style"
+        app:layout_constraintStart_toStartOf="@id/radioLayout"
+        app:layout_constraintTop_toBottomOf="@id/textViewHFNC"
+        tools:ignore="DuplicateSpeakableTextCheck" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

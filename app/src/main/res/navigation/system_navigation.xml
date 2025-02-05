@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/monitoring_navigation"
+    app:startDestination="@+id/navigation_info">
+
+    <fragment
+        android:id="@+id/navigation_info"
+        android:name="com.agvahealthcare.ventilator_ext.system.info.InfoFragment"
+        tools:layout="@layout/fragment_info" />
+
+    <fragment
+        android:id="@+id/navigation_test_calib"
+        android:name="com.agvahealthcare.ventilator_ext.system.test_calib.TestCalibrationFragment"
+        tools:layout="@layout/fragment_test_calib" />
+
+    <fragment
+        android:id="@+id/navigation_sensor"
+        android:name="com.agvahealthcare.ventilator_ext.system.sensors.SensorsFragment"
+        tools:layout="@layout/fragment_sensor" />
+
+    <fragment
+        android:id="@+id/navigation_setting"
+        android:name="com.agvahealthcare.ventilator_ext.system.settings.SettingFragment"
+        tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/navigation_nebulizer"
+        android:name="com.agvahealthcare.ventilator_ext.system.nebulizer.NebulizerFragment"
+        tools:layout="@layout/fragment_nebulizer" />
+
+    <fragment
+        android:id="@+id/navigation_intelliCuff"
+        android:name="com.agvahealthcare.ventilator_ext.system.intellicuff.IntelliCuffFragment"
+        tools:layout="@layout/fragment_intellicuff" />
+
+    <fragment
+        android:id="@+id/navigation_humidifier"
+        android:name="com.agvahealthcare.ventilator_ext.system.humidifier.HumidifierFragment"
+        tools:layout="@layout/fragment_humidifier" />
+</navigation>

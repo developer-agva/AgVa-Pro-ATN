@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/monitoring_navigation"
+    app:startDestination="@+id/navigation_limit_one">
+
+    <fragment
+        android:id="@+id/navigation_limit_one"
+        android:name="com.agvahealthcare.ventilator_ext.alarm.limit_one.LimitOneFragment"
+        tools:layout="@layout/fragment_limit_one" />
+
+    <fragment
+        android:id="@+id/navigation_limit_two"
+        android:name="com.agvahealthcare.ventilator_ext.alarm.limit_two.LimitTwoFragment"
+        tools:layout="@layout/fragment_limit_two" />
+
+    <fragment
+        android:id="@+id/navigation_buffer"
+        android:name="com.agvahealthcare.ventilator_ext.alarm.buffer.BufferFragment"
+        tools:layout="@layout/fragment_buffer" />
+
+
+</navigation>

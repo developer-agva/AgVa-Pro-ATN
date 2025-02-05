@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainViewPanelTestCalib"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_light_grey_border_grey"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/focusLayoutTestCalib"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/background_transparent_border_yellow"
+        android:translationZ="@dimen/_1sdp"
+        tools:ignore="MissingConstraints" />
+
+    <RelativeLayout
+        android:id="@+id/topBarTestCalib"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/preCalib_amber"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvMainTitleTestCalib"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="3dp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Pre-Calibration Check"
+        android:textAllCaps="true"
+        android:textColor="@color/light_grey"
+        android:textSize="25dp"
+        android:textStyle="normal"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/topBarTestCalib"
+        app:layout_constraintEnd_toEndOf="@id/topBarTestCalib"
+        app:layout_constraintStart_toStartOf="@id/topBarTestCalib"
+        app:layout_constraintTop_toTopOf="@id/topBarTestCalib" />
+
+    <ImageView
+        android:id="@+id/backBtnTestCalib"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/topBarTestCalib"
+        app:layout_constraintStart_toStartOf="@id/topBarTestCalib"
+        app:layout_constraintTop_toTopOf="@id/topBarTestCalib"
+        app:srcCompat="@drawable/back_button_calib" />
+
+
+    <TextView
+        android:id="@+id/testCalibText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginBottom="@dimen/_12sdp"
+        android:fontFamily="@font/avenir_next_lt_pro_medium"
+        android:text="Calibration"
+        android:textAllCaps="true"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_10sdp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <!--    o2 sensor layout-->
+    <include
+        android:id="@+id/includeButtonO2Sensor"
+        layout="@layout/content_button_layout"
+        android:layout_width="@dimen/_75sdp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/testCalibText"
+        app:layout_constraintTop_toBottomOf="@id/testCalibText"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivO2SensorStatus"
+        android:layout_width="@dimen/_10sdp"
+        android:layout_height="@dimen/_10sdp"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:src="@drawable/ic_red_cross"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/includeButtonO2Sensor"
+        app:layout_constraintStart_toEndOf="@id/includeButtonO2Sensor"
+        app:layout_constraintTop_toTopOf="@id/includeButtonO2Sensor" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvO2Sensor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:gravity="center"
+        android:textColor="@color/grey_dark"
+        android:theme="@style/subheading_text_style"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/includeButtonO2Sensor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/ivO2SensorStatus"
+        app:layout_constraintTop_toTopOf="@id/includeButtonO2Sensor" />
+
+    <!--    exhale valve layout-->
+    <include
+        android:id="@+id/includeButtonExhaleValve"
+        layout="@layout/content_button_layout"
+        android:layout_width="@dimen/_75sdp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/testCalibText"
+        app:layout_constraintTop_toBottomOf="@id/includeButtonO2Sensor" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivExhaleValveStatus"
+        android:layout_width="@dimen/_10sdp"
+        android:layout_height="@dimen/_10sdp"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:src="@drawable/ic_red_cross"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/includeButtonExhaleValve"
+        app:layout_constraintStart_toEndOf="@id/includeButtonExhaleValve"
+        app:layout_constraintTop_toTopOf="@id/includeButtonExhaleValve" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvExhaleValve"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:gravity="center"
+        android:textColor="@color/grey_dark"
+        android:theme="@style/subheading_text_style"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/includeButtonExhaleValve"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/ivExhaleValveStatus"
+        app:layout_constraintTop_toTopOf="@id/includeButtonExhaleValve" />
+
+
+    <!--    exp flow sensor layout-->
+    <include
+        android:id="@+id/includeButtonExpFlowSensor"
+        layout="@layout/content_button_layout"
+        android:layout_width="@dimen/_75sdp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/includeButtonExhaleValve"
+        app:layout_constraintTop_toBottomOf="@id/includeButtonExhaleValve" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivExpFlowSensorStatus"
+        android:layout_width="@dimen/_10sdp"
+        android:layout_height="@dimen/_10sdp"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:src="@drawable/ic_red_cross"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/includeButtonExpFlowSensor"
+        app:layout_constraintStart_toEndOf="@id/includeButtonExpFlowSensor"
+        app:layout_constraintTop_toTopOf="@id/includeButtonExpFlowSensor" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvExpFlowSensor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:gravity="center"
+        android:textColor="@color/grey_dark"
+        android:theme="@style/subheading_text_style"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/includeButtonExpFlowSensor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/ivExpFlowSensorStatus"
+        app:layout_constraintTop_toTopOf="@id/includeButtonExpFlowSensor" />
+
+    <!--    gif layout-->
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/ventigif"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:background="#fff"
+        android:src="@drawable/tubecalib"
+        android:layout_marginEnd="@dimen/_2sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvtextHeadingTestCalib"
+        android:visibility="gone" />
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/capgif"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:background="#fff"
+        android:src="@drawable/cap_calib"
+        android:layout_marginEnd="@dimen/_2sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvtextHeadingTestCalib"
+        android:visibility="gone" />
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/calibratorimg"
+        android:layout_width="240dp"
+        android:layout_height="172dp"
+        android:background="#fff"
+        android:visibility="gone"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="20dp"
+        android:layout_gravity="end"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvtextHeadingTestCalib"
+        android:src="@drawable/calibrator" />
+
+    <TextView
+        android:id="@+id/tvtextHeadingTestCalib"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_50sdp"
+        android:text=" * Please ensure the following -"
+        android:textColor="@color/light_grey"
+        android:textSize="21dp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/topBarTestCalib" />
+
+    <TextView
+        android:id="@+id/tvtext1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:text="Remove tubing if connected"
+        android:textColor="@color/light_grey"
+        android:textSize="15dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/tvtextHeadingTestCalib"
+        app:layout_constraintTop_toBottomOf="@id/tvtextHeadingTestCalib" />
+
+    <TextView
+        android:id="@+id/tvtext2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:text="Insert the cap at the inspiration port"
+        android:textColor="@color/light_grey"
+        android:textSize="15dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/tvtextHeadingTestCalib"
+        app:layout_constraintTop_toBottomOf="@id/tvtext1" />
+
+    <TextView
+        android:id="@+id/tvtext3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:text="Make sure ventilator is connected to the mains supply"
+        android:textColor="@color/light_grey"
+        android:textSize="15dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/tvtextHeadingTestCalib"
+        app:layout_constraintTop_toBottomOf="@id/tvtext2" />
+
+
+    <include
+        android:id="@+id/includeButtonSendCmd"
+        layout="@layout/content_button_layout"
+        android:layout_width="@dimen/_75sdp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|bottom"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/tvtextHeadingTestCalib"
+        app:layout_constraintTop_toBottomOf="@id/tvtext3" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,23 @@
+[core]
+	repositoryformatversion = 0
+	filemode = false
+	bare = false
+	logallrefupdates = true
+	symlinks = false
+	ignorecase = true
+[remote "origin"]
+	url = https://github.com/agvahealthcare/venti_advanced_ext.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "main"]
+	remote = origin
+	merge = refs/heads/main
+[branch "mohit"]
+	remote = origin
+	merge = refs/heads/mohit
+[branch "abhi"]
+	remote = origin
+	merge = refs/heads/abhi
+
+[branch "nadeemakhtar"]
+	remote = origin
+	merge = refs/heads/nadeemakhtar

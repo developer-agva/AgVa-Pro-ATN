@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txtWaitTrends"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/avenir_next_lt_pro_medium"
+        android:gravity="center"
+        android:text="Loading logs...."
+        android:textColor="@color/black"
+        android:textSize="@dimen/_8sdp"
+        android:visibility="gone" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mainLayoutTrends"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvParameterConstants"
+            android:layout_width="@dimen/_90sdp"
+            android:layout_height="0dp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@id/seekBarLayout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvTwo"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/rvParameterConstants"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/rvParameterConstants"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/seekBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <ImageButton
+                android:id="@+id/leftButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/_1sdp"
+                android:background="@color/white"
+                android:foregroundGravity="center"
+                android:rotation="180"
+                android:src="@drawable/ic_logtable_righticon" />
+
+            <SeekBar
+                android:id="@+id/seekBar"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_margin="@dimen/_1sdp"
+                android:layout_weight="0.7"
+                android:backgroundTint="@android:color/transparent"
+                android:progress="1"
+                android:progressDrawable="@drawable/custom_seekbar"
+                android:secondaryProgressTint="@android:color/transparent"
+                android:thumb="@drawable/thumb"
+                android:visibility="invisible" />
+
+            <ImageButton
+                android:id="@+id/rightButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/_1sdp"
+                android:background="@color/white"
+                android:foregroundGravity="center"
+                android:src="@drawable/ic_logtable_righticon" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="360dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="40dp"
+    app:cardBackgroundColor="@color/light_black"
+    app:cardCornerRadius="14dp"
+    app:cardElevation="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="40dp">
+
+            <cdflynn.android.library.checkview.CheckView
+                android:id="@+id/cvTick"
+                android:layout_width="126dp"
+                android:layout_height="126dp"
+                app:checkView_strokeColor="@color/ack_green"
+                app:checkView_strokeWidth="6dp" />
+
+            <ImageView
+                android:id="@+id/ivCross"
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+                android:background="@drawable/shape_circle_outline_red"
+                android:scaleType="centerInside"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_cross_100" />
+
+        </FrameLayout>
+
+
+        <TextView
+            android:id="@+id/tvMsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/avenir_next_lt_pro_medium"
+
+            android:textColor="@android:color/white"
+            android:textSize="32dp" />
+
+        <TextView
+            android:id="@+id/tvMsgDesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="14dp"
+            android:fontFamily="@font/avenir_next_lt_pro_medium"
+            android:textColor="@android:color/white"
+            android:textSize="20dp" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

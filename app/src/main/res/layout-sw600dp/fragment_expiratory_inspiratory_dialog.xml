@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_light_black_border"
+    android:orientation="vertical"
+    tools:context=".maneuvers.ExpiratoryInspiratoryFragmentDialog">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_18sdp"
+            android:layout_gravity="center_vertical">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imageViewCross"
+                android:layout_width="@dimen/_16sdp"
+                android:layout_height="match_parent"
+                android:layout_gravity="end|center"
+                android:padding="@dimen/_4sdp"
+                android:src="@drawable/ic_cross" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="@dimen/_6sdp"
+                android:textAllCaps="true"
+                android:textColor="@color/white" />
+
+        </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:background="@color/white" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:orientation="vertical">
+            <!-- PLATEAU PRESSURE -->
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/layoutPplat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_4sdp"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvPplatHeading"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Plateau Pressure :"
+                    android:textAllCaps="true"
+                    android:textColor="@color/light_white" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvPplatValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="- cmH₂O"
+                    android:textColor="@color/light_white" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvPplatDateTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.5"
+                    android:gravity="center"
+                    android:textColor="@color/light_white" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <!-- STATIC COMPLIANCE -->
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/layoutSC"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_4sdp"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvSCHeading"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Static Compliance :"
+                    android:textAllCaps="true"
+                    android:textColor="@color/light_white" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvSCValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="- cmH₂O"
+                    android:textColor="@color/light_white" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvSCDateTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.5"
+                    android:gravity="center"
+                    android:textColor="@color/light_white" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <!-- AUTO PEEP -->
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/layoutAutoPeep"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_4sdp"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvAutoPeepHeading"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Auto Peep :"
+                    android:textAllCaps="true"
+                    android:textColor="@color/light_white" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvAutoPeepValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="- cmH₂O"
+                    android:textColor="@color/light_white" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvAutoPeepDateTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.5"
+                    android:gravity="center"
+                    android:textColor="@color/light_white" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+</FrameLayout>
+
+

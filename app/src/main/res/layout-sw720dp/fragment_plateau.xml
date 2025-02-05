@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_grey">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/layoutPanelPlateauPressure"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_5sdp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewPlateauPressure"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/hint_plateau_pressure"
+            android:theme="@style/subheading_text_style" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewPlateauPressureValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:theme="@style/subheading_text_style" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewPlateauPressureTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/light_grey"
+            android:textSize="@dimen/_5sdp"
+            android:theme="@style/subheading_text_style" />
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/layoutPanelAutoPeep"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_5sdp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutPanelPlateauPressure">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewAutoPeep"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/hint_auto_peep"
+            android:theme="@style/subheading_text_style" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewAutoPeepValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:theme="@style/subheading_text_style" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewAutoPeepTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/light_grey"
+            android:textSize="@dimen/_5sdp"
+            android:theme="@style/subheading_text_style" />
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/layoutPanelMeasureTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_5sdp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutPanelAutoPeep">
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewMeasureTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/hint_measure_time"
+            android:theme="@style/subheading_text_style" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewMeasureTimeValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:theme="@style/subheading_text_style" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

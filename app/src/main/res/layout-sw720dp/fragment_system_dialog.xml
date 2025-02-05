@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainViewPanelSystem"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_grey"
+    tools:ignore="MissingDefaultResource">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/focusLayoutSystem"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/background_transparent_border_yellow"
+            android:translationZ="@dimen/_1sdp"
+            tools:ignore="MissingConstraints" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imageViewCrossSystem"
+        android:layout_width="@dimen/_15sdp"
+        android:layout_height="@dimen/_15sdp"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:src="@drawable/ic_cross_grey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/system_nav_container" />
+
+    <include
+        android:id="@+id/includeButtonInfo"
+        layout="@layout/content_button_layout"
+        android:layout_width="127dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="@id/imageViewCrossSystem"
+        app:layout_constraintTop_toBottomOf="@id/imageViewCrossSystem" />
+
+    <include
+        android:id="@+id/includeButtonStartup"
+        layout="@layout/content_button_layout"
+        android:layout_width="127dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="@id/imageViewCrossSystem"
+        app:layout_constraintTop_toBottomOf="@id/includeButtonInfo" />
+
+    <include
+        android:id="@+id/includeButtonTestCalib"
+        layout="@layout/content_button_layout"
+        android:layout_width="127dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="@id/imageViewCrossSystem"
+        app:layout_constraintTop_toBottomOf="@id/includeButtonStartup"/>
+
+    <include
+        android:id="@+id/includeButtonSettings"
+        layout="@layout/content_button_layout"
+        android:layout_width="127dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="@id/imageViewCrossSystem"
+        app:layout_constraintTop_toBottomOf="@id/includeButtonTestCalib"/>
+
+    <include
+        android:id="@+id/includeButtonTube"
+        layout="@layout/content_button_layout"
+        android:layout_width="127dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="@id/imageViewCrossSystem"
+        app:layout_constraintTop_toBottomOf="@id/includeButtonSettings" />
+
+    <include
+        android:id="@+id/includeButtonService"
+        layout="@layout/content_button_layout"
+        android:layout_width="127dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="@id/imageViewCrossSystem"
+        app:layout_constraintTop_toBottomOf="@id/includeButtonTube"
+        android:visibility="visible" />
+
+    <include
+        android:id="@+id/includeButtonDiagchk"
+        layout="@layout/content_button_layout"
+        android:layout_width="127dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="@id/imageViewCrossSystem"
+        app:layout_constraintTop_toBottomOf="@id/includeButtonService"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/includeButtonO2Regulate"
+        layout="@layout/content_button_layout"
+        android:layout_width="127dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="@id/imageViewCrossSystem"
+        app:layout_constraintTop_toBottomOf="@id/includeButtonDiagchk"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/includeButtonAdvancedCalibration"
+        layout="@layout/content_button_layout"
+        android:layout_width="127dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="@id/imageViewCrossSystem"
+        app:layout_constraintTop_toBottomOf="@id/includeButtonO2Regulate"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/includeButtonNetworkInfo"
+        layout="@layout/content_button_layout"
+        android:layout_width="127dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="@id/imageViewCrossSystem"
+        app:layout_constraintTop_toBottomOf="@id/includeButtondeviceUpdate"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/includeButtondeviceUpdate"
+        layout="@layout/content_button_layout"
+        android:layout_width="127dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_3sdp"
+        app:layout_constraintEnd_toEndOf="@id/imageViewCrossSystem"
+        app:layout_constraintTop_toBottomOf="@id/includeButtonAdvancedCalibration"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/includeButtonDebug"
+        layout="@layout/content_button_layout"
+        android:layout_width="127dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="@id/imageViewCrossSystem"
+        app:layout_constraintTop_toBottomOf="@id/includeButtonNetworkInfo"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/includeButtonOTA"
+        layout="@layout/content_button_layout"
+        android:layout_width="127dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="@id/imageViewCrossSystem"
+        app:layout_constraintTop_toBottomOf="@id/includeButtonDebug"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/includeButtonWifi"
+        layout="@layout/content_button_layout"
+        android:layout_width="127dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="@id/imageViewCrossSystem"
+        app:layout_constraintTop_toBottomOf="@id/includeButtonOTA"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/ll_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/system_nav_container"
+        app:layout_constraintEnd_toEndOf="@id/system_nav_container"
+        app:layout_constraintStart_toStartOf="@id/system_nav_container"
+        app:layout_constraintTop_toTopOf="@id/system_nav_container">
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/pg_loader"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:indeterminate="true"
+            app:indicatorColor="@color/dark_grey"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:trackColor="@color/black" />
+
+        <TextView
+            android:id="@+id/progressText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="20dp"
+            android:text="Checking Sensors Availability, Please wait"
+            android:textSize="@dimen/_4sdp" />
+    </LinearLayout>
+
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/system_nav_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_13sdp"
+        android:background="@drawable/background_light_grey_border_grey"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/includeButtonInfo"
+        app:layout_constraintHorizontal_bias="0.472"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

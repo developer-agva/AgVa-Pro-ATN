@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:table="http://schemas.android.com/tools"
+    android:orientation="vertical">
+    <de.codecrafters.tableview.SortableTableView
+        android:id="@+id/tableView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_5sdp"
+        android:layout_weight="1"
+        android:alpha="0.7"
+        android:elevation="4dp"
+        android:scrollbars="vertical"
+        android:visibility="visible"
+        table:tableView_columnCount="4"
+        table:tableView_headerColor="#3b3b3b" />
+</LinearLayout>

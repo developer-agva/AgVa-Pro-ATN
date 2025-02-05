@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".system.ota.OTAFragment">
+
+    <TextView
+        android:id="@+id/headingOta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:fontFamily="@font/avenir_next_lt_pro_medium"
+        android:text="App Updates History"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_12sdp"
+        android:textStyle="bold"
+        android:textAllCaps="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/otaView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:background="@color/light_grey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/headingOta" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/otaRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="visible"
+        android:layout_marginHorizontal="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_ota_layout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/otaView" />
+
+    <TextView
+        android:id="@+id/txtNoDataOTA"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/avenir_next_lt_pro_medium"
+        android:text="No Updates"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_10sdp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        android:translationZ="@dimen/_5sdp"
+        android:textAllCaps="true"
+        app:layout_constraintEnd_toEndOf="@id/otaRecyclerView"
+        app:layout_constraintStart_toStartOf="@id/otaRecyclerView"
+        app:layout_constraintTop_toBottomOf="@id/otaView"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <ProgressBar
+        android:id="@+id/pbDownload"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="500dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:indeterminate="false"
+        android:scaleY="1.3"
+        android:visibility="gone"
+        android:progressBackgroundTint="@color/green"
+        android:progressTint="@color/ack_green"
+        android:progress="0"
+        app:layout_constraintStart_toStartOf="@id/otaRecyclerView"
+        app:layout_constraintTop_toTopOf="@id/otaRecyclerView"
+        app:layout_constraintEnd_toEndOf="@id/otaRecyclerView"
+        app:layout_constraintBottom_toBottomOf="@id/otaRecyclerView"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/btnCancelDownload"
+        android:layout_width="@dimen/_70sdp"
+        android:layout_height="@dimen/_18sdp"
+        android:background="@drawable/background_red_border_red"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/pbDownload"
+        app:layout_constraintStart_toStartOf="@id/pbDownload"
+        app:layout_constraintTop_toBottomOf="@id/pbDownload">
+
+        <TextView
+            android:id="@+id/txtCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_9sdp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/avenir_next_lt_pro_medium"
+            android:text="Cancel"
+            android:textAllCaps="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/txtDownloadingStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/avenir_next_lt_pro_medium"
+        android:text="0%"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_12sdp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        android:translationZ="@dimen/_5sdp"
+        android:textAllCaps="true"
+        android:layout_marginBottom="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="@id/otaRecyclerView"
+        app:layout_constraintStart_toStartOf="@id/otaRecyclerView"
+        app:layout_constraintBottom_toTopOf="@id/pbDownload"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

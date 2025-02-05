@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/tvNote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginStart="@dimen/_5sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btnLayout"
+        app:layout_constraintBottom_toBottomOf="@+id/btnLayout"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tvheading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="@dimen/_5sdp"
+            android:text="Note - Please use the rotatory knob to scroll the alarms"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/btnLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_gravity="right"
+        android:background="@drawable/outline_background_spinner"
+        android:layout_marginTop="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_10sdp"
+            android:text="UHID"
+            android:layout_marginBottom="@dimen/_2sdp"
+            android:layout_gravity="center"
+            android:gravity="center"/>
+
+        <Spinner
+            android:id="@+id/spinnerAlarm"
+            android:layout_marginLeft="15dp"
+            android:textSize="@dimen/_4sdp"
+            android:layout_width="@dimen/_60sdp"
+            android:theme="@style/MatchSpinnerTheme"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/_2sdp"
+            android:dropDownWidth="@dimen/_60sdp"
+            android:spinnerMode="dropdown"
+            android:popupBackground="@drawable/outline_background_white_spinner"
+            tools:listitem="@layout/dropdownlist_spinner"
+            android:overlapAnchor="false"
+            android:layout_height="35dp"
+            android:textColor="@color/black"
+            android:hint="Select UHID" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_emptyAlarm"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_30sdp"
+        android:text="There are no alarms generated yet."
+        android:gravity="center"
+        android:visibility="gone"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_5sdp"
+        android:padding="@dimen/_2sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="@dimen/_5sdp"
+        app:layout_constraintTop_toBottomOf="@+id/btnLayout"
+        app:layout_constraintBottom_toTopOf="@id/recyclerViewAlarm"/>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:background="#eeeeee"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:id="@+id/staticLayoutAlarm"
+        android:visibility="visible"
+        app:layout_constraintEnd_toStartOf="@id/seekbarLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_emptyAlarm"
+        android:weightSum="1">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textStartAlarmDate"
+            android:layout_width="0dp"
+            android:layout_marginLeft="@dimen/_9sdp"
+            android:layout_height="wrap_content"
+            android:gravity="start|center_vertical"
+            android:layout_gravity="center"
+            android:layout_weight="0.1"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:text="Date" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textStartAlarmtime"
+            android:layout_width="0dp"
+            android:layout_marginLeft="@dimen/_9sdp"
+            android:layout_height="wrap_content"
+            android:gravity="start|center_vertical"
+            android:layout_gravity="center"
+            android:layout_weight="0.1"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:text="Time" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewAlarmType"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.5"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:gravity="start|center_vertical"
+            android:text="Alarm Type" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textEndAlarmDate"
+            android:layout_width="0dp"
+            android:gravity="center_vertical"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:text="Alarm Priority" />
+
+        <Button
+            android:id="@+id/textcolorpriority"
+            android:layout_width="0dp"
+            android:gravity="center_vertical"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="30dp"
+            app:cornerRadius="10dp"
+            android:text=""
+            android:visibility="invisible"
+            android:stateListAnimator="@null" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewUHID"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="0.1"
+            android:gravity="center_vertical"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginLeft="@dimen/_4sdp"
+            android:text="UHID" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewAlarm"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fastScrollEnabled="true"
+        android:scrollbarStyle="insideInset"
+        android:scrollbars="vertical"
+        android:overScrollMode="never"
+        android:splitMotionEvents="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/seekbarLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/staticLayoutAlarm"
+        android:verticalScrollbarPosition="right"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:theme="@style/Theme.ProgressBar"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@id/seekbarLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recyclerViewAlarm"/>
+
+
+    <LinearLayout
+        android:id="@+id/seekbarLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toEndOf="@id/recyclerViewAlarm"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/recyclerViewAlarm"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:id="@+id/topButtonAlarm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/_1sdp"
+            android:background="@color/white"
+            android:rotation="270"
+            android:foregroundGravity="center"
+            android:src="@drawable/ic_logtable_righticon" />
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_margin="@dimen/_1sdp"
+            android:layout_weight="0.7"
+            android:backgroundTint="@android:color/transparent"
+            android:progress="1"
+            android:visibility="visible"
+            android:progressDrawable="@drawable/custom_seekbar"
+            android:secondaryProgressTint="@android:color/transparent"
+            android:thumb="@drawable/thumb" />
+
+        <ImageButton
+            android:id="@+id/bottomButtonAlarm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/_1sdp"
+            android:rotation="90"
+            android:background="@color/white"
+            android:foregroundGravity="center"
+            android:src="@drawable/ic_logtable_righticon" />
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

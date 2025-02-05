@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <declare-styleable name="HoloCircleSeekBar">
+        <attr name="wheel_size" format="integer" />
+        <attr name="pointer_size" format="dimension" />
+        <attr name="max" format="integer"/>
+        <attr name="show_text" format="boolean"/>
+        <attr name="start_angle" format="integer"/>
+        <attr name="end_angle" format="integer"/>
+        <attr name="text_size" format="dimension"/>
+        <attr name="init_position" format="integer"/>
+        <attr name="wheel_active_color" format="string"/>
+        <attr name="wheel_unactive_color" format="string"/>
+        <attr name="pointer_color" format="string"/>
+        <attr name="pointer_halo_color" format="string"/>
+        <attr name="text_color" format="string"/>
+    </declare-styleable>
+
+    <attr name="LineChartStyle" />
+
+    <declare-styleable name="GaugeSeekBar">
+        <attr name="startAngleDegrees" format="float"/>
+        <attr name="thumbRadius" format="dimension"/>
+        <attr name="thumbDrawable" format="reference"/>
+        <attr name="showThumb" format="boolean"/>
+        <attr name="thumbColor" format="color"/>
+        <attr name="trackGradient" format="color"/>
+        <attr name="showProgress" format="boolean"/>
+        <attr name="trackGradientPositions" format="reference"/>
+        <attr name="progress" format="float"/>
+        <attr name="interactive" format="boolean"/>
+        <attr name="trackWidth" format="dimension"/>
+        <attr name="progressWidth" format="dimension"/>
+        <attr name="progressGradient" format="reference"/>
+        <attr name="progressGradientPositions" format="reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="MeterNumberPicker">
+        <attr name="mnp_min" format="integer" />
+        <attr name="mnp_max" format="integer" />
+        <attr name="mnp_value" format="integer" />
+        <attr name="mnp_textColor" format="color" />
+        <attr name="mnp_textSize" format="dimension" />
+        <attr name="mnp_typeface" format="string" />
+        <attr name="mnp_minWidth" format="dimension" />
+        <attr name="mnp_minHeight" format="dimension" />
+        <attr name="mnp_paddingHorizontal" format="dimension" />
+        <attr name="mnp_paddingVertical" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="MeterView">
+        <attr name="mv_numberOfFirst" format="integer" />
+        <attr name="mv_numberOfSecond" format="integer" />
+        <attr name="mv_firstColor" format="color" />
+        <attr name="mv_secondColor" format="color" />
+        <attr name="mv_pickerStyle" format="reference" />
+        <attr name="mv_enabled" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="MaterialNumberPicker">
+        <attr name="mnpMinValue" format="integer" />
+        <attr name="mnpMaxValue" format="integer" />
+        <attr name="mnpValue" format="integer" />
+        <attr name="mnpSeparatorColor" format="color" />
+        <attr name="mnpTextSize" format="dimension" />
+        <attr name="mnpTextColor" format="color" />
+        <attr name="mnpTextStyle">
+            <flag name="normal" value="0" />
+            <flag name="bold" value="1" />
+            <flag name="italic" value="2" />
+            <flag name="bold_italic" value="3" />
+        </attr>
+        <attr name="mnpEditable" format="boolean" />
+        <attr name="mnpWrapped" format="boolean" />
+        <attr name="mnpFontname" format="string" />
+    </declare-styleable>
+
+
+    <declare-styleable name="CircleProgressView">
+        <!-- Text-->
+        <attr name="cpv_text" format="string" />
+        <attr name="cpv_unit" format="string" />
+        <attr name="cpv_textColor" format="color" />
+        <attr name="cpv_unitColor" format="color" />
+        <attr name="cpv_showUnit" format="boolean" />
+        <attr name="cpv_autoTextColor" format="boolean" />
+        <attr name="cpv_textTypeface" format="string" />
+        <attr name="cpv_unitTypeface" format="string" />
+        <attr name="cpv_decimalFormat" format="string" />
+
+        <!-- Text sizes-->
+        <attr name="cpv_textSize" format="dimension" />
+        <attr name="cpv_unitSize" format="dimension" />
+        <attr name="cpv_textScale" format="float" />
+        <attr name="cpv_unitScale" format="float" />
+        <attr name="cpv_unitToTextScale" format="float" />
+        <attr name="cpv_autoTextSize" format="boolean" />
+
+        <!-- Progress Bar -->
+        <attr name="cpv_direction" format="enum">
+            <enum name="CW" value="0" />
+            <enum name="CCW" value="1" />
+        </attr>
+        <attr name="cpv_value" format="float" />
+        <attr name="cpv_maxValue" format="float" />
+        <attr name="cpv_minValueAllowed" format="float" />
+        <attr name="cpv_maxValueAllowed" format="float" />
+        <attr name="cpv_barWidth" format="dimension" />
+        <attr name="cpv_barColor" format="color" />
+        <attr name="cpv_barColor1" format="color" />
+        <attr name="cpv_barColor2" format="color" />
+        <attr name="cpv_barColor3" format="color" />
+        <attr name="cpv_startAngle" format="integer" />
+        <attr name="cpv_barStrokeCap" format="enum">
+            <enum name="Butt" value="0" />
+            <enum name="Round" value="1" />
+            <enum name="Square" value="2" />
+        </attr>
+        <attr name="cpv_barStartEndLineWidth" format="dimension" />
+        <attr name="cpv_barStartEndLineSweep" format="float" />
+        <attr name="cpv_barStartEndLineColor" format="color" />
+        <attr name="cpv_barStartEndLine" format="enum">
+            <enum name="None" value="0" />
+            <enum name="Start" value="1" />
+            <enum name="End" value="2" />
+            <enum name="Both" value="3" />
+        </attr>
+
+        <!-- Spinner-->
+        <attr name="cpv_spin" format="boolean" />
+        <attr name="cpv_spinColor" format="color" />
+        <attr name="cpv_spinSpeed" format="float" />
+        <attr name="cpv_spinBarLength" format="float" />
+        <attr name="cpv_showTextInSpinningMode" format="boolean" />
+
+        <!-- Rim-->
+        <attr name="cpv_rimColor" format="color" />
+        <attr name="cpv_rimWidth" format="dimension" />
+cpv_innerContourSize
+        <!-- Outer Contour-->
+        <attr name="cpv_outerContourColor" format="color" />
+        <attr name="cpv_outerContourSize" format="dimension" />
+
+        <!-- Inner Contour-->
+        <attr name="cpv_innerContourColor" format="color" />
+        <attr name="cpv_innerContourSize" format="dimension" />
+
+        <!-- Background color-->
+        <attr name="cpv_fillColor" format="color" />
+
+        <!-- Seek mode-->
+        <attr name="cpv_seekMode" format="boolean" />
+
+        <!-- Block -->
+        <attr name="cpv_roundToBlock" format="boolean" />
+        <attr name="cpv_roundToWholeNumber" format="boolean" />
+        <attr name="cpv_blockScale" format="float" />
+        <attr name="cpv_blockCount" format="integer" />
+
+        <attr name="cpv_textMode" format="enum">
+            <enum name="Text" value="0" />
+            <enum name="Percent" value="1" />
+            <enum name="Value" value="2" />
+        </attr>
+
+        <attr name="cpv_unitPosition" format="enum">
+            <enum name="top" value="0" />
+            <enum name="bottom" value="1" />
+            <enum name="left_top" value="2" />
+            <enum name="right_top" value="3" />
+            <enum name="left_bottom" value="4" />
+            <enum name="right_bottom" value="5" />
+        </attr>
+
+    </declare-styleable>
+
+</resources>

@@ -1,0 +1,271 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+
+    <style name="app_seek_bar" parent="Theme.AppCompat.Light">
+        <item name="android:colorControlActivated">@color/seek_bar_background</item>
+        <item name="android:colorControlNormal">@color/seek_bar_progress</item>
+        <item name="android:dropDownListViewStyle">@style/SpinnerStyle</item>
+    </style>
+    <style name="Widget.Button.Toggle" parent="android:Widget">
+        <item name="android:background">@drawable/toggle_bg</item>
+        <item name="android:disabledAlpha">?android:attr/disabledAlpha</item>
+    </style>
+    <style name="mScrollBar">
+        <item name="android:scrollbarSize">100dp</item>
+        <item name="android:scrollbarThumbVertical">@color/red</item>
+    </style>
+
+    <style name="ButtonStartVent" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/background_grey_border_white</item> <!-- Adjust this to fit your theme -->
+        <item name="android:textColor">@color/white</item> <!-- Adjust this to fit your theme -->
+    </style>
+
+    <style name="toggleButton">
+        <item name="android:buttonStyleToggle">@style/Widget.Button.Toggle</item>
+        <item name="android:textOn"></item>
+        <item name="android:textOff"></item>
+    </style>
+
+    <style name="OTPInputStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:hint">*</item>
+        <item name="android:gravity">center</item>
+        <item name="android:inputType">numberPassword</item>
+        <item name="android:textSize">@dimen/_18sdp</item>
+        <item name="android:background">@drawable/edit_text_border</item>
+        <item name="android:maxLength">1</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textCursorDrawable">@null</item>
+        <!-- Add any other styling attributes you want to apply -->
+    </style>
+
+    <style name="TextAppearance.AppTheme.TextInputLayout.HintTextAlt" parent="TextAppearance.MaterialComponents.Subtitle2">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="backgroundColor">@color/white</item>
+    </style>
+
+    <style name="blackCheck">
+        <item name="colorAccent">#000</item>
+    </style>
+
+    <style name="myDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+
+        <item name="android:width">100dip</item>
+        <item name="android:height">100dip</item>
+
+    </style>
+
+    <style name="MatchSpinnerStyle" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+        <item name="android:divider">#123456</item>
+        <item name="android:dividerHeight">2dp</item>
+
+    </style>
+
+    <style name="MatchSpinnerTheme" parent="Theme.AppCompat.Light">
+        <item name="android:dropDownListViewStyle">@style/MatchSpinnerStyle</item>
+    </style>
+
+    <style name="main_heading_text_style" >
+        <item name="android:paddingStart">@dimen/_5sdp</item>
+        <item name="android:paddingEnd">@dimen/_5sdp</item>
+        <item name="android:textSize">@dimen/_25sdp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/poppins_regular</item>
+    </style>
+
+    <style name="heading_text_style" >
+        <item name="android:paddingStart">@dimen/_5sdp</item>
+        <item name="android:paddingEnd">@dimen/_5sdp</item>
+        <item name="android:textSize">@dimen/_32sdp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/arial_bold</item>
+    </style>
+
+    <style name="heading_text_style_units" >
+        <item name="android:paddingStart">@dimen/_5sdp</item>
+        <item name="android:paddingEnd">@dimen/_5sdp</item>
+        <item name="android:textSize">@dimen/_5sdp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/avenir_next_lt_pro_bold</item>
+    </style>
+
+    <style name="heading_text_style_units_size" >
+        <item name="android:paddingStart">@dimen/_5sdp</item>
+        <item name="android:paddingEnd">@dimen/_5sdp</item>
+        <item name="android:textSize">@dimen/_6sdp</item>
+        <item name="android:background">@drawable/background_grey_border_white</item> <!-- Adjust this to fit your theme -->
+
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/avenir_next_lt_pro_bold</item>
+    </style>
+    <style name="SCBSwitch" parent="Theme.AppCompat.Light">
+        <!-- active thumb & track color (30% transparency) -->
+        <item name="colorControlActivated">@color/racing_green</item>
+
+        <!-- inactive thumb color -->
+        <item name="colorSwitchThumbNormal">@color/black
+        </item>
+
+        <!-- inactive track color (30% transparency) -->
+        <item name="android:colorForeground">@color/white
+        </item>
+    </style>
+
+    <style name="subheading_sub_text_style" >
+        <item name="android:textSize">@dimen/_5sdp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/avenir_next_lt_pro_regular</item>
+    </style>
+
+
+    <style name="subheading_text_style" >
+        <item name="android:textSize">@dimen/_7sdp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/avenir_next_lt_pro_medium</item>
+    </style>
+
+    <style name="subheading_text_style_diag" >
+        <item name="android:textSize">@dimen/_6sdp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/avenir_next_lt_pro_medium</item>
+    </style>
+
+    <style name="subheading_text_style_green" >
+        <item name="android:textSize">@dimen/_5sdp</item>
+        <item name="android:textColor">@color/ack_green</item>
+        <item name="android:fontFamily">@font/avenir_next_lt_pro_regular</item>
+    </style>
+
+    <style name="subheading_text_style_graph" >
+        <item name="android:textSize">@dimen/_4sdp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/avenir_next_lt_pro_medium</item>
+    </style>
+
+    <style name="subheading_text_style_unit" >
+        <item name="android:textSize">@dimen/_6sdp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/avenir_next_lt_pro_medium</item>
+    </style>
+
+    <style name="normal_text_style" >
+        <item name="android:paddingStart">@dimen/_5sdp</item>
+        <item name="android:paddingEnd">@dimen/_5sdp</item>
+        <item name="android:textSize">@dimen/_6sdp</item>
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:fontFamily">@font/avenir_next_lt_pro_regular</item>
+    </style>
+
+
+
+    <style name="button_mode_style" >
+        <item name="android:paddingStart">@dimen/_5sdp</item>
+        <item name="android:paddingEnd">@dimen/_5sdp</item>
+        <item name="android:textSize">@dimen/_8sdp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/avenir_next_lt_pro_regular</item>
+    </style>
+
+
+    <style name="button_normal_style">
+        <item name="android:textSize">@dimen/_7sdp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/avenir_next_lt_pro_medium</item>
+    </style>
+    <style name="button_white_style">
+        <item name="android:textSize">@dimen/_7sdp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/avenir_next_lt_pro_medium</item>
+    </style>
+    <style name="prefix_style">
+        <item name="android:textSize">@dimen/_6sdp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/avenir_next_lt_pro_medium</item>
+    </style>
+
+
+    <style name="MaterialAlertDialog_rounded" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="shapeAppearanceOverlay">@style/DialogCorners</item>
+    </style>
+
+    <style name="DialogCorners">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+
+    <style name="MeterNumberPickerStyle">
+        <item name="mnp_min">1</item>
+        <item name="mnp_max">9</item>
+        <item name="mnp_textColor">@android:color/white</item>
+        <item name="mnp_textSize">@dimen/_6sdp</item>
+        <item name="mnp_paddingHorizontal">5dp</item>
+        <item name="mnp_paddingVertical">10dp</item>
+    </style>
+
+    <style name="MeterViewStyle">
+        <item name="mv_firstColor">@android:color/black</item>
+        <item name="mv_numberOfFirst">1</item>
+        <item name="mv_numberOfSecond">0</item>
+        <item name="mv_pickerStyle">@style/MeterNumberPickerStyle</item>
+        <item name="mv_secondColor">@android:color/holo_red_dark</item>
+    </style>
+
+    <style name="CustomDialogTheme">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="MyCardView" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialCardView.Cut</item>
+    </style>
+
+
+    <style name="ShapeAppearanceOverlay.MaterialCardView.Cut" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">16dp</item>
+        <item name="cornerSizeTopLeft">16dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+    </style>
+
+    <style name="Theme.ProgressBar" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/ack_green</item>
+        <item name="colorPrimaryVariant">@color/ack_green</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/ack_green</item>
+        <item name="colorSecondaryVariant">@color/ack_green</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+    </style>
+
+
+    <!--Here, android: indeterminateDrawable sets the picture displayed in
+        the animation or the xml file of this animation and android: indeterminateOnly
+           This property is set to true,the progress bar will be ignored Progress and present
+           an infinite loop of animation
+    -->
+    <style name="CircularDeterminateProgressBar">
+        <item name="android:indeterminateOnly">false </item>
+        <item name="android:progressDrawable">@drawable/circle</item>
+
+    </style>
+
+    <style name="SpinnerStyle" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:dividerHeight">1dp</item>
+        <item name="android:divider">#80FFFFFF</item>
+    </style>
+
+</resources>
+

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:name="com.agvahealthcare.ventilator_ext.control.basic.ModeFragment"
+    android:id="@+id/mode_navigation.xml"
+    app:startDestination="@id/modeDialogFragment">
+
+    <fragment
+        android:id="@+id/modeDialogFragment"
+        android:name="modeDialogFragment"
+        android:label="modeDialogFragment"
+        tools:layout="@layout/fragment_mode_dialog">
+        <action
+            android:id="@+id/action_modeDialogFragment_to_controlDialogFragment"
+            app:destination="@id/controlDialogFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/controlDialogFragment"
+        android:name="ControlDialogFragment"
+        android:label="ControlDialogFragment"
+        tools:layout="@layout/fragment_contol_dialog"/>
+</navigation>

@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    xmlns:tools="http://schemas.android.com/tools">
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/staticLayoutEvent"
+        app:layout_constraintTop_toTopOf="@+id/btnLayout"
+        app:layout_constraintBottom_toBottomOf="@+id/btnLayout">
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/tvNote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btnLayout"
+        app:layout_constraintBottom_toBottomOf="@+id/btnLayout"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tvheading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="@dimen/_5sdp"
+            android:text="Note - Please use the rotatory knob to scroll the events"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/btnLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_gravity="right"
+        android:background="@drawable/outline_background_spinner"
+        android:layout_marginTop="@dimen/_2sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_10sdp"
+            android:text="UHID"
+            android:layout_marginBottom="@dimen/_2sdp"
+            android:layout_gravity="center"
+            android:gravity="center"/>
+
+        <Spinner
+            android:id="@+id/spinnerEvent"
+            android:layout_marginLeft="15dp"
+            android:textSize="@dimen/_4sdp"
+            android:layout_width="@dimen/_60sdp"
+            android:theme="@style/MatchSpinnerTheme"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/_2sdp"
+            android:dropDownWidth="@dimen/_60sdp"
+            android:spinnerMode="dropdown"
+            android:popupBackground="@drawable/outline_background_white_spinner"
+            tools:listitem="@layout/dropdownlist_spinner"
+            android:overlapAnchor="false"
+            android:layout_height="35dp"
+            android:textColor="@color/black"
+            android:hint="Select UHID" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_emptyError"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_30sdp"
+        android:text="There are no events generated yet."
+        android:gravity="center"
+        android:visibility="gone"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_5sdp"
+        android:padding="@dimen/_2sdp"
+        android:layout_margin="@dimen/_5sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnLayout"
+        app:layout_constraintBottom_toTopOf="@id/recyclerViewEvents"
+        />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/staticLayoutEvent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#eeeeee"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toStartOf="@id/seekbarLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_emptyError">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewDateTime"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_marginLeft="@dimen/_4sdp"
+            android:layout_weight="0.2"
+            android:gravity="center_vertical"
+            android:text="Date"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewTime"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_marginLeft="@dimen/_4sdp"
+            android:layout_weight="0.2"
+            android:gravity="center_vertical"
+            android:text="Time"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewEventsData"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_weight="0.8"
+            android:gravity="center_vertical"
+            android:text="Event"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewUHID"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_marginLeft="@dimen/_4sdp"
+            android:layout_weight="0.2"
+            android:gravity="center_vertical"
+            android:text="UHID"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewEvents"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:visibility="visible"
+        android:overScrollMode="never"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/staticLayoutEvent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/seekbarLayout"
+        android:scrollbars="vertical" />
+
+    <LinearLayout
+        android:id="@+id/seekbarLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toEndOf="@id/recyclerViewEvents"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_emptyError"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:id="@+id/topButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/_1sdp"
+            android:background="@color/white"
+            android:rotation="270"
+            android:foregroundGravity="center"
+            android:src="@drawable/ic_logtable_righticon" />
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_margin="@dimen/_1sdp"
+            android:layout_weight="0.7"
+            android:backgroundTint="@android:color/transparent"
+            android:progress="1"
+            android:visibility="visible"
+            android:progressDrawable="@drawable/custom_seekbar"
+            android:secondaryProgressTint="@android:color/transparent"
+            android:thumb="@drawable/thumb" />
+
+        <ImageButton
+            android:id="@+id/bottomButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/_1sdp"
+            android:rotation="90"
+            android:background="@color/white"
+            android:foregroundGravity="center"
+            android:src="@drawable/ic_logtable_righticon" />
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

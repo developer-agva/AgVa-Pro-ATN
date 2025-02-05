@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainViewPanelLimitTwo"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_light_grey_border_grey">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/focusLayoutLimitTwo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/background_transparent_border_yellow"
+        android:translationZ="@dimen/_1sdp"
+        tools:ignore="MissingConstraints" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/limitTwoHorizontal1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.12" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/limitTwoHorizontal2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.35" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/limitTwoHorizontal3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.65" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/limitTwoHorizontal4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.88" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/limitOneVertical1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.27" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/limitOneVertical2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.37" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/limitOneVertical3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.63" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/limitOneVertical4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.73" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout1LimitTwo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/limitTwoHorizontal2"
+        app:layout_constraintEnd_toEndOf="@id/limitOneVertical2"
+        app:layout_constraintStart_toStartOf="@id/limitOneVertical1"
+        app:layout_constraintTop_toTopOf="@id/limitTwoHorizontal1" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout2LimitTwo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/limitTwoHorizontal4"
+        app:layout_constraintEnd_toEndOf="@id/limitOneVertical2"
+        app:layout_constraintStart_toStartOf="@id/limitOneVertical1"
+        app:layout_constraintTop_toTopOf="@id/limitTwoHorizontal3" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout3LimitTwo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/limitTwoHorizontal2"
+        app:layout_constraintEnd_toEndOf="@id/limitOneVertical4"
+        app:layout_constraintStart_toStartOf="@id/limitOneVertical3"
+        app:layout_constraintTop_toTopOf="@id/limitTwoHorizontal1" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout4LimitTwo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/limitTwoHorizontal4"
+        app:layout_constraintEnd_toEndOf="@id/limitOneVertical4"
+        app:layout_constraintStart_toStartOf="@id/limitOneVertical3"
+        app:layout_constraintTop_toTopOf="@id/limitTwoHorizontal3" />
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/layoutPanelOxygen"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/includeButtonReset"
+        app:layout_constraintEnd_toStartOf="@+id/layoutPanelSpO2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewOxygen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center"
+            android:text="@string/hint_oxygen"
+            android:textSize="@dimen/_7sdp"
+            android:theme="@style/subheading_text_style_unit" />
+
+
+        <include
+            android:id="@+id/includefio2Upperlimit"
+            layout="@layout/knob_progress_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_5sdp" />
+
+        <include
+            android:id="@+id/includePressure"
+            layout="@layout/content_vertical_progress_bar_layout"
+            android:layout_width="10dp"
+            android:layout_height="180dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_5sdp" />
+
+        <include
+            android:id="@+id/includefio2lowerlimit"
+            layout="@layout/knob_progress_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_5sdp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewOxygenUnit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="@string/hint_percentage"
+            android:textSize="@dimen/_6sdp"
+            android:theme="@style/subheading_text_style" />
+
+
+        <com.github.angads25.toggle.widget.LabeledSwitch
+            android:id="@+id/fio2Toggale"
+            android:layout_width="140dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:textSize="14sp"
+            android:visibility="gone"
+            app:colorBorder="@color/light_grey"
+            app:colorOff="@color/white"
+            app:colorOn="@color/ack_green"
+            app:on="false"
+            app:textOff="DEACTIVATED"
+            app:textOn="ACTIVATED" />
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/layoutPanelSpO2"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/includeButtonReset"
+        app:layout_constraintEnd_toStartOf="@+id/layoutPanelPulse"
+        app:layout_constraintStart_toEndOf="@+id/layoutPanelOxygen"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewSpo2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center"
+            android:text="@string/hint_spo2"
+            android:textSize="@dimen/_7sdp"
+            android:theme="@style/subheading_text_style_unit" />
+
+
+        <include
+            android:id="@+id/includeSpO2Upperlimit"
+            layout="@layout/knob_progress_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_5sdp" />
+
+        <include
+            android:id="@+id/includePressure"
+            layout="@layout/content_vertical_progress_bar_layout"
+            android:layout_width="10dp"
+            android:layout_height="180dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_5sdp" />
+
+
+        <include
+            android:id="@+id/includeSpO2lowerlimit"
+            layout="@layout/knob_progress_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_5sdp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewSpo2Unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="@string/hint_percentage"
+            android:textSize="@dimen/_6sdp"
+            android:theme="@style/subheading_text_style" />
+
+
+        <com.github.angads25.toggle.widget.LabeledSwitch
+            android:id="@+id/spO2Toggle"
+            android:layout_width="140dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:textSize="14sp"
+            android:visibility="gone"
+            app:colorBorder="@color/light_grey"
+            app:colorOff="@color/white"
+            app:colorOn="@color/ack_green"
+            app:on="false"
+            app:textOff="DEACTIVATED"
+            app:textOn="ACTIVATED" />
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/layoutPanelPulse"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/includeButtonReset"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/layoutPanelSpO2"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewPulse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center"
+            android:text="@string/hint_pulse"
+            android:theme="@style/subheading_text_style" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewPulseUnit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center"
+            android:text="@string/hint_l_min"
+            android:textSize="@dimen/_4sdp"
+            android:theme="@style/subheading_text_style" />
+
+        <include
+            android:id="@+id/includePressure"
+            layout="@layout/knob_progress_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_10sdp" />
+
+        <include
+            android:id="@+id/includePressure"
+            layout="@layout/content_vertical_progress_bar_layout"
+            android:layout_width="30dp"
+            android:layout_height="180dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_5sdp" />
+
+
+        <include
+            android:id="@+id/includePressure"
+            layout="@layout/knob_progress_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_5sdp" />
+
+        <com.github.angads25.toggle.widget.LabeledSwitch
+            android:layout_width="140dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:textSize="14sp"
+            android:visibility="gone"
+            app:colorBorder="@color/light_grey"
+            app:colorOff="@color/white"
+            app:colorOn="@color/ack_green"
+            app:on="false"
+            app:textOff="DEACTIVATED"
+            app:textOn="ACTIVATED" />
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    <include
+        android:id="@+id/includeButtonReset"
+        layout="@layout/content_button_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginBottom="@dimen/_8sdp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

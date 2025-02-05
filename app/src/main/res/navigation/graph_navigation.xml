@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/monitoring_navigation"
+    app:startDestination="@+id/navigation_trends">
+
+    <fragment
+        android:id="@+id/navigation_trends"
+        android:name="com.agvahealthcare.ventilator_ext.graph.trends.TrendsFragment"
+        tools:layout="@layout/fragment_trends" />
+
+    <fragment
+        android:id="@+id/navigation_loops"
+        android:name="com.agvahealthcare.ventilator_ext.graph.loops.LoopsFragment"
+        tools:layout="@layout/fragment_loops" />
+
+    <fragment
+        android:id="@+id/navigation_graphics"
+        android:name="com.agvahealthcare.ventilator_ext.graph.graphics.GraphicsFragment"
+        tools:layout="@layout/fragment_graphics" />
+
+    <fragment
+        android:id="@+id/navigation_waveforms"
+        android:name="com.agvahealthcare.ventilator_ext.graph.waveforms.WaveformsFragment"
+        tools:layout="@layout/fragment_waveforms" />
+
+
+</navigation>

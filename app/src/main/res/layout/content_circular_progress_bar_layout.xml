@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@android:color/transparent"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.agvahealthcare.ventilator_ext.utility.circle_progress.CircleProgressView
+            android:id="@+id/circleView1"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:cpv_autoTextSize="false"
+            app:cpv_barColor="@color/black"
+            app:cpv_barWidth="8dp"
+            app:cpv_innerContourSize="0dp"
+            app:cpv_outerContourSize="0dp"
+            app:cpv_rimColor="@color/grey"
+            app:cpv_rimWidth="8dp"
+            app:cpv_seekMode="true"
+            app:cpv_showUnit="true"
+            app:cpv_spinColor="@color/dark_grey"
+            app:cpv_textColor="@color/black"
+            app:cpv_textScale="1"
+            app:cpv_textSize="@dimen/_6sdp"
+            app:cpv_unitColor="@color/black"
+            app:cpv_unitPosition="right_top"
+            app:cpv_unitScale="1" />
+
+        <RelativeLayout
+            android:id="@+id/layoutPanel"
+            android:layout_width="100dp"
+            android:layout_height="100dp">
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

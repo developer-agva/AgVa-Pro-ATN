@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_grey">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imageViewCross"
+        android:layout_width="@dimen/_10sdp"
+        android:layout_height="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:src="@drawable/ic_cross_grey"
+        android:tint="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:text="@string/hint_loop"
+        android:textAllCaps="true"
+        android:textSize="@dimen/_8sdp"
+        android:textStyle="bold"
+        android:theme="@style/subheading_text_style"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/_10sdp"
+        android:background="@color/light_grey"
+        android:padding="@dimen/_5sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewCross">
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/layoutPeep"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/_3sdp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toStartOf="@+id/layoutPip"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <include
+                android:id="@+id/includeProgressBarPeep"
+                layout="@layout/content_circular_progress_bar_layout"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewPeep"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/hint_peep"
+                android:textAllCaps="true"
+                android:theme="@style/subheading_text_style" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/layoutPip"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/_3sdp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toStartOf="@+id/layoutRr"
+            app:layout_constraintStart_toEndOf="@+id/layoutPeep"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <include
+                android:id="@+id/includeProgressBarPip"
+                layout="@layout/content_circular_progress_bar_layout"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewPip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/hint_pip"
+                android:textAllCaps="true"
+                android:theme="@style/subheading_text_style" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/layoutRr"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/_3sdp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/layoutPip"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <include
+                android:id="@+id/includeProgressBarRr"
+                layout="@layout/content_circular_progress_bar_layout"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewRr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/hint_rr"
+                android:textAllCaps="true"
+                android:theme="@style/subheading_text_style" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/layoutOxygen"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/_3sdp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toStartOf="@+id/layoutPip"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layoutPeep">
+
+            <include
+                android:id="@+id/includeProgressBarOxygen"
+                layout="@layout/content_circular_progress_bar_layout"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewOxygen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/hint_oxygen"
+                android:textAllCaps="true"
+                android:theme="@style/subheading_text_style" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/layoutFlow"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/_3sdp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toStartOf="@+id/layoutPRamp"
+            app:layout_constraintStart_toEndOf="@+id/layoutOxygen"
+            app:layout_constraintTop_toBottomOf="@+id/layoutPip">
+
+            <include
+                android:id="@+id/includeProgressBarFLow"
+                layout="@layout/content_circular_progress_bar_layout"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewFlow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/hint_flow"
+                android:textAllCaps="true"
+                android:theme="@style/subheading_text_style" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/layoutPRamp"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/_3sdp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/layoutFlow"
+            app:layout_constraintTop_toBottomOf="@+id/layoutRr">
+
+            <include
+                android:id="@+id/includeProgressBarPRamp"
+                layout="@layout/content_circular_progress_bar_layout"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewPRamp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/hint_p_ramp"
+                android:textAllCaps="true"
+                android:theme="@style/subheading_text_style" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/layoutMinVol"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/_3sdp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toStartOf="@+id/layoutPip"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layoutOxygen">
+
+            <include
+                android:id="@+id/includeProgressBarMinVol"
+                layout="@layout/content_circular_progress_bar_layout"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewMinVol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/hint_minVol"
+                android:textAllCaps="true"
+                android:theme="@style/subheading_text_style" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/layoutEts"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/_3sdp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toStartOf="@+id/layoutPasvLimit"
+            app:layout_constraintStart_toEndOf="@+id/layoutMinVol"
+            app:layout_constraintTop_toBottomOf="@+id/layoutFlow">
+
+            <include
+                android:id="@+id/includeProgressBarEts"
+                layout="@layout/content_circular_progress_bar_layout"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewEts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/hint_ets"
+                android:textAllCaps="true"
+                android:theme="@style/subheading_text_style" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/layoutPasvLimit"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/_3sdp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/layoutFlow"
+            app:layout_constraintTop_toBottomOf="@+id/layoutPRamp">
+
+            <include
+                android:id="@+id/includeProgressBarPasvLimit"
+                layout="@layout/content_circular_progress_bar_layout"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewPasvLimit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/hint_pasvLimit"
+                android:textAllCaps="true"
+                android:theme="@style/subheading_text_style" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

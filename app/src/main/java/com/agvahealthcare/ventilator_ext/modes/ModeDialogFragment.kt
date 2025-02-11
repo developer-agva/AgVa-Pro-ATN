@@ -17,6 +17,9 @@ import androidx.appcompat.widget.AppCompatRadioButton
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.core.view.marginStart
+import androidx.core.view.marginTop
+import androidx.core.view.setPadding
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.agvahealthcare.ventilator_ext.R
@@ -385,6 +388,8 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
     // knob highlight logic ends here
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -428,11 +433,10 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
                 textViewSpontaneous.text = "INVASIVE MODE"
                 buttonCpap.visibility = View.VISIBLE
                 buttonBpap.visibility = View.GONE
-                textViewVolumeControl.visibility = View.VISIBLE
+                textViewVolumeControl.visibility = View.GONE
                 buttonVcCmv.visibility = View.GONE
                 buttonVcSimv.visibility = View.GONE
                 buttonAcv.visibility = View.GONE
-                buttonCpap.visibility = View.GONE
                 textViewPressureControl.visibility = View.GONE
                 buttonPcCmv.visibility = View.GONE
                 buttonPcSimv.visibility = View.GONE
@@ -453,8 +457,31 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
                 }
                 optionSelected = true
                 animator?.cancel()
-                VentilatorApp.selectedOptions = Configs.SELECTED_OPTIONS.PRONGS_NAME
+                VentilatorApp.selectedOptions = SELECTED_OPTIONS.PRONGS_NAME
                 radioLayout.setBackgroundResource(R.drawable.background_transparent_border_black)
+
+                val constraintSetFirst = ConstraintSet()
+                constraintSetFirst.clone(mainLayoutPanelMode)
+                constraintSetFirst.connect(
+                    textViewSpontaneous.id,
+                    ConstraintSet.TOP,
+                    ModeHorizontal1.id,
+                    ConstraintSet.BOTTOM,
+                    0
+                )
+                constraintSetFirst.applyTo(mainLayoutPanelMode)
+
+                val constraintSetSecond = ConstraintSet()
+                constraintSetSecond.clone(mainLayoutPanelMode)
+                constraintSetSecond.connect(
+                    textViewHFNC.id,
+                    ConstraintSet.TOP,
+                    ModeHorizontal2.id,
+                    ConstraintSet.BOTTOM,
+                    0
+                )
+                constraintSetSecond.applyTo(mainLayoutPanelMode)
+
             }
         }
 
@@ -487,8 +514,42 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
                 }
                 optionSelected = true
                 animator?.cancel()
-                VentilatorApp.selectedOptions = Configs.SELECTED_OPTIONS.INVASIVE_NAME
+                VentilatorApp.selectedOptions = SELECTED_OPTIONS.INVASIVE_NAME
                 radioLayout.setBackgroundResource(R.drawable.background_transparent_border_black)
+
+                val constraintSetFirst = ConstraintSet()
+                constraintSetFirst.clone(mainLayoutPanelMode)
+                constraintSetFirst.connect(
+                    textViewVolumeControl.id,
+                    ConstraintSet.TOP,
+                    ModeHorizontal1.id,
+                    ConstraintSet.BOTTOM,
+                    0
+                )
+                constraintSetFirst.applyTo(mainLayoutPanelMode)
+
+                val constraintSetSecond = ConstraintSet()
+                constraintSetSecond.clone(mainLayoutPanelMode)
+                constraintSetSecond.connect(
+                    textViewPressureControl.id,
+                    ConstraintSet.TOP,
+                    ModeHorizontal2.id,
+                    ConstraintSet.BOTTOM,
+                    0
+                )
+                constraintSetSecond.applyTo(mainLayoutPanelMode)
+
+
+                val constraintSetThird = ConstraintSet()
+                constraintSetThird.clone(mainLayoutPanelMode)
+                constraintSetThird.connect(
+                    textViewSpontaneous.id,
+                    ConstraintSet.TOP,
+                    ModeHorizontal3.id,
+                    ConstraintSet.BOTTOM,
+                    0
+                )
+                constraintSetThird.applyTo(mainLayoutPanelMode)
             }
         }
 
@@ -525,8 +586,30 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
                 optionSelected = true
                 animator?.cancel()
-                VentilatorApp.selectedOptions = Configs.SELECTED_OPTIONS.NON_INVASIVE_NAME
+                VentilatorApp.selectedOptions = SELECTED_OPTIONS.NON_INVASIVE_NAME
                 radioLayout.setBackgroundResource(R.drawable.background_transparent_border_black)
+
+                val constraintSetFirst = ConstraintSet()
+                constraintSetFirst.clone(mainLayoutPanelMode)
+                constraintSetFirst.connect(
+                    textViewSpontaneous.id,
+                    ConstraintSet.TOP,
+                    ModeHorizontal2.id,
+                    ConstraintSet.BOTTOM,
+                    0
+                )
+                constraintSetFirst.applyTo(mainLayoutPanelMode)
+
+                val constraintSetSecond = ConstraintSet()
+                constraintSetSecond.clone(mainLayoutPanelMode)
+                constraintSetSecond.connect(
+                    textViewPressureControl.id,
+                    ConstraintSet.TOP,
+                    ModeHorizontal1.id,
+                    ConstraintSet.BOTTOM,
+                    0
+                )
+                constraintSetSecond.applyTo(mainLayoutPanelMode)
             }
         }
     }

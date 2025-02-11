@@ -36,6 +36,7 @@ import com.agvahealthcare.ventilator_ext.utility.utils.Configs.*
 import com.agvahealthcare.ventilator_ext.utility.utils.IntentFactory
 import kotlinx.android.synthetic.main.content_button_layout.view.*
 import kotlinx.android.synthetic.main.fragment_mode_dialog.*
+import kotlinx.android.synthetic.main.fragment_settings.volumeLayout
 import kotlinx.android.synthetic.main.fragment_standbycontrol_dialog.buttonStartVent
 import kotlinx.android.synthetic.main.fragment_standbycontrol_dialog.focusLayoutStandbyControls
 import kotlinx.android.synthetic.main.fragment_standbycontrol_dialog.imageViewCrossStandbyControls
@@ -114,6 +115,7 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
         if (tag == "MainActivity") {
             rbInvasive.isChecked = false
             rbNonInvasive.isChecked = false
+            rbNasalProngs.isChecked = false
             Log.i("check_selected_options", "main activity conditions")
         } else {
             Log.i("check_selected_options", "dashboard conditions")
@@ -134,11 +136,10 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
                             rbNonInvasive.isChecked = true
                         }
 
-                        else -> {
+                        SELECTED_OPTIONS.PRONGS_NAME -> {
 
                             Log.i("check_selected_options", "$it conditions")
-                            rbInvasive.isChecked = false
-                            rbNonInvasive.isChecked = false
+                            rbNasalProngs.isChecked = true
                         }
                     }
                 }
@@ -160,7 +161,7 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
         when (data) {
             PREFIX_PLUS -> {
-                if (highlightedIndex < 14) highlightedIndex++
+                if (highlightedIndex < 15) highlightedIndex++
                 else highlightedIndex = 1
 
                 getViewForFocus(false)?.let { changeConstraintsOfFocusLayout(it) }
@@ -168,7 +169,7 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
             PREFIX_MINUS -> {
                 if (highlightedIndex > 1) highlightedIndex--
-                else highlightedIndex = 14
+                else highlightedIndex = 15
 
                 getViewForFocus(true)?.let { changeConstraintsOfFocusLayout(it) }
             }
@@ -177,8 +178,11 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
                 if (highlightedIndex == 1) {
                     (getViewForFocus(null) as AppCompatRadioButton).isChecked =
-                        !rbNonInvasive.isChecked
+                        !rbNasalProngs.isChecked
                 } else if (highlightedIndex == 2) {
+                    (getViewForFocus(null) as AppCompatRadioButton).isChecked =
+                        !rbNonInvasive.isChecked
+                } else if (highlightedIndex == 3) {
                     (getViewForFocus(null) as AppCompatRadioButton).isChecked =
                         !rbInvasive.isChecked
                 } else {
@@ -240,11 +244,20 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
 
         return when (highlightedIndex) {
-            1 -> rbNonInvasive
-            2 -> rbInvasive
-            3 -> imageViewCrossMode
-            4 -> {
-                if (VentilatorApp.selectedOptions == Configs.SELECTED_OPTIONS.NON_INVASIVE_NAME) {
+            1 -> if (preferenceManager?.readCurrentUid() != PatientProfile.TYPE_NEONAT) {
+                isMinus?.let {
+                    if (isMinus) highlightedIndex-- else highlightedIndex++
+                    getViewForFocus(isMinus)
+                }
+            } else {
+                rbNasalProngs
+            }
+
+            2 -> rbNonInvasive
+            3 -> rbInvasive
+            4 -> imageViewCrossMode
+            5 -> {
+                if (VentilatorApp.selectedOptions != Configs.SELECTED_OPTIONS.INVASIVE_NAME) {
                     isMinus?.let {
                         if (isMinus) highlightedIndex-- else highlightedIndex++
                         getViewForFocus(isMinus)
@@ -254,8 +267,8 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
                 }
             }
 
-            5 -> {
-                if (VentilatorApp.selectedOptions == Configs.SELECTED_OPTIONS.NON_INVASIVE_NAME) {
+            6 -> {
+                if (VentilatorApp.selectedOptions != Configs.SELECTED_OPTIONS.INVASIVE_NAME) {
                     isMinus?.let {
                         if (isMinus) highlightedIndex-- else highlightedIndex++
                         getViewForFocus(isMinus)
@@ -265,8 +278,8 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
                 }
             }
 
-            6 -> {
-                if (VentilatorApp.selectedOptions == Configs.SELECTED_OPTIONS.NON_INVASIVE_NAME) {
+            7 -> {
+                if (VentilatorApp.selectedOptions != Configs.SELECTED_OPTIONS.INVASIVE_NAME) {
                     isMinus?.let {
                         if (isMinus) highlightedIndex-- else highlightedIndex++
                         getViewForFocus(isMinus)
@@ -276,12 +289,44 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
                 }
             }
 
-            7 -> buttonPcCmv
-            8 -> buttonPcSimv
-            9 -> buttonPcac
-            10 -> buttonPsv
-            11 -> {
-                if (VentilatorApp.selectedOptions == Configs.SELECTED_OPTIONS.NON_INVASIVE_NAME) {
+            8 -> if (VentilatorApp.selectedOptions == Configs.SELECTED_OPTIONS.PRONGS_NAME) {
+                isMinus?.let {
+                    if (isMinus) highlightedIndex-- else highlightedIndex++
+                    getViewForFocus(isMinus)
+                }
+            } else {
+                buttonPcCmv
+            }
+
+            9 -> if (VentilatorApp.selectedOptions == Configs.SELECTED_OPTIONS.PRONGS_NAME) {
+                isMinus?.let {
+                    if (isMinus) highlightedIndex-- else highlightedIndex++
+                    getViewForFocus(isMinus)
+                }
+            } else {
+                buttonPcSimv
+            }
+
+            10 -> if (VentilatorApp.selectedOptions == Configs.SELECTED_OPTIONS.PRONGS_NAME) {
+                isMinus?.let {
+                    if (isMinus) highlightedIndex-- else highlightedIndex++
+                    getViewForFocus(isMinus)
+                }
+            } else {
+                buttonPcac
+            }
+
+            11 -> if (VentilatorApp.selectedOptions == Configs.SELECTED_OPTIONS.PRONGS_NAME) {
+                isMinus?.let {
+                    if (isMinus) highlightedIndex-- else highlightedIndex++
+                    getViewForFocus(isMinus)
+                }
+            } else {
+                buttonPsv
+            }
+
+            12 -> {
+                if (preferenceManager?.readCurrentUid() == PatientProfile.TYPE_NEONAT) {
                     isMinus?.let {
                         if (isMinus) highlightedIndex-- else highlightedIndex++
                         getViewForFocus(isMinus)
@@ -291,17 +336,24 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
                 }
             }
 
-            12 -> buttonBpap
-            13 -> buttonCpap
-            14 -> {
-                if (VentilatorApp.selectedOptions == Configs.SELECTED_OPTIONS.INVASIVE_NAME) {
+            13 -> if (VentilatorApp.selectedOptions == Configs.SELECTED_OPTIONS.PRONGS_NAME) {
+                isMinus?.let {
+                    if (isMinus) highlightedIndex-- else highlightedIndex++
+                    getViewForFocus(isMinus)
+                }
+            } else {
+                buttonBpap
+            }
+
+            14 -> buttonCpap
+            15 -> {
+                if (VentilatorApp.selectedOptions == SELECTED_OPTIONS.PRONGS_NAME && preferenceManager?.readCurrentUid() == PatientProfile.TYPE_NEONAT) buttonHFNC
+                if (VentilatorApp.selectedOptions == SELECTED_OPTIONS.NON_INVASIVE_NAME && preferenceManager?.readCurrentUid() != PatientProfile.TYPE_NEONAT) buttonHFNC
+                else
                     isMinus?.let {
                         if (isMinus) highlightedIndex-- else highlightedIndex++
                         getViewForFocus(isMinus)
                     }
-                } else {
-                    buttonHFNC
-                }
             }
 
             else -> null
@@ -369,8 +421,46 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
         setupClickListener()
         setModeViaPreference()
 
+        rbNasalProngs.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                rbInvasive.isChecked = false
+                rbNonInvasive.isChecked = false
+                textViewSpontaneous.text = "INVASIVE MODE"
+                buttonCpap.visibility = View.VISIBLE
+                buttonBpap.visibility = View.GONE
+                textViewVolumeControl.visibility = View.VISIBLE
+                buttonVcCmv.visibility = View.GONE
+                buttonVcSimv.visibility = View.GONE
+                buttonAcv.visibility = View.GONE
+                buttonCpap.visibility = View.GONE
+                textViewPressureControl.visibility = View.GONE
+                buttonPcCmv.visibility = View.GONE
+                buttonPcSimv.visibility = View.GONE
+                buttonPcac.visibility = View.GONE
+                buttonPsv.visibility = View.GONE
+                colorLayout.visibility = View.GONE
+
+                if (preferenceManager?.readCurrentUid() == PatientProfile.TYPE_NEONAT) {
+                    buttonHFNC.visibility = View.VISIBLE
+                    textViewHFNC.visibility = View.VISIBLE
+                    textViewIntelligentVentilation.visibility = View.GONE
+                    buttonAIVent.visibility = View.GONE
+                } else {
+                    textViewIntelligentVentilation.visibility = View.VISIBLE
+                    buttonAIVent.visibility = View.VISIBLE
+                    buttonHFNC.visibility = View.GONE
+                    textViewHFNC.visibility = View.GONE
+                }
+                optionSelected = true
+                animator?.cancel()
+                VentilatorApp.selectedOptions = Configs.SELECTED_OPTIONS.PRONGS_NAME
+                radioLayout.setBackgroundResource(R.drawable.background_transparent_border_black)
+            }
+        }
+
         rbInvasive.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
+                rbNasalProngs.isChecked = false
                 rbNonInvasive.isChecked = false
                 textViewSpontaneous.text = "INVASIVE MODE"
                 textViewVolumeControl.visibility = View.VISIBLE
@@ -382,8 +472,19 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
                 colorLayout.visibility = View.GONE
                 buttonBpap.visibility = View.VISIBLE
                 buttonCpap.visibility = View.VISIBLE
-                textViewIntelligentVentilation.visibility = View.VISIBLE
-                buttonAIVent.visibility = View.VISIBLE
+                buttonCpap.visibility = View.GONE
+                textViewPressureControl.visibility = View.VISIBLE
+                buttonPcCmv.visibility = View.VISIBLE
+                buttonPcSimv.visibility = View.VISIBLE
+                buttonPcac.visibility = View.VISIBLE
+                buttonPsv.visibility = View.VISIBLE
+                if (preferenceManager?.readCurrentUid() == PatientProfile.TYPE_NEONAT) {
+                    textViewIntelligentVentilation.visibility = View.GONE
+                    buttonAIVent.visibility = View.GONE
+                } else {
+                    textViewIntelligentVentilation.visibility = View.VISIBLE
+                    buttonAIVent.visibility = View.VISIBLE
+                }
                 optionSelected = true
                 animator?.cancel()
                 VentilatorApp.selectedOptions = Configs.SELECTED_OPTIONS.INVASIVE_NAME
@@ -393,23 +494,33 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
         rbNonInvasive.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
+                rbNasalProngs.isChecked = false
                 rbInvasive.isChecked = false
                 textViewSpontaneous.text = "NON - INVASIVE MODE"
                 buttonCpap.visibility = View.VISIBLE
+                buttonBpap.visibility = View.VISIBLE
                 textViewVolumeControl.visibility = View.GONE
                 buttonVcCmv.visibility = View.GONE
                 buttonVcSimv.visibility = View.GONE
                 buttonAcv.visibility = View.GONE
                 colorLayout.visibility = View.GONE
-                buttonBpap.visibility = View.VISIBLE
-                textViewIntelligentVentilation.visibility = View.VISIBLE
-                buttonAIVent.visibility = View.VISIBLE
+                buttonCpap.visibility = View.GONE
+                textViewPressureControl.visibility = View.VISIBLE
+                buttonPcCmv.visibility = View.VISIBLE
+                buttonPcSimv.visibility = View.VISIBLE
+                buttonPcac.visibility = View.VISIBLE
+                buttonPsv.visibility = View.VISIBLE
+
                 if (preferenceManager?.readCurrentUid() == PatientProfile.TYPE_NEONAT) {
                     buttonHFNC.visibility = View.GONE
                     textViewHFNC.visibility = View.GONE
+                    textViewIntelligentVentilation.visibility = View.GONE
+                    buttonAIVent.visibility = View.GONE
                 } else {
                     buttonHFNC.visibility = View.VISIBLE
                     textViewHFNC.visibility = View.VISIBLE
+                    textViewIntelligentVentilation.visibility = View.VISIBLE
+                    buttonAIVent.visibility = View.VISIBLE
                 }
 
                 optionSelected = true
@@ -470,7 +581,6 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
                 buttonCpap.text = getString(R.string.hint_cpap)
             }
 
-
             PatientProfile.TYPE_PED -> {
 
                 textViewHFNC.text = getString(R.string.hfnc)
@@ -479,6 +589,16 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
                 buttonBpap.text = getString(R.string.hint_bpap)
                 buttonCpap.text = getString(R.string.hint_cpap)
+            }
+
+            PatientProfile.TYPE_NEONAT -> {
+                buttonCpap.text = getString(R.string.hint_ncpap)
+                buttonHFNC.text = getString(R.string.NeoNatehfnc)
+                if (VentilatorApp.selectedOptions == SELECTED_OPTIONS.NON_INVASIVE_NAME) {
+                    buttonBpap.text = getString(R.string.hint_nbpap)
+                } else {
+                    buttonBpap.text = getString(R.string.hint_bpap)
+                }
             }
         }
     }

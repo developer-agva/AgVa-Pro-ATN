@@ -262,17 +262,8 @@ class PressureChartFragment : GraphFragment() {
 
             if (mDashBoardViewModel?.graphPeekValue?.value == "A") {
 
-                if (prefManager?.readCurrentUid() == Configs.PatientProfile.TYPE_NEONAT) {
+                if (prefManager?.readCurrentUid() != Configs.PatientProfile.TYPE_NEONAT) {
 
-                    if (y < 25.0) {
-                        maxRange = MIN_RANGE_PRESSURE_NEO
-                        setTimePeekValue(setXToChangeGraphDown(x))
-                    } else {
-                        maxRange = MID_RANGE_PRESSURE_NEO
-                        timePeek = -1
-                        chartSurface.yAxes.default.visibleRange = DoubleRange(minRange, maxRange)
-                    }
-                } else {
                     if (y < 25.0) {
                         maxRange = MIN_RANGE_PRESSURE_ADULT_PEDIA
 

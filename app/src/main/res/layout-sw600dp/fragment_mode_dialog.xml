@@ -92,6 +92,24 @@
         app:layout_constraintEnd_toEndOf="@id/rbInvasive"
         app:layout_constraintTop_toTopOf="@id/imageViewCrossMode" />
 
+    <androidx.appcompat.widget.AppCompatRadioButton
+        android:id="@+id/rbNasalProngs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:fontFamily="@font/avenir_next_lt_pro_regular"
+        android:text="@string/hint_nasal_prongs"
+        android:textAllCaps="true"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_5sdp"
+        android:textStyle="bold"
+        android:theme="@style/SCBSwitch"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewCrossMode"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/imageViewCrossMode"
+        tools:ignore="TouchTargetSizeCheck" />
+
 
     <androidx.appcompat.widget.AppCompatRadioButton
         android:id="@+id/rbNonInvasive"
@@ -107,7 +125,7 @@
         android:theme="@style/SCBSwitch"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/imageViewCrossMode"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/rbNasalProngs"
         app:layout_constraintTop_toTopOf="@id/imageViewCrossMode"
         tools:ignore="TouchTargetSizeCheck" />
 
@@ -378,15 +396,16 @@
         android:text="@string/hint_bpap"
         android:textAllCaps="false"
         android:textColor="@color/white"
+        android:layout_marginStart="@dimen/_5sdp"
         android:theme="@style/button_normal_style"
-        app:layout_constraintStart_toStartOf="@id/radioLayout"
+        app:layout_constraintStart_toEndOf="@id/buttonCpap"
         app:layout_constraintTop_toBottomOf="@id/textViewSpontaneous" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonCpap"
         android:layout_width="160dp"
         android:layout_height="48dp"
-        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_5sdp"
         android:background="@drawable/background_primary_btn_rounded"
         android:paddingEnd="@dimen/_5sdp"
         android:stateListAnimator="@null"
@@ -394,9 +413,8 @@
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:theme="@style/button_normal_style"
-        app:layout_constraintBottom_toBottomOf="@id/buttonBpap"
-        app:layout_constraintStart_toEndOf="@id/buttonBpap"
-        app:layout_constraintTop_toTopOf="@id/buttonBpap" />
+        app:layout_constraintStart_toStartOf="@id/radioLayout"
+        app:layout_constraintTop_toBottomOf="@id/textViewSpontaneous" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonNCBpap"

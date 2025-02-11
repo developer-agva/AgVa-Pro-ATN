@@ -1077,7 +1077,7 @@ public interface Configs {
             case TYPE_NEONAT:
                 switch (chartType) {
                     case PressureChart_Type:
-                        range = new Pair<>(ConstantKt.MIN_RANGE_Y_AXIS_COMMON, ConstantKt.MIN_RANGE_PRESSURE_NEO);
+                        range = new Pair<>(ConstantKt.MIN_RANGE_Y_AXIS_COMMON, ConstantKt.MID_RANGE_PRESSURE_NEO);
                         break;
 
                     case FlowChart_Type:

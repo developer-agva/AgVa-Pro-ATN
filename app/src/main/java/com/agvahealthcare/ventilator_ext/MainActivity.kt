@@ -1096,9 +1096,11 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                                     systemDialogFragment?.highlightViewWithFocus(data)
                                 } else if (standbyControlFragment?.isVisible == true) {
                                     standbyControlFragment?.highlightViewWithFocus(data)
-                                } else if (modeDialogFragment?.isVisible == true) {
-                                    modeDialogFragment?.highlightViewWithFocus(data)
-                                } else {
+                                }
+                                else if (modeDialogFragment?.isVisible == true) {
+                                // modeDialogFragment?.highlightViewWithFocus(data)
+                                }
+                                else {
                                     highlightViewWithFocus(data)
                                 }
                             } else {

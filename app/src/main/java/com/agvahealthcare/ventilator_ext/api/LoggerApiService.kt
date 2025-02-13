@@ -24,31 +24,31 @@ interface LoggerApiService {
 
     //interface for the retrofit to make a crash update on the server
     @Headers( "Content-Type: application/json" )
-    @POST("api/logger/logs/v2/007")
+    @POST("api/logger/logs/v2/008")
     fun updateServerWithCrash(@Body requestBodyModel: CrashRequestBody):Call<LogResponseModel>
 
     @Headers("Content-Type: application/json")
-    @POST("api/logger/logs/v2/alerts-new/007")
+    @POST("api/logger/logs/v2/alerts-new/008")
     fun updateServerWithAlarms(@Body alarmRequestBodyModel: AlarmRequestBodyModel):Call<LogResponseModel>
 
     @Headers("Content-Type: application/json")
-    @POST("api/logger/logs/v2/events/007")
+    @POST("api/logger/logs/v2/events/008")
     fun updateServerWithEvents(@Body eventRequestBodyModel: EventRequestBodyModel):Call<LogResponseModel>
 
     @Headers("Content-Type: application/json")
-    @POST("api/logger/logs/location/v2/007")
+    @POST("api/logger/logs/location/v2/008")
     fun updateServerWithLocation(@Body locationRequestModel: LocationRequestModel):Call<LogResponseModel>
 
     @Headers("Content-Type: application/json")
-    @POST("api/logger/logs/calibration/v2/007")
+    @POST("api/logger/logs/calibration/v2/008")
     fun updateServerWithCalibration(@Body calibationRequestModel: CalibrationRequestModel):Call<LogResponseModel>
 
     @Headers("Content-Type: application/json")
-    @POST("api/logger/logs/services/v2/007")
+    @POST("api/logger/logs/services/v2/008")
     fun updateServerWithService(@Body serviceRequestModel: ServiceRequestModel):Call<LogResponseModel>
 
     @Headers("Content-Type: application/json")
-    @POST("api/logger/logs/v2/status/007")
+    @POST("api/logger/logs/v2/status/008")
     fun updateServerWithStatus(@Body statusRequestModel: StatusRequestModel):Call<LogResponseModel>
 
     @Headers("Content-Type: application/json")
@@ -77,11 +77,11 @@ interface LoggerApiService {
     fun getVentiDetailsRequest(@Path("deviceId") deviceId: String):Call<VentiDetailsResponseModel>
 
     @Headers("Content-Type: application/json")
-    @GET("api/s3/get-app-list/007")
+    @GET("api/s3/get-app-list/008")
     fun getAppHistory():Call<OTAResponse>
 
     @Headers("Content-Type: application/json")
-    @GET("api/common/get-ventilator_conf_list/007")
+    @GET("api/common/get-ventilator_conf_list/008")
     fun getVentiConfigs():Call<VentiConfigsResponse>
 
     @Headers("Content-Type: application/json")
@@ -93,7 +93,7 @@ interface LoggerApiService {
     fun updateServerWithEventsForDevelopers(@Body eventRequestBodyModel: EventRequestBodyModel):Call<LogResponseModel>
 
     @Headers("Content-Type: application/json")
-    @POST("api/logger/logs/manuevers/v2/007")
+    @POST("api/logger/logs/manuevers/v2/008")
     fun updateServerWithManeuvers(@Body maneuversRequestBodyModel: ManeuversRequestBodyModel):Call<LogResponseModel>
 
 }

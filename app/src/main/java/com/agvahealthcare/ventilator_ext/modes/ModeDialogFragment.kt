@@ -151,242 +151,242 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
         super.onResume()
     }
 
-    // knob highlight logic starts here
-
-    private var highlightedIndex = 0
-    private var visibilityTimeout: CountDownTimer? = null
-
-    @SuppressLint("NotifyDataSetChanged")
-    fun highlightViewWithFocus(data: String) {
-
-        startTimeoutWithDebounce()
-        Log.i("value_check_tiles", "$highlightedIndex")
-
-        when (data) {
-            PREFIX_PLUS -> {
-                if (highlightedIndex < 15) highlightedIndex++
-                else highlightedIndex = 1
-
-                getViewForFocus(false)?.let { changeConstraintsOfFocusLayout(it) }
-            }
-
-            PREFIX_MINUS -> {
-                if (highlightedIndex > 1) highlightedIndex--
-                else highlightedIndex = 15
-
-                getViewForFocus(true)?.let { changeConstraintsOfFocusLayout(it) }
-            }
-
-            PREFIX_AND -> {
-
-                if (highlightedIndex == 1) {
-                    (getViewForFocus(null) as AppCompatRadioButton).isChecked =
-                        !rbNasalProngs.isChecked
-                } else if (highlightedIndex == 2) {
-                    (getViewForFocus(null) as AppCompatRadioButton).isChecked =
-                        !rbNonInvasive.isChecked
-                } else if (highlightedIndex == 3) {
-                    (getViewForFocus(null) as AppCompatRadioButton).isChecked =
-                        !rbInvasive.isChecked
-                } else {
-                    getViewForFocus(null)?.callOnClick()
-                }
-            }
-        }
-    }
-
-    private fun clearPreviousConstraints() {
-        try {
-            val constraintSet = ConstraintSet()
-            constraintSet.clone(mainLayoutPanelMode)
-            constraintSet.clear(focusLayoutMode.id, ConstraintSet.TOP)
-            constraintSet.clear(focusLayoutMode.id, ConstraintSet.BOTTOM)
-            constraintSet.clear(focusLayoutMode.id, ConstraintSet.LEFT)
-            constraintSet.clear(focusLayoutMode.id, ConstraintSet.RIGHT)
-            constraintSet.applyTo(mainLayoutPanelMode)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-    private fun changeConstraintsOfFocusLayout(view: View) {
-        val constraintSet = ConstraintSet()
-        constraintSet.clone(mainLayoutPanelMode)
-        constraintSet.connect(
-            focusLayoutMode.id,
-            ConstraintSet.RIGHT,
-            view.id,
-            ConstraintSet.RIGHT,
-            0
-        )
-        constraintSet.connect(
-            focusLayoutMode.id,
-            ConstraintSet.TOP,
-            view.id,
-            ConstraintSet.TOP,
-            0
-        )
-        constraintSet.connect(
-            focusLayoutMode.id,
-            ConstraintSet.BOTTOM,
-            view.id,
-            ConstraintSet.BOTTOM,
-            0
-        )
-        constraintSet.connect(
-            focusLayoutMode.id,
-            ConstraintSet.LEFT,
-            view.id,
-            ConstraintSet.LEFT,
-            0
-        )
-        constraintSet.applyTo(mainLayoutPanelMode)
-    }
-
-    private fun getViewForFocus(isMinus: Boolean?): View? {
-
-
-        return when (highlightedIndex) {
-            1 -> if (preferenceManager?.readCurrentUid() != PatientProfile.TYPE_NEONAT) {
-                isMinus?.let {
-                    if (isMinus) highlightedIndex-- else highlightedIndex++
-                    getViewForFocus(isMinus)
-                }
-            } else {
-                rbNasalProngs
-            }
-
-            2 -> rbNonInvasive
-            3 -> rbInvasive
-            4 -> imageViewCrossMode
-            5 -> {
-                if (VentilatorApp.selectedOptions != Configs.SELECTED_OPTIONS.INVASIVE_NAME) {
-                    isMinus?.let {
-                        if (isMinus) highlightedIndex-- else highlightedIndex++
-                        getViewForFocus(isMinus)
-                    }
-                } else {
-                    buttonVcCmv
-                }
-            }
-
-            6 -> {
-                if (VentilatorApp.selectedOptions != Configs.SELECTED_OPTIONS.INVASIVE_NAME) {
-                    isMinus?.let {
-                        if (isMinus) highlightedIndex-- else highlightedIndex++
-                        getViewForFocus(isMinus)
-                    }
-                } else {
-                    buttonVcSimv
-                }
-            }
-
-            7 -> {
-                if (VentilatorApp.selectedOptions != Configs.SELECTED_OPTIONS.INVASIVE_NAME) {
-                    isMinus?.let {
-                        if (isMinus) highlightedIndex-- else highlightedIndex++
-                        getViewForFocus(isMinus)
-                    }
-                } else {
-                    buttonAcv
-                }
-            }
-
-            8 -> if (VentilatorApp.selectedOptions == Configs.SELECTED_OPTIONS.PRONGS_NAME) {
-                isMinus?.let {
-                    if (isMinus) highlightedIndex-- else highlightedIndex++
-                    getViewForFocus(isMinus)
-                }
-            } else {
-                buttonPcCmv
-            }
-
-            9 -> if (VentilatorApp.selectedOptions == Configs.SELECTED_OPTIONS.PRONGS_NAME) {
-                isMinus?.let {
-                    if (isMinus) highlightedIndex-- else highlightedIndex++
-                    getViewForFocus(isMinus)
-                }
-            } else {
-                buttonPcSimv
-            }
-
-            10 -> if (VentilatorApp.selectedOptions == Configs.SELECTED_OPTIONS.PRONGS_NAME) {
-                isMinus?.let {
-                    if (isMinus) highlightedIndex-- else highlightedIndex++
-                    getViewForFocus(isMinus)
-                }
-            } else {
-                buttonPcac
-            }
-
-            11 -> if (VentilatorApp.selectedOptions == Configs.SELECTED_OPTIONS.PRONGS_NAME) {
-                isMinus?.let {
-                    if (isMinus) highlightedIndex-- else highlightedIndex++
-                    getViewForFocus(isMinus)
-                }
-            } else {
-                buttonPsv
-            }
-
-            12 -> {
-                if (preferenceManager?.readCurrentUid() == PatientProfile.TYPE_NEONAT) {
-                    isMinus?.let {
-                        if (isMinus) highlightedIndex-- else highlightedIndex++
-                        getViewForFocus(isMinus)
-                    }
-                } else {
-                    buttonAIVent
-                }
-            }
-
-            13 -> if (VentilatorApp.selectedOptions == Configs.SELECTED_OPTIONS.PRONGS_NAME) {
-                isMinus?.let {
-                    if (isMinus) highlightedIndex-- else highlightedIndex++
-                    getViewForFocus(isMinus)
-                }
-            } else {
-                buttonBpap
-            }
-
-            14 -> buttonCpap
-            15 -> {
-                if (VentilatorApp.selectedOptions == SELECTED_OPTIONS.PRONGS_NAME && preferenceManager?.readCurrentUid() == PatientProfile.TYPE_NEONAT) buttonHFNC
-                if (VentilatorApp.selectedOptions == SELECTED_OPTIONS.NON_INVASIVE_NAME && preferenceManager?.readCurrentUid() != PatientProfile.TYPE_NEONAT) buttonHFNC
-                else
-                    isMinus?.let {
-                        if (isMinus) highlightedIndex-- else highlightedIndex++
-                        getViewForFocus(isMinus)
-                    }
-            }
-
-            else -> null
-        }
-    }
-
-    fun startTimeoutWithDebounce() {
-
-        cancelTimeout()
-
-        visibilityTimeout = object : CountDownTimer(10000, 2000) {
-            override fun onTick(millisUntilFinished: Long) {
-            }
-
-            override fun onFinish() {
-                clearPreviousConstraints()
-                cancelTimeout()
-            }
-        }
-        visibilityTimeout?.start()
-    }
-
-    fun cancelTimeout() {
-        if (visibilityTimeout != null) {
-            visibilityTimeout?.cancel()
-            visibilityTimeout = null
-        }
-    }
-
-    // knob highlight logic ends here
+//    // knob highlight logic starts here
+//
+//    private var highlightedIndex = 0
+//    private var visibilityTimeout: CountDownTimer? = null
+//
+//    @SuppressLint("NotifyDataSetChanged")
+//    fun highlightViewWithFocus(data: String) {
+//
+//        startTimeoutWithDebounce()
+//        Log.i("value_check_tiles", "$highlightedIndex")
+//
+//        when (data) {
+//            PREFIX_PLUS -> {
+//                if (highlightedIndex < 15) highlightedIndex++
+//                else highlightedIndex = 1
+//
+//                getViewForFocus(false)?.let { changeConstraintsOfFocusLayout(it) }
+//            }
+//
+//            PREFIX_MINUS -> {
+//                if (highlightedIndex > 1) highlightedIndex--
+//                else highlightedIndex = 15
+//
+//                getViewForFocus(true)?.let { changeConstraintsOfFocusLayout(it) }
+//            }
+//
+//            PREFIX_AND -> {
+//
+//                if (highlightedIndex == 1) {
+//                    (getViewForFocus(null) as AppCompatRadioButton).isChecked =
+//                        !rbNasalProngs.isChecked
+//                } else if (highlightedIndex == 2) {
+//                    (getViewForFocus(null) as AppCompatRadioButton).isChecked =
+//                        !rbNonInvasive.isChecked
+//                } else if (highlightedIndex == 3) {
+//                    (getViewForFocus(null) as AppCompatRadioButton).isChecked =
+//                        !rbInvasive.isChecked
+//                } else {
+//                    getViewForFocus(null)?.callOnClick()
+//                }
+//            }
+//        }
+//    }
+//
+//    private fun clearPreviousConstraints() {
+//        try {
+//            val constraintSet = ConstraintSet()
+//            constraintSet.clone(mainLayoutPanelMode)
+//            constraintSet.clear(focusLayoutMode.id, ConstraintSet.TOP)
+//            constraintSet.clear(focusLayoutMode.id, ConstraintSet.BOTTOM)
+//            constraintSet.clear(focusLayoutMode.id, ConstraintSet.LEFT)
+//            constraintSet.clear(focusLayoutMode.id, ConstraintSet.RIGHT)
+//            constraintSet.applyTo(mainLayoutPanelMode)
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        }
+//    }
+//
+//    private fun changeConstraintsOfFocusLayout(view: View) {
+//        val constraintSet = ConstraintSet()
+//        constraintSet.clone(mainLayoutPanelMode)
+//        constraintSet.connect(
+//            focusLayoutMode.id,
+//            ConstraintSet.RIGHT,
+//            view.id,
+//            ConstraintSet.RIGHT,
+//            0
+//        )
+//        constraintSet.connect(
+//            focusLayoutMode.id,
+//            ConstraintSet.TOP,
+//            view.id,
+//            ConstraintSet.TOP,
+//            0
+//        )
+//        constraintSet.connect(
+//            focusLayoutMode.id,
+//            ConstraintSet.BOTTOM,
+//            view.id,
+//            ConstraintSet.BOTTOM,
+//            0
+//        )
+//        constraintSet.connect(
+//            focusLayoutMode.id,
+//            ConstraintSet.LEFT,
+//            view.id,
+//            ConstraintSet.LEFT,
+//            0
+//        )
+//        constraintSet.applyTo(mainLayoutPanelMode)
+//    }
+//
+//    private fun getViewForFocus(isMinus: Boolean?): View? {
+//
+//
+//        return when (highlightedIndex) {
+//            1 -> if (preferenceManager?.readCurrentUid() != PatientProfile.TYPE_NEONAT) {
+//                isMinus?.let {
+//                    if (isMinus) highlightedIndex-- else highlightedIndex++
+//                    getViewForFocus(isMinus)
+//                }
+//            } else {
+//                rbNasalProngs
+//            }
+//
+//            2 -> rbNonInvasive
+//            3 -> rbInvasive
+//            4 -> imageViewCrossMode
+//            5 -> {
+//                if (VentilatorApp.selectedOptions != Configs.SELECTED_OPTIONS.INVASIVE_NAME) {
+//                    isMinus?.let {
+//                        if (isMinus) highlightedIndex-- else highlightedIndex++
+//                        getViewForFocus(isMinus)
+//                    }
+//                } else {
+//                    buttonVcCmv
+//                }
+//            }
+//
+//            6 -> {
+//                if (VentilatorApp.selectedOptions != Configs.SELECTED_OPTIONS.INVASIVE_NAME) {
+//                    isMinus?.let {
+//                        if (isMinus) highlightedIndex-- else highlightedIndex++
+//                        getViewForFocus(isMinus)
+//                    }
+//                } else {
+//                    buttonVcSimv
+//                }
+//            }
+//
+//            7 -> {
+//                if (VentilatorApp.selectedOptions != Configs.SELECTED_OPTIONS.INVASIVE_NAME) {
+//                    isMinus?.let {
+//                        if (isMinus) highlightedIndex-- else highlightedIndex++
+//                        getViewForFocus(isMinus)
+//                    }
+//                } else {
+//                    buttonAcv
+//                }
+//            }
+//
+//            8 -> if (VentilatorApp.selectedOptions == Configs.SELECTED_OPTIONS.PRONGS_NAME) {
+//                isMinus?.let {
+//                    if (isMinus) highlightedIndex-- else highlightedIndex++
+//                    getViewForFocus(isMinus)
+//                }
+//            } else {
+//                buttonPcCmv
+//            }
+//
+//            9 -> if (VentilatorApp.selectedOptions == Configs.SELECTED_OPTIONS.PRONGS_NAME) {
+//                isMinus?.let {
+//                    if (isMinus) highlightedIndex-- else highlightedIndex++
+//                    getViewForFocus(isMinus)
+//                }
+//            } else {
+//                buttonPcSimv
+//            }
+//
+//            10 -> if (VentilatorApp.selectedOptions == Configs.SELECTED_OPTIONS.PRONGS_NAME) {
+//                isMinus?.let {
+//                    if (isMinus) highlightedIndex-- else highlightedIndex++
+//                    getViewForFocus(isMinus)
+//                }
+//            } else {
+//                buttonPcac
+//            }
+//
+//            11 -> if (VentilatorApp.selectedOptions == Configs.SELECTED_OPTIONS.PRONGS_NAME) {
+//                isMinus?.let {
+//                    if (isMinus) highlightedIndex-- else highlightedIndex++
+//                    getViewForFocus(isMinus)
+//                }
+//            } else {
+//                buttonPsv
+//            }
+//
+//            12 -> {
+//                if (preferenceManager?.readCurrentUid() == PatientProfile.TYPE_NEONAT) {
+//                    isMinus?.let {
+//                        if (isMinus) highlightedIndex-- else highlightedIndex++
+//                        getViewForFocus(isMinus)
+//                    }
+//                } else {
+//                    buttonAIVent
+//                }
+//            }
+//
+//            13 -> if (VentilatorApp.selectedOptions == Configs.SELECTED_OPTIONS.PRONGS_NAME) {
+//                isMinus?.let {
+//                    if (isMinus) highlightedIndex-- else highlightedIndex++
+//                    getViewForFocus(isMinus)
+//                }
+//            } else {
+//                buttonBpap
+//            }
+//
+//            14 -> buttonCpap
+//            15 -> {
+//                if (VentilatorApp.selectedOptions == SELECTED_OPTIONS.PRONGS_NAME && preferenceManager?.readCurrentUid() == PatientProfile.TYPE_NEONAT) buttonHFNC
+//                if (VentilatorApp.selectedOptions == SELECTED_OPTIONS.NON_INVASIVE_NAME && preferenceManager?.readCurrentUid() != PatientProfile.TYPE_NEONAT) buttonHFNC
+//                else
+//                    isMinus?.let {
+//                        if (isMinus) highlightedIndex-- else highlightedIndex++
+//                        getViewForFocus(isMinus)
+//                    }
+//            }
+//
+//            else -> null
+//        }
+//    }
+//
+//    fun startTimeoutWithDebounce() {
+//
+//        cancelTimeout()
+//
+//        visibilityTimeout = object : CountDownTimer(10000, 2000) {
+//            override fun onTick(millisUntilFinished: Long) {
+//            }
+//
+//            override fun onFinish() {
+//                clearPreviousConstraints()
+//                cancelTimeout()
+//            }
+//        }
+//        visibilityTimeout?.start()
+//    }
+//
+//    fun cancelTimeout() {
+//        if (visibilityTimeout != null) {
+//            visibilityTimeout?.cancel()
+//            visibilityTimeout = null
+//        }
+//    }
+//
+//    // knob highlight logic ends here
 
 
 
@@ -460,28 +460,52 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
                 VentilatorApp.selectedOptions = SELECTED_OPTIONS.PRONGS_NAME
                 radioLayout.setBackgroundResource(R.drawable.background_transparent_border_black)
 
-                val constraintSetFirst = ConstraintSet()
-                constraintSetFirst.clone(mainLayoutPanelMode)
-                constraintSetFirst.connect(
-                    textViewSpontaneous.id,
-                    ConstraintSet.TOP,
-                    ModeHorizontal1.id,
-                    ConstraintSet.BOTTOM,
-                    0
-                )
-                constraintSetFirst.applyTo(mainLayoutPanelMode)
+                if (preferenceManager?.readCurrentUid() == PatientProfile.TYPE_NEONAT) {
 
-                val constraintSetSecond = ConstraintSet()
-                constraintSetSecond.clone(mainLayoutPanelMode)
-                constraintSetSecond.connect(
-                    textViewHFNC.id,
-                    ConstraintSet.TOP,
-                    ModeHorizontal2.id,
-                    ConstraintSet.BOTTOM,
-                    0
-                )
-                constraintSetSecond.applyTo(mainLayoutPanelMode)
+                    val constraintSetFirst = ConstraintSet()
+                    constraintSetFirst.clone(mainLayoutPanelMode)
+                    constraintSetFirst.connect(
+                        textViewSpontaneous.id,
+                        ConstraintSet.TOP,
+                        ModeHorizontal1.id,
+                        ConstraintSet.BOTTOM,
+                        0
+                    )
+                    constraintSetFirst.applyTo(mainLayoutPanelMode)
 
+                    val constraintSetSecond = ConstraintSet()
+                    constraintSetSecond.clone(mainLayoutPanelMode)
+                    constraintSetSecond.connect(
+                        textViewHFNC.id,
+                        ConstraintSet.TOP,
+                        ModeHorizontal2.id,
+                        ConstraintSet.BOTTOM,
+                        0
+                    )
+                    constraintSetSecond.applyTo(mainLayoutPanelMode)
+                }else{
+                    val constraintSetFirst = ConstraintSet()
+                    constraintSetFirst.clone(mainLayoutPanelMode)
+                    constraintSetFirst.connect(
+                        textViewSpontaneous.id,
+                        ConstraintSet.TOP,
+                        ModeHorizontal1.id,
+                        ConstraintSet.BOTTOM,
+                        0
+                    )
+                    constraintSetFirst.applyTo(mainLayoutPanelMode)
+
+                    val constraintSetSecond = ConstraintSet()
+                    constraintSetSecond.clone(mainLayoutPanelMode)
+                    constraintSetSecond.connect(
+                        textViewHFNC.id,
+                        ConstraintSet.TOP,
+                        ModeHorizontal2.id,
+                        ConstraintSet.BOTTOM,
+                        0
+                    )
+                    constraintSetSecond.applyTo(mainLayoutPanelMode)
+                }
             }
         }
 
@@ -499,7 +523,7 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
                 colorLayout.visibility = View.GONE
                 buttonBpap.visibility = View.VISIBLE
                 buttonCpap.visibility = View.VISIBLE
-                buttonCpap.visibility = View.GONE
+//                buttonCpap.visibility = View.GONE
                 textViewPressureControl.visibility = View.VISIBLE
                 buttonPcCmv.visibility = View.VISIBLE
                 buttonPcSimv.visibility = View.VISIBLE
@@ -517,39 +541,90 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
                 VentilatorApp.selectedOptions = SELECTED_OPTIONS.INVASIVE_NAME
                 radioLayout.setBackgroundResource(R.drawable.background_transparent_border_black)
 
-                val constraintSetFirst = ConstraintSet()
-                constraintSetFirst.clone(mainLayoutPanelMode)
-                constraintSetFirst.connect(
-                    textViewVolumeControl.id,
-                    ConstraintSet.TOP,
-                    ModeHorizontal1.id,
-                    ConstraintSet.BOTTOM,
-                    0
-                )
-                constraintSetFirst.applyTo(mainLayoutPanelMode)
+                if (preferenceManager?.readCurrentUid() == PatientProfile.TYPE_NEONAT) {
 
-                val constraintSetSecond = ConstraintSet()
-                constraintSetSecond.clone(mainLayoutPanelMode)
-                constraintSetSecond.connect(
-                    textViewPressureControl.id,
-                    ConstraintSet.TOP,
-                    ModeHorizontal2.id,
-                    ConstraintSet.BOTTOM,
-                    0
-                )
-                constraintSetSecond.applyTo(mainLayoutPanelMode)
+                    val constraintSetFirst = ConstraintSet()
+                    constraintSetFirst.clone(mainLayoutPanelMode)
+                    constraintSetFirst.connect(
+                        textViewVolumeControl.id,
+                        ConstraintSet.TOP,
+                        ModeHorizontal1.id,
+                        ConstraintSet.BOTTOM,
+                        0
+                    )
+                    constraintSetFirst.applyTo(mainLayoutPanelMode)
+
+                    val constraintSetSecond = ConstraintSet()
+                    constraintSetSecond.clone(mainLayoutPanelMode)
+                    constraintSetSecond.connect(
+                        textViewPressureControl.id,
+                        ConstraintSet.TOP,
+                        ModeHorizontal2.id,
+                        ConstraintSet.BOTTOM,
+                        0
+                    )
+                    constraintSetSecond.applyTo(mainLayoutPanelMode)
 
 
-                val constraintSetThird = ConstraintSet()
-                constraintSetThird.clone(mainLayoutPanelMode)
-                constraintSetThird.connect(
-                    textViewSpontaneous.id,
-                    ConstraintSet.TOP,
-                    ModeHorizontal3.id,
-                    ConstraintSet.BOTTOM,
-                    0
-                )
-                constraintSetThird.applyTo(mainLayoutPanelMode)
+                    val constraintSetThird = ConstraintSet()
+                    constraintSetThird.clone(mainLayoutPanelMode)
+                    constraintSetThird.connect(
+                        textViewSpontaneous.id,
+                        ConstraintSet.TOP,
+                        ModeHorizontal3.id,
+                        ConstraintSet.BOTTOM,
+                        0
+                    )
+                    constraintSetThird.applyTo(mainLayoutPanelMode)
+                }
+                // non neonatal
+                else{
+
+                    val constraintSetFirst = ConstraintSet()
+                    constraintSetFirst.clone(mainLayoutPanelMode)
+                    constraintSetFirst.connect(
+                        textViewVolumeControl.id,
+                        ConstraintSet.TOP,
+                        ModeHorizontal1.id,
+                        ConstraintSet.BOTTOM,
+                        0
+                    )
+                    constraintSetFirst.applyTo(mainLayoutPanelMode)
+
+                    val constraintSetSecond = ConstraintSet()
+                    constraintSetSecond.clone(mainLayoutPanelMode)
+                    constraintSetSecond.connect(
+                        textViewPressureControl.id,
+                        ConstraintSet.TOP,
+                        ModeHorizontal2.id,
+                        ConstraintSet.BOTTOM,
+                        0
+                    )
+                    constraintSetSecond.applyTo(mainLayoutPanelMode)
+
+
+                    val constraintSetThird = ConstraintSet()
+                    constraintSetThird.clone(mainLayoutPanelMode)
+                    constraintSetThird.connect(
+                        textViewIntelligentVentilation.id,
+                        ConstraintSet.TOP,
+                        ModeHorizontal3.id,
+                        ConstraintSet.BOTTOM,
+                        0
+                    )
+                    constraintSetThird.applyTo(mainLayoutPanelMode)
+
+                    val constraintSetFourth = ConstraintSet()
+                    constraintSetFourth.clone(mainLayoutPanelMode)
+                    constraintSetFourth.connect(
+                        textViewSpontaneous.id,
+                        ConstraintSet.TOP,
+                        ModeHorizontal4.id,
+                        ConstraintSet.BOTTOM,
+                        0
+                    )
+                    constraintSetFourth.applyTo(mainLayoutPanelMode)
+                }
             }
         }
 
@@ -558,7 +633,7 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
                 rbNasalProngs.isChecked = false
                 rbInvasive.isChecked = false
                 textViewSpontaneous.text = "NON - INVASIVE MODE"
-                buttonCpap.visibility = View.VISIBLE
+//                buttonCpap.visibility = View.VISIBLE
                 buttonBpap.visibility = View.VISIBLE
                 textViewVolumeControl.visibility = View.GONE
                 buttonVcCmv.visibility = View.GONE
@@ -589,27 +664,74 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
                 VentilatorApp.selectedOptions = SELECTED_OPTIONS.NON_INVASIVE_NAME
                 radioLayout.setBackgroundResource(R.drawable.background_transparent_border_black)
 
-                val constraintSetFirst = ConstraintSet()
-                constraintSetFirst.clone(mainLayoutPanelMode)
-                constraintSetFirst.connect(
-                    textViewSpontaneous.id,
-                    ConstraintSet.TOP,
-                    ModeHorizontal2.id,
-                    ConstraintSet.BOTTOM,
-                    0
-                )
-                constraintSetFirst.applyTo(mainLayoutPanelMode)
+                if (preferenceManager?.readCurrentUid() == PatientProfile.TYPE_NEONAT){
+                    val constraintSetFirst = ConstraintSet()
+                    constraintSetFirst.clone(mainLayoutPanelMode)
+                    constraintSetFirst.connect(
+                        textViewSpontaneous.id,
+                        ConstraintSet.TOP,
+                        ModeHorizontal2.id,
+                        ConstraintSet.BOTTOM,
+                        0
+                    )
+                    constraintSetFirst.applyTo(mainLayoutPanelMode)
 
-                val constraintSetSecond = ConstraintSet()
-                constraintSetSecond.clone(mainLayoutPanelMode)
-                constraintSetSecond.connect(
-                    textViewPressureControl.id,
-                    ConstraintSet.TOP,
-                    ModeHorizontal1.id,
-                    ConstraintSet.BOTTOM,
-                    0
-                )
-                constraintSetSecond.applyTo(mainLayoutPanelMode)
+                    val constraintSetSecond = ConstraintSet()
+                    constraintSetSecond.clone(mainLayoutPanelMode)
+                    constraintSetSecond.connect(
+                        textViewPressureControl.id,
+                        ConstraintSet.TOP,
+                        ModeHorizontal1.id,
+                        ConstraintSet.BOTTOM,
+                        0
+                    )
+                    constraintSetSecond.applyTo(mainLayoutPanelMode)
+                }else{
+                    val constraintSetFirst = ConstraintSet()
+                    constraintSetFirst.clone(mainLayoutPanelMode)
+                    constraintSetFirst.connect(
+                        textViewPressureControl.id,
+                        ConstraintSet.TOP,
+                        ModeHorizontal1.id,
+                        ConstraintSet.BOTTOM,
+                        0
+                    )
+                    constraintSetFirst.applyTo(mainLayoutPanelMode)
+
+                    val constraintSetSecond = ConstraintSet()
+                    constraintSetSecond.clone(mainLayoutPanelMode)
+                    constraintSetSecond.connect(
+                        textViewIntelligentVentilation.id,
+                        ConstraintSet.TOP,
+                        ModeHorizontal2.id,
+                        ConstraintSet.BOTTOM,
+                        0
+                    )
+                    constraintSetSecond.applyTo(mainLayoutPanelMode)
+
+                    val constraintSetThird = ConstraintSet()
+                    constraintSetThird.clone(mainLayoutPanelMode)
+                    constraintSetThird.connect(
+                        textViewSpontaneous.id,
+                        ConstraintSet.TOP,
+                        ModeHorizontal3.id,
+                        ConstraintSet.BOTTOM,
+                        0
+                    )
+                    constraintSetThird.applyTo(mainLayoutPanelMode)
+
+                    val constraintSetFourth = ConstraintSet()
+                    constraintSetFourth.clone(mainLayoutPanelMode)
+                    constraintSetFourth.connect(
+                        textViewHFNC.id,
+                        ConstraintSet.TOP,
+                        ModeHorizontal4.id,
+                        ConstraintSet.BOTTOM,
+                        0
+                    )
+                    constraintSetFourth.applyTo(mainLayoutPanelMode)
+                }
+
             }
         }
     }
@@ -662,6 +784,7 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
                 buttonBpap.text = getString(R.string.hint_bpap)
                 buttonCpap.text = getString(R.string.hint_cpap)
+                rbNasalProngs.visibility = View.GONE
             }
 
             PatientProfile.TYPE_PED -> {
@@ -672,16 +795,15 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
                 buttonBpap.text = getString(R.string.hint_bpap)
                 buttonCpap.text = getString(R.string.hint_cpap)
+                rbNasalProngs.visibility = View.GONE
             }
 
             PatientProfile.TYPE_NEONAT -> {
                 buttonCpap.text = getString(R.string.hint_ncpap)
                 buttonHFNC.text = getString(R.string.NeoNatehfnc)
-                if (VentilatorApp.selectedOptions == SELECTED_OPTIONS.NON_INVASIVE_NAME) {
                     buttonBpap.text = getString(R.string.hint_nbpap)
-                } else {
-                    buttonBpap.text = getString(R.string.hint_bpap)
-                }
+                rbNasalProngs.visibility = View.VISIBLE
+
             }
         }
     }

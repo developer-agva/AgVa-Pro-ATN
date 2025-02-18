@@ -11,6 +11,6 @@ import retrofit2.http.POST
 interface TrendsApiInterface {
 
     @Headers("Content-Type: application/json")
-    @POST("api/logger/logs/trends/v2/007")
+    @POST("api/logger/logs/trends/v2/008")
     fun sendTrendsApi(@Body request: TrendsRequestBodyModel): Call<LogResponseModel>
 }

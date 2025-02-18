@@ -301,27 +301,29 @@ class ControlParameterAdapter(
 
             if (type == Configs.ControlSettingType.BACKUP) {
 
-                if (VentilatorApp.isFromControlFragment == true) {
-                    if (prefManager.readApneaSettingsStatus() == true) {
-                        (holder as ToggleVhControlParameterAdapter).apply {
-                            tgButton?.isChecked = true
+
+                    if (VentilatorApp.isFromControlFragment == true) {
+                        if (prefManager.readApneaSettingsStatus() == true) {
+                            (holder as ToggleVhControlParameterAdapter).apply {
+                                tgButton?.isChecked = true
+                            }
+                        } else if (prefManager.readApneaSettingsStatus() == false) {
+                            (holder as ToggleVhControlParameterAdapter).apply {
+                                tgButton?.isChecked = false
+                            }
                         }
-                    } else if (prefManager.readApneaSettingsStatus() == false) {
-                        (holder as ToggleVhControlParameterAdapter).apply {
-                            tgButton?.isChecked = false
+                    } else {
+                        if (prefManager.readApneaSettingsStatusTemp() == true) {
+                            (holder as ToggleVhControlParameterAdapter).apply {
+                                tgButton?.isChecked = true
+                            }
+                        } else if (prefManager.readApneaSettingsStatusTemp() == false) {
+                            (holder as ToggleVhControlParameterAdapter).apply {
+                                tgButton?.isChecked = false
+                            }
                         }
                     }
-                } else {
-                    if (prefManager.readApneaSettingsStatusTemp() == true) {
-                        (holder as ToggleVhControlParameterAdapter).apply {
-                            tgButton?.isChecked = true
-                        }
-                    } else if (prefManager.readApneaSettingsStatusTemp() == false) {
-                        (holder as ToggleVhControlParameterAdapter).apply {
-                            tgButton?.isChecked = false
-                        }
-                    }
-                }
+
 
             }
             else {

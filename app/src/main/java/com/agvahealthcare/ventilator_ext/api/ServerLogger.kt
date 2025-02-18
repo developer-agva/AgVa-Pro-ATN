@@ -79,7 +79,7 @@ class ServerLogger {
                 val list = ackList
                 val alarmRequestBodyModel = AlarmRequestBodyModel()
                 alarmRequestBodyModel.did = Secure.getString(ctx.contentResolver, Secure.ANDROID_ID)
-                alarmRequestBodyModel.type = "007"
+                alarmRequestBodyModel.type = "008"
                 alarmRequestBodyModel.ack = ArrayList(list.map { it.toAckModel() })
 
                 val okHttpClient = OkHttpClient.Builder()
@@ -132,7 +132,7 @@ class ServerLogger {
         fun sendEventForDevelopers(ctx: Context, message: String): Boolean {
             val eventRequestBodyModel = EventRequestBodyModel()
             eventRequestBodyModel.did = Secure.getString(ctx.contentResolver, Secure.ANDROID_ID)
-            eventRequestBodyModel.type = "007"
+            eventRequestBodyModel.type = "008"
             eventRequestBodyModel.message = message
             eventRequestBodyModel.date = AppUtils.getCurrentDateReverse()
             Log.i("event_api_developer", "api called $message")
@@ -174,7 +174,7 @@ class ServerLogger {
 
             val eventRequestBodyModel = EventRequestBodyModel()
             eventRequestBodyModel.did = Secure.getString(ctx.contentResolver, Secure.ANDROID_ID)
-            eventRequestBodyModel.type = "007"
+            eventRequestBodyModel.type = "008"
             eventRequestBodyModel.message = message
             eventRequestBodyModel.date = AppUtils.getCurrentDateReverse()
 

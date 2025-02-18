@@ -5569,9 +5569,12 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
         override fun onStateChange(isActive: Boolean, type: ControlSettingType, position: Int) {
 
-            if (type == ControlSettingType.BACKUP) prefManager?.setApneaSettingsStatusTemp(
-                isActive
-            )
+
+
+                if (type == ControlSettingType.BACKUP) prefManager?.setApneaSettingsStatusTemp(
+                    isActive
+                )
+
         }
 
     }
@@ -5715,7 +5718,13 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     }
 
     override fun onStateChange(isActive: Boolean, type: ControlSettingType, position: Int) {
-        if (type == ControlSettingType.BACKUP) prefManager?.setApneaSettingsStatus(isActive)
+
+
+           if (type == ControlSettingType.BACKUP) prefManager?.setApneaSettingsStatus(isActive)
+
+
+
+
 
     }
 

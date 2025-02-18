@@ -2461,7 +2461,6 @@ public interface Configs {
             }
         }
 
-
         List<ControlParameterModel> basicParameters = new ArrayList<>();
 
         List<ControlParameterModel> advancedParameters = new ArrayList<>();
@@ -2610,9 +2609,9 @@ public interface Configs {
                         //if(tExp != null) basicParameters.add(tExp);
 
                         if (tExp != null) advancedParameters.add(tExp);
-                        apneaParameters.add(rrApnea);
-                        apneaParameters.add(tApnea);
-                        apneaParameters.add(vtApnea);
+//                        apneaParameters.add(rrApnea);
+//                        apneaParameters.add(tApnea);
+//                        apneaParameters.add(vtApnea);
                         break;
                 }
                 break;
@@ -2644,9 +2643,9 @@ public interface Configs {
                         if (slope != null) advancedParameters.add(slope);
 //                        if (etPressure != null) etCuffParamters.add(etPressure);
 
-                        apneaParameters.add(rrApnea);
-                        apneaParameters.add(tApnea);
-                        apneaParameters.add(vtApnea);
+//                        apneaParameters.add(rrApnea);
+//                        apneaParameters.add(tApnea);
+//                        apneaParameters.add(vtApnea);
 
                         if (tExp != null) advancedParameters.add(tExp);
                         break;
@@ -2673,9 +2672,9 @@ public interface Configs {
                         //if(tExp != null) basicParameters.add(tExp);
 
                         if (tExp != null) advancedParameters.add(tExp);
-                        apneaParameters.add(rrApnea);
-                        apneaParameters.add(tApnea);
-                        apneaParameters.add(vtApnea);
+//                        apneaParameters.add(rrApnea);
+//                        apneaParameters.add(tApnea);
+//                        apneaParameters.add(vtApnea);
                         break;
                 }
                 break;
@@ -2761,9 +2760,9 @@ public interface Configs {
                         if (tExp != null) advancedParameters.add(tExp);
 //                        if (etPressure != null) etCuffParamters.add(etPressure);
 
-                        apneaParameters.add(rrApnea);
-                        apneaParameters.add(tApnea);
-                        apneaParameters.add(vtApnea);
+//                        apneaParameters.add(rrApnea);
+//                        apneaParameters.add(tApnea);
+//                        apneaParameters.add(vtApnea);
                         break;
 
                     case TYPE_NEONAT:
@@ -2784,9 +2783,9 @@ public interface Configs {
                         if (triggerFlow != null) basicParameters.add(triggerFlow);
 //                        if (etPressure != null) etCuffParamters.add(etPressure);
 
-                        apneaParameters.add(rrApnea);
-                        apneaParameters.add(tApnea);
-                        apneaParameters.add(vtApnea);
+//                        apneaParameters.add(rrApnea);
+//                        apneaParameters.add(tApnea);
+//                        apneaParameters.add(vtApnea);
                         break;
                 }
 
@@ -2850,9 +2849,9 @@ public interface Configs {
                         if (triggerFlow != null) basicParameters.add(triggerFlow);
 //                        if (etPressure != null) etCuffParamters.add(etPressure);
 
-                        apneaParameters.add(rrApnea);
-                        apneaParameters.add(tApnea);
-                        apneaParameters.add(vtApnea);
+//                        apneaParameters.add(rrApnea);
+//                        apneaParameters.add(tApnea);
+//                        apneaParameters.add(vtApnea);
                         break;
                 }
 
@@ -2969,9 +2968,9 @@ public interface Configs {
                         if (triggerFlow != null) basicParameters.add(triggerFlow);
 //                        if (etPressure != null) etCuffParamters.add(etPressure);
 
-                        apneaParameters.add(rrApnea);
-                        apneaParameters.add(tApnea);
-                        apneaParameters.add(vtApnea);
+//                        apneaParameters.add(rrApnea);
+//                        apneaParameters.add(tApnea);
+//                        apneaParameters.add(vtApnea);
                         break;
                 }
 
@@ -3051,9 +3050,9 @@ public interface Configs {
 //                        if (triggerFlow != null) basicParameters.add(triggerFlow);
 //                        if (etPressure != null) etCuffParamters.add(etPressure);
 
-                        apneaParameters.add(rrApnea);
-                        apneaParameters.add(tApnea);
-                        apneaParameters.add(vtApnea);
+//                        apneaParameters.add(rrApnea);
+//                        apneaParameters.add(tApnea);
+//                        apneaParameters.add(vtApnea);
                         break;
                 }
                 break;
@@ -3102,9 +3101,9 @@ public interface Configs {
                         if (supportPressure != null) basicParameters.add(supportPressure);
 
 //                        if (triggerFlow != null) basicParameters.add(triggerFlow);
-                        apneaParameters.add(rrApnea);
-                        apneaParameters.add(tApnea);
-                        apneaParameters.add(vtApnea);
+//                        apneaParameters.add(rrApnea);
+//                        apneaParameters.add(tApnea);
+//                        apneaParameters.add(vtApnea);
                         break;
                 }
                 break;
@@ -3150,10 +3149,10 @@ public interface Configs {
                         if (triggerFlow != null) basicParameters.add(triggerFlow);
                         if (supportPressure != null) basicParameters.add(supportPressure);
 
-
-                        apneaParameters.add(rrApnea);
-                        apneaParameters.add(tApnea);
-                        apneaParameters.add(vtApnea);
+//
+//                        apneaParameters.add(rrApnea);
+//                        apneaParameters.add(tApnea);
+//                        apneaParameters.add(vtApnea);
                         break;
                 }
                 break;
@@ -3200,9 +3199,9 @@ public interface Configs {
 //                        if (etPressure != null) etCuffParamters.add(etPressure);
 
 
-                        apneaParameters.add(rrApnea);
-                        apneaParameters.add(tApnea);
-                        apneaParameters.add(vtApnea);
+//                        apneaParameters.add(rrApnea);
+//                        apneaParameters.add(tApnea);
+//                        apneaParameters.add(vtApnea);
                         break;
                 }
                 break;

@@ -4127,8 +4127,8 @@ static Float calculateTidalVolume(float height,String gender){
                     return ctx.getResources().getString(R.string.ack_380);
                 case ACK_CODE_381:
                     return ctx.getResources().getString(R.string.ack_381);
-                case ACK_CODE_382:
-                    return ctx.getResources().getString(R.string.ack_382);
+//                case ACK_CODE_382:
+//                    return ctx.getResources().getString(R.string.ack_382);
                 case ACK_CODE_383:
                     return ctx.getResources().getString(R.string.ack_383);
                 case ACK_CODE_384:
@@ -4147,8 +4147,8 @@ static Float calculateTidalVolume(float height,String gender){
                     return ctx.getResources().getString(R.string.ack_390);
                 case ACK_CODE_391:
                     return ctx.getResources().getString(R.string.ack_391);
-                case ACK_CODE_392:
-                    return ctx.getResources().getString(R.string.ack_392);
+//                case ACK_CODE_392:
+//                    return ctx.getResources().getString(R.string.ack_392);
                 case ACK_CODE_393:
                     return ctx.getResources().getString(R.string.ack_393);
                 case ACK_CODE_394:

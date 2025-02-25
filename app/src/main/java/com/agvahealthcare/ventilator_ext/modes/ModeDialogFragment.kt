@@ -37,24 +37,8 @@ import com.agvahealthcare.ventilator_ext.utility.setHeightWidthPercent
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.*
 import com.agvahealthcare.ventilator_ext.utility.utils.IntentFactory
-import kotlinx.android.synthetic.main.content_button_layout.view.*
 import kotlinx.android.synthetic.main.fragment_mode_dialog.*
-import kotlinx.android.synthetic.main.fragment_settings.volumeLayout
-import kotlinx.android.synthetic.main.fragment_standbycontrol_dialog.buttonStartVent
-import kotlinx.android.synthetic.main.fragment_standbycontrol_dialog.focusLayoutStandbyControls
-import kotlinx.android.synthetic.main.fragment_standbycontrol_dialog.imageViewCrossStandbyControls
-import kotlinx.android.synthetic.main.fragment_standbycontrol_dialog.includeButtonStandbyAdvanced
-import kotlinx.android.synthetic.main.fragment_standbycontrol_dialog.includeButtonStandbyBackup
-import kotlinx.android.synthetic.main.fragment_standbycontrol_dialog.includeButtonStandbyBasic
-import kotlinx.android.synthetic.main.fragment_standbycontrol_dialog.includeButtonStandbySmartFio2
-import kotlinx.android.synthetic.main.fragment_standbycontrol_dialog.includeButtonStandbyVTas
-import kotlinx.android.synthetic.main.fragment_standbycontrol_dialog.mainViewPanelStandbyControls
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 
 interface OnModeConfirmListener {
@@ -640,23 +624,21 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
                 buttonVcSimv.visibility = View.GONE
                 buttonAcv.visibility = View.GONE
                 colorLayout.visibility = View.GONE
-                buttonCpap.visibility = View.GONE
+                buttonCpap.visibility = View.VISIBLE
                 textViewPressureControl.visibility = View.VISIBLE
                 buttonPcCmv.visibility = View.VISIBLE
                 buttonPcSimv.visibility = View.VISIBLE
                 buttonPcac.visibility = View.VISIBLE
                 buttonPsv.visibility = View.VISIBLE
-
+                textViewIntelligentVentilation.visibility = View.GONE
+                buttonAIVent.visibility = View.GONE
                 if (preferenceManager?.readCurrentUid() == PatientProfile.TYPE_NEONAT) {
                     buttonHFNC.visibility = View.GONE
                     textViewHFNC.visibility = View.GONE
-                    textViewIntelligentVentilation.visibility = View.GONE
-                    buttonAIVent.visibility = View.GONE
+
                 } else {
                     buttonHFNC.visibility = View.VISIBLE
                     textViewHFNC.visibility = View.VISIBLE
-                    textViewIntelligentVentilation.visibility = View.VISIBLE
-                    buttonAIVent.visibility = View.VISIBLE
                 }
 
                 optionSelected = true
@@ -698,23 +680,12 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
                     )
                     constraintSetFirst.applyTo(mainLayoutPanelMode)
 
-                    val constraintSetSecond = ConstraintSet()
-                    constraintSetSecond.clone(mainLayoutPanelMode)
-                    constraintSetSecond.connect(
-                        textViewIntelligentVentilation.id,
-                        ConstraintSet.TOP,
-                        ModeHorizontal2.id,
-                        ConstraintSet.BOTTOM,
-                        0
-                    )
-                    constraintSetSecond.applyTo(mainLayoutPanelMode)
-
                     val constraintSetThird = ConstraintSet()
                     constraintSetThird.clone(mainLayoutPanelMode)
                     constraintSetThird.connect(
                         textViewSpontaneous.id,
                         ConstraintSet.TOP,
-                        ModeHorizontal3.id,
+                        ModeHorizontal2.id,
                         ConstraintSet.BOTTOM,
                         0
                     )
@@ -725,7 +696,7 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
                     constraintSetFourth.connect(
                         textViewHFNC.id,
                         ConstraintSet.TOP,
-                        ModeHorizontal4.id,
+                        ModeHorizontal3.id,
                         ConstraintSet.BOTTOM,
                         0
                     )
@@ -801,7 +772,7 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
             PatientProfile.TYPE_NEONAT -> {
                 buttonCpap.text = getString(R.string.hint_ncpap)
                 buttonHFNC.text = getString(R.string.NeoNatehfnc)
-                    buttonBpap.text = getString(R.string.hint_nbpap)
+                buttonBpap.text = getString(R.string.hint_nbpap)
                 rbNasalProngs.visibility = View.VISIBLE
 
             }
@@ -2147,10 +2118,8 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
                         } else showToastForNonSelectOptions()
 
                     }
-
                 }
             }
-
         }
 
         Log.d("ventdata", ventMode.toString())

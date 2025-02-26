@@ -454,26 +454,6 @@
             app:layout_constraintTop_toTopOf="@+id/txtPowerConnection"
             android:text="value1" />
 
-        <TextView
-            android:id="@+id/txtMainSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Mains Switch"
-            android:layout_marginTop="@dimen/_6sdp"
-            android:theme="@style/subheading_text_style_diag"
-            app:layout_constraintStart_toStartOf="@id/guideline1"
-            app:layout_constraintTop_toBottomOf="@id/txtPowerConnection" />
-
-        <TextView
-            android:id="@+id/txtMainSwitchValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:theme="@style/subheading_text_style_diag"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@id/guideline2"
-            app:layout_constraintTop_toTopOf="@+id/txtMainSwitch"
-            android:text="value1" />
-
 <!--        spo2 section-->
         <TextView
             android:id="@+id/txtSpo2Status"
@@ -483,7 +463,7 @@
             android:layout_marginTop="@dimen/_6sdp"
             android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline1"
-            app:layout_constraintTop_toBottomOf="@id/txtMainSwitch" />
+            app:layout_constraintTop_toBottomOf="@id/txtPowerConnection" />
 
         <TextView
             android:id="@+id/txtSpo2StatusValue"
@@ -639,28 +619,6 @@
             app:layout_constraintTop_toTopOf="@+id/txtKnobPCBVersion"
             android:text="value1" />
 
-
-        <TextView
-            android:id="@+id/txtHardwareVersion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hardware Version"
-            android:layout_marginTop="@dimen/_6sdp"
-            android:theme="@style/subheading_text_style_diag"
-            app:layout_constraintStart_toStartOf="@id/guideline1"
-            app:layout_constraintTop_toBottomOf="@id/txtKnobPCBVersion" />
-
-        <TextView
-            android:id="@+id/txtHardwareVersionValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:theme="@style/subheading_text_style_diag"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@id/guideline2"
-            app:layout_constraintTop_toTopOf="@+id/txtHardwareVersion"
-            android:text="value1" />
-
-
 <!--        ranges section-->
 
         <TextView
@@ -680,7 +638,7 @@
             android:layout_marginTop="@dimen/_6sdp"
             android:background="@drawable/background_light_grey"
             app:layout_constraintStart_toStartOf="@id/guideline2"
-            app:layout_constraintTop_toBottomOf="@id/txtHardwareVersionValue">
+            app:layout_constraintTop_toBottomOf="@id/txtKnobPCBVersion">
 
             <TextView
                 android:id="@+id/textViewTurbineRangesValue"

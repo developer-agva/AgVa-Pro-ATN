@@ -414,7 +414,7 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
             if (isChecked) {
                 rbInvasive.isChecked = false
                 rbNonInvasive.isChecked = false
-                textViewSpontaneous.text = "INVASIVE MODE"
+                textViewSpontaneous.text = "NON - INVASIVE MODE"
                 buttonCpap.visibility = View.VISIBLE
                 buttonBpap.visibility = View.GONE
                 textViewVolumeControl.visibility = View.GONE
@@ -702,7 +702,6 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
                     )
                     constraintSetFourth.applyTo(mainLayoutPanelMode)
                 }
-
             }
         }
     }

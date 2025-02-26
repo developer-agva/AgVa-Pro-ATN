@@ -192,10 +192,8 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mMainActivityViewModel =
-            ViewModelProvider(requireActivity())[MainActivityViewModel::class.java]
-        mDiagnosticCheckViewModel =
-            ViewModelProvider(requireActivity())[DiagnosticCheckViewModel::class.java]
+        mMainActivityViewModel = ViewModelProvider(requireActivity())[MainActivityViewModel::class.java]
+        mDiagnosticCheckViewModel = ViewModelProvider(requireActivity())[DiagnosticCheckViewModel::class.java]
 
         // send command to ventilator to get data
         communicationService?.takeIf { it.isPortsConnected }?.apply {
@@ -266,7 +264,6 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
 
             "Start Purge" -> {
                 includeButtonPurge.buttonView.callOnClick()
-
             }
 
             "Stop Purge" -> {
@@ -290,8 +287,6 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
             }
         }
     }
-
-
 
     private fun startUpTimer() {
 
@@ -397,9 +392,9 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
             txtPowerConnectionValue.text = it
         }
 
-        mDiagnosticCheckViewModel.mainSwitchData.observe(viewLifecycleOwner) {
-            txtMainSwitchValue.text = it
-        }
+//        mDiagnosticCheckViewModel.mainSwitchData.observe(viewLifecycleOwner) {
+//            txtMainSwitchValue.text = it
+//        }
         mDiagnosticCheckViewModel.spo2StatusData.observe(viewLifecycleOwner) {
             txtSpo2StatusValue.text = it
         }
@@ -425,9 +420,9 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
             txtPiCpuLoadValue.text = it
         }
 
-        mDiagnosticCheckViewModel.hardwareVersionData.observe(viewLifecycleOwner) {
-            txtHardwareVersionValue.text = it
-        }
+//        mDiagnosticCheckViewModel.hardwareVersionData.observe(viewLifecycleOwner) {
+//            txtHardwareVersionValue.text = it
+//        }
 
         // static line
         mDiagnosticCheckViewModel.knobPcbVersionData.observe(viewLifecycleOwner) {
@@ -464,7 +459,7 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
         txtBatteryRemainingTimeValue.text = "-"
         txtBatteryStateValue.text = "-"
         txtPowerConnectionValue.text = "-"
-        txtMainSwitchValue.text = "-"
+//        txtMainSwitchValue.text = "-"
         txtSpo2StatusValue.text = "-"
         txtHRValue.text = "-"
         txtSpo2Value.text = "-"
@@ -473,7 +468,7 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
         txtOxySensorVoltageValue.text = "-"
         txtPiTempValue.text = "-"
         txtPiCpuLoadValue.text = "-"
-        txtHardwareVersionValue.text = "-"
+//        txtHardwareVersionValue.text = "-"
 
         // static line
         txtKnobPcbTypeValue.text = "-"

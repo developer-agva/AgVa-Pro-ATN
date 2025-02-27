@@ -78,7 +78,9 @@ class SettingFragment : Fragment(), OnKnobPressListener, onDropDownSelectionList
             3 -> if (layoutPanelLoudness.isVisible) progressBarLoudness.param_progress_bar.callOnClick() else if (layoutPanelTubeComp.isVisible) toggle_knob.isOn =
                 !(toggle_knob as LabeledSwitch).isOn else pressureLayout.callOnClick()
 
-            4 -> if (layoutPanelLoudness.isVisible) includeButtonTest.buttonView.callOnClick() else if (layoutPanelColorChange.isVisible) volumeLayout.callOnClick()
+            4 -> if (layoutPanelLoudness.isVisible) includeButtonTest.buttonView.callOnClick() else if (layoutPanelTubeComp.isVisible) toggle_iE_tile.isOn =
+                !(toggle_iE_tile as LabeledSwitch).isOn else volumeLayout.callOnClick()
+
             5 -> flowLayout.callOnClick()
         }
     }
@@ -199,7 +201,7 @@ class SettingFragment : Fragment(), OnKnobPressListener, onDropDownSelectionList
                 1 -> includeButtonChange
                 2 -> includeColorChange
                 3 -> if (layoutPanelLoudness.isVisible) progressBarLoudness else if (layoutPanelTubeComp.isVisible) toggle_knob else pressureLayout
-                4 -> if (layoutPanelLoudness.isVisible) includeButtonTest else if (layoutPanelTubeComp.isVisible) null else volumeLayout
+                4 -> if (layoutPanelLoudness.isVisible) includeButtonTest else if (layoutPanelTubeComp.isVisible) toggle_iE_tile else volumeLayout
                 5 -> flowLayout
 
                 else -> null
@@ -380,7 +382,6 @@ class SettingFragment : Fragment(), OnKnobPressListener, onDropDownSelectionList
             setUpLoudness()
         }
 
-
         toggle_knob?.setOnToggledListener { _, isOn ->
             if (prefManager?.readKnobStatus() == false) {
                 prefManager?.setKnobStatus(true)
@@ -388,6 +389,14 @@ class SettingFragment : Fragment(), OnKnobPressListener, onDropDownSelectionList
             } else {
                 prefManager?.setKnobStatus(false)
 //                    ToastFactory.custom(context,"Knob status is " + prefManager?.readKnobStatus().toString())
+            }
+        }
+
+        toggle_iE_tile?.setOnToggledListener { _, isOn ->
+            if (prefManager?.readIETileStatus() == false) {
+                prefManager?.setIETileStatus(true)
+            } else {
+                prefManager?.setIETileStatus(false)
             }
         }
 
@@ -451,6 +460,7 @@ class SettingFragment : Fragment(), OnKnobPressListener, onDropDownSelectionList
     override fun onResume() {
         super.onResume()
         toggle_knob?.isOn = prefManager?.readKnobStatus() ?: false
+        toggle_iE_tile?.isOn = prefManager?.readIETileStatus() ?: false
     }
 
 

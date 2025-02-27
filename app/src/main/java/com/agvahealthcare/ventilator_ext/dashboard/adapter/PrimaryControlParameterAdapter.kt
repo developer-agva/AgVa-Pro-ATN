@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.VentilatorApp
 import com.agvahealthcare.ventilator_ext.control.basic.ControlParameterClickListener
+import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.model.ControlParameterModel
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs
 
@@ -21,7 +22,7 @@ class PrimaryControlParameterAdapter(
     private val parameters: ArrayList<ControlParameterModel>,
     private var primaryControlParamClickListener: ControlParameterClickListener? = null,
     ) : RecyclerView.Adapter<PrimaryControlParameterAdapter.VHPrimaryControlParameterAdapter>() {
-
+    val preferenceManager = PreferenceManager(ctx)
     companion object {
         @JvmStatic
         val MARGIN_END = 4
@@ -88,6 +89,21 @@ class PrimaryControlParameterAdapter(
             try{
                 val read: Float = tile.reading.toFloat()
                 holder.tvReading?.text = String.format("%.1f", read)
+
+                if (tile.ventKey.equals(Configs.LBL_TINSP) && preferenceManager!!.readIETileStatus()){
+                    holder.tvReading?.text = Configs.calculateIERatio(
+                        VentilatorApp.testingConditonMap[Configs.LBL_RR]?.let {
+                            it.toInt()
+                        } ?: kotlin.run {
+                            preferenceManager.readRR().toInt()
+                        },
+                        VentilatorApp.testingConditonMap[Configs.LBL_TINSP]?.let {
+                            it
+                        } ?: kotlin.run {
+                            tile.reading.toFloat()
+                        }
+                    )
+                }
             } catch (e: Exception){
                 holder.tvReading?.text = tile.reading
                 e.printStackTrace()
@@ -104,6 +120,11 @@ class PrimaryControlParameterAdapter(
         }
         holder.tvValue?.text = tile.title
         holder.tvUnit?.text = tile.units
+
+        if (tile.ventKey.equals(Configs.LBL_TINSP) && preferenceManager!!.readIETileStatus()){
+            holder.tvValue?.text = Configs.LBL_IE_RATIO
+            holder.tvUnit?.text = ""
+        }
     }
 
 

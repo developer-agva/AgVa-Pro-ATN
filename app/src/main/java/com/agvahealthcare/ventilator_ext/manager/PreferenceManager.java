@@ -349,6 +349,7 @@ public class PreferenceManager {
     private static final String PREF_TUBE_RESISTANCE_CALIBRATION_STATUS = "pref_tube_resistance_calibration_status";
     private static final String PREF_CONCENTRATOR_STATUS = "pref_concentrator_status";
 
+    private static final String PREF_IE_TILE_STATUS = "pref_ie_tile_status";
     private static final String PREF_NEBULISER_STATUS = "pref_neb_status";
 
     private static final String PREF_FILLED_PRESSURE = "pref_pressure_filled";
@@ -413,7 +414,14 @@ public class PreferenceManager {
         return sp.getBoolean(PREF_RESTORE_STATUS, false);
     }
 
+    public Boolean readIETileStatus() {return sp.getBoolean(PREF_IE_TILE_STATUS, true);}
+
+    public void setIETileStatus(boolean isActive) {
+        updateData(PREF_IE_TILE_STATUS, isActive);
+    }
+
     // ota status type
+
     public void setDownloadType(String value) {
         updateData(PREF_DOWNLOAD_TYPE, value);
     }

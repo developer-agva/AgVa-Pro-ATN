@@ -152,6 +152,29 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:on="false" />
 
+            <TextView
+                android:id="@+id/useTextTile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tile Switch"
+                android:theme="@style/subheading_text_style"
+                app:layout_constraintBottom_toBottomOf="@+id/toggle_iE_tile"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/toggle_iE_tile" />
+
+            <com.github.angads25.toggle.widget.LabeledSwitch
+                android:id="@+id/toggle_iE_tile"
+                android:layout_width="90dp"
+                android:layout_height="30dp"
+                android:textSize="14sp"
+                app:colorBorder="@color/grey"
+                app:colorOff="@color/white"
+                app:colorOn="@color/light_grey"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/toggle_knob"
+                app:on="false" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

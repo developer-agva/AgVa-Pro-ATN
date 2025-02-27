@@ -424,7 +424,17 @@ class ControlParameterAdapter(
                 )
 
                 (holder as VHControlParameterAdapter).tvUnit?.text = tile.units
-            } else {
+            }  else if (tile.title == "Ti" && prefManager.readIETileStatus()) {
+                (holder as VHControlParameterAdapter).circleProgressView?.setCurrentProgress(
+                    getPercentage(tile).toDouble()
+                )
+                (holder as VHControlParameterAdapter).tvValue?.text = LBL_IE_RATIO
+                (holder as VHControlParameterAdapter).tvLabel?.setBackgroundResource(Color.TRANSPARENT)
+                (holder as VHControlParameterAdapter).tvLabel?.text = Configs.calculateIERatio(
+                    if (isFromControlFragment == true) prefManager.readRR().toInt() else prefManager.readRR().toInt(), tile.reading.toFloat()
+                )
+                (holder as VHControlParameterAdapter).tvUnit?.text = ""
+            }else {
                 (holder as VHControlParameterAdapter).circleProgressView?.setCurrentProgress(
                     getPercentage(tile).toDouble()
                 )

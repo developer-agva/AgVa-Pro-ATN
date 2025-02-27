@@ -139,13 +139,13 @@ dependencies {
     // MultiDex
     implementation 'androidx.multidex:multidex:2.0.1'
     // Usb Communication
-    implementation 'com.github.felHR85:UsbSerial:6.1.0'
+//    implementation 'com.github.felHR85:UsbSerial:6.1.0'
     //Google Gson
     implementation 'com.google.code.gson:gson:2.8.8'
     // CHECK VIEW (IN CHECKLIST)
     implementation 'com.github.cdflynn:checkview:v1.1'
     // BATTERY INDICATOR
-    implementation 'iam.thevoid.batteryview:batteryview:0.1'
+//    implementation 'iam.thevoid.batteryview:batteryview:0.1'
 
     implementation 'com.github.AnthonyFermin:DropDownView:1.0.1'
     // Room components
@@ -194,7 +194,7 @@ dependencies {
     // TABLE VIEWGson
     implementation 'com.github.ISchwarz23:SortableTableView:2.8.1'
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
-    implementation 'org.jetbrains.anko:anko-common:0.9'
+//    implementation 'org.jetbrains.anko:anko-common:0.9'
     implementation 'com.github.ch-muhammad-adil:MaterialPickerDialog:1.0.3'
     // REALTIME GRAPH DEPENDENCY
     implementation 'com.jjoe64:graphview:4.2.2'
@@ -211,7 +211,7 @@ dependencies {
     implementation "androidx.work:work-gcm:$work_version"
     implementation "androidx.work:work-runtime-ktx:$work_version"
 
-    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
+//    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
     def paging_version = "3.1.1"
 
     //gif Image
@@ -219,7 +219,7 @@ dependencies {
 
     implementation "androidx.paging:paging-runtime:$paging_version"
     implementation 'com.github.plusCubed:recycler-fast-scroll:0.3.2'
-    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
+//    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
     implementation 'com.github.antonKozyriatskyi:CircularProgressIndicator:1.3.0'
 
     implementation 'com.github.tiper:MaterialSpinner:1.4.2'

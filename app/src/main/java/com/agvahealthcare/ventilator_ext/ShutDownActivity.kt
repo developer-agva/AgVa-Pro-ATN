@@ -24,7 +24,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import org.jetbrains.anko.ctx
 import java.util.concurrent.TimeUnit
 
 
@@ -62,7 +61,7 @@ class ShutDownActivity : BaseActivity() {
             }
 
             override fun onFinish() {
-                DialogBoxFactory.showshutScreenDialog(ctx)
+                DialogBoxFactory.showshutScreenDialog(this@ShutDownActivity)
             }
         }.start()
 

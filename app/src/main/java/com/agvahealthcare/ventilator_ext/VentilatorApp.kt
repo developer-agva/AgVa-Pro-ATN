@@ -32,7 +32,6 @@ import com.scichart.charting.visuals.SciChartSurface
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.jetbrains.anko.ctx
 import kotlin.system.exitProcess
 
 
@@ -249,7 +248,7 @@ class VentilatorApp : Application() {
 
     fun setupAppLevelExceptionHandler() {
         Log.i("APP_EXCEPTION_HANDLER", "Setting default error handler")
-        Thread.setDefaultUncaughtExceptionHandler(AppLevelExceptionHandler(ctx))
+        Thread.setDefaultUncaughtExceptionHandler(AppLevelExceptionHandler(applicationContext))
     }
 
     fun getVersion(): String {

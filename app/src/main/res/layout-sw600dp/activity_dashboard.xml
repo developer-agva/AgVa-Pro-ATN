@@ -355,8 +355,7 @@
             android:layout_height="@dimen/_12sdp"
             android:layout_gravity="center"
             android:layout_weight="3.2"
-            android:src="@drawable/neonate_icon"
-            app:bv_color="@color/ack_green" />
+            android:src="@drawable/neonate_icon" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

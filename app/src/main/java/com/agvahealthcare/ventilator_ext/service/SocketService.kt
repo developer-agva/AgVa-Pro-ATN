@@ -6,7 +6,6 @@ import com.agvahealthcare.ventilator_ext.utility.DialogBoxFactory
 import com.agvahealthcare.ventilator_ext.utility.ToastFactory
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs
 import com.agvahealthcare.ventilator_ext.utility.utils.FormValidation.runOnUiThread
-import org.jetbrains.anko.ctx
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.Socket

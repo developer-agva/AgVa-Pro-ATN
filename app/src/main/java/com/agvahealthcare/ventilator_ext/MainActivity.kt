@@ -85,7 +85,6 @@ import com.example.demoremoteupdateapp.checkSelfPermissionCompat
 import com.example.demoremoteupdateapp.requestPermissionsCompat
 import com.example.demoremoteupdateapp.shouldShowRequestPermissionRationaleCompat
 import com.example.demoremoteupdateapp.showSnackbar
-import com.felhr.usbserial.UsbSerialDevice
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
 import com.google.zxing.BarcodeFormat
@@ -105,7 +104,6 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import org.jetbrains.anko.ctx
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.URISyntaxException
@@ -119,7 +117,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     View.OnClickListener,
     ControlParameterClickListener,
     OnLoudnessAdjustmentListener {
-
+    private val ctx = this@MainActivity
     private val TAG = MainActivity::class.java.simpleName
     private var handshakingTask: HandshakingTask? = null
     private var countKnobData = 0
@@ -140,8 +138,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     lateinit var downloadController: DownloadController
 
     private val TOOLTIP_TAG = "Main"
-
-    private val serialPort: UsbSerialDevice? = null
 
     private var heightSize: Int? = null
     private var widthSize: Int? = null
@@ -5728,9 +5724,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
     }
 
-    fun write(data: ByteArray?) {
-        if (serialPort != null) serialPort.write(data)
-    }
 
     override fun onUpdateBaseUrlListener(baseUrl: String) {
 //        CoroutineScope(Dispatchers.IO).launch {

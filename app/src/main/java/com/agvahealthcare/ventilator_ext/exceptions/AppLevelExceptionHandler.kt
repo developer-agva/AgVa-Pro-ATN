@@ -27,7 +27,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.serialization.builtins.DoubleArraySerializer
-import org.jetbrains.anko.getStackTraceString
 import java.io.File
 import java.io.FileWriter
 import java.text.SimpleDateFormat

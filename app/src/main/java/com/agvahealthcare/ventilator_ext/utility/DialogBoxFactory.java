@@ -968,10 +968,6 @@ public class DialogBoxFactory {
         dialogMessage.setText(msg);
         AlertDialog dialog = new AlertDialog.Builder(ctx).setView(view).create();
         dialog.setCancelable(false);
-
-        ivNeo.setVisibility(View.GONE);
-        tvNeo.setVisibility(View.GONE);
-
         // conditions
         ArrayList<String> list = new ArrayList(Arrays.asList(value.split(",")));
         Log.i("list_sizeswd",String.valueOf(list.get(1)) + ", " + String.valueOf(list.get(5)));

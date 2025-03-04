@@ -346,7 +346,7 @@ class TubeDiaFragment(private var communicationService: CommunicationService?) :
 
                 includetubeAdult.visibility = View.VISIBLE
                 includetubePediatric.visibility = View.VISIBLE
-                includetubeNeoNate.visibility = View.GONE
+                includetubeNeoNate.visibility = View.VISIBLE
 
                 includetubeAdult.buttonView.callOnClick()
             }
@@ -386,7 +386,7 @@ class TubeDiaFragment(private var communicationService: CommunicationService?) :
 
                 includetubeAdult.visibility = View.VISIBLE
                 includetubePediatric.visibility = View.VISIBLE
-                includetubeNeoNate.visibility = View.GONE
+                includetubeNeoNate.visibility = View.VISIBLE
 
                 includetubePediatric.buttonView.callOnClick()
             }

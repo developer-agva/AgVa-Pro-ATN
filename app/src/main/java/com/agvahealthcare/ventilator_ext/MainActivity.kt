@@ -1092,11 +1092,9 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                                     systemDialogFragment?.highlightViewWithFocus(data)
                                 } else if (standbyControlFragment?.isVisible == true) {
                                     standbyControlFragment?.highlightViewWithFocus(data)
-                                }
-                                else if (modeDialogFragment?.isVisible == true) {
-                                // modeDialogFragment?.highlightViewWithFocus(data)
-                                }
-                                else {
+                                } else if (modeDialogFragment?.isVisible == true) {
+                                    // modeDialogFragment?.highlightViewWithFocus(data)
+                                } else {
                                     highlightViewWithFocus(data)
                                 }
                             } else {
@@ -2916,41 +2914,41 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
                         "Start Debug" -> {
 
-                           systemDialogFragment?.let {
+                            systemDialogFragment?.let {
 
-                               if (it.isVisible) {
-                                   it.switchBetweenDebugAndDiagnosticWindow("Debug")
-                               }else {
-                                   highlightButton(buttonPreopCheck)
+                                if (it.isVisible) {
+                                    it.switchBetweenDebugAndDiagnosticWindow("Debug")
+                                } else {
+                                    highlightButton(buttonPreopCheck)
 
-                                   systemDialogFragment = SystemDialogFragment.newInstance(
-                                       heightSize,
-                                       widthSize,
-                                       false,
-                                       fragmentDismissListener,
-                                       this@MainActivity,
-                                       this@MainActivity,
-                                       communicationService
-                                   ).apply { show(supportFragmentManager, "Debug") }
+                                    systemDialogFragment = SystemDialogFragment.newInstance(
+                                        heightSize,
+                                        widthSize,
+                                        false,
+                                        fragmentDismissListener,
+                                        this@MainActivity,
+                                        this@MainActivity,
+                                        communicationService
+                                    ).apply { show(supportFragmentManager, "Debug") }
 
-                                   systemDialogFragment?.isCancelable = false
-                               }
+                                    systemDialogFragment?.isCancelable = false
+                                }
 
-                           } ?: kotlin.run {
-                               highlightButton(buttonPreopCheck)
+                            } ?: kotlin.run {
+                                highlightButton(buttonPreopCheck)
 
-                               systemDialogFragment = SystemDialogFragment.newInstance(
-                                   heightSize,
-                                   widthSize,
-                                   false,
-                                   fragmentDismissListener,
-                                   this@MainActivity,
-                                   this@MainActivity,
-                                   communicationService
-                               ).apply { show(supportFragmentManager, "Debug") }
+                                systemDialogFragment = SystemDialogFragment.newInstance(
+                                    heightSize,
+                                    widthSize,
+                                    false,
+                                    fragmentDismissListener,
+                                    this@MainActivity,
+                                    this@MainActivity,
+                                    communicationService
+                                ).apply { show(supportFragmentManager, "Debug") }
 
-                               systemDialogFragment?.isCancelable = false
-                           }
+                                systemDialogFragment?.isCancelable = false
+                            }
                         }
 
                         "Stop Debug" -> {
@@ -3003,7 +3001,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
                                 if (it.isVisible) {
                                     it.switchBetweenDebugAndDiagnosticWindow("Diagnostic")
-                                }else {
+                                } else {
                                     highlightButton(buttonPreopCheck)
 
                                     systemDialogFragment = SystemDialogFragment.newInstance(
@@ -3541,7 +3539,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             it.setTextColor(ContextCompat.getColor(this, R.color.black))
         }
         setPaddingOnButtons()
-
     }
 
     private fun isVentilatorInStandby(): Boolean = intent.getBooleanExtra(IS_STAND_BY, false)
@@ -3550,7 +3547,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         val ventMode = prefManager?.readLastVentMode()
         return ventMode != null && isValidVentilatorMode(this@MainActivity, ventMode)
     }
-
 
     private fun showCalibrationErrorDialog(dialogDisplayMessage: String) {
 
@@ -3603,7 +3599,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     }
 
     private fun showCalibrationDialog(dialogDisplayMessage: String) {
-
         if (calibrationConfirmDialog?.isShowing() == true) return;
         calibrationConfirmDialog =
             DialogBoxFactory.showCalibrationStatusDialog(
@@ -5566,10 +5561,9 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         override fun onStateChange(isActive: Boolean, type: ControlSettingType, position: Int) {
 
 
-
-                if (type == ControlSettingType.BACKUP) prefManager?.setApneaSettingsStatusTemp(
-                    isActive
-                )
+            if (type == ControlSettingType.BACKUP) prefManager?.setApneaSettingsStatusTemp(
+                isActive
+            )
 
         }
 
@@ -5716,10 +5710,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     override fun onStateChange(isActive: Boolean, type: ControlSettingType, position: Int) {
 
 
-           if (type == ControlSettingType.BACKUP) prefManager?.setApneaSettingsStatus(isActive)
-
-
-
+        if (type == ControlSettingType.BACKUP) prefManager?.setApneaSettingsStatus(isActive)
 
 
     }

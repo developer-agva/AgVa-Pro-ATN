@@ -285,10 +285,10 @@ class AdvancedCalibrationFragment(private var communicationService: Communicatio
                 hideGoneFunction(false)
                 currentTag = "Insp Flow"
                 tvMainTitleAdvancedCalib.text = "Insp Flow sensor pre-calibration check"
-                tvtext1AdvancedCalib.text = "1. Connect calibration tubing"
+                tvtext1AdvancedCalib.text = "1. Connect external flow calibrator to inspiratory port"
                 tvtext2AdvancedCalib.text = "2. Make sure the ventilator is connected to mains supply"
                 tvtext3AdvancedCalib.text = ""
-                ventigif.visibility = View.VISIBLE
+                ventigif.visibility = View.GONE
                 capgif.visibility = View.GONE
                 includeButtonSendCmdAdvancedCalib.buttonView.text = "Start calibration"
             }
@@ -299,7 +299,7 @@ class AdvancedCalibrationFragment(private var communicationService: Communicatio
                 hideGoneFunction(false)
                 currentTag = "Leak Test"
                 tvMainTitleAdvancedCalib.text = "System Leak Test"
-                tvtext1AdvancedCalib.text = "1. Connect calibration tubing"
+                tvtext1AdvancedCalib.text = "1. Insert calibration cap at inspiratory port"
                 tvtext2AdvancedCalib.text = "2. Make sure the ventilator is connected to mains supply"
                 tvtext3AdvancedCalib.text = ""
                 capgif.visibility = View.VISIBLE

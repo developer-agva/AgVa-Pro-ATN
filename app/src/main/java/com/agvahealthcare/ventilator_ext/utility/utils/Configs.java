@@ -356,14 +356,19 @@ public interface Configs {
     int MODE_VCV_PRVC = 23;
     int MODE_AUTO_VENTILATION = 24;
     int MODE_VCV_ACV = 25;
+
     int MODE_VCV_VCV = 26;
+
     int MODE_NEONAT_VC_SIMV = 27;
+
     int MODE_NIV = 3;
     int MODE_NIV_CPAP = 31;
     int MODE_NIV_BPAP = 32;
+
     //    int MODE_NC_NCPAP = 38;
     int MODE_NC_IPPV = 33;
     int MODE_NC_CPAP = 34;
+
     int MODE_NIV_AV_BPAP = 35;
 
     int MODE_NIV_NCPAP = 36;
@@ -1392,7 +1397,7 @@ public interface Configs {
                 maxFlow = Integer.parseInt(ctx.getResources().getString(R.string.max_flow_ped));
                 minFiO2Dev = Integer.parseInt(ctx.getResources().getString(R.string.min_fio2_dev));
                 maxFiO2Dev = Integer.parseInt(ctx.getResources().getString(R.string.max_fio2_dev));
-                minTexp = Integer.parseInt(ctx.getResources().getString(R.string.min_texp));
+                minTexp =  VentilatorApp.Companion.getSelectedOptions() == SELECTED_OPTIONS.NON_INVASIVE_NAME ?  Integer.parseInt(ctx.getResources().getString(R.string.min_texp_non_inv)) : Integer.parseInt(ctx.getResources().getString(R.string.min_texp));
                 maxTexp = Integer.parseInt(ctx.getResources().getString(R.string.max_texp));
                 minVti = Integer.valueOf(ctx.getResources().getString(R.string.min_vti_ped));
                 maxVti = Integer.valueOf(ctx.getResources().getString(R.string.max_vti_ped));

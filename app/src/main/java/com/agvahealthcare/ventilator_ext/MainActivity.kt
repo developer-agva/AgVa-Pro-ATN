@@ -2555,8 +2555,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             ).flatten()
         )
 
-
-
         controlParameters[ControlSettingType.BASIC]?.let {
             basicControlParameterList = it
         }
@@ -2575,24 +2573,47 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         controlParameters[ControlSettingType.EtCuff]?.let {
             etCuffControlParameterList = it
         }
-
-        if (requestedModeCode == MODE_NIV_BPAP || requestedModeCode == MODE_NIV_CPAP) {
-            advancedControlParameterList?.filter {
-                it.ventKey == LBL_TEXP
-            }?.apply {
-                this[0].reading = 90.0f.toInt().toString()
-                prefManager?.setTexp(90.0f)
-            }
-        } else {
-            advancedControlParameterList?.filter {
-                it.ventKey == LBL_TEXP
-            }?.apply {
-                if (this.size != 0) {
-                    this[0].reading = 25.0f.toInt().toString()
-                    prefManager?.setTexp(25.0f)
+//Inspiratory Termination Tile change
+        if(VentilatorApp.selectedOptions == SELECTED_OPTIONS.NON_INVASIVE_NAME){
+            if (requestedModeCode == MODE_NIV_BPAP || requestedModeCode == MODE_NIV_CPAP) {
+                advancedControlParameterList?.filter {
+                    it.ventKey == LBL_TEXP
+                }?.apply {
+                    this[0].reading = 90.0f.toInt().toString()
+                    prefManager?.setTexp(90.0f)
+                }
+            } else {
+                advancedControlParameterList?.filter {
+                    it.ventKey == LBL_TEXP
+                }?.apply {
+                    if (this.size != 0) {
+                        this[0].reading = 50.0f.toInt().toString()
+                        prefManager?.setTexp(50.0f)
+                    }
                 }
             }
+
+        }else{
+            if (requestedModeCode == MODE_NIV_BPAP || requestedModeCode == MODE_NIV_CPAP) {
+                advancedControlParameterList?.filter {
+                    it.ventKey == LBL_TEXP
+                }?.apply {
+                    this[0].reading = 90.0f.toInt().toString()
+                    prefManager?.setTexp(90.0f)
+                }
+            } else {
+                advancedControlParameterList?.filter {
+                    it.ventKey == LBL_TEXP
+                }?.apply {
+                    if (this.size != 0) {
+                        this[0].reading = 25.0f.toInt().toString()
+                        prefManager?.setTexp(25.0f)
+                    }
+                }
+            }
+
         }
+
 
         prefManager?.apply {
             if (this@MainActivity.lastUhid != readUHID() && (backupControlParameterList == null || backupControlParameterList?.isEmpty() == true)) {
@@ -5310,7 +5331,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
     private fun renderControlParameterTilesViaPreference() {
         prefManager?.apply {
-
             updateParameter(LBL_PEEP, readPEEP().toInt().toString())
             updateParameter(LBL_TRIG_FLOW, readTrigFlow().toString())
             updateParameter(LBL_PPLAT, readPplat().toInt().toString())
@@ -5327,6 +5347,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             updateParameter(LBL_HR_LIMIT, readHrLimit().toInt().toString())
             updateParameter(LBL_TARGET_VOLUME, readTargetVolume().toInt().toString())
 
+            //Frequency
             updateParameter(LBL_FREQUENCY, readFrequency().toString())
             updateParameter(LBL_FLOW, readFlow().toInt().toString())
             updateParameter(LBL_FIO2_DEV, readFiO2Dev().toInt().toString())
@@ -5336,31 +5357,102 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             updateParameter(LBL_TAPNEA, readTApnea().toString())
             updateParameter(LBL_APNEA_TRIG_FLOW, readTrigFlowApnea().toInt().toString())
             updateParameter(LBL_ET_PRESSURE, readEtPressure().toInt().toString())
+//            updateParameter(LBL_TEXP,readTexp().toInt().toString())
         }
+
+        //Inspiratory Termination tile Change
         prefManager?.apply {
-            if (requestedModeCode == MODE_NIV_CPAP || requestedModeCode == MODE_NIV_BPAP) {
-                // note : we only need to handle first tym value because every time it receives value from preferences
-                if (isKnobPressedForControlTile) updateParameter(
-                    LBL_TEXP,
-                    readTexp().toInt().toString()
-                )
-                else updateParameter(
-                    LBL_TEXP,
-                    90.0f.toInt().toString()
-                )
-            } else {
-                if (isKnobPressedForControlTile) updateParameter(
-                    LBL_TEXP,
-                    readTexp().toInt().toString()
-                )
-                else updateParameter(
-                    LBL_TEXP,
-                    25.0f.toInt().toString()
-                )
+            if(VentilatorApp.selectedOptions == SELECTED_OPTIONS.NON_INVASIVE_NAME){
+                if (requestedModeCode == MODE_NIV_CPAP || requestedModeCode == MODE_NIV_BPAP) {
+                    // note : we only need to handle first tym value because every time it receives value from preferences
+                    if (isKnobPressedForControlTile) updateParameter(
+                        LBL_TEXP,
+                        readTexp().toInt().toString()
+                    )
+                    else updateParameter(
+                        LBL_TEXP,
+                        90.0f.toInt().toString()
+                    )
+                } else {
+                    if (isKnobPressedForControlTile) updateParameter(
+                        LBL_TEXP,
+                        readTexp().toInt().toString()
+                    )
+                    else updateParameter(
+                        LBL_TEXP,
+                        50.0f.toInt().toString()
+                    )
+                }
+            }else{
+                if (requestedModeCode == MODE_NIV_CPAP || requestedModeCode == MODE_NIV_BPAP) {
+                    // note : we only need to handle first tym value because every time it receives value from preferences
+                    if (isKnobPressedForControlTile) updateParameter(
+                        LBL_TEXP,
+                        readTexp().toInt().toString()
+                    )
+                    else updateParameter(
+                        LBL_TEXP,
+                        90.0f.toInt().toString()
+                    )
+                } else {
+                    if (isKnobPressedForControlTile) updateParameter(
+                        LBL_TEXP,
+                        readTexp().toInt().toString()
+                    )
+                    else updateParameter(
+                        LBL_TEXP,
+                        25.0f.toInt().toString()
+                    )
+                }
             }
         }
-    }
 
+
+//        prefManager?.apply {
+//            if (VentilatorApp.selectedOptions == SELECTED_OPTIONS.NON_INVASIVE_NAME) {
+//                // note : we only need to handle first tym value because every time it receives value from preferences
+//                if(requestedModeCode == MODE_NIV_BPAP || requestedModeCode == MODE_NIV_CPAP){
+//                    if (isKnobPressedForControlTile) updateParameter(
+//                        LBL_TEXP,
+//                        readTexp().toInt().toString()
+//                    )
+//                    else updateParameter(
+//                        LBL_TEXP,
+//                        90.0f.toInt().toString()
+//                    )
+//                }else{
+//                    if (isKnobPressedForControlTile) updateParameter(
+//                        LBL_TEXP,
+//                        readTexp().toInt().toString()
+//                    )
+//                    else updateParameter(
+//                        LBL_TEXP,
+//                        50.0f.toInt().toString()
+//                    )
+//                }
+//            } else {
+//                if(requestedModeCode == MODE_NIV_BPAP || requestedModeCode == MODE_NIV_CPAP){
+//                    if (isKnobPressedForControlTile) updateParameter(
+//                        LBL_TEXP,
+//                        readTexp().toInt().toString()
+//                    )
+//                    else updateParameter(
+//                        LBL_TEXP,
+//                        90.0f.toInt().toString()
+//                    )
+//                }else{
+//                    if (isKnobPressedForControlTile) updateParameter(
+//                        LBL_TEXP,
+//                        readTexp().toInt().toString()
+//                    )
+//                    else updateParameter(
+//                        LBL_TEXP,
+//                        50.0f.toInt().toString()
+//                    )
+//                }
+//            }
+//        }
+    }
     private fun highlightButton(btn: AppCompatButton) {
         normaliseButtons()
         btn.apply {

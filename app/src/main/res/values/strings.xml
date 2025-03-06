@@ -613,7 +613,6 @@
 
     <!--For Testing Purpose-->
     <string name="min_texp">5</string>
-    <string name="min_texp_non_inv">50</string>
     <string name="max_texp">95</string>
 
     <string name="default_peep">5</string>

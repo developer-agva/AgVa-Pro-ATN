@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="40dp"
     android:orientation="horizontal"
     android:id="@+id/layoutid"
-    android:weightSum="1">
+    android:weightSum="1"
+    tools:ignore="MissingDefaultResource">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textStartAlarmDate"

@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mainViewPanelLimitOne"
-    android:background="@drawable/background_light_grey_border_grey">
+    android:background="@drawable/background_light_grey_border_grey"
+    tools:ignore="MissingDefaultResource">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/focusLayoutLimitOne"
@@ -236,7 +237,7 @@
             android:layout_marginTop="@dimen/_5sdp" />
 
         <include
-            android:id="@+id/includePressure"
+            android:id="@+id/includePipBar"
             layout="@layout/content_vertical_progress_bar_layout"
             android:layout_width="10dp"
             android:layout_height="180dp"
@@ -314,7 +315,7 @@
             android:layout_marginTop="@dimen/_5sdp" />
 
         <include
-            android:id="@+id/includePressure"
+            android:id="@+id/includeVteBar"
             layout="@layout/content_vertical_progress_bar_layout"
             android:layout_width="10dp"
             android:layout_height="180dp"
@@ -357,7 +358,6 @@
             app:textOff="DEACTIVATED"
             app:textOn="ACTIVATED" />
 
-
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 
@@ -391,7 +391,7 @@
             android:layout_marginTop="@dimen/_5sdp" />
 
         <include
-            android:id="@+id/includePressure"
+            android:id="@+id/includePeepBar"
             layout="@layout/content_vertical_progress_bar_layout"
             android:layout_width="10dp"
             android:layout_height="180dp"
@@ -468,13 +468,12 @@
             android:layout_marginTop="@dimen/_5sdp" />
 
         <include
-            android:id="@+id/includePressure"
+            android:id="@+id/includeRRBar"
             layout="@layout/content_vertical_progress_bar_layout"
             android:layout_width="10dp"
             android:layout_height="180dp"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/_5sdp" />
-
 
         <include
             android:id="@+id/includeRRLowerLimit"
@@ -546,7 +545,7 @@
             android:layout_marginTop="@dimen/_5sdp" />
 
         <include
-            android:id="@+id/includePressure"
+            android:id="@+id/includeMveBar"
             layout="@layout/content_vertical_progress_bar_layout"
             android:layout_width="10dp"
             android:layout_height="180dp"

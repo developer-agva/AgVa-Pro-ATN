@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_main"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:background="@color/white"
+    android:orientation="horizontal"
+    tools:ignore="MissingDefaultResource">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/cell_stand_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/_9sdp"
+        android:layout_weight="0.2"
+        android:gravity="left"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        tools:text="17:16" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/cell_stand_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/_4sdp"
+        android:layout_weight="0.5"
+        android:gravity="left"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        tools:text="Brooklyn Lemonade" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/cell_stand_priority"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/_9sdp"
+        android:layout_weight="0.3"
+        android:gravity="left"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        tools:text="High" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/cell_stand_status"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="16dp"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:visibility="gone"
+        tools:text="Open" />
+    <!--<View
+        android:layout_alignParentTop="true"
+        android:background="@color/grey"
+        android:layout_width = "match_parent"
+        android:layout_height="0.3dp"/>-->
+
+</androidx.appcompat.widget.LinearLayoutCompat>

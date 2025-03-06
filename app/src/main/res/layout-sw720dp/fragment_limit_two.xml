@@ -108,7 +108,6 @@
         app:layout_constraintStart_toStartOf="@id/limitOneVertical3"
         app:layout_constraintTop_toTopOf="@id/limitTwoHorizontal3" />
 
-
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/layoutPanelOxygen"
         android:layout_width="wrap_content"
@@ -140,7 +139,7 @@
             android:layout_marginTop="@dimen/_5sdp" />
 
         <include
-            android:id="@+id/includePressure"
+            android:id="@+id/includeFio2Bar"
             layout="@layout/content_vertical_progress_bar_layout"
             android:layout_width="10dp"
             android:layout_height="180dp"
@@ -216,7 +215,7 @@
             android:layout_marginTop="@dimen/_5sdp" />
 
         <include
-            android:id="@+id/includePressure"
+            android:id="@+id/includeSpo2Bar"
             layout="@layout/content_vertical_progress_bar_layout"
             android:layout_width="10dp"
             android:layout_height="180dp"
@@ -294,30 +293,6 @@
             android:textSize="@dimen/_4sdp"
             android:theme="@style/subheading_text_style" />
 
-        <include
-            android:id="@+id/includePressure"
-            layout="@layout/knob_progress_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/_10sdp" />
-
-        <include
-            android:id="@+id/includePressure"
-            layout="@layout/content_vertical_progress_bar_layout"
-            android:layout_width="30dp"
-            android:layout_height="180dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/_5sdp" />
-
-
-        <include
-            android:id="@+id/includePressure"
-            layout="@layout/knob_progress_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/_5sdp" />
 
         <com.github.angads25.toggle.widget.LabeledSwitch
             android:layout_width="140dp"

@@ -6,7 +6,8 @@
     android:layout_width="@dimen/_40sdp"
     android:layout_height="@dimen/_40sdp"
     android:layout_margin="@dimen/_3sdp"
-    android:background="@drawable/background_black">
+    android:background="@drawable/background_black"
+    tools:ignore="MissingDefaultResource">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textViewLabel"

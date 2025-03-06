@@ -13,7 +13,6 @@ import com.agvahealthcare.ventilator_ext.dashboard.DashBoardViewModel
 import com.agvahealthcare.ventilator_ext.logging.FileLogger
 import com.agvahealthcare.ventilator_ext.logs.trends.DataFromDataBaseAdapter
 import com.agvahealthcare.ventilator_ext.logs.trends.ParameterAndUnitsAdapter
-import com.agvahealthcare.ventilator_ext.utility.ToastFactory
 import kotlinx.android.synthetic.main.fragment_logs_table_demo.*
 
 class LogsTrendsFragment : Fragment(), View.OnClickListener {

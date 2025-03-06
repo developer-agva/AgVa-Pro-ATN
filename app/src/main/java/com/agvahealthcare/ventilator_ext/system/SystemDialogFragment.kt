@@ -14,7 +14,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.callback.*
-import com.agvahealthcare.ventilator_ext.databinding.FragmentModeDialogBinding
 import com.agvahealthcare.ventilator_ext.databinding.FragmentSystemDialogBinding
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.service.CommunicationService
@@ -74,7 +73,6 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
     }
 
     private var passWord = ""
-
     private var closeListener: OnDismissDialogListener? = null
     private var communicationService: CommunicationService? = null
     private var calibrationOxygen: OnCalibrationOxygen? = null
@@ -97,7 +95,6 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
     fun getTestCalibFragment(): TestCalibrationFragment? = testCalibrationFragment
     fun getaAdvancedFragment(): AdvancedCalibrationFragment? = advancedCalibrationFragment
     fun getUpdateDeviceFragment(): DeviceUpdateFragment? = updateDeviceFragment
-
 
     // knob highlight logic starts here
     var sizeOfCurrentArray = 0
@@ -363,7 +360,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
 
             sizeOfCurrentArray + 14 -> {
                 if (binding.includeButtonOTA.contentButtonNormalLayout.isVisible) {
-                    binding.includeButtonOTA.buttonView
+                    binding.includeButtonOTA.root
                 } else {
                     isMinus?.let {
                         if (isMinus) highlightViewWithFocus("-") else highlightViewWithFocus("+")
@@ -404,14 +401,13 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View {
         binding = FragmentSystemDialogBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         super.onViewCreated(view, savedInstanceState)
 
         preferenceManager = PreferenceManager(requireContext())
@@ -492,30 +488,29 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
 
         if (tag == "FromSplash") {
             showServiceFragment()
-
             enableAllTabs(false)
 
         } else if (tag == "Diagnostic") {
             showDiagnosticFragment()
-
             binding.includeButtonDiagchk.contentButtonNormalLayout.visibility = View.VISIBLE
             binding.includeButtonO2Regulate.contentButtonNormalLayout.visibility = View.VISIBLE
             binding.includeButtondeviceUpdate.contentButtonNormalLayout.visibility = View.VISIBLE
             binding.includeButtonAdvancedCalibration.contentButtonNormalLayout.visibility = View.VISIBLE
             enableAllTabs(true)
+
         } else if (tag == "Debug") {
             setupDebugFragment()
-
             binding.includeButtonNetworkInfo.contentButtonNormalLayout.visibility = View.VISIBLE
             binding.includeButtonDebug.contentButtonNormalLayout.visibility = View.VISIBLE
             binding.includeButtonWifi.contentButtonNormalLayout.visibility = View.VISIBLE
             binding.includeButtonOTA.contentButtonNormalLayout.visibility = View.VISIBLE
             enableAllTabs(true)
+
         } else {
             if (arguments?.getString("CALIBRATE_CIRCUIT") == "TouchHere") setupTubeFragment()
             else showInfoFragment(communicationService)
-
             enableAllTabs(true)
+
         }
         setupClickListener()
     }
@@ -563,8 +558,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         binding.includeButtonOTA.buttonView.text = getString(R.string.hint_ota)
         binding.includeButtonDiagchk.buttonView.text = getString(R.string.hint_diagnos)
         binding.includeButtonO2Regulate.buttonView.text = getString(R.string.hint_reg_o2)
-        binding.includeButtonAdvancedCalibration.buttonView.text =
-            getString(R.string.hint_advanced_calib)
+        binding.includeButtonAdvancedCalibration.buttonView.text = getString(R.string.hint_advanced_calib)
         binding.includeButtonService.buttonView.text = getString(R.string.hint_service)
         binding.includeButtonStartup.buttonView.text = getString(R.string.startup)
         binding.includeButtondeviceUpdate.buttonView.text = getString(R.string.hint_update)
@@ -572,7 +566,6 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         binding.includeButtonWifi.buttonView.text = getString(R.string.wifi)
 
         binding.imageViewCrossSystem.setOnClickListener {
-
             closeFragment()
         }
 
@@ -587,6 +580,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         binding.includeButtonTube.buttonView.setOnClickListener {
             setupTubeFragment()
         }
+
         binding.includeButtondeviceUpdate.buttonView.setOnClickListener {
             showDeviceUpdateFragment()
         }
@@ -602,6 +596,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         binding.includeButtonDiagchk.buttonView.setOnClickListener {
             showDiagnosticFragment()
         }
+
         binding.includeButtonO2Regulate.buttonView.setOnClickListener {
             showO2RegulationFragment()
         }
@@ -617,6 +612,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         binding.includeButtonService.buttonView.setOnClickListener {
             showServiceFragment()
         }
+
         binding.includeButtonWifi.buttonView.setOnClickListener {
             showWifiFragment()
         }
@@ -631,7 +627,6 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         testCalibrationFragment?.apply {
             replaceFragment(this, TAG, R.id.system_nav_container)
         }
-
         highlightButton(binding.includeButtonTestCalib.buttonView)
     }
 
@@ -647,7 +642,6 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                 R.id.system_nav_container
             )
         }
-
         highlightButton(binding.includeButtonStartup.buttonView)
     }
 
@@ -723,7 +717,6 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                 R.id.system_nav_container
             )
         }
-
         highlightButton(binding.includeButtonNetworkInfo.buttonView)
     }
 
@@ -822,7 +815,6 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         infoFragment?.apply {
             replaceFragment(this, TAG, R.id.system_nav_container)
         }
-
         highlightButton(binding.includeButtonInfo.buttonView)
     }
 
@@ -834,7 +826,6 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         wifiFragment?.apply {
             replaceFragment(this, TAG, R.id.system_nav_container)
         }
-
         highlightButton(binding.includeButtonWifi.buttonView)
     }
 

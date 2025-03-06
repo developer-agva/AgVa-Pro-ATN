@@ -31,6 +31,7 @@ import com.agvahealthcare.ventilator_ext.connection.support_threads.HandshakingT
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardActivity
 import com.agvahealthcare.ventilator_ext.dashboard.adapter.PrimaryObservedParameterClickListener
 import com.agvahealthcare.ventilator_ext.database.entities.EventDataModel
+import com.agvahealthcare.ventilator_ext.databinding.ActivitySplashBinding
 import com.agvahealthcare.ventilator_ext.exceptions.AppLevelExceptionHandler
 import com.agvahealthcare.ventilator_ext.location.DefaultLocationClient
 import com.agvahealthcare.ventilator_ext.location.LocationClient
@@ -51,9 +52,6 @@ import com.agvahealthcare.ventilator_ext.utility.utils.IntentFactory
 import com.agvahealthcare.ventilator_ext.utility.utils.LocationFilter
 import com.google.android.gms.location.LocationServices
 import io.socket.client.Socket
-import kotlinx.android.synthetic.main.activity_dashboard.*
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_splash.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
@@ -71,6 +69,7 @@ const val apkUrl =
 class SplashActivity : AppCompatActivity(), SimpleCallbackListener,
     PrimaryObservedParameterClickListener {
 
+    private lateinit var binding: ActivitySplashBinding
     companion object {
         const val PERMISSION_REQUEST_STORAGE = 0
     }
@@ -253,11 +252,11 @@ class SplashActivity : AppCompatActivity(), SimpleCallbackListener,
                     val hid = intent.getBooleanExtra(USB_HID_DATA, false)
                     val venti = intent.getBooleanExtra(USB_VENTILATOR_DATA, false)
 
-                    if (!hid) cvHideConnection.setImageResource(R.color.red)
-                    else cvHideConnection.setImageResource(R.color.ack_green)
+                    if (!hid) binding.cvHideConnection.setImageResource(R.color.red)
+                    else binding.cvHideConnection.setImageResource(R.color.ack_green)
 
-                    if (!venti) cvVentilatorConnection.setImageResource(R.color.red)
-                    else cvVentilatorConnection.setImageResource(R.color.ack_green)
+                    if (!venti) binding.cvVentilatorConnection.setImageResource(R.color.red)
+                    else binding.cvVentilatorConnection.setImageResource(R.color.ack_green)
 
                     Log.i("check_connections", "$hid -- $venti")
                 }
@@ -298,7 +297,7 @@ class SplashActivity : AppCompatActivity(), SimpleCallbackListener,
                                             isActivitySwitching = true
                                             checkVentDataTimer?.onFinish()
                                             if (preferenceManager?.readLastVentMode() != -1) {
-                                                tvUpdateMsg.text =
+                                                binding.tvUpdateMsg.text =
                                                     getString(R.string.hint_entering_ventilation)
                                                 Intent(
                                                     this@SplashActivity,
@@ -348,7 +347,7 @@ class SplashActivity : AppCompatActivity(), SimpleCallbackListener,
                     isHandshakingCompleted = true
 
                     runOnUiThread {
-                        tvUpdateMsg.text = getString(R.string.hint_handshake_completed)
+                        binding.tvUpdateMsg.text = getString(R.string.hint_handshake_completed)
                     }
 
                     if (preferenceManager?.readVentiConfigSetupStatus() == true) {
@@ -396,8 +395,8 @@ class SplashActivity : AppCompatActivity(), SimpleCallbackListener,
                         }
 
                     } else {
-                        layoutProgressCalib1.visibility = View.VISIBLE
-                        tv_calib_UpdateMsg1.text =
+                        binding.layoutProgressCalib1.visibility = View.VISIBLE
+                        binding.tvCalibUpdateMsg1.text =
                             "System will auto restart in 10 seconds to complete process successfully"
                         addEvents(
                             "Handshake Timeout, Initiating System Reboot Process",
@@ -423,7 +422,7 @@ class SplashActivity : AppCompatActivity(), SimpleCallbackListener,
                             dataStoreManager?.saveStartUpCheckValue(it)
 
                             if (dataStoreManager?.getStartUpCheckFlag()?.first() == true) {
-                                tvUpdateMsg.text = getString(R.string.hint_entering_standby)
+                                binding.tvUpdateMsg.text = getString(R.string.hint_entering_standby)
 
                                 dataStoreManager?.saveStartUpCheckFlag(false)
 
@@ -481,7 +480,7 @@ class SplashActivity : AppCompatActivity(), SimpleCallbackListener,
                                     delay(250L)
 
                                     if (dataStoreManager?.getStartUpCheckFlag()?.first() == false) {
-                                        tvUpdateMsg.text = getString(R.string.hint_entering_standby)
+                                        binding.tvUpdateMsg.text = getString(R.string.hint_entering_standby)
 
                                         // Dismiss progress bar after 2 seconds
                                         if (isActivitySwitching != true) {
@@ -524,7 +523,7 @@ class SplashActivity : AppCompatActivity(), SimpleCallbackListener,
                                         delay(250L)
 
                                         if (dataStoreManager?.getStartUpCheckFlag()?.first() == false) {
-                                            tvUpdateMsg.text = getString(R.string.hint_entering_standby)
+                                            binding.tvUpdateMsg.text = getString(R.string.hint_entering_standby)
 
                                             // Dismiss progress bar after 2 seconds
                                             if (isActivitySwitching != true) {
@@ -561,7 +560,7 @@ class SplashActivity : AppCompatActivity(), SimpleCallbackListener,
                             }
 
                             ACK_CODE_4011 -> {
-                                tvUpdateMsg.text = getString(R.string.hint_entering_standby)
+                                binding.tvUpdateMsg.text = getString(R.string.hint_entering_standby)
                                 Log.i("STANDBY", "Standby is false");
 
                                 // Dismiss progress bar after 2 seconds
@@ -599,7 +598,7 @@ class SplashActivity : AppCompatActivity(), SimpleCallbackListener,
 
     private val serviceListener = object : SimpleCallbackListener {
         override fun doAction() {
-            layoutService.visibility = View.VISIBLE
+            binding.layoutService.visibility = View.VISIBLE
         }
     }
 
@@ -640,7 +639,9 @@ class SplashActivity : AppCompatActivity(), SimpleCallbackListener,
         super.onCreate(savedInstanceState)
 
         // restart app after crashing
-
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        binding = ActivitySplashBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         mSplashActivityViewModel = ViewModelProvider(this).get(SplashActivityViewModel::class.java)
         dataStingForConfig = intent.getStringExtra(Configs.CONFIGS_STRING).toString()
 
@@ -681,9 +682,7 @@ class SplashActivity : AppCompatActivity(), SimpleCallbackListener,
             }
             .launchIn(serviceScope)
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE)
 
-        setContentView(R.layout.activity_splash)
 
         AppUtils.keepScreenAlive(this@SplashActivity, true)
 
@@ -693,12 +692,12 @@ class SplashActivity : AppCompatActivity(), SimpleCallbackListener,
 
         CoroutineScope(Dispatchers.Main).launch {
             if (dataStoreManager?.getCurrentActivity()?.first() == "Dash") {
-                dashsplashSecondaryLayout.visibility = View.VISIBLE
-                splashMainLayout.visibility = View.GONE
+                binding.dashsplashSecondaryLayout.visibility = View.VISIBLE
+                binding.splashMainLayout.visibility = View.GONE
 
             } else {
-                dashsplashSecondaryLayout.visibility = View.GONE
-                splashMainLayout.visibility = View.VISIBLE
+                binding.dashsplashSecondaryLayout.visibility = View.GONE
+                binding.splashMainLayout.visibility = View.VISIBLE
             }
         }
 
@@ -726,8 +725,8 @@ class SplashActivity : AppCompatActivity(), SimpleCallbackListener,
         getVentilatorDetailsApi()
 
         // setting app version
-        tvVersion.text = "${getString(R.string.hint_version)}  ${VentilatorApp.getInstance()?.getVersion()}"
-        btnService.setOnClickListener {
+        binding.tvVersion.text = "${getString(R.string.hint_version)}  ${VentilatorApp.getInstance()?.getVersion()}"
+        binding.btnService.setOnClickListener {
             systemDialogFragment = SystemDialogFragment.newInstance(
                 heightSize,
                 widthSize,
@@ -834,8 +833,8 @@ class SplashActivity : AppCompatActivity(), SimpleCallbackListener,
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
 
-        heightSize = layoutPanelSplash.height
-        widthSize = layoutPanelSplash.width
+        heightSize = binding.layoutPanelSplash.height
+        widthSize = binding.layoutPanelSplash.width
         hideSystemUI()
     }
 
@@ -934,7 +933,6 @@ class SplashActivity : AppCompatActivity(), SimpleCallbackListener,
 //                isSplashTimerRunning = false
 //            }, SPLASH_SCREEN_LIFE)
 //        }
-
 //    }
 
     private fun validateConnectionState() {
@@ -1027,21 +1025,21 @@ class SplashActivity : AppCompatActivity(), SimpleCallbackListener,
     }
 
     private fun showDisconnectState() {
-        layoutProgress.visibility = View.GONE
+        binding.layoutProgress.visibility = View.GONE
         //  progressBar.progress = 0
-        tvSwitchOffMsg.text = getString(R.string.press_switch_onn_manually)
-        layoutVentiSwitchOff.visibility = View.VISIBLE
+        binding.tvSwitchOffMsg.text = getString(R.string.press_switch_onn_manually)
+        binding.layoutVentiSwitchOff.visibility = View.VISIBLE
     }
 
     private fun showConnectState() {
-        layoutVentiSwitchOff.visibility = View.GONE
+        binding.layoutVentiSwitchOff.visibility = View.GONE
         //   progressBar.progress = 0
-        layoutProgress.visibility = View.VISIBLE
+        binding.layoutProgress.visibility = View.VISIBLE
     }
 
     private fun showTimeoutState() {
-        layoutVentiSwitchOff.visibility = View.GONE
-        layoutProgress.visibility = View.GONE
+        binding.layoutVentiSwitchOff.visibility = View.GONE
+        binding.layoutProgress.visibility = View.GONE
         //  progressBar.progress = 0
     }
 
@@ -1116,7 +1114,7 @@ class SplashActivity : AppCompatActivity(), SimpleCallbackListener,
     }
 
     override fun doAction() {
-        layoutService.visibility = View.VISIBLE
+        binding.layoutService.visibility = View.VISIBLE
     }
 }
 

@@ -11,6 +11,7 @@ import com.agvahealthcare.ventilator_ext.api.ServerLogger
 import com.agvahealthcare.ventilator_ext.api.model.statusDataModel.StatusRequestModel
 import com.agvahealthcare.ventilator_ext.dashboard.BaseActivity
 import com.agvahealthcare.ventilator_ext.database.entities.EventDataModel
+import com.agvahealthcare.ventilator_ext.databinding.ActivityShutDownBinding
 import com.agvahealthcare.ventilator_ext.logs.event.EventViewModel
 import com.agvahealthcare.ventilator_ext.manager.DataStoreManager
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
@@ -19,7 +20,6 @@ import com.agvahealthcare.ventilator_ext.utility.ToastFactory
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.RUNNING_STATUS_INACTIVE
 import com.agvahealthcare.ventilator_ext.utility.utils.LocationFilter
-import kotlinx.android.synthetic.main.activity_splash.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -33,12 +33,14 @@ class ShutDownActivity : BaseActivity() {
     private var dataStoreManager : DataStoreManager? = null
     private var prefManager:PreferenceManager? = null
     private var mEventViewModel: EventViewModel? = null
+    private lateinit var binding: ActivityShutDownBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_shut_down)
-        tvVersion.text = "${getString(R.string.hint_version)}  ${VentilatorApp.getInstance()?.getVersion()}"
+        binding = ActivityShutDownBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        binding.tvVersion.text = "${getString(R.string.hint_version)}  ${VentilatorApp.getInstance()?.getVersion()}"
         dataStoreManager = DataStoreManager(this@ShutDownActivity)
         prefManager = PreferenceManager(this@ShutDownActivity)
         mEventViewModel = ViewModelProvider(this)[EventViewModel::class.java]

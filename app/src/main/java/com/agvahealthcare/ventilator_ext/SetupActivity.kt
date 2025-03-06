@@ -9,41 +9,14 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.agvahealthcare.ventilator_ext.api.ServerLogger
 import com.agvahealthcare.ventilator_ext.dashboard.BaseActivity
+import com.agvahealthcare.ventilator_ext.databinding.ActivitySetupBinding
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.system.settings.CommonSetupAdapter
 import com.agvahealthcare.ventilator_ext.system.settings.onDropDownSelectionListener
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs
-import kotlinx.android.synthetic.main.activity_setup.btnFinishSetup
-import kotlinx.android.synthetic.main.activity_setup.flowLayoutExp
-import kotlinx.android.synthetic.main.activity_setup.flowLayoutInsp
-import kotlinx.android.synthetic.main.activity_setup.nebulizerTypeLayout
-import kotlinx.android.synthetic.main.activity_setup.neoPcbTypeLayout
-import kotlinx.android.synthetic.main.activity_setup.neonateSensorLayout
-import kotlinx.android.synthetic.main.activity_setup.oxygenConcentratorLayout
-import kotlinx.android.synthetic.main.activity_setup.oxygenLayout
-import kotlinx.android.synthetic.main.activity_setup.pressureLayoutOne
-import kotlinx.android.synthetic.main.activity_setup.pressureLayoutThree
-import kotlinx.android.synthetic.main.activity_setup.pressureLayoutTwo
-import kotlinx.android.synthetic.main.activity_setup.setupLayout
-import kotlinx.android.synthetic.main.activity_setup.setupRecyclerView
-import kotlinx.android.synthetic.main.activity_setup.spo2SensorLayout
-import kotlinx.android.synthetic.main.activity_setup.txtFlowExpValue
-import kotlinx.android.synthetic.main.activity_setup.txtFlowInspValue
-import kotlinx.android.synthetic.main.activity_setup.txtNebulizerTypeValue
-import kotlinx.android.synthetic.main.activity_setup.txtNeoPCBTypeValue
-import kotlinx.android.synthetic.main.activity_setup.txtNeonateSensorValue
-import kotlinx.android.synthetic.main.activity_setup.txtOxygenConcentratorValue
-import kotlinx.android.synthetic.main.activity_setup.txtOxygenValue
-import kotlinx.android.synthetic.main.activity_setup.txtPressureOneValue
-import kotlinx.android.synthetic.main.activity_setup.txtPressureThreeValue
-import kotlinx.android.synthetic.main.activity_setup.txtPressureTwoValue
-import kotlinx.android.synthetic.main.activity_setup.txtSpo2SensorValue
-import kotlinx.android.synthetic.main.activity_setup.txtValveValue
-import kotlinx.android.synthetic.main.activity_setup.valveLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-
 
 class SetupActivity : BaseActivity(), onDropDownSelectionListener {
 
@@ -74,18 +47,20 @@ class SetupActivity : BaseActivity(), onDropDownSelectionListener {
     private var mAdapter: CommonSetupAdapter? = null
     private var commonList = ArrayList<String>()
     private var prefManager: PreferenceManager? = null
+    private lateinit var binding:ActivitySetupBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_setup)
+        binding = ActivitySetupBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         prefManager = PreferenceManager(this)
 
         // navigate to splash if flag is true
         if (prefManager?.readVentiConfigSetupStatus() == true) navigateToSplash("")
 
-        setupLayout.setOnClickListener {
-            setupRecyclerView.visibility = View.GONE
+        binding.setupLayout.setOnClickListener {
+            binding.setupRecyclerView.visibility = View.GONE
         }
 
         setOnClickListeners()
@@ -110,17 +85,17 @@ class SetupActivity : BaseActivity(), onDropDownSelectionListener {
 
     private fun updateViewViaPreferences() {
         prefManager?.apply {
-            txtPressureOneValue.text = readPressureSensorOne()
-            txtPressureTwoValue.text = readPressureSensorTwo()
-            txtPressureThreeValue.text = readPressureSensorThree()
-            txtFlowInspValue.text = readInspFlowSensor()
-            txtFlowExpValue.text = readExpFlowSensor()
-            txtOxygenValue.text = readOxySensor()
-            txtNeonateSensorValue.text = readNeoSensor()
-            txtSpo2SensorValue.text = readSpo2Sensor()
-            txtValveValue.text = readPropValve()
-            txtNeoPCBTypeValue.text = readNeoPCBType()
-            txtNebulizerTypeValue.text = readNebType()
+            binding.txtPressureOneValue.text = readPressureSensorOne()
+            binding.txtPressureTwoValue.text = readPressureSensorTwo()
+            binding.txtPressureThreeValue.text = readPressureSensorThree()
+            binding.txtFlowInspValue.text = readInspFlowSensor()
+            binding.txtFlowExpValue.text = readExpFlowSensor()
+            binding.txtOxygenValue.text = readOxySensor()
+            binding.txtNeonateSensorValue.text = readNeoSensor()
+            binding.txtSpo2SensorValue.text = readSpo2Sensor()
+            binding.txtValveValue.text = readPropValve()
+            binding.txtNeoPCBTypeValue.text = readNeoPCBType()
+            binding.txtNebulizerTypeValue.text = readNebType()
         }
         updateOxyButton()
     }
@@ -128,22 +103,22 @@ class SetupActivity : BaseActivity(), onDropDownSelectionListener {
     private fun updateOxyButton() {
         prefManager?.apply {
             if (readOxyConcentrator()) {
-                oxygenConcentratorLayout.setBackgroundResource(R.drawable.background_green_border)
-                txtOxygenConcentratorValue.text = "YES"
-                txtOxygenConcentratorValue.setTextColor(resources.getColor(R.color.white))
+                binding.oxygenConcentratorLayout.setBackgroundResource(R.drawable.background_green_border)
+                binding.txtOxygenConcentratorValue.text = "YES"
+                binding.txtOxygenConcentratorValue.setTextColor(resources.getColor(R.color.white))
             } else {
-                oxygenConcentratorLayout.setBackgroundResource(R.drawable.background_offwhite_border_none)
-                txtOxygenConcentratorValue.text = "NO"
-                txtOxygenConcentratorValue.setTextColor(resources.getColor(R.color.black))
+                binding.oxygenConcentratorLayout.setBackgroundResource(R.drawable.background_offwhite_border_none)
+                binding.txtOxygenConcentratorValue.text = "NO"
+                binding.txtOxygenConcentratorValue.setTextColor(resources.getColor(R.color.black))
             }
         }
     }
 
     private fun setupDropDownAdapter() {
 
-        setupRecyclerView.visibility = View.VISIBLE
+        binding.setupRecyclerView.visibility = View.VISIBLE
         mAdapter = CommonSetupAdapter(commonList, this)
-        setupRecyclerView.apply {
+        binding.setupRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@SetupActivity)
             adapter = mAdapter
         }
@@ -158,7 +133,7 @@ class SetupActivity : BaseActivity(), onDropDownSelectionListener {
 
     private fun setOnClickListeners() {
 
-        btnFinishSetup.setOnClickListener {
+        binding.btnFinishSetup.setOnClickListener {
 
             prefManager?.apply {
                 val finalString = "ATP@" +
@@ -181,73 +156,73 @@ class SetupActivity : BaseActivity(), onDropDownSelectionListener {
             }
         }
 
-        pressureLayoutOne.setOnClickListener {
+        binding.pressureLayoutOne.setOnClickListener {
             changeConstraintsOfLayout(it)
             clickedTile = SelectedOption.PRESSURE_SENSOR_ONE
             commonList = pressureSensorList
             setupDropDownAdapter()
         }
-        pressureLayoutTwo.setOnClickListener {
+        binding.pressureLayoutTwo.setOnClickListener {
             changeConstraintsOfLayout(it)
             clickedTile = SelectedOption.PRESSURE_SENSOR_TWO
             commonList = pressureSensorList
             setupDropDownAdapter()
         }
-        pressureLayoutThree.setOnClickListener {
+        binding.pressureLayoutThree.setOnClickListener {
             changeConstraintsOfLayout(it)
             clickedTile = SelectedOption.PRESSURE_SENSOR_THREE
             commonList = pressureSensorList
             setupDropDownAdapter()
         }
-        flowLayoutInsp.setOnClickListener {
+        binding.flowLayoutInsp.setOnClickListener {
             changeConstraintsOfLayout(it)
             clickedTile = SelectedOption.INSP_FLOW_SENSOR
             commonList = flowSensorList
             setupDropDownAdapter()
         }
-        flowLayoutExp.setOnClickListener {
+        binding.flowLayoutExp.setOnClickListener {
             changeConstraintsOfLayout(it)
             clickedTile = SelectedOption.EXP_FLOW_SENSOR
             commonList = flowSensorList
             setupDropDownAdapter()
         }
-        oxygenLayout.setOnClickListener {
+        binding.oxygenLayout.setOnClickListener {
             changeConstraintsOfLayout(it)
             clickedTile = SelectedOption.OXYGEN_SENSOR
             commonList = oxygenSensorList
             setupDropDownAdapter()
         }
-        neonateSensorLayout.setOnClickListener {
+        binding.neonateSensorLayout.setOnClickListener {
             changeConstraintsOfLayout(it)
             clickedTile = SelectedOption.NEO_SENSOR
             commonList = neoSensorList
             setupDropDownAdapter()
         }
-        spo2SensorLayout.setOnClickListener {
+        binding.spo2SensorLayout.setOnClickListener {
             changeConstraintsOfLayout(it)
             clickedTile = SelectedOption.SPO2_SENSOR
             commonList = spo2SensorList
             setupDropDownAdapter()
         }
-        valveLayout.setOnClickListener {
+        binding.valveLayout.setOnClickListener {
             changeConstraintsOfLayout(it)
             clickedTile = SelectedOption.PROPOSTIONAL_VALVE
             commonList = propostionalValveList
             setupDropDownAdapter()
         }
-        neoPcbTypeLayout.setOnClickListener {
+        binding.neoPcbTypeLayout.setOnClickListener {
             changeConstraintsOfLayout(it)
             clickedTile = SelectedOption.NEO_PCB_TYPE
             commonList = neoPCBTypeList
             setupDropDownAdapter()
         }
-        nebulizerTypeLayout.setOnClickListener {
+        binding.nebulizerTypeLayout.setOnClickListener {
             changeConstraintsOfLayout(it)
             clickedTile = SelectedOption.NEB_TYPE
             commonList = nebTypeList
             setupDropDownAdapter()
         }
-        oxygenConcentratorLayout.setOnClickListener {
+        binding.oxygenConcentratorLayout.setOnClickListener {
             prefManager?.apply { setOxyConcentrator(!readOxyConcentrator()) }
             updateOxyButton()
         }
@@ -255,16 +230,16 @@ class SetupActivity : BaseActivity(), onDropDownSelectionListener {
 
     private fun changeConstraintsOfLayout(view: View) {
         val constraintSet = ConstraintSet()
-        constraintSet.clone(setupLayout)
+        constraintSet.clone(binding.setupLayout)
         constraintSet.connect(
-            setupRecyclerView.id,
+            binding.setupRecyclerView.id,
             ConstraintSet.RIGHT,
             view.id,
             ConstraintSet.RIGHT,
             0
         )
         constraintSet.connect(
-            setupRecyclerView.id,
+            binding.setupRecyclerView.id,
             ConstraintSet.TOP,
             view.id,
             ConstraintSet.BOTTOM,
@@ -272,74 +247,74 @@ class SetupActivity : BaseActivity(), onDropDownSelectionListener {
         )
 
         constraintSet.connect(
-            setupRecyclerView.id,
+            binding.setupRecyclerView.id,
             ConstraintSet.LEFT,
             view.id,
             ConstraintSet.LEFT,
             0
         )
-        constraintSet.applyTo(setupLayout)
+        constraintSet.applyTo(binding.setupLayout)
     }
 
     override fun onItemSelect(text: String, colorInt: Int) {
 
-        setupRecyclerView.visibility = View.GONE
+        binding.setupRecyclerView.visibility = View.GONE
         mAdapter = null
 
         prefManager?.apply {
             when (clickedTile) {
                 SelectedOption.PRESSURE_SENSOR_ONE -> {
-                    txtPressureOneValue.text = text
+                    binding.txtPressureOneValue.text = text
                     setPressureSensorOne(text)
                 }
 
                 SelectedOption.PRESSURE_SENSOR_TWO -> {
-                    txtPressureTwoValue.text = text
+                    binding.txtPressureTwoValue.text = text
                     setPressureSensorTwo(text)
                 }
 
                 SelectedOption.PRESSURE_SENSOR_THREE -> {
-                    txtPressureThreeValue.text = text
+                    binding.txtPressureThreeValue.text = text
                     setPressureSensorThree(text)
                 }
 
                 SelectedOption.INSP_FLOW_SENSOR -> {
-                    txtFlowInspValue.text = text
+                    binding.txtFlowInspValue.text = text
                     setInspFlowSensor(text)
                 }
 
                 SelectedOption.EXP_FLOW_SENSOR -> {
-                    txtFlowExpValue.text = text
+                    binding.txtFlowExpValue.text = text
                     setExpFlowSensor(text)
                 }
 
                 SelectedOption.OXYGEN_SENSOR -> {
-                    txtOxygenValue.text = text
+                    binding.txtOxygenValue.text = text
                     setOxySensor(text)
                 }
 
                 SelectedOption.NEO_SENSOR -> {
-                    txtNeonateSensorValue.text = text
+                    binding.txtNeonateSensorValue.text = text
                     setNeoSensor(text)
                 }
 
                 SelectedOption.SPO2_SENSOR -> {
-                    txtSpo2SensorValue.text = text
+                    binding.txtSpo2SensorValue.text = text
                     setSpo2Sensor(text)
                 }
 
                 SelectedOption.PROPOSTIONAL_VALVE -> {
-                    txtValveValue.text = text
+                    binding.txtValveValue.text = text
                     setPropValve(text)
                 }
 
                 SelectedOption.NEO_PCB_TYPE -> {
-                    txtNeoPCBTypeValue.text = text
+                    binding.txtNeoPCBTypeValue.text = text
                     setNeoPCBType(text)
                 }
 
                 SelectedOption.NEB_TYPE -> {
-                    txtNebulizerTypeValue.text = text
+                    binding.txtNebulizerTypeValue.text = text
                     setNebType(text)
                 }
 

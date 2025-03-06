@@ -54,9 +54,6 @@
                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.agvahealthcare.ventilator_ext.utility.utils.CircleProgressView"
-            android:exported="false" />
 
         <activity
             android:name="com.agvahealthcare.ventilator_ext.SetupActivity"

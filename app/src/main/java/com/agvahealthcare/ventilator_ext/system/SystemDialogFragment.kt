@@ -14,6 +14,8 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.callback.*
+import com.agvahealthcare.ventilator_ext.databinding.FragmentModeDialogBinding
+import com.agvahealthcare.ventilator_ext.databinding.FragmentSystemDialogBinding
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.service.CommunicationService
 import com.agvahealthcare.ventilator_ext.system.advanced.AdvancedCalibrationFragment
@@ -35,11 +37,11 @@ import com.agvahealthcare.ventilator_ext.utility.setHeightWidthPercent
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_AND
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_MINUS
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_PLUS
-import kotlinx.android.synthetic.main.content_button_layout.view.buttonView
-import kotlinx.android.synthetic.main.fragment_system_dialog.*
 
+
+// NOTE :  just handle highlight of buttons with root id
 class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleCallbackListener {
-
+    private lateinit var binding: FragmentSystemDialogBinding
     private var preferenceManager: PreferenceManager? = null
 
     companion object {
@@ -182,9 +184,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
             when (data) {
                 PREFIX_PLUS -> {
                     if (highlightedIndex < (sizeOfCurrentArray + 14)) highlightedIndex++
-                    else {
-                        highlightedIndex = 0
-                    }
+                    else { highlightedIndex = 0 }
 
                     getViewForFocus(false)?.let {
                         highlightAdapters(-1, data)
@@ -195,11 +195,8 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                 }
 
                 PREFIX_MINUS -> {
-
                     if (highlightedIndex > 0) highlightedIndex--
-                    else {
-                        highlightedIndex = (sizeOfCurrentArray + 14)
-                    }
+                    else { highlightedIndex = (sizeOfCurrentArray + 14) }
 
                     getViewForFocus(true)?.let {
                         highlightAdapters(-1, data)
@@ -214,7 +211,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                         if (highlightedIndex == sizeOfCurrentArray + 1) {
                             it.callOnClick()
                         } else {
-                            it.buttonView.callOnClick()
+                            it.callOnClick()
 
                             // reset highlight index to starting position after clicking on any fragments
                             highlightedIndex = -1
@@ -232,12 +229,12 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
     private fun clearPreviousConstraints() {
         try {
             val constraintSet = ConstraintSet()
-            constraintSet.clone(mainViewPanelSystem)
-            constraintSet.clear(focusLayoutSystem.id, ConstraintSet.TOP)
-            constraintSet.clear(focusLayoutSystem.id, ConstraintSet.BOTTOM)
-            constraintSet.clear(focusLayoutSystem.id, ConstraintSet.LEFT)
-            constraintSet.clear(focusLayoutSystem.id, ConstraintSet.RIGHT)
-            constraintSet.applyTo(mainViewPanelSystem)
+            constraintSet.clone(binding.mainViewPanelSystem)
+            constraintSet.clear(binding.focusLayoutSystem.id, ConstraintSet.TOP)
+            constraintSet.clear(binding.focusLayoutSystem.id, ConstraintSet.BOTTOM)
+            constraintSet.clear(binding.focusLayoutSystem.id, ConstraintSet.LEFT)
+            constraintSet.clear(binding.focusLayoutSystem.id, ConstraintSet.RIGHT)
+            constraintSet.applyTo(binding.mainViewPanelSystem)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -245,36 +242,36 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
 
     private fun changeConstraintsOfFocusLayout(view: View) {
         val constraintSet = ConstraintSet()
-        constraintSet.clone(mainViewPanelSystem)
+        constraintSet.clone(binding.mainViewPanelSystem)
         constraintSet.connect(
-            focusLayoutSystem.id,
+            binding.focusLayoutSystem.id,
             ConstraintSet.RIGHT,
             view.id,
             ConstraintSet.RIGHT,
             0
         )
         constraintSet.connect(
-            focusLayoutSystem.id,
+            binding.focusLayoutSystem.id,
             ConstraintSet.TOP,
             view.id,
             ConstraintSet.TOP,
             0
         )
         constraintSet.connect(
-            focusLayoutSystem.id,
+            binding.focusLayoutSystem.id,
             ConstraintSet.BOTTOM,
             view.id,
             ConstraintSet.BOTTOM,
             0
         )
         constraintSet.connect(
-            focusLayoutSystem.id,
+            binding.focusLayoutSystem.id,
             ConstraintSet.LEFT,
             view.id,
             ConstraintSet.LEFT,
             0
         )
-        constraintSet.applyTo(mainViewPanelSystem)
+        constraintSet.applyTo(binding.mainViewPanelSystem)
     }
 
     private fun getViewForFocus(isMinus: Boolean?): View? {
@@ -290,16 +287,17 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                 } else null
             }
 
-            sizeOfCurrentArray + 1 -> imageViewCrossSystem
-            sizeOfCurrentArray + 2 -> includeButtonInfo
-            sizeOfCurrentArray + 3 -> includeButtonStartup
-            sizeOfCurrentArray + 4 -> includeButtonTestCalib
-            sizeOfCurrentArray + 5 -> includeButtonSettings
-            sizeOfCurrentArray + 6 -> includeButtonTube
-            sizeOfCurrentArray + 7 -> includeButtonService
+            sizeOfCurrentArray + 1 -> binding.imageViewCrossSystem
+            sizeOfCurrentArray + 2 -> binding.includeButtonInfo.buttonView
+            sizeOfCurrentArray + 3 -> binding.includeButtonStartup.buttonView
+            sizeOfCurrentArray + 4 -> binding.includeButtonTestCalib.buttonView
+            sizeOfCurrentArray + 5 -> binding.includeButtonSettings.buttonView
+            sizeOfCurrentArray + 6 -> binding.includeButtonTube.buttonView
+            sizeOfCurrentArray + 7 -> binding.includeButtonService.buttonView
+
             sizeOfCurrentArray + 8 -> {
-                if (includeButtonDiagchk.isVisible) {
-                    includeButtonDiagchk
+                if (binding.includeButtonDiagchk.contentButtonNormalLayout.isVisible) {
+                    binding.includeButtonDiagchk.buttonView
                 } else {
                     isMinus?.let {
                         if (isMinus) highlightedIndex-- else highlightedIndex++
@@ -309,8 +307,8 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
             }
 
             sizeOfCurrentArray + 9 -> {
-                if (includeButtonO2Regulate.isVisible) {
-                    includeButtonO2Regulate
+                if (binding.includeButtonO2Regulate.contentButtonNormalLayout.isVisible) {
+                    binding.includeButtonO2Regulate.buttonView
                 } else {
                     isMinus?.let {
                         if (isMinus) highlightedIndex-- else highlightedIndex++
@@ -320,8 +318,8 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
             }
 
             sizeOfCurrentArray + 10 -> {
-                if (includeButtonAdvancedCalibration.isVisible) {
-                    includeButtonAdvancedCalibration
+                if (binding.includeButtonAdvancedCalibration.contentButtonNormalLayout.isVisible) {
+                    binding.includeButtonAdvancedCalibration.buttonView
                 } else {
                     isMinus?.let {
                         if (isMinus) highlightedIndex-- else highlightedIndex++
@@ -331,8 +329,8 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
             }
 
             sizeOfCurrentArray + 11 -> {
-                if (includeButtondeviceUpdate.isVisible) {
-                    includeButtondeviceUpdate
+                if (binding.includeButtondeviceUpdate.contentButtonNormalLayout.isVisible) {
+                    binding.includeButtondeviceUpdate.buttonView
                 } else {
                     isMinus?.let {
                         if (isMinus) highlightedIndex-- else highlightedIndex++
@@ -342,8 +340,8 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
             }
 
             sizeOfCurrentArray + 12 -> {
-                if (includeButtonNetworkInfo.isVisible) {
-                    includeButtonNetworkInfo
+                if (binding.includeButtonNetworkInfo.contentButtonNormalLayout.isVisible) {
+                    binding.includeButtonNetworkInfo.buttonView
                 } else {
                     isMinus?.let {
                         if (isMinus) highlightedIndex-- else highlightedIndex++
@@ -353,8 +351,8 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
             }
 
             sizeOfCurrentArray + 13 -> {
-                if (includeButtonDebug.isVisible) {
-                    includeButtonDebug
+                if (binding.includeButtonDebug.contentButtonNormalLayout.isVisible) {
+                    binding.includeButtonDebug.buttonView
                 } else {
                     isMinus?.let {
                         if (isMinus) highlightedIndex-- else highlightedIndex++
@@ -364,8 +362,8 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
             }
 
             sizeOfCurrentArray + 14 -> {
-                if (includeButtonOTA.isVisible) {
-                    includeButtonOTA
+                if (binding.includeButtonOTA.contentButtonNormalLayout.isVisible) {
+                    binding.includeButtonOTA.buttonView
                 } else {
                     isMinus?.let {
                         if (isMinus) highlightViewWithFocus("-") else highlightViewWithFocus("+")
@@ -408,7 +406,8 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        return inflater.inflate(R.layout.fragment_system_dialog, container, false)
+        binding = FragmentSystemDialogBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -421,17 +420,17 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
 
         setUpNavigation()
 
-        includeButtonService.visibility = View.VISIBLE
+        binding.includeButtonService.contentButtonNormalLayout.visibility = View.VISIBLE
 
-        includeButtonDebug.buttonView.setOnClickListener {
+        binding.includeButtonDebug.buttonView.setOnClickListener {
             setupDebugFragment()
         }
 
-        includeButtonOTA.buttonView.setOnClickListener {
+        binding.includeButtonOTA.buttonView.setOnClickListener {
             setupOtaFragment()
         }
 
-        includeButtonStartup.buttonView.setOnLongClickListener {
+        binding.includeButtonStartup.buttonView.setOnLongClickListener {
             passWord = "8000"
             DialogBoxFactory.dismissDialogs()
             DialogBoxFactory.showNetworkInfoDialog(
@@ -444,7 +443,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
             return@setOnLongClickListener true
         }
 
-        includeButtonInfo.buttonView.setOnLongClickListener {
+        binding.includeButtonInfo.buttonView.setOnLongClickListener {
             if (tag == "FromDashboard") {
 //                includeButtonService.visibility = View.VISIBLE
             } else {
@@ -462,31 +461,29 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         }
     }
 
-    fun switchBetweenDebugAndDiagnosticWindow(tag : String){
-        if (tag == "Diagnostic"){
+    fun switchBetweenDebugAndDiagnosticWindow(tag: String) {
+        if (tag == "Diagnostic") {
             showDiagnosticFragment()
 
-            includeButtonDiagchk.visibility = View.VISIBLE
-            includeButtonO2Regulate.visibility = View.VISIBLE
-            includeButtondeviceUpdate.visibility = View.VISIBLE
-            includeButtonAdvancedCalibration.visibility = View.VISIBLE
-            includeButtonNetworkInfo.visibility = View.GONE
-            includeButtonDebug.visibility = View.GONE
-            includeButtonWifi.visibility = View.GONE
-            includeButtonOTA.visibility = View.GONE
+            binding.includeButtonDiagchk.contentButtonNormalLayout.visibility = View.VISIBLE
+            binding.includeButtonO2Regulate.contentButtonNormalLayout.visibility = View.VISIBLE
+            binding.includeButtondeviceUpdate.contentButtonNormalLayout.visibility = View.VISIBLE
+            binding.includeButtonAdvancedCalibration.contentButtonNormalLayout.visibility = View.VISIBLE
+            binding.includeButtonNetworkInfo.contentButtonNormalLayout.visibility = View.GONE
+            binding.includeButtonDebug.contentButtonNormalLayout.visibility = View.GONE
+            binding.includeButtonWifi.contentButtonNormalLayout.visibility = View.GONE
+            binding.includeButtonOTA.contentButtonNormalLayout.visibility = View.GONE
             enableAllTabs(true)
-        }
-
-        else{
+        } else {
             setupDebugFragment()
-            includeButtonDiagchk.visibility = View.GONE
-            includeButtonO2Regulate.visibility = View.GONE
-            includeButtondeviceUpdate.visibility = View.GONE
-            includeButtonAdvancedCalibration.visibility = View.GONE
-            includeButtonNetworkInfo.visibility = View.VISIBLE
-            includeButtonDebug.visibility = View.VISIBLE
-            includeButtonWifi.visibility = View.VISIBLE
-            includeButtonOTA.visibility = View.VISIBLE
+            binding.includeButtonDiagchk.contentButtonNormalLayout.visibility = View.GONE
+            binding.includeButtonO2Regulate.contentButtonNormalLayout.visibility = View.GONE
+            binding.includeButtondeviceUpdate.contentButtonNormalLayout.visibility = View.GONE
+            binding.includeButtonAdvancedCalibration.contentButtonNormalLayout.visibility = View.GONE
+            binding.includeButtonNetworkInfo.contentButtonNormalLayout.visibility = View.VISIBLE
+            binding.includeButtonDebug.contentButtonNormalLayout.visibility = View.VISIBLE
+            binding.includeButtonWifi.contentButtonNormalLayout.visibility = View.VISIBLE
+            binding.includeButtonOTA.contentButtonNormalLayout.visibility = View.VISIBLE
             enableAllTabs(true)
         }
     }
@@ -498,28 +495,23 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
 
             enableAllTabs(false)
 
-        }
-        else if (tag == "Diagnostic"){
+        } else if (tag == "Diagnostic") {
             showDiagnosticFragment()
 
-            includeButtonDiagchk.visibility = View.VISIBLE
-            includeButtonO2Regulate.visibility = View.VISIBLE
-            includeButtondeviceUpdate.visibility = View.VISIBLE
-            includeButtonAdvancedCalibration.visibility = View.VISIBLE
+            binding.includeButtonDiagchk.contentButtonNormalLayout.visibility = View.VISIBLE
+            binding.includeButtonO2Regulate.contentButtonNormalLayout.visibility = View.VISIBLE
+            binding.includeButtondeviceUpdate.contentButtonNormalLayout.visibility = View.VISIBLE
+            binding.includeButtonAdvancedCalibration.contentButtonNormalLayout.visibility = View.VISIBLE
             enableAllTabs(true)
-        }
-
-        else if (tag == "Debug"){
+        } else if (tag == "Debug") {
             setupDebugFragment()
 
-            includeButtonNetworkInfo.visibility = View.VISIBLE
-            includeButtonDebug.visibility = View.VISIBLE
-            includeButtonWifi.visibility = View.VISIBLE
-            includeButtonOTA.visibility = View.VISIBLE
+            binding.includeButtonNetworkInfo.contentButtonNormalLayout.visibility = View.VISIBLE
+            binding.includeButtonDebug.contentButtonNormalLayout.visibility = View.VISIBLE
+            binding.includeButtonWifi.contentButtonNormalLayout.visibility = View.VISIBLE
+            binding.includeButtonOTA.contentButtonNormalLayout.visibility = View.VISIBLE
             enableAllTabs(true)
-        }
-
-        else {
+        } else {
             if (arguments?.getString("CALIBRATE_CIRCUIT") == "TouchHere") setupTubeFragment()
             else showInfoFragment(communicationService)
 
@@ -543,88 +535,89 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
     }
 
     fun enableAllTabs(value: Boolean) {
-        includeButtonStartup.buttonView.isEnabled = value
-        includeButtonTube.buttonView.isEnabled = value
-        includeButtonAdvancedCalibration.buttonView.isEnabled = value
-        includeButtonSettings.buttonView.isEnabled = value
-        includeButtonO2Regulate.buttonView.isEnabled = value
-        includeButtonAdvancedCalibration.buttonView.isEnabled = value
-        includeButtonTestCalib.buttonView.isEnabled = value
-        includeButtonInfo.buttonView.isEnabled = value
-        includeButtonNetworkInfo.buttonView.isEnabled = value
-        includeButtonService.buttonView.isEnabled = value
-        includeButtonDebug.buttonView.isEnabled = value
-        includeButtonOTA.buttonView.isEnabled = value
-        includeButtondeviceUpdate.buttonView.isEnabled = value
-        includeButtonWifi.buttonView.isEnabled = value
+        binding.includeButtonStartup.buttonView.isEnabled = value
+        binding.includeButtonTube.buttonView.isEnabled = value
+        binding.includeButtonAdvancedCalibration.buttonView.isEnabled = value
+        binding.includeButtonSettings.buttonView.isEnabled = value
+        binding.includeButtonO2Regulate.buttonView.isEnabled = value
+        binding.includeButtonAdvancedCalibration.buttonView.isEnabled = value
+        binding.includeButtonTestCalib.buttonView.isEnabled = value
+        binding.includeButtonInfo.buttonView.isEnabled = value
+        binding.includeButtonNetworkInfo.buttonView.isEnabled = value
+        binding.includeButtonService.buttonView.isEnabled = value
+        binding.includeButtonDebug.buttonView.isEnabled = value
+        binding.includeButtonOTA.buttonView.isEnabled = value
+        binding.includeButtondeviceUpdate.buttonView.isEnabled = value
+        binding.includeButtonWifi.buttonView.isEnabled = value
     }
 
     // showing fragments
     private fun setupClickListener() {
 
-        includeButtonInfo.buttonView.text = getString(R.string.hint_info)
-        includeButtonTestCalib.buttonView.text = getString(R.string.hint_test_calib)
-        includeButtonStartup.buttonView.text = getString(R.string.hint_sensors)
-        includeButtonSettings.buttonView.text = getString(R.string.hint_settings)
-        includeButtonTube.buttonView.text = getString(R.string.hint_tube)
-        includeButtonDebug.buttonView.text = getString(R.string.hint_debug)
-        includeButtonOTA.buttonView.text = getString(R.string.hint_ota)
-        includeButtonDiagchk.buttonView.text = getString(R.string.hint_diagnos)
-        includeButtonO2Regulate.buttonView.text = getString(R.string.hint_reg_o2)
-        includeButtonAdvancedCalibration.buttonView.text = getString(R.string.hint_advanced_calib)
-        includeButtonService.buttonView.text = getString(R.string.hint_service)
-        includeButtonStartup.buttonView.text = getString(R.string.startup)
-        includeButtondeviceUpdate.buttonView.text = getString(R.string.hint_update)
-        includeButtonNetworkInfo.buttonView.text = getString(R.string.network_info)
-        includeButtonWifi.buttonView.text = getString(R.string.wifi)
+        binding.includeButtonInfo.buttonView.text = getString(R.string.hint_info)
+        binding.includeButtonTestCalib.buttonView.text = getString(R.string.hint_test_calib)
+        binding.includeButtonStartup.buttonView.text = getString(R.string.hint_sensors)
+        binding.includeButtonSettings.buttonView.text = getString(R.string.hint_settings)
+        binding.includeButtonTube.buttonView.text = getString(R.string.hint_tube)
+        binding.includeButtonDebug.buttonView.text = getString(R.string.hint_debug)
+        binding.includeButtonOTA.buttonView.text = getString(R.string.hint_ota)
+        binding.includeButtonDiagchk.buttonView.text = getString(R.string.hint_diagnos)
+        binding.includeButtonO2Regulate.buttonView.text = getString(R.string.hint_reg_o2)
+        binding.includeButtonAdvancedCalibration.buttonView.text =
+            getString(R.string.hint_advanced_calib)
+        binding.includeButtonService.buttonView.text = getString(R.string.hint_service)
+        binding.includeButtonStartup.buttonView.text = getString(R.string.startup)
+        binding.includeButtondeviceUpdate.buttonView.text = getString(R.string.hint_update)
+        binding.includeButtonNetworkInfo.buttonView.text = getString(R.string.network_info)
+        binding.includeButtonWifi.buttonView.text = getString(R.string.wifi)
 
-        imageViewCrossSystem.setOnClickListener {
+        binding.imageViewCrossSystem.setOnClickListener {
 
             closeFragment()
         }
 
-        includeButtonInfo.buttonView.setOnClickListener {
+        binding.includeButtonInfo.buttonView.setOnClickListener {
             showInfoFragment(communicationService)
         }
 
-        includeButtonNetworkInfo.buttonView.setOnClickListener {
+        binding.includeButtonNetworkInfo.buttonView.setOnClickListener {
             showNetworkInfoFragment()
         }
 
-        includeButtonTube.buttonView.setOnClickListener {
+        binding.includeButtonTube.buttonView.setOnClickListener {
             setupTubeFragment()
         }
-        includeButtondeviceUpdate.buttonView.setOnClickListener {
+        binding.includeButtondeviceUpdate.buttonView.setOnClickListener {
             showDeviceUpdateFragment()
         }
 
-        includeButtonTestCalib.buttonView.setOnClickListener {
+        binding.includeButtonTestCalib.buttonView.setOnClickListener {
             setupTestCalibFragment()
         }
 
-        includeButtonSettings.buttonView.setOnClickListener {
+        binding.includeButtonSettings.buttonView.setOnClickListener {
             setupSettingsFragment()
         }
 
-        includeButtonDiagchk.buttonView.setOnClickListener {
+        binding.includeButtonDiagchk.buttonView.setOnClickListener {
             showDiagnosticFragment()
         }
-        includeButtonO2Regulate.buttonView.setOnClickListener {
+        binding.includeButtonO2Regulate.buttonView.setOnClickListener {
             showO2RegulationFragment()
         }
 
-        includeButtonAdvancedCalibration.buttonView.setOnClickListener {
+        binding.includeButtonAdvancedCalibration.buttonView.setOnClickListener {
             setupAdvancedFragment()
         }
 
-        includeButtonStartup.buttonView.setOnClickListener {
+        binding.includeButtonStartup.buttonView.setOnClickListener {
             setupStartupFragment()
         }
 
-        includeButtonService.buttonView.setOnClickListener {
+        binding.includeButtonService.buttonView.setOnClickListener {
             showServiceFragment()
         }
-        includeButtonWifi.buttonView.setOnClickListener {
+        binding.includeButtonWifi.buttonView.setOnClickListener {
             showWifiFragment()
         }
     }
@@ -639,7 +632,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
             replaceFragment(this, TAG, R.id.system_nav_container)
         }
 
-        highlightButton(includeButtonTestCalib)
+        highlightButton(binding.includeButtonTestCalib.buttonView)
     }
 
     private fun setupStartupFragment() {
@@ -655,7 +648,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
             )
         }
 
-        highlightButton(includeButtonStartup)
+        highlightButton(binding.includeButtonStartup.buttonView)
     }
 
     private fun setupAdvancedFragment() {
@@ -670,7 +663,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                 R.id.system_nav_container
             )
         }
-        highlightButton(includeButtonAdvancedCalibration)
+        highlightButton(binding.includeButtonAdvancedCalibration.buttonView)
     }
 
     private fun setupSettingsFragment() {
@@ -685,7 +678,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                 R.id.system_nav_container
             )
         }
-        highlightButton(includeButtonSettings)
+        highlightButton(binding.includeButtonSettings.buttonView)
     }
 
     private fun setupOtaFragment() {
@@ -695,7 +688,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         otaFragment?.apply {
             replaceFragment(this, TAG, R.id.system_nav_container)
         }
-        highlightButton(includeButtonOTA)
+        highlightButton(binding.includeButtonOTA.buttonView)
     }
 
     private fun setupDebugFragment() {
@@ -705,7 +698,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         debugFragment?.apply {
             replaceFragment(this, TAG, R.id.system_nav_container)
         }
-        highlightButton(includeButtonDebug)
+        highlightButton(binding.includeButtonDebug.buttonView)
     }
 
     private fun setupTubeFragment() {
@@ -715,7 +708,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         tubeDiaFragment?.apply {
             replaceFragment(this, TAG, R.id.system_nav_container)
         }
-        highlightButton(includeButtonTube)
+        highlightButton(binding.includeButtonTube.buttonView)
     }
 
     private fun showNetworkInfoFragment() {
@@ -731,7 +724,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
             )
         }
 
-        highlightButton(includeButtonNetworkInfo)
+        highlightButton(binding.includeButtonNetworkInfo.buttonView)
     }
 
     private fun showO2RegulationFragment() {
@@ -746,11 +739,11 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                 R.id.system_nav_container
             )
         }
-        highlightButton(includeButtonO2Regulate)
+        highlightButton(binding.includeButtonO2Regulate.buttonView)
     }
 
 
-    fun closeFragment(){
+    fun closeFragment() {
         requireActivity().supportFragmentManager
             .beginTransaction()
             .remove(this)
@@ -770,22 +763,22 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                 R.id.system_nav_container
             )
         }
-        highlightButton(includeButtonDiagchk)
+        highlightButton(binding.includeButtonDiagchk.buttonView)
     }
 
-    fun sendCommandInDiagnostic(command:String){
+    fun sendCommandInDiagnostic(command: String) {
         diagnosticCheckFragment?.takeIf { it.isVisible }?.apply {
             getCommandsFromLiveWindow(command)
         }
     }
 
-    fun sendDebugCommandInDebug(command:String){
+    fun sendDebugCommandInDebug(command: String) {
         debugFragment?.takeIf { it.isVisible }?.apply {
             getCommandsFromLiveWindow(command)
         }
     }
 
-    fun sendRangesInDiagnostic(ranges:String){
+    fun sendRangesInDiagnostic(ranges: String) {
         diagnosticCheckFragment?.takeIf { it.isVisible }?.apply {
             getRangesFromLiveWindow(ranges)
         }
@@ -803,7 +796,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                 R.id.system_nav_container
             )
         }
-        highlightButton(includeButtonService)
+        highlightButton(binding.includeButtonService.buttonView)
     }
 
     private fun showDeviceUpdateFragment() {
@@ -818,7 +811,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                 R.id.system_nav_container
             )
         }
-        highlightButton(includeButtondeviceUpdate)
+        highlightButton(binding.includeButtondeviceUpdate.buttonView)
     }
 
     private fun showInfoFragment(communicationService: CommunicationService?) {
@@ -830,8 +823,9 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
             replaceFragment(this, TAG, R.id.system_nav_container)
         }
 
-        highlightButton(includeButtonInfo)
+        highlightButton(binding.includeButtonInfo.buttonView)
     }
+
     private fun showWifiFragment() {
         makeAllFragmentsNull()
         sizeOfCurrentArray = 0
@@ -841,108 +835,108 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
             replaceFragment(this, TAG, R.id.system_nav_container)
         }
 
-        highlightButton(includeButtonWifi)
+        highlightButton(binding.includeButtonWifi.buttonView)
     }
 
     // handling fragments selections
     private fun highlightButton(view: View) {
 
         // adding bg colors
-        includeButtonInfo.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
-        includeButtonTestCalib.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
-        includeButtonStartup.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
-        includeButtonTube.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
-        includeButtonSettings.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
-        includeButtonDiagchk.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
-        includeButtonO2Regulate.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
-        includeButtondeviceUpdate.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
-        includeButtonNetworkInfo.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
-        includeButtonAdvancedCalibration.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
-        includeButtonService.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
-        includeButtonDebug.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
-        includeButtonOTA.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
-        includeButtonWifi.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
+        binding.includeButtonInfo.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
+        binding.includeButtonTestCalib.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
+        binding.includeButtonStartup.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
+        binding.includeButtonTube.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
+        binding.includeButtonSettings.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
+        binding.includeButtonDiagchk.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
+        binding.includeButtonO2Regulate.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
+        binding.includeButtondeviceUpdate.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
+        binding.includeButtonNetworkInfo.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
+        binding.includeButtonAdvancedCalibration.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
+        binding.includeButtonService.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
+        binding.includeButtonDebug.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
+        binding.includeButtonOTA.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
+        binding.includeButtonWifi.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
 
         // adding text colors
-        includeButtonInfo.buttonView.setTextColor(
+        binding.includeButtonInfo.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.black
             )
         )
-        includeButtonOTA.buttonView.setTextColor(
+        binding.includeButtonOTA.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.black
             )
         )
-        includeButtondeviceUpdate.buttonView.setTextColor(
+        binding.includeButtondeviceUpdate.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.black
             )
         )
-        includeButtonNetworkInfo.buttonView.setTextColor(
+        binding.includeButtonNetworkInfo.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.black
             )
         )
-        includeButtonTestCalib.buttonView.setTextColor(
+        binding.includeButtonTestCalib.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.black
             )
         )
-        includeButtonStartup.buttonView.setTextColor(
+        binding.includeButtonStartup.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.black
             )
         )
-        includeButtonSettings.buttonView.setTextColor(
+        binding.includeButtonSettings.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.black
             )
         )
-        includeButtonTube.buttonView.setTextColor(
+        binding.includeButtonTube.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.black
             )
         )
-        includeButtonDiagchk.buttonView.setTextColor(
+        binding.includeButtonDiagchk.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.black
             )
         )
-        includeButtonO2Regulate.buttonView.setTextColor(
+        binding.includeButtonO2Regulate.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.black
             )
         )
-        includeButtonAdvancedCalibration.buttonView.setTextColor(
+        binding.includeButtonAdvancedCalibration.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.black
             )
         )
-        includeButtonService.buttonView.setTextColor(
+        binding.includeButtonService.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.black
             )
         )
-        includeButtonDebug.buttonView.setTextColor(
+        binding.includeButtonDebug.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.black
             )
         )
-        includeButtonWifi.buttonView.setTextColor(
+        binding.includeButtonWifi.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.black
@@ -950,9 +944,8 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         )
 
         // added on current fragment
-        view.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
-        view.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-
+        view.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
+        (view as AppCompatButton).setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
     }
 
     override fun onStart() {
@@ -1021,12 +1014,12 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
     override fun closeDialog() {
 
         if (passWord == "8000") {
-            includeButtonStartup.buttonView.apply {
+            binding.includeButtonStartup.buttonView.apply {
                 setBackgroundResource(R.drawable.background_grey_border_white)
                 setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
             }
         } else {
-            includeButtonInfo.buttonView.apply {
+            binding.includeButtonInfo.buttonView.apply {
                 setBackgroundResource(R.drawable.background_grey_border_white)
                 setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
             }
@@ -1035,19 +1028,19 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
 
     override fun doAction() {
         if (passWord == "8000") {
-            includeButtonNetworkInfo.visibility = View.VISIBLE
-            includeButtonDebug.visibility = View.VISIBLE
+            binding.includeButtonNetworkInfo.contentButtonNormalLayout.visibility = View.VISIBLE
+            binding.includeButtonDebug.contentButtonNormalLayout.visibility = View.VISIBLE
 
-            if (tag == "FromDashboard") includeButtonOTA.visibility = View.GONE
+            if (tag == "FromDashboard") binding.includeButtonOTA.contentButtonNormalLayout.visibility = View.GONE
             else {
-                includeButtonWifi.visibility = View.VISIBLE
-                includeButtonOTA.visibility = View.VISIBLE
+                binding.includeButtonWifi.contentButtonNormalLayout.visibility = View.VISIBLE
+                binding.includeButtonOTA.contentButtonNormalLayout.visibility = View.VISIBLE
             }
         } else {
-            includeButtonDiagchk.visibility = View.VISIBLE
-            includeButtonO2Regulate.visibility = View.VISIBLE
-            includeButtondeviceUpdate.visibility = View.VISIBLE
-            includeButtonAdvancedCalibration.visibility = View.VISIBLE
+            binding.includeButtonDiagchk.contentButtonNormalLayout.visibility = View.VISIBLE
+            binding.includeButtonO2Regulate.contentButtonNormalLayout.visibility = View.VISIBLE
+            binding.includeButtondeviceUpdate.contentButtonNormalLayout.visibility = View.VISIBLE
+            binding.includeButtonAdvancedCalibration.contentButtonNormalLayout.visibility = View.VISIBLE
         }
     }
 

@@ -1,43 +1,31 @@
 package com.agvahealthcare.ventilator_ext.modes
 
-import android.animation.ArgbEvaluator
 import android.animation.ObjectAnimator
-import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
 import androidx.appcompat.widget.AppCompatButton
-import androidx.appcompat.widget.AppCompatRadioButton
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
-import androidx.core.view.marginStart
-import androidx.core.view.marginTop
-import androidx.core.view.setPadding
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.VentilatorApp
 import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.globalModeType
 import com.agvahealthcare.ventilator_ext.callback.OnDismissDialogListener
+import com.agvahealthcare.ventilator_ext.databinding.FragmentModeDialogBinding
 import com.agvahealthcare.ventilator_ext.logs.event.EventViewModel
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.model.ControlParameterModel
-import com.agvahealthcare.ventilator_ext.service.CommunicationService
-import com.agvahealthcare.ventilator_ext.utility.ToastFactory
 import com.agvahealthcare.ventilator_ext.utility.VENTILATOR_MODES
 import com.agvahealthcare.ventilator_ext.utility.VENTILATOR_MODE_TYPE
 import com.agvahealthcare.ventilator_ext.utility.setHeightWidthPercent
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.*
 import com.agvahealthcare.ventilator_ext.utility.utils.IntentFactory
-import kotlinx.android.synthetic.main.fragment_mode_dialog.*
 import kotlinx.coroutines.Job
 
 
@@ -49,6 +37,7 @@ interface OnModeConfirmListener {
 
 class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
+    private lateinit var binding : FragmentModeDialogBinding
     companion object {
         const val TAG = "ModeDialog"
         private const val KEY_HEIGHT = "KEY_HEIGHT"
@@ -100,9 +89,9 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
         Log.i("check_selected_options", "on resume")
         if (tag == "MainActivity") {
-            rbInvasive.isChecked = false
-            rbNonInvasive.isChecked = false
-            rbNasalProngs.isChecked = false
+            binding.rbInvasive.isChecked = false
+            binding.rbNonInvasive.isChecked = false
+            binding.rbNasalProngs.isChecked = false
             Log.i("check_selected_options", "main activity conditions")
         } else {
             Log.i("check_selected_options", "dashboard conditions")
@@ -114,19 +103,19 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
                         SELECTED_OPTIONS.INVASIVE_NAME -> {
 
                             Log.i("check_selected_options", "$it conditions")
-                            rbInvasive.isChecked = true
+                            binding.rbInvasive.isChecked = true
                         }
 
                         SELECTED_OPTIONS.NON_INVASIVE_NAME -> {
 
                             Log.i("check_selected_options", "$it conditions")
-                            rbNonInvasive.isChecked = true
+                            binding.rbNonInvasive.isChecked = true
                         }
 
                         SELECTED_OPTIONS.PRONGS_NAME -> {
 
                             Log.i("check_selected_options", "$it conditions")
-                            rbNasalProngs.isChecked = true
+                            binding.rbNasalProngs.isChecked = true
                         }
                     }
                 }
@@ -135,251 +124,14 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
         super.onResume()
     }
 
-//    // knob highlight logic starts here
-//
-//    private var highlightedIndex = 0
-//    private var visibilityTimeout: CountDownTimer? = null
-//
-//    @SuppressLint("NotifyDataSetChanged")
-//    fun highlightViewWithFocus(data: String) {
-//
-//        startTimeoutWithDebounce()
-//        Log.i("value_check_tiles", "$highlightedIndex")
-//
-//        when (data) {
-//            PREFIX_PLUS -> {
-//                if (highlightedIndex < 15) highlightedIndex++
-//                else highlightedIndex = 1
-//
-//                getViewForFocus(false)?.let { changeConstraintsOfFocusLayout(it) }
-//            }
-//
-//            PREFIX_MINUS -> {
-//                if (highlightedIndex > 1) highlightedIndex--
-//                else highlightedIndex = 15
-//
-//                getViewForFocus(true)?.let { changeConstraintsOfFocusLayout(it) }
-//            }
-//
-//            PREFIX_AND -> {
-//
-//                if (highlightedIndex == 1) {
-//                    (getViewForFocus(null) as AppCompatRadioButton).isChecked =
-//                        !rbNasalProngs.isChecked
-//                } else if (highlightedIndex == 2) {
-//                    (getViewForFocus(null) as AppCompatRadioButton).isChecked =
-//                        !rbNonInvasive.isChecked
-//                } else if (highlightedIndex == 3) {
-//                    (getViewForFocus(null) as AppCompatRadioButton).isChecked =
-//                        !rbInvasive.isChecked
-//                } else {
-//                    getViewForFocus(null)?.callOnClick()
-//                }
-//            }
-//        }
-//    }
-//
-//    private fun clearPreviousConstraints() {
-//        try {
-//            val constraintSet = ConstraintSet()
-//            constraintSet.clone(mainLayoutPanelMode)
-//            constraintSet.clear(focusLayoutMode.id, ConstraintSet.TOP)
-//            constraintSet.clear(focusLayoutMode.id, ConstraintSet.BOTTOM)
-//            constraintSet.clear(focusLayoutMode.id, ConstraintSet.LEFT)
-//            constraintSet.clear(focusLayoutMode.id, ConstraintSet.RIGHT)
-//            constraintSet.applyTo(mainLayoutPanelMode)
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//        }
-//    }
-//
-//    private fun changeConstraintsOfFocusLayout(view: View) {
-//        val constraintSet = ConstraintSet()
-//        constraintSet.clone(mainLayoutPanelMode)
-//        constraintSet.connect(
-//            focusLayoutMode.id,
-//            ConstraintSet.RIGHT,
-//            view.id,
-//            ConstraintSet.RIGHT,
-//            0
-//        )
-//        constraintSet.connect(
-//            focusLayoutMode.id,
-//            ConstraintSet.TOP,
-//            view.id,
-//            ConstraintSet.TOP,
-//            0
-//        )
-//        constraintSet.connect(
-//            focusLayoutMode.id,
-//            ConstraintSet.BOTTOM,
-//            view.id,
-//            ConstraintSet.BOTTOM,
-//            0
-//        )
-//        constraintSet.connect(
-//            focusLayoutMode.id,
-//            ConstraintSet.LEFT,
-//            view.id,
-//            ConstraintSet.LEFT,
-//            0
-//        )
-//        constraintSet.applyTo(mainLayoutPanelMode)
-//    }
-//
-//    private fun getViewForFocus(isMinus: Boolean?): View? {
-//
-//
-//        return when (highlightedIndex) {
-//            1 -> if (preferenceManager?.readCurrentUid() != PatientProfile.TYPE_NEONAT) {
-//                isMinus?.let {
-//                    if (isMinus) highlightedIndex-- else highlightedIndex++
-//                    getViewForFocus(isMinus)
-//                }
-//            } else {
-//                rbNasalProngs
-//            }
-//
-//            2 -> rbNonInvasive
-//            3 -> rbInvasive
-//            4 -> imageViewCrossMode
-//            5 -> {
-//                if (VentilatorApp.selectedOptions != Configs.SELECTED_OPTIONS.INVASIVE_NAME) {
-//                    isMinus?.let {
-//                        if (isMinus) highlightedIndex-- else highlightedIndex++
-//                        getViewForFocus(isMinus)
-//                    }
-//                } else {
-//                    buttonVcCmv
-//                }
-//            }
-//
-//            6 -> {
-//                if (VentilatorApp.selectedOptions != Configs.SELECTED_OPTIONS.INVASIVE_NAME) {
-//                    isMinus?.let {
-//                        if (isMinus) highlightedIndex-- else highlightedIndex++
-//                        getViewForFocus(isMinus)
-//                    }
-//                } else {
-//                    buttonVcSimv
-//                }
-//            }
-//
-//            7 -> {
-//                if (VentilatorApp.selectedOptions != Configs.SELECTED_OPTIONS.INVASIVE_NAME) {
-//                    isMinus?.let {
-//                        if (isMinus) highlightedIndex-- else highlightedIndex++
-//                        getViewForFocus(isMinus)
-//                    }
-//                } else {
-//                    buttonAcv
-//                }
-//            }
-//
-//            8 -> if (VentilatorApp.selectedOptions == Configs.SELECTED_OPTIONS.PRONGS_NAME) {
-//                isMinus?.let {
-//                    if (isMinus) highlightedIndex-- else highlightedIndex++
-//                    getViewForFocus(isMinus)
-//                }
-//            } else {
-//                buttonPcCmv
-//            }
-//
-//            9 -> if (VentilatorApp.selectedOptions == Configs.SELECTED_OPTIONS.PRONGS_NAME) {
-//                isMinus?.let {
-//                    if (isMinus) highlightedIndex-- else highlightedIndex++
-//                    getViewForFocus(isMinus)
-//                }
-//            } else {
-//                buttonPcSimv
-//            }
-//
-//            10 -> if (VentilatorApp.selectedOptions == Configs.SELECTED_OPTIONS.PRONGS_NAME) {
-//                isMinus?.let {
-//                    if (isMinus) highlightedIndex-- else highlightedIndex++
-//                    getViewForFocus(isMinus)
-//                }
-//            } else {
-//                buttonPcac
-//            }
-//
-//            11 -> if (VentilatorApp.selectedOptions == Configs.SELECTED_OPTIONS.PRONGS_NAME) {
-//                isMinus?.let {
-//                    if (isMinus) highlightedIndex-- else highlightedIndex++
-//                    getViewForFocus(isMinus)
-//                }
-//            } else {
-//                buttonPsv
-//            }
-//
-//            12 -> {
-//                if (preferenceManager?.readCurrentUid() == PatientProfile.TYPE_NEONAT) {
-//                    isMinus?.let {
-//                        if (isMinus) highlightedIndex-- else highlightedIndex++
-//                        getViewForFocus(isMinus)
-//                    }
-//                } else {
-//                    buttonAIVent
-//                }
-//            }
-//
-//            13 -> if (VentilatorApp.selectedOptions == Configs.SELECTED_OPTIONS.PRONGS_NAME) {
-//                isMinus?.let {
-//                    if (isMinus) highlightedIndex-- else highlightedIndex++
-//                    getViewForFocus(isMinus)
-//                }
-//            } else {
-//                buttonBpap
-//            }
-//
-//            14 -> buttonCpap
-//            15 -> {
-//                if (VentilatorApp.selectedOptions == SELECTED_OPTIONS.PRONGS_NAME && preferenceManager?.readCurrentUid() == PatientProfile.TYPE_NEONAT) buttonHFNC
-//                if (VentilatorApp.selectedOptions == SELECTED_OPTIONS.NON_INVASIVE_NAME && preferenceManager?.readCurrentUid() != PatientProfile.TYPE_NEONAT) buttonHFNC
-//                else
-//                    isMinus?.let {
-//                        if (isMinus) highlightedIndex-- else highlightedIndex++
-//                        getViewForFocus(isMinus)
-//                    }
-//            }
-//
-//            else -> null
-//        }
-//    }
-//
-//    fun startTimeoutWithDebounce() {
-//
-//        cancelTimeout()
-//
-//        visibilityTimeout = object : CountDownTimer(10000, 2000) {
-//            override fun onTick(millisUntilFinished: Long) {
-//            }
-//
-//            override fun onFinish() {
-//                clearPreviousConstraints()
-//                cancelTimeout()
-//            }
-//        }
-//        visibilityTimeout?.start()
-//    }
-//
-//    fun cancelTimeout() {
-//        if (visibilityTimeout != null) {
-//            visibilityTimeout?.cancel()
-//            visibilityTimeout = null
-//        }
-//    }
-//
-//    // knob highlight logic ends here
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        return inflater.inflate(R.layout.fragment_mode_dialog, container, false)
+        binding = FragmentModeDialogBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -390,317 +142,317 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
         setStyle(STYLE_NO_TITLE, R.style.CustomDialog)
 
         modeButtons = listOf(
-            buttonVcCmv,
-            buttonVcSimv,
-            buttonAcv,
-            buttonPcCmv,
-            buttonPcSimv,
-            buttonPsv,
-            buttonPcac,
-            buttonHFNC,
-            buttonAprv,
-            buttonPrvc,
-            buttonAIVent,
-            buttonBpap,
-            buttonCpap,
-            buttonNCBpap
+            binding.buttonVcCmv,
+            binding.buttonVcSimv,
+            binding.buttonAcv,
+            binding.buttonPcCmv,
+            binding.buttonPcSimv,
+            binding.buttonPsv,
+            binding.buttonPcac,
+            binding.buttonHFNC,
+            binding.buttonAprv,
+            binding.buttonPrvc,
+            binding.buttonAIVent,
+            binding.buttonBpap,
+            binding.buttonCpap,
+            binding.buttonNCBpap
         )
 
         checkPatientType()
         setupClickListener()
         setModeViaPreference()
 
-        rbNasalProngs.setOnCheckedChangeListener { _, isChecked ->
+        binding.rbNasalProngs.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                rbInvasive.isChecked = false
-                rbNonInvasive.isChecked = false
-                textViewSpontaneous.text = "NON - INVASIVE MODE"
-                buttonCpap.visibility = View.VISIBLE
-                buttonBpap.visibility = View.GONE
-                textViewVolumeControl.visibility = View.GONE
-                buttonVcCmv.visibility = View.GONE
-                buttonVcSimv.visibility = View.GONE
-                buttonAcv.visibility = View.GONE
-                textViewPressureControl.visibility = View.GONE
-                buttonPcCmv.visibility = View.GONE
-                buttonPcSimv.visibility = View.GONE
-                buttonPcac.visibility = View.GONE
-                buttonPsv.visibility = View.GONE
-                colorLayout.visibility = View.GONE
+                binding.rbInvasive.isChecked = false
+                binding.rbNonInvasive.isChecked = false
+                binding.textViewSpontaneous.text = "NON - INVASIVE MODE"
+                binding.buttonCpap.visibility = View.VISIBLE
+                binding.buttonBpap.visibility = View.GONE
+                binding.textViewVolumeControl.visibility = View.GONE
+                binding.buttonVcCmv.visibility = View.GONE
+                binding.buttonVcSimv.visibility = View.GONE
+                binding.buttonAcv.visibility = View.GONE
+                binding.textViewPressureControl.visibility = View.GONE
+                binding.buttonPcCmv.visibility = View.GONE
+                binding.buttonPcSimv.visibility = View.GONE
+                binding.buttonPcac.visibility = View.GONE
+                binding.buttonPsv.visibility = View.GONE
+                binding.colorLayout.visibility = View.GONE
 
                 if (preferenceManager?.readCurrentUid() == PatientProfile.TYPE_NEONAT) {
-                    buttonHFNC.visibility = View.VISIBLE
-                    textViewHFNC.visibility = View.VISIBLE
-                    textViewIntelligentVentilation.visibility = View.GONE
-                    buttonAIVent.visibility = View.GONE
+                    binding.buttonHFNC.visibility = View.VISIBLE
+                    binding.textViewHFNC.visibility = View.VISIBLE
+                    binding.textViewIntelligentVentilation.visibility = View.GONE
+                    binding.buttonAIVent.visibility = View.GONE
                 } else {
-                    textViewIntelligentVentilation.visibility = View.VISIBLE
-                    buttonAIVent.visibility = View.VISIBLE
-                    buttonHFNC.visibility = View.GONE
-                    textViewHFNC.visibility = View.GONE
+                    binding.textViewIntelligentVentilation.visibility = View.VISIBLE
+                    binding.buttonAIVent.visibility = View.VISIBLE
+                    binding.buttonHFNC.visibility = View.GONE
+                    binding.textViewHFNC.visibility = View.GONE
                 }
                 optionSelected = true
                 animator?.cancel()
                 VentilatorApp.selectedOptions = SELECTED_OPTIONS.PRONGS_NAME
-                radioLayout.setBackgroundResource(R.drawable.background_transparent_border_black)
+                binding.radioLayout.setBackgroundResource(R.drawable.background_transparent_border_black)
 
                 if (preferenceManager?.readCurrentUid() == PatientProfile.TYPE_NEONAT) {
 
                     val constraintSetFirst = ConstraintSet()
-                    constraintSetFirst.clone(mainLayoutPanelMode)
+                    constraintSetFirst.clone(binding.mainLayoutPanelMode)
                     constraintSetFirst.connect(
-                        textViewSpontaneous.id,
+                        binding.textViewSpontaneous.id,
                         ConstraintSet.TOP,
-                        ModeHorizontal1.id,
+                        binding.ModeHorizontal1.id,
                         ConstraintSet.BOTTOM,
                         0
                     )
-                    constraintSetFirst.applyTo(mainLayoutPanelMode)
+                    constraintSetFirst.applyTo(binding.mainLayoutPanelMode)
 
                     val constraintSetSecond = ConstraintSet()
-                    constraintSetSecond.clone(mainLayoutPanelMode)
+                    constraintSetSecond.clone(binding.mainLayoutPanelMode)
                     constraintSetSecond.connect(
-                        textViewHFNC.id,
+                        binding.textViewHFNC.id,
                         ConstraintSet.TOP,
-                        ModeHorizontal2.id,
+                        binding.ModeHorizontal2.id,
                         ConstraintSet.BOTTOM,
                         0
                     )
-                    constraintSetSecond.applyTo(mainLayoutPanelMode)
+                    constraintSetSecond.applyTo(binding.mainLayoutPanelMode)
                 }else{
                     val constraintSetFirst = ConstraintSet()
-                    constraintSetFirst.clone(mainLayoutPanelMode)
+                    constraintSetFirst.clone(binding.mainLayoutPanelMode)
                     constraintSetFirst.connect(
-                        textViewSpontaneous.id,
+                        binding.textViewSpontaneous.id,
                         ConstraintSet.TOP,
-                        ModeHorizontal1.id,
+                        binding.ModeHorizontal1.id,
                         ConstraintSet.BOTTOM,
                         0
                     )
-                    constraintSetFirst.applyTo(mainLayoutPanelMode)
+                    constraintSetFirst.applyTo(binding.mainLayoutPanelMode)
 
                     val constraintSetSecond = ConstraintSet()
-                    constraintSetSecond.clone(mainLayoutPanelMode)
+                    constraintSetSecond.clone(binding.mainLayoutPanelMode)
                     constraintSetSecond.connect(
-                        textViewHFNC.id,
+                        binding.textViewHFNC.id,
                         ConstraintSet.TOP,
-                        ModeHorizontal2.id,
+                        binding.ModeHorizontal2.id,
                         ConstraintSet.BOTTOM,
                         0
                     )
-                    constraintSetSecond.applyTo(mainLayoutPanelMode)
+                    constraintSetSecond.applyTo(binding.mainLayoutPanelMode)
                 }
             }
         }
 
-        rbInvasive.setOnCheckedChangeListener { _, isChecked ->
+        binding.rbInvasive.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                rbNasalProngs.isChecked = false
-                rbNonInvasive.isChecked = false
-                textViewSpontaneous.text = "INVASIVE MODE"
-                textViewVolumeControl.visibility = View.VISIBLE
-                buttonVcCmv.visibility = View.VISIBLE
-                buttonVcSimv.visibility = View.VISIBLE
-                buttonAcv.visibility = View.VISIBLE
-                buttonHFNC.visibility = View.GONE
-                textViewHFNC.visibility = View.GONE
-                colorLayout.visibility = View.GONE
-                buttonBpap.visibility = View.VISIBLE
-                buttonCpap.visibility = View.VISIBLE
+                binding.rbNasalProngs.isChecked = false
+                binding.rbNonInvasive.isChecked = false
+                binding.textViewSpontaneous.text = "INVASIVE MODE"
+                binding.textViewVolumeControl.visibility = View.VISIBLE
+                binding.buttonVcCmv.visibility = View.VISIBLE
+                binding.buttonVcSimv.visibility = View.VISIBLE
+                binding.buttonAcv.visibility = View.VISIBLE
+                binding.buttonHFNC.visibility = View.GONE
+                binding.textViewHFNC.visibility = View.GONE
+                binding.colorLayout.visibility = View.GONE
+                binding.buttonBpap.visibility = View.VISIBLE
+                binding.buttonCpap.visibility = View.VISIBLE
 //                buttonCpap.visibility = View.GONE
-                textViewPressureControl.visibility = View.VISIBLE
-                buttonPcCmv.visibility = View.VISIBLE
-                buttonPcSimv.visibility = View.VISIBLE
-                buttonPcac.visibility = View.VISIBLE
-                buttonPsv.visibility = View.VISIBLE
+                binding.textViewPressureControl.visibility = View.VISIBLE
+                binding.buttonPcCmv.visibility = View.VISIBLE
+                binding.buttonPcSimv.visibility = View.VISIBLE
+                binding.buttonPcac.visibility = View.VISIBLE
+                binding.buttonPsv.visibility = View.VISIBLE
                 if (preferenceManager?.readCurrentUid() == PatientProfile.TYPE_NEONAT) {
-                    textViewIntelligentVentilation.visibility = View.GONE
-                    buttonAIVent.visibility = View.GONE
+                    binding.textViewIntelligentVentilation.visibility = View.GONE
+                    binding.buttonAIVent.visibility = View.GONE
                 } else {
-                    textViewIntelligentVentilation.visibility = View.VISIBLE
-                    buttonAIVent.visibility = View.VISIBLE
+                    binding.textViewIntelligentVentilation.visibility = View.VISIBLE
+                    binding.buttonAIVent.visibility = View.VISIBLE
                 }
                 optionSelected = true
                 animator?.cancel()
                 VentilatorApp.selectedOptions = SELECTED_OPTIONS.INVASIVE_NAME
-                radioLayout.setBackgroundResource(R.drawable.background_transparent_border_black)
+                binding.radioLayout.setBackgroundResource(R.drawable.background_transparent_border_black)
 
                 if (preferenceManager?.readCurrentUid() == PatientProfile.TYPE_NEONAT) {
 
                     val constraintSetFirst = ConstraintSet()
-                    constraintSetFirst.clone(mainLayoutPanelMode)
+                    constraintSetFirst.clone(binding.mainLayoutPanelMode)
                     constraintSetFirst.connect(
-                        textViewVolumeControl.id,
+                        binding.textViewVolumeControl.id,
                         ConstraintSet.TOP,
-                        ModeHorizontal1.id,
+                        binding.ModeHorizontal1.id,
                         ConstraintSet.BOTTOM,
                         0
                     )
-                    constraintSetFirst.applyTo(mainLayoutPanelMode)
+                    constraintSetFirst.applyTo(binding.mainLayoutPanelMode)
 
                     val constraintSetSecond = ConstraintSet()
-                    constraintSetSecond.clone(mainLayoutPanelMode)
+                    constraintSetSecond.clone(binding.mainLayoutPanelMode)
                     constraintSetSecond.connect(
-                        textViewPressureControl.id,
+                        binding.textViewPressureControl.id,
                         ConstraintSet.TOP,
-                        ModeHorizontal2.id,
+                        binding.ModeHorizontal2.id,
                         ConstraintSet.BOTTOM,
                         0
                     )
-                    constraintSetSecond.applyTo(mainLayoutPanelMode)
+                    constraintSetSecond.applyTo(binding.mainLayoutPanelMode)
 
 
                     val constraintSetThird = ConstraintSet()
-                    constraintSetThird.clone(mainLayoutPanelMode)
+                    constraintSetThird.clone(binding.mainLayoutPanelMode)
                     constraintSetThird.connect(
-                        textViewSpontaneous.id,
+                        binding.textViewSpontaneous.id,
                         ConstraintSet.TOP,
-                        ModeHorizontal3.id,
+                        binding.ModeHorizontal3.id,
                         ConstraintSet.BOTTOM,
                         0
                     )
-                    constraintSetThird.applyTo(mainLayoutPanelMode)
+                    constraintSetThird.applyTo(binding.mainLayoutPanelMode)
                 }
                 // non neonatal
                 else{
 
                     val constraintSetFirst = ConstraintSet()
-                    constraintSetFirst.clone(mainLayoutPanelMode)
+                    constraintSetFirst.clone(binding.mainLayoutPanelMode)
                     constraintSetFirst.connect(
-                        textViewVolumeControl.id,
+                        binding.textViewVolumeControl.id,
                         ConstraintSet.TOP,
-                        ModeHorizontal1.id,
+                        binding.ModeHorizontal1.id,
                         ConstraintSet.BOTTOM,
                         0
                     )
-                    constraintSetFirst.applyTo(mainLayoutPanelMode)
+                    constraintSetFirst.applyTo(binding.mainLayoutPanelMode)
 
                     val constraintSetSecond = ConstraintSet()
-                    constraintSetSecond.clone(mainLayoutPanelMode)
+                    constraintSetSecond.clone(binding.mainLayoutPanelMode)
                     constraintSetSecond.connect(
-                        textViewPressureControl.id,
+                        binding.textViewPressureControl.id,
                         ConstraintSet.TOP,
-                        ModeHorizontal2.id,
+                        binding.ModeHorizontal2.id,
                         ConstraintSet.BOTTOM,
                         0
                     )
-                    constraintSetSecond.applyTo(mainLayoutPanelMode)
+                    constraintSetSecond.applyTo(binding.mainLayoutPanelMode)
 
 
                     val constraintSetThird = ConstraintSet()
-                    constraintSetThird.clone(mainLayoutPanelMode)
+                    constraintSetThird.clone(binding.mainLayoutPanelMode)
                     constraintSetThird.connect(
-                        textViewIntelligentVentilation.id,
+                        binding.textViewIntelligentVentilation.id,
                         ConstraintSet.TOP,
-                        ModeHorizontal3.id,
+                        binding.ModeHorizontal3.id,
                         ConstraintSet.BOTTOM,
                         0
                     )
-                    constraintSetThird.applyTo(mainLayoutPanelMode)
+                    constraintSetThird.applyTo(binding.mainLayoutPanelMode)
 
                     val constraintSetFourth = ConstraintSet()
-                    constraintSetFourth.clone(mainLayoutPanelMode)
+                    constraintSetFourth.clone(binding.mainLayoutPanelMode)
                     constraintSetFourth.connect(
-                        textViewSpontaneous.id,
+                        binding.textViewSpontaneous.id,
                         ConstraintSet.TOP,
-                        ModeHorizontal4.id,
+                        binding.ModeHorizontal4.id,
                         ConstraintSet.BOTTOM,
                         0
                     )
-                    constraintSetFourth.applyTo(mainLayoutPanelMode)
+                    constraintSetFourth.applyTo(binding.mainLayoutPanelMode)
                 }
             }
         }
 
-        rbNonInvasive.setOnCheckedChangeListener { _, isChecked ->
+        binding.rbNonInvasive.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                rbNasalProngs.isChecked = false
-                rbInvasive.isChecked = false
-                textViewSpontaneous.text = "NON - INVASIVE MODE"
+                binding.rbNasalProngs.isChecked = false
+                binding.rbInvasive.isChecked = false
+                binding.textViewSpontaneous.text = "NON - INVASIVE MODE"
 //                buttonCpap.visibility = View.VISIBLE
-                buttonBpap.visibility = View.VISIBLE
-                textViewVolumeControl.visibility = View.GONE
-                buttonVcCmv.visibility = View.GONE
-                buttonVcSimv.visibility = View.GONE
-                buttonAcv.visibility = View.GONE
-                colorLayout.visibility = View.GONE
-                buttonCpap.visibility = View.VISIBLE
-                textViewPressureControl.visibility = View.VISIBLE
-                buttonPcCmv.visibility = View.VISIBLE
-                buttonPcSimv.visibility = View.VISIBLE
-                buttonPcac.visibility = View.VISIBLE
-                buttonPsv.visibility = View.VISIBLE
-                textViewIntelligentVentilation.visibility = View.GONE
-                buttonAIVent.visibility = View.GONE
+                binding.buttonBpap.visibility = View.VISIBLE
+                binding.textViewVolumeControl.visibility = View.GONE
+                binding.buttonVcCmv.visibility = View.GONE
+                binding.buttonVcSimv.visibility = View.GONE
+                binding.buttonAcv.visibility = View.GONE
+                binding.colorLayout.visibility = View.GONE
+                binding.buttonCpap.visibility = View.VISIBLE
+                binding.textViewPressureControl.visibility = View.VISIBLE
+                binding.buttonPcCmv.visibility = View.VISIBLE
+                binding.buttonPcSimv.visibility = View.VISIBLE
+                binding.buttonPcac.visibility = View.VISIBLE
+                binding.buttonPsv.visibility = View.VISIBLE
+                binding.textViewIntelligentVentilation.visibility = View.GONE
+                binding.buttonAIVent.visibility = View.GONE
                 if (preferenceManager?.readCurrentUid() == PatientProfile.TYPE_NEONAT) {
-                    buttonHFNC.visibility = View.GONE
-                    textViewHFNC.visibility = View.GONE
+                    binding.buttonHFNC.visibility = View.GONE
+                    binding.textViewHFNC.visibility = View.GONE
 
                 } else {
-                    buttonHFNC.visibility = View.VISIBLE
-                    textViewHFNC.visibility = View.VISIBLE
+                    binding.buttonHFNC.visibility = View.VISIBLE
+                    binding.textViewHFNC.visibility = View.VISIBLE
                 }
 
                 optionSelected = true
                 animator?.cancel()
                 VentilatorApp.selectedOptions = SELECTED_OPTIONS.NON_INVASIVE_NAME
-                radioLayout.setBackgroundResource(R.drawable.background_transparent_border_black)
+                binding.radioLayout.setBackgroundResource(R.drawable.background_transparent_border_black)
 
                 if (preferenceManager?.readCurrentUid() == PatientProfile.TYPE_NEONAT){
                     val constraintSetFirst = ConstraintSet()
-                    constraintSetFirst.clone(mainLayoutPanelMode)
+                    constraintSetFirst.clone(binding.mainLayoutPanelMode)
                     constraintSetFirst.connect(
-                        textViewSpontaneous.id,
+                        binding.textViewSpontaneous.id,
                         ConstraintSet.TOP,
-                        ModeHorizontal2.id,
+                        binding.ModeHorizontal2.id,
                         ConstraintSet.BOTTOM,
                         0
                     )
-                    constraintSetFirst.applyTo(mainLayoutPanelMode)
+                    constraintSetFirst.applyTo(binding.mainLayoutPanelMode)
 
                     val constraintSetSecond = ConstraintSet()
-                    constraintSetSecond.clone(mainLayoutPanelMode)
+                    constraintSetSecond.clone(binding.mainLayoutPanelMode)
                     constraintSetSecond.connect(
-                        textViewPressureControl.id,
+                        binding.textViewPressureControl.id,
                         ConstraintSet.TOP,
-                        ModeHorizontal1.id,
+                        binding.ModeHorizontal1.id,
                         ConstraintSet.BOTTOM,
                         0
                     )
-                    constraintSetSecond.applyTo(mainLayoutPanelMode)
+                    constraintSetSecond.applyTo(binding.mainLayoutPanelMode)
                 }else{
                     val constraintSetFirst = ConstraintSet()
-                    constraintSetFirst.clone(mainLayoutPanelMode)
+                    constraintSetFirst.clone(binding.mainLayoutPanelMode)
                     constraintSetFirst.connect(
-                        textViewPressureControl.id,
+                        binding.textViewPressureControl.id,
                         ConstraintSet.TOP,
-                        ModeHorizontal1.id,
+                        binding.ModeHorizontal1.id,
                         ConstraintSet.BOTTOM,
                         0
                     )
-                    constraintSetFirst.applyTo(mainLayoutPanelMode)
+                    constraintSetFirst.applyTo(binding.mainLayoutPanelMode)
 
                     val constraintSetThird = ConstraintSet()
-                    constraintSetThird.clone(mainLayoutPanelMode)
+                    constraintSetThird.clone(binding.mainLayoutPanelMode)
                     constraintSetThird.connect(
-                        textViewSpontaneous.id,
+                        binding.textViewSpontaneous.id,
                         ConstraintSet.TOP,
-                        ModeHorizontal2.id,
+                        binding.ModeHorizontal2.id,
                         ConstraintSet.BOTTOM,
                         0
                     )
-                    constraintSetThird.applyTo(mainLayoutPanelMode)
+                    constraintSetThird.applyTo(binding.mainLayoutPanelMode)
 
                     val constraintSetFourth = ConstraintSet()
-                    constraintSetFourth.clone(mainLayoutPanelMode)
+                    constraintSetFourth.clone(binding.mainLayoutPanelMode)
                     constraintSetFourth.connect(
-                        textViewHFNC.id,
+                        binding.textViewHFNC.id,
                         ConstraintSet.TOP,
-                        ModeHorizontal3.id,
+                        binding.ModeHorizontal3.id,
                         ConstraintSet.BOTTOM,
                         0
                     )
-                    constraintSetFourth.applyTo(mainLayoutPanelMode)
+                    constraintSetFourth.applyTo(binding.mainLayoutPanelMode)
                 }
             }
         }
@@ -749,31 +501,30 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
             PatientProfile.TYPE_ADULT -> {
 
-                textViewHFNC.text = getString(R.string.hfnc)
-                buttonHFNC.text = getString(R.string.hfnc)
+                binding.textViewHFNC.text = getString(R.string.hfnc)
+                binding.buttonHFNC.text = getString(R.string.hfnc)
 
-                buttonBpap.text = getString(R.string.hint_bpap)
-                buttonCpap.text = getString(R.string.hint_cpap)
-                rbNasalProngs.visibility = View.GONE
+                binding.buttonBpap.text = getString(R.string.hint_bpap)
+                binding.buttonCpap.text = getString(R.string.hint_cpap)
+                binding.rbNasalProngs.visibility = View.GONE
             }
 
             PatientProfile.TYPE_PED -> {
 
-                textViewHFNC.text = getString(R.string.hfnc)
+                binding.textViewHFNC.text = getString(R.string.hfnc)
 
-                buttonHFNC.text = getString(R.string.hfnc)
+                binding.buttonHFNC.text = getString(R.string.hfnc)
 
-                buttonBpap.text = getString(R.string.hint_bpap)
-                buttonCpap.text = getString(R.string.hint_cpap)
-                rbNasalProngs.visibility = View.GONE
+                binding.buttonBpap.text = getString(R.string.hint_bpap)
+                binding.buttonCpap.text = getString(R.string.hint_cpap)
+                binding.rbNasalProngs.visibility = View.GONE
             }
 
             PatientProfile.TYPE_NEONAT -> {
-                buttonCpap.text = getString(R.string.hint_ncpap)
-                buttonHFNC.text = getString(R.string.NeoNatehfnc)
-                buttonBpap.text = getString(R.string.hint_nbpap)
-                rbNasalProngs.visibility = View.VISIBLE
-
+                binding.buttonCpap.text = getString(R.string.hint_ncpap)
+                binding.buttonHFNC.text = getString(R.string.NeoNatehfnc)
+                binding.buttonBpap.text = getString(R.string.hint_nbpap)
+                binding.rbNasalProngs.visibility = View.VISIBLE
             }
         }
     }
@@ -788,13 +539,13 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
                 when (getExistingVentilatorMode()) {
 
                     MODE_VCV_CMV -> {
-                        this select buttonVcCmv
+                        this select binding.buttonVcCmv
                         currentMode = getString(R.string.hint_vc_cmv)
                         preferenceManager?.setModeType(Configs.ModeType.TYPE_Volume)
                     }
 
                     MODE_VCV_SIMV -> {
-                        this select buttonVcSimv
+                        this select binding.buttonVcSimv
                         currentMode = getString(R.string.hint_vc_simv)
                         preferenceManager?.setModeType(Configs.ModeType.TYPE_Volume)
 
@@ -802,7 +553,7 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
 
                     MODE_VCV_ACV -> {
-                        this select buttonAcv
+                        this select binding.buttonAcv
                         currentMode = getString(R.string.hint_vc_cv)
                         preferenceManager?.setModeType(Configs.ModeType.TYPE_Volume)
 
@@ -810,68 +561,68 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
 
                     MODE_PC_CMV -> {
-                        this select buttonPcCmv
+                        this select binding.buttonPcCmv
                         currentMode = getString(R.string.hint_pc_cmv)
                         preferenceManager?.setModeType(Configs.ModeType.TYPE_Pressure)
 
                     }
 
                     MODE_PC_SIMV -> {
-                        this select buttonPcSimv
+                        this select binding.buttonPcSimv
                         currentMode = getString(R.string.hint_pc_imv)
                         preferenceManager?.setModeType(Configs.ModeType.TYPE_Pressure)
 
                     }
 
                     MODE_PC_AC -> {
-                        this select buttonPcac
+                        this select binding.buttonPcac
                         currentMode = getString(R.string.hint_spont)
                         preferenceManager?.setModeType(Configs.ModeType.TYPE_Pressure)
 
                     }
 
                     MODE_PC_ARPV -> {
-                        this select buttonAprv
+                        this select binding.buttonAprv
                         currentMode = getString(R.string.hint_pc_aprv)
                         preferenceManager?.setModeType(Configs.ModeType.TYPE_Pressure)
                     }
 
 
                     MODE_HFNC -> {
-                        this select buttonHFNC
+                        this select binding.buttonHFNC
                         currentMode = getString(R.string.hfnc)
                         preferenceManager?.setModeType(Configs.ModeType.TYPE_HFNC)
                     }
 
                     MODE_PC_PSV -> {
-                        this select buttonPsv
+                        this select binding.buttonPsv
                         currentMode = getString(R.string.hint_psv)
                         preferenceManager?.setModeType(Configs.ModeType.TYPE_Pressure)
 
                     }
 
                     MODE_PC_PRVC -> {
-                        this select buttonPrvc
+                        this select binding.buttonPrvc
                         currentMode = getString(R.string.hint_prvc)
                         preferenceManager?.setModeType(ModeType.TYPE_Pressure)
                     }
 
                     MODE_AUTO_VENTILATION -> {
-                        this select buttonAIVent
+                        this select binding.buttonAIVent
                         currentMode = getString(R.string.hint_ai_vent)
                         preferenceManager?.setModeType(Configs.ModeType.TYPE_AUTO_VENTILATION)
 
                     }
 
                     MODE_NIV_BPAP -> {
-                        this select buttonBpap
+                        this select binding.buttonBpap
                         currentMode = getString(R.string.hint_bpap)
                         preferenceManager?.setModeType(Configs.ModeType.TYPE_NIV)
                     }
 
 
                     MODE_NIV_CPAP -> {
-                        this select buttonCpap
+                        this select binding.buttonCpap
                         currentMode = getString(R.string.hint_cpap)
                         preferenceManager?.setModeType(Configs.ModeType.TYPE_NIV)
 
@@ -883,44 +634,44 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
                 when (getExistingVentilatorMode()) {
 
                     MODE_PC_CMV -> {
-                        this select buttonPcCmv
+                        this select binding.buttonPcCmv
                         currentMode = getString(R.string.hint_pc_cmv)
                         preferenceManager?.setModeType(Configs.ModeType.TYPE_Pressure)
 
                     }
 
                     MODE_PC_SIMV -> {
-                        this select buttonPcSimv
+                        this select binding.buttonPcSimv
                         currentMode = getString(R.string.hint_pc_imv)
                         preferenceManager?.setModeType(Configs.ModeType.TYPE_Pressure)
                     }
 
                     MODE_PC_ARPV -> {
-                        this select buttonAprv
+                        this select binding.buttonAprv
                         currentMode = getString(R.string.hint_pc_aprv)
                         preferenceManager?.setModeType(Configs.ModeType.TYPE_Pressure)
                     }
 
                     MODE_PC_AC -> {
-                        this select buttonPcac
+                        this select binding.buttonPcac
                         currentMode = getString(R.string.hint_spont)
                         preferenceManager?.setModeType(Configs.ModeType.TYPE_Pressure)
                     }
 
                     MODE_HFNC -> {
-                        this select buttonHFNC
+                        this select binding.buttonHFNC
                         currentMode = getString(R.string.NeoNatehfnc)
                         preferenceManager?.setModeType(Configs.ModeType.TYPE_HFNC)
                     }
 
                     MODE_PC_PSV -> {
-                        this select buttonPsv
+                        this select binding.buttonPsv
                         currentMode = getString(R.string.hint_psv)
                         preferenceManager?.setModeType(Configs.ModeType.TYPE_Pressure)
                     }
 
                     MODE_PC_PRVC -> {
-                        this select buttonPrvc
+                        this select binding.buttonPrvc
                         currentMode = getString(R.string.hint_prvc)
                         preferenceManager?.setModeType(ModeType.TYPE_Pressure)
                     }
@@ -937,20 +688,20 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 //                    }
 
                     MODE_NIV_BPAP -> {
-                        this select buttonBpap
+                        this select binding.buttonBpap
                         currentMode = getString(R.string.hint_bpap)
                         preferenceManager?.setModeType(Configs.ModeType.TYPE_NIV)
 
                     }
 
                     MODE_NC_IPPV -> {
-                        this select buttonNCBpap
+                        this select binding.buttonNCBpap
                         currentMode = getString(R.string.hint_nc_cpap)
                         preferenceManager?.setModeType(Configs.ModeType.TYPE_NIV)
                     }
 
                     MODE_NC_CPAP -> {
-                        this select buttonCpap
+                        this select binding.buttonCpap
                         currentMode = getString(R.string.hint_ncpap)
                         preferenceManager?.setModeType(Configs.ModeType.TYPE_NIV)
                     }
@@ -961,83 +712,83 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
                 when (getExistingVentilatorMode()) {
 
                     MODE_VCV_CMV -> {
-                        this select buttonVcCmv
+                        this select binding.buttonVcCmv
                         currentMode = getString(R.string.hint_vc_cmv)
                         preferenceManager?.setModeType(Configs.ModeType.TYPE_Volume)
                     }
 
                     MODE_VCV_SIMV -> {
-                        this select buttonVcSimv
+                        this select binding.buttonVcSimv
                         currentMode = getString(R.string.hint_vc_simv)
                         preferenceManager?.setModeType(Configs.ModeType.TYPE_Volume)
                     }
 
 
                     MODE_VCV_ACV -> {
-                        this select buttonAcv
+                        this select binding.buttonAcv
                         currentMode = getString(R.string.hint_vc_cv)
                         preferenceManager?.setModeType(Configs.ModeType.TYPE_Volume)
                     }
 
                     MODE_HFNC -> {
-                        this select buttonHFNC
+                        this select binding.buttonHFNC
                         currentMode = getString(R.string.hfnc)
                         preferenceManager?.setModeType(Configs.ModeType.TYPE_HFNC)
                     }
 
 
                     MODE_PC_CMV -> {
-                        this select buttonPcCmv
+                        this select binding.buttonPcCmv
                         currentMode = getString(R.string.hint_pc_cmv)
                         preferenceManager?.setModeType(Configs.ModeType.TYPE_Pressure)
                     }
 
                     MODE_PC_SIMV -> {
-                        this select buttonPcSimv
+                        this select binding.buttonPcSimv
                         currentMode = getString(R.string.hint_pc_imv)
                         preferenceManager?.setModeType(Configs.ModeType.TYPE_Pressure)
 
                     }
 
                     MODE_PC_ARPV -> {
-                        this select buttonAprv
+                        this select binding.buttonAprv
                         currentMode = getString(R.string.hint_pc_aprv)
                         preferenceManager?.setModeType(Configs.ModeType.TYPE_Pressure)
                     }
 
                     MODE_PC_AC -> {
-                        this select buttonPcac
+                        this select binding.buttonPcac
                         currentMode = getString(R.string.hint_spont)
                         preferenceManager?.setModeType(Configs.ModeType.TYPE_Pressure)
                     }
 
                     MODE_PC_PSV -> {
-                        this select buttonPsv
+                        this select binding.buttonPsv
                         currentMode = getString(R.string.hint_psv)
                         preferenceManager?.setModeType(Configs.ModeType.TYPE_Pressure)
                     }
 
                     MODE_PC_PRVC -> {
-                        this select buttonPrvc
+                        this select binding.buttonPrvc
                         currentMode = getString(R.string.hint_prvc)
                         preferenceManager?.setModeType(ModeType.TYPE_Pressure)
                     }
 
                     MODE_AUTO_VENTILATION -> {
-                        this select buttonAIVent
+                        this select binding.buttonAIVent
                         currentMode = getString(R.string.hint_ai_vent)
                         preferenceManager?.setModeType(Configs.ModeType.TYPE_AUTO_VENTILATION)
                     }
 
                     MODE_NIV_BPAP -> {
-                        this select buttonBpap
+                        this select binding.buttonBpap
                         currentMode = getString(R.string.hint_bpap)
                         preferenceManager?.setModeType(Configs.ModeType.TYPE_NIV)
 
                     }
 
                     MODE_NIV_CPAP -> {
-                        this select buttonCpap
+                        this select binding.buttonCpap
                         currentMode = getString(R.string.hint_cpap)
                         preferenceManager?.setModeType(Configs.ModeType.TYPE_NIV)
 
@@ -1053,11 +804,9 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
         modeButtons.forEach { it.setOnClickListener(this) }
 
-        imageViewCrossMode.setOnClickListener {
+        binding.imageViewCrossMode.setOnClickListener {
 
             VentilatorApp.selectedOptions = null
-
-
             requireActivity().supportFragmentManager
                 .beginTransaction()
                 .remove(this)
@@ -1103,7 +852,7 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
         try {
 //            colorCoroutineScope = CoroutineScope(Dispatchers.Main).launch {
-            colorLayout.visibility = View.VISIBLE
+            binding.colorLayout.visibility = View.VISIBLE
 //                delay(5000L)
 
 //                ToastFactory.custom(requireContext(),"Please select an option...")
@@ -1127,21 +876,21 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
             PatientProfile.TYPE_PED -> {
                 when (v) {
 
-                    buttonVcCmv -> {
+                    binding.buttonVcCmv -> {
                         if (optionSelected) {
-                            this select buttonVcCmv
-                            this deSelect buttonVcSimv
-                            this deSelect buttonAcv
-                            this deSelect buttonPcCmv
-                            this deSelect buttonPcSimv
-                            this deSelect buttonPrvc
-                            this deSelect buttonPcac
-                            this deSelect buttonPsv
-                            this deSelect buttonHFNC
-                            this deSelect buttonAIVent
-                            this deSelect buttonBpap
-                            this deSelect buttonCpap
-                            this deSelect buttonNCBpap
+                            this select binding.buttonVcCmv
+                            this deSelect binding.buttonVcSimv
+                            this deSelect binding.buttonAcv
+                            this deSelect binding.buttonPcCmv
+                            this deSelect binding.buttonPcSimv
+                            this deSelect binding.buttonPrvc
+                            this deSelect binding.buttonPcac
+                            this deSelect binding.buttonPsv
+                            this deSelect binding.buttonHFNC
+                            this deSelect binding.buttonAIVent
+                            this deSelect binding.buttonBpap
+                            this deSelect binding.buttonCpap
+                            this deSelect binding.buttonNCBpap
 
                             ventMode = MODE_VCV_CMV
                             VentilatorApp.globalModeType = ModeType.TYPE_Volume
@@ -1149,46 +898,46 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
                     }
 
 
-                    buttonVcSimv -> {
+                    binding.buttonVcSimv -> {
 
                         if (optionSelected) {
-                            this deSelect buttonVcCmv
-                            this select buttonVcSimv
-                            this deSelect buttonAcv
-                            this deSelect buttonPcCmv
-                            this deSelect buttonPcSimv
-                            this deSelect buttonPcac
-                            this deSelect buttonPrvc
-                            this deSelect buttonPsv
-                            this deSelect buttonHFNC
-                            this deSelect buttonAIVent
-                            this deSelect buttonBpap
-                            this deSelect buttonCpap
+                            this deSelect binding.buttonVcCmv
+                            this select binding.buttonVcSimv
+                            this deSelect binding.buttonAcv
+                            this deSelect binding.buttonPcCmv
+                            this deSelect binding.buttonPcSimv
+                            this deSelect binding.buttonPcac
+                            this deSelect binding.buttonPrvc
+                            this deSelect binding.buttonPsv
+                            this deSelect binding.buttonHFNC
+                            this deSelect binding.buttonAIVent
+                            this deSelect binding.buttonBpap
+                            this deSelect binding.buttonCpap
                             ventMode = MODE_VCV_SIMV
-                            this deSelect buttonNCBpap
+                            this deSelect binding.buttonNCBpap
 
                             VentilatorApp.globalModeType = ModeType.TYPE_Volume
                         } else showToastForNonSelectOptions()
 
                     }
 
-                    buttonAcv -> {
+                    binding.buttonAcv -> {
 
                         if (optionSelected) {
-                            this deSelect buttonVcCmv
-                            this deSelect buttonVcSimv
-                            this select buttonAcv
-                            this deSelect buttonPcCmv
-                            this deSelect buttonPcSimv
-                            this deSelect buttonPrvc
-                            this deSelect buttonPcac
-                            this deSelect buttonPsv
-                            this deSelect buttonHFNC
-                            this deSelect buttonAIVent
-                            this deSelect buttonBpap
-                            this deSelect buttonCpap
+                            this deSelect binding.buttonVcCmv
+                            this deSelect binding.buttonVcSimv
+                            this select binding.buttonAcv
+                            this deSelect binding.buttonPcCmv
+                            this deSelect binding.buttonPcSimv
+                            this deSelect binding.buttonPrvc
+                            this deSelect binding.buttonPcac
+                            this deSelect binding.buttonPsv
+                            this deSelect binding.buttonHFNC
+                            this deSelect binding.buttonAIVent
+                            this deSelect binding.buttonBpap
+                            this deSelect binding.buttonCpap
                             ventMode = MODE_VCV_ACV
-                            this deSelect buttonNCBpap
+                            this deSelect binding.buttonNCBpap
 
                             VentilatorApp.globalModeType = ModeType.TYPE_Volume
 
@@ -1196,23 +945,23 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
                     }
 
-                    buttonPcCmv -> {
+                    binding.buttonPcCmv -> {
 
                         if (optionSelected) {
-                            this deSelect buttonVcCmv
-                            this deSelect buttonVcSimv
-                            this deSelect buttonAcv
-                            this select buttonPcCmv
-                            this deSelect buttonPcSimv
-                            this deSelect buttonPrvc
-                            this deSelect buttonPcac
-                            this deSelect buttonPsv
-                            this deSelect buttonHFNC
-                            this deSelect buttonAIVent
-                            this deSelect buttonBpap
-                            this deSelect buttonCpap
+                            this deSelect binding.buttonVcCmv
+                            this deSelect binding.buttonVcSimv
+                            this deSelect binding.buttonAcv
+                            this select binding.buttonPcCmv
+                            this deSelect binding.buttonPcSimv
+                            this deSelect binding.buttonPrvc
+                            this deSelect binding.buttonPcac
+                            this deSelect binding.buttonPsv
+                            this deSelect binding.buttonHFNC
+                            this deSelect binding.buttonAIVent
+                            this deSelect binding.buttonBpap
+                            this deSelect binding.buttonCpap
                             ventMode = MODE_PC_CMV
-                            this deSelect buttonNCBpap
+                            this deSelect binding.buttonNCBpap
 
                             VentilatorApp.globalModeType = ModeType.TYPE_Pressure
 
@@ -1220,22 +969,22 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
                     }
 
-                    buttonPcSimv -> {
+                    binding.buttonPcSimv -> {
 
                         if (optionSelected) {
-                            this deSelect buttonVcCmv
-                            this deSelect buttonVcSimv
-                            this deSelect buttonAcv
-                            this deSelect buttonPcCmv
-                            this select buttonPcSimv
-                            this deSelect buttonPrvc
-                            this deSelect buttonPcac
-                            this deSelect buttonPsv
-                            this deSelect buttonHFNC
-                            this deSelect buttonAIVent
-                            this deSelect buttonBpap
-                            this deSelect buttonCpap
-                            this deSelect buttonNCBpap
+                            this deSelect binding.buttonVcCmv
+                            this deSelect binding.buttonVcSimv
+                            this deSelect binding.buttonAcv
+                            this deSelect binding.buttonPcCmv
+                            this select binding.buttonPcSimv
+                            this deSelect binding.buttonPrvc
+                            this deSelect binding.buttonPcac
+                            this deSelect binding.buttonPsv
+                            this deSelect binding.buttonHFNC
+                            this deSelect binding.buttonAIVent
+                            this deSelect binding.buttonBpap
+                            this deSelect binding.buttonCpap
+                            this deSelect binding.buttonNCBpap
 
                             ventMode = MODE_PC_SIMV
                             VentilatorApp.globalModeType = ModeType.TYPE_Pressure
@@ -1244,23 +993,23 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
                     }
 
-                    buttonAprv -> {
+                    binding.buttonAprv -> {
 
                         if (optionSelected) {
-                            this deSelect buttonVcCmv
-                            this deSelect buttonVcSimv
-                            this deSelect buttonAcv
-                            this deSelect buttonPcCmv
-                            this select buttonAprv
-                            this deSelect buttonPcSimv
-                            this deSelect buttonPcac
-                            this deSelect buttonPrvc
-                            this deSelect buttonPsv
-                            this deSelect buttonHFNC
-                            this deSelect buttonAIVent
-                            this deSelect buttonBpap
-                            this deSelect buttonCpap
-                            this deSelect buttonNCBpap
+                            this deSelect binding.buttonVcCmv
+                            this deSelect binding.buttonVcSimv
+                            this deSelect binding.buttonAcv
+                            this deSelect binding.buttonPcCmv
+                            this select binding.buttonAprv
+                            this deSelect binding.buttonPcSimv
+                            this deSelect binding.buttonPcac
+                            this deSelect binding.buttonPrvc
+                            this deSelect binding.buttonPsv
+                            this deSelect binding.buttonHFNC
+                            this deSelect binding.buttonAIVent
+                            this deSelect binding.buttonBpap
+                            this deSelect binding.buttonCpap
+                            this deSelect binding.buttonNCBpap
 
                             ventMode = MODE_PC_ARPV
                             VentilatorApp.globalModeType = ModeType.TYPE_Pressure
@@ -1269,22 +1018,22 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
                     }
 
-                    buttonPcac -> {
+                    binding.buttonPcac -> {
 
                         if (optionSelected) {
-                            this deSelect buttonVcCmv
-                            this deSelect buttonVcSimv
-                            this deSelect buttonAcv
-                            this deSelect buttonPcCmv
-                            this select buttonPcSimv
-                            this deSelect buttonPcac
-                            this deSelect buttonPsv
-                            this deSelect buttonPrvc
-                            this deSelect buttonHFNC
-                            this deSelect buttonAIVent
-                            this deSelect buttonBpap
-                            this deSelect buttonCpap
-                            this deSelect buttonNCBpap
+                            this deSelect binding.buttonVcCmv
+                            this deSelect binding.buttonVcSimv
+                            this deSelect binding.buttonAcv
+                            this deSelect binding.buttonPcCmv
+                            this select binding.buttonPcSimv
+                            this deSelect binding.buttonPcac
+                            this deSelect binding.buttonPsv
+                            this deSelect binding.buttonPrvc
+                            this deSelect binding.buttonHFNC
+                            this deSelect binding.buttonAIVent
+                            this deSelect binding.buttonBpap
+                            this deSelect binding.buttonCpap
+                            this deSelect binding.buttonNCBpap
 
                             ventMode = MODE_PC_AC
                             VentilatorApp.globalModeType = ModeType.TYPE_Pressure
@@ -1293,22 +1042,22 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
                     }
 
-                    buttonPsv -> {
+                    binding.buttonPsv -> {
 
                         if (optionSelected) {
-                            this deSelect buttonVcCmv
-                            this deSelect buttonVcSimv
-                            this deSelect buttonAcv
-                            this deSelect buttonPcCmv
-                            this deSelect buttonPcSimv
-                            this deSelect buttonPcac
-                            this select buttonPsv
-                            this deSelect buttonHFNC
-                            this deSelect buttonPrvc
-                            this deSelect buttonAIVent
-                            this deSelect buttonBpap
-                            this deSelect buttonCpap
-                            this deSelect buttonNCBpap
+                            this deSelect binding.buttonVcCmv
+                            this deSelect binding.buttonVcSimv
+                            this deSelect binding.buttonAcv
+                            this deSelect binding.buttonPcCmv
+                            this deSelect binding.buttonPcSimv
+                            this deSelect binding.buttonPcac
+                            this select binding.buttonPsv
+                            this deSelect binding.buttonHFNC
+                            this deSelect binding.buttonPrvc
+                            this deSelect binding.buttonAIVent
+                            this deSelect binding.buttonBpap
+                            this deSelect binding.buttonCpap
+                            this deSelect binding.buttonNCBpap
 
                             ventMode =
                                 MODE_PC_PSV
@@ -1317,22 +1066,22 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
                     }
 
-                    buttonPrvc -> {
+                    binding.buttonPrvc -> {
 
                         if (optionSelected) {
-                            this select buttonPrvc
-                            this deSelect buttonVcCmv
-                            this deSelect buttonVcSimv
-                            this deSelect buttonAcv
-                            this deSelect buttonPcCmv
-                            this deSelect buttonPcSimv
-                            this deSelect buttonPcac
-                            this deSelect buttonPsv
-                            this deSelect buttonHFNC
-                            this deSelect buttonAIVent
-                            this deSelect buttonBpap
-                            this deSelect buttonCpap
-                            this deSelect buttonNCBpap
+                            this select binding.buttonPrvc
+                            this deSelect binding.buttonVcCmv
+                            this deSelect binding.buttonVcSimv
+                            this deSelect binding.buttonAcv
+                            this deSelect binding.buttonPcCmv
+                            this deSelect binding.buttonPcSimv
+                            this deSelect binding.buttonPcac
+                            this deSelect binding.buttonPsv
+                            this deSelect binding.buttonHFNC
+                            this deSelect binding.buttonAIVent
+                            this deSelect binding.buttonBpap
+                            this deSelect binding.buttonCpap
+                            this deSelect binding.buttonNCBpap
 
                             ventMode =
                                 MODE_PC_PRVC
@@ -1343,22 +1092,22 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
                     }
 
-                    buttonHFNC -> {
+                    binding.buttonHFNC -> {
 
                         if (optionSelected) {
-                            this deSelect buttonVcCmv
-                            this deSelect buttonVcSimv
-                            this deSelect buttonAcv
-                            this select buttonHFNC
-                            this deSelect buttonPcCmv
-                            this deSelect buttonPcSimv
-                            this deSelect buttonPcac
-                            this deSelect buttonPsv
-                            this deSelect buttonPrvc
-                            this deSelect buttonAIVent
-                            this deSelect buttonBpap
-                            this deSelect buttonCpap
-                            this deSelect buttonNCBpap
+                            this deSelect binding.buttonVcCmv
+                            this deSelect binding.buttonVcSimv
+                            this deSelect binding.buttonAcv
+                            this select binding.buttonHFNC
+                            this deSelect binding.buttonPcCmv
+                            this deSelect binding.buttonPcSimv
+                            this deSelect binding.buttonPcac
+                            this deSelect binding.buttonPsv
+                            this deSelect binding.buttonPrvc
+                            this deSelect binding.buttonAIVent
+                            this deSelect binding.buttonBpap
+                            this deSelect binding.buttonCpap
+                            this deSelect binding.buttonNCBpap
                             // preferenceManager?.setModeType(Configs.ModeType.TYPE_HFNC)
                             ventMode =
                                 MODE_HFNC
@@ -1367,22 +1116,22 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
                     }
 
-                    buttonAIVent -> {
+                    binding.buttonAIVent -> {
 
                         if (optionSelected) {
-                            this deSelect buttonVcCmv
-                            this deSelect buttonVcSimv
-                            this deSelect buttonAcv
-                            this deSelect buttonPcCmv
-                            this deSelect buttonPcSimv
-                            this deSelect buttonPcac
-                            this deSelect buttonPrvc
-                            this deSelect buttonPsv
-                            this deSelect buttonHFNC
-                            this select buttonAIVent
-                            this deSelect buttonBpap
-                            this deSelect buttonCpap
-                            this deSelect buttonNCBpap
+                            this deSelect binding.buttonVcCmv
+                            this deSelect binding.buttonVcSimv
+                            this deSelect binding.buttonAcv
+                            this deSelect binding.buttonPcCmv
+                            this deSelect binding.buttonPcSimv
+                            this deSelect binding.buttonPcac
+                            this deSelect binding.buttonPrvc
+                            this deSelect binding.buttonPsv
+                            this deSelect binding.buttonHFNC
+                            this select binding.buttonAIVent
+                            this deSelect binding.buttonBpap
+                            this deSelect binding.buttonCpap
+                            this deSelect binding.buttonNCBpap
                             globalModeType = ModeType.TYPE_AUTO_VENTILATION
 
                             ventMode =
@@ -1391,23 +1140,23 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
                     }
 
-                    buttonBpap -> {
+                    binding.buttonBpap -> {
 
                         if (optionSelected) {
-                            this select buttonBpap
-                            this deSelect buttonVcCmv
-                            this deSelect buttonVcSimv
-                            this deSelect buttonAcv
-                            this deSelect buttonPcCmv
-                            this deSelect buttonPcSimv
-                            this deSelect buttonPrvc
-                            this deSelect buttonPcac
-                            this deSelect buttonPsv
-                            this deSelect buttonHFNC
-                            this deSelect buttonAIVent
-                            this select buttonBpap
-                            this deSelect buttonCpap
-                            this deSelect buttonNCBpap
+                            this select binding.buttonBpap
+                            this deSelect binding.buttonVcCmv
+                            this deSelect binding.buttonVcSimv
+                            this deSelect binding.buttonAcv
+                            this deSelect binding.buttonPcCmv
+                            this deSelect binding.buttonPcSimv
+                            this deSelect binding.buttonPrvc
+                            this deSelect binding.buttonPcac
+                            this deSelect binding.buttonPsv
+                            this deSelect binding.buttonHFNC
+                            this deSelect binding.buttonAIVent
+                            this select binding.buttonBpap
+                            this deSelect binding.buttonCpap
+                            this deSelect binding.buttonNCBpap
                             VentilatorApp.globalModeType = ModeType.TYPE_NIV
 
                             ventMode =
@@ -1416,22 +1165,21 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
                     }
 
-                    buttonCpap -> {
+                    binding.buttonCpap -> {
 
                         if (optionSelected) {
-                            this deSelect buttonVcCmv
-                            this deSelect buttonVcSimv
-                            this deSelect buttonAcv
-                            this deSelect buttonPcCmv
-                            this deSelect buttonPcSimv
-                            this deSelect buttonPcac
-                            this deSelect buttonPsv
-                            this deSelect buttonPrvc
-                            this deSelect buttonAprv
-                            this deSelect buttonAIVent
-                            this deSelect buttonBpap
-                            this select buttonCpap
-                            this deSelect buttonNCBpap
+                            this deSelect binding.buttonVcCmv
+                            this deSelect binding.buttonVcSimv
+                            this deSelect binding.buttonAcv
+                            this deSelect binding.buttonPcCmv
+                            this deSelect binding.buttonPcSimv
+                            this deSelect binding.buttonPcac
+                            this deSelect binding.buttonPrvc
+                            this deSelect binding.buttonAprv
+                            this deSelect binding.buttonAIVent
+                            this deSelect binding.buttonBpap
+                            this select binding.buttonCpap
+                            this deSelect binding.buttonNCBpap
                             VentilatorApp.globalModeType = ModeType.TYPE_NIV
 
                             ventMode = MODE_NIV_CPAP
@@ -1445,22 +1193,22 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
             PatientProfile.TYPE_NEONAT -> {
                 when (v) {
 
-                    buttonVcCmv -> {
+                    binding.buttonVcCmv -> {
 
                         if (optionSelected) {
-                            this select buttonVcCmv
-                            this deSelect buttonVcSimv
-                            this deSelect buttonAcv
-                            this deSelect buttonPcCmv
-                            this deSelect buttonPcSimv
-                            this deSelect buttonPrvc
-                            this deSelect buttonPcac
-                            this deSelect buttonPsv
-                            this deSelect buttonHFNC
-                            this deSelect buttonAIVent
-                            this deSelect buttonBpap
-                            this deSelect buttonCpap
-                            this deSelect buttonNCBpap
+                            this select binding.buttonVcCmv
+                            this deSelect binding.buttonVcSimv
+                            this deSelect binding.buttonAcv
+                            this deSelect binding.buttonPcCmv
+                            this deSelect binding.buttonPcSimv
+                            this deSelect binding.buttonPrvc
+                            this deSelect binding.buttonPcac
+                            this deSelect binding.buttonPsv
+                            this deSelect binding.buttonHFNC
+                            this deSelect binding.buttonAIVent
+                            this deSelect binding.buttonBpap
+                            this deSelect binding.buttonCpap
+                            this deSelect binding.buttonNCBpap
 
                             ventMode =
                                 MODE_VCV_CMV
@@ -1473,21 +1221,21 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
                         } else showToastForNonSelectOptions()
                     }
 
-                    buttonVcSimv -> {
+                    binding.buttonVcSimv -> {
                         if (optionSelected) {
-                            this deSelect buttonVcCmv
-                            this select buttonVcSimv
-                            this deSelect buttonAcv
-                            this deSelect buttonPcCmv
-                            this deSelect buttonPcSimv
-                            this deSelect buttonPcac
-                            this deSelect buttonPrvc
-                            this deSelect buttonPsv
-                            this deSelect buttonHFNC
-                            this deSelect buttonAIVent
-                            this deSelect buttonBpap
-                            this deSelect buttonCpap
-                            this deSelect buttonNCBpap
+                            this deSelect binding.buttonVcCmv
+                            this select binding.buttonVcSimv
+                            this deSelect binding.buttonAcv
+                            this deSelect binding.buttonPcCmv
+                            this deSelect binding.buttonPcSimv
+                            this deSelect binding.buttonPcac
+                            this deSelect binding.buttonPrvc
+                            this deSelect binding.buttonPsv
+                            this deSelect binding.buttonHFNC
+                            this deSelect binding.buttonAIVent
+                            this deSelect binding.buttonBpap
+                            this deSelect binding.buttonCpap
+                            this deSelect binding.buttonNCBpap
                             ventMode = MODE_VCV_SIMV
                             // preferenceManager?.setModeType(Configs.ModeType.TYPE_Volume)
                             Log.i("CHECK_MODE_VAL", preferenceManager?.readModeType().toString())
@@ -1499,22 +1247,22 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
                     }
 
-                    buttonAcv -> {
+                    binding.buttonAcv -> {
 
                         if (optionSelected) {
-                            this deSelect buttonVcCmv
-                            this deSelect buttonVcSimv
-                            this select buttonAcv
-                            this deSelect buttonPcCmv
-                            this deSelect buttonPcSimv
-                            this deSelect buttonPrvc
-                            this deSelect buttonPcac
-                            this deSelect buttonPsv
-                            this deSelect buttonHFNC
-                            this deSelect buttonAIVent
-                            this deSelect buttonBpap
-                            this deSelect buttonCpap
-                            this deSelect buttonNCBpap
+                            this deSelect binding.buttonVcCmv
+                            this deSelect binding.buttonVcSimv
+                            this select binding.buttonAcv
+                            this deSelect binding.buttonPcCmv
+                            this deSelect binding.buttonPcSimv
+                            this deSelect binding.buttonPrvc
+                            this deSelect binding.buttonPcac
+                            this deSelect binding.buttonPsv
+                            this deSelect binding.buttonHFNC
+                            this deSelect binding.buttonAIVent
+                            this deSelect binding.buttonBpap
+                            this deSelect binding.buttonCpap
+                            this deSelect binding.buttonNCBpap
                             ventMode = MODE_VCV_ACV
                             //  preferenceManager?.setModeType(Configs.ModeType.TYPE_Volume)
 //                        Log.i("CHECK_MODE_VAL",preferenceManager?.readModeType().toString())
@@ -1525,22 +1273,22 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
                     }
 
-                    buttonPcCmv -> {
+                    binding.buttonPcCmv -> {
 
                         if (optionSelected) {
-                            this deSelect buttonVcCmv
-                            this deSelect buttonVcSimv
-                            this deSelect buttonAcv
-                            this select buttonPcCmv
-                            this deSelect buttonPrvc
-                            this deSelect buttonPcSimv
-                            this deSelect buttonPcac
-                            this deSelect buttonPsv
-                            this deSelect buttonHFNC
-                            this deSelect buttonAIVent
-                            this deSelect buttonBpap
-                            this deSelect buttonCpap
-                            this deSelect buttonNCBpap
+                            this deSelect binding.buttonVcCmv
+                            this deSelect binding.buttonVcSimv
+                            this deSelect binding.buttonAcv
+                            this select binding.buttonPcCmv
+                            this deSelect binding.buttonPrvc
+                            this deSelect binding.buttonPcSimv
+                            this deSelect binding.buttonPcac
+                            this deSelect binding.buttonPsv
+                            this deSelect binding.buttonHFNC
+                            this deSelect binding.buttonAIVent
+                            this deSelect binding.buttonBpap
+                            this deSelect binding.buttonCpap
+                            this deSelect binding.buttonNCBpap
                             ventMode = MODE_PC_CMV
 
                             //preferenceManager?.setModeType(Configs.ModeType.TYPE_Pressure)
@@ -1551,21 +1299,21 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
                     }
 
-                    buttonPcSimv -> {
+                    binding.buttonPcSimv -> {
                         if (optionSelected) {
-                            this deSelect buttonVcCmv
-                            this deSelect buttonVcSimv
-                            this deSelect buttonAcv
-                            this deSelect buttonPcCmv
-                            this select buttonPcSimv
-                            this deSelect buttonPrvc
-                            this deSelect buttonPcac
-                            this deSelect buttonPsv
-                            this deSelect buttonHFNC
-                            this deSelect buttonAIVent
-                            this deSelect buttonBpap
-                            this deSelect buttonCpap
-                            this deSelect buttonNCBpap
+                            this deSelect binding.buttonVcCmv
+                            this deSelect binding.buttonVcSimv
+                            this deSelect binding.buttonAcv
+                            this deSelect binding.buttonPcCmv
+                            this select binding.buttonPcSimv
+                            this deSelect binding.buttonPrvc
+                            this deSelect binding.buttonPcac
+                            this deSelect binding.buttonPsv
+                            this deSelect binding.buttonHFNC
+                            this deSelect binding.buttonAIVent
+                            this deSelect binding.buttonBpap
+                            this deSelect binding.buttonCpap
+                            this deSelect binding.buttonNCBpap
 
                             ventMode = MODE_PC_SIMV
                             //   preferenceManager?.setModeType(Configs.ModeType.TYPE_Pressure)
@@ -1576,23 +1324,23 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
                     }
 
-                    buttonAprv -> {
+                    binding.buttonAprv -> {
 
                         if (optionSelected) {
-                            this deSelect buttonVcCmv
-                            this deSelect buttonVcSimv
-                            this deSelect buttonAcv
-                            this deSelect buttonPcCmv
-                            this select buttonAprv
-                            this deSelect buttonPcSimv
-                            this deSelect buttonPcac
-                            this deSelect buttonPsv
-                            this deSelect buttonPrvc
-                            this deSelect buttonHFNC
-                            this deSelect buttonAIVent
-                            this deSelect buttonBpap
-                            this deSelect buttonCpap
-                            this deSelect buttonNCBpap
+                            this deSelect binding.buttonVcCmv
+                            this deSelect binding.buttonVcSimv
+                            this deSelect binding.buttonAcv
+                            this deSelect binding.buttonPcCmv
+                            this select binding.buttonAprv
+                            this deSelect binding.buttonPcSimv
+                            this deSelect binding.buttonPcac
+                            this deSelect binding.buttonPsv
+                            this deSelect binding.buttonPrvc
+                            this deSelect binding.buttonHFNC
+                            this deSelect binding.buttonAIVent
+                            this deSelect binding.buttonBpap
+                            this deSelect binding.buttonCpap
+                            this deSelect binding.buttonNCBpap
 
                             ventMode = MODE_PC_ARPV
                             VentilatorApp.globalModeType = ModeType.TYPE_Pressure
@@ -1601,21 +1349,21 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
                     }
 
-                    buttonPcac -> {
+                    binding.buttonPcac -> {
                         if (optionSelected) {
-                            this deSelect buttonVcCmv
-                            this deSelect buttonVcSimv
-                            this deSelect buttonAcv
-                            this deSelect buttonPcCmv
-                            this deSelect buttonPcSimv
-                            this deSelect buttonPrvc
-                            this select buttonPcac
-                            this deSelect buttonPsv
-                            this deSelect buttonHFNC
-                            this deSelect buttonAIVent
-                            this deSelect buttonBpap
-                            this deSelect buttonCpap
-                            this deSelect buttonNCBpap
+                            this deSelect binding.buttonVcCmv
+                            this deSelect binding.buttonVcSimv
+                            this deSelect binding.buttonAcv
+                            this deSelect binding.buttonPcCmv
+                            this deSelect binding.buttonPcSimv
+                            this deSelect binding.buttonPrvc
+                            this select binding.buttonPcac
+                            this deSelect binding.buttonPsv
+                            this deSelect binding.buttonHFNC
+                            this deSelect binding.buttonAIVent
+                            this deSelect binding.buttonBpap
+                            this deSelect binding.buttonCpap
+                            this deSelect binding.buttonNCBpap
 
 
                             ventMode =
@@ -1627,22 +1375,22 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
                         } else showToastForNonSelectOptions()
                     }
 
-                    buttonPsv -> {
+                    binding.buttonPsv -> {
 
                         if (optionSelected) {
-                            this deSelect buttonVcCmv
-                            this deSelect buttonVcSimv
-                            this deSelect buttonAcv
-                            this deSelect buttonPcCmv
-                            this deSelect buttonPcSimv
-                            this deSelect buttonPcac
-                            this select buttonPsv
-                            this deSelect buttonPrvc
-                            this deSelect buttonHFNC
-                            this deSelect buttonAIVent
-                            this deSelect buttonBpap
-                            this deSelect buttonCpap
-                            this deSelect buttonNCBpap
+                            this deSelect binding.buttonVcCmv
+                            this deSelect binding.buttonVcSimv
+                            this deSelect binding.buttonAcv
+                            this deSelect binding.buttonPcCmv
+                            this deSelect binding.buttonPcSimv
+                            this deSelect binding.buttonPcac
+                            this select binding.buttonPsv
+                            this deSelect binding.buttonPrvc
+                            this deSelect binding.buttonHFNC
+                            this deSelect binding.buttonAIVent
+                            this deSelect binding.buttonBpap
+                            this deSelect binding.buttonCpap
+                            this deSelect binding.buttonNCBpap
 
                             ventMode =
                                 MODE_PC_PSV
@@ -1653,22 +1401,22 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
                     }
 
-                    buttonPrvc -> {
+                    binding.buttonPrvc -> {
 
                         if (optionSelected) {
-                            this select buttonPrvc
-                            this deSelect buttonVcCmv
-                            this deSelect buttonVcSimv
-                            this deSelect buttonAcv
-                            this deSelect buttonPcCmv
-                            this deSelect buttonPcSimv
-                            this deSelect buttonPcac
-                            this deSelect buttonPsv
-                            this deSelect buttonHFNC
-                            this deSelect buttonAIVent
-                            this deSelect buttonBpap
-                            this deSelect buttonCpap
-                            this deSelect buttonNCBpap
+                            this select binding.buttonPrvc
+                            this deSelect binding.buttonVcCmv
+                            this deSelect binding.buttonVcSimv
+                            this deSelect binding.buttonAcv
+                            this deSelect binding.buttonPcCmv
+                            this deSelect binding.buttonPcSimv
+                            this deSelect binding.buttonPcac
+                            this deSelect binding.buttonPsv
+                            this deSelect binding.buttonHFNC
+                            this deSelect binding.buttonAIVent
+                            this deSelect binding.buttonBpap
+                            this deSelect binding.buttonCpap
+                            this deSelect binding.buttonNCBpap
 
                             ventMode =
                                 MODE_PC_PRVC
@@ -1679,22 +1427,22 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
                     }
 
-                    buttonHFNC -> {
+                    binding.buttonHFNC -> {
 
                         if (optionSelected) {
-                            this deSelect buttonVcCmv
-                            this deSelect buttonVcSimv
-                            this deSelect buttonAcv
-                            this select buttonHFNC
-                            this deSelect buttonPcCmv
-                            this deSelect buttonPcSimv
-                            this deSelect buttonPcac
-                            this deSelect buttonPrvc
-                            this deSelect buttonPsv
-                            this deSelect buttonAIVent
-                            this deSelect buttonBpap
-                            this deSelect buttonNCBpap
-                            this deSelect buttonCpap
+                            this deSelect binding.buttonVcCmv
+                            this deSelect binding.buttonVcSimv
+                            this deSelect binding.buttonAcv
+                            this select binding.buttonHFNC
+                            this deSelect binding.buttonPcCmv
+                            this deSelect binding.buttonPcSimv
+                            this deSelect binding.buttonPcac
+                            this deSelect binding.buttonPrvc
+                            this deSelect binding.buttonPsv
+                            this deSelect binding.buttonAIVent
+                            this deSelect binding.buttonBpap
+                            this deSelect binding.buttonNCBpap
+                            this deSelect binding.buttonCpap
 //                        preferenceManager?.setModeType(Configs.ModeType.TYPE_HFNC)
                             ventMode =
                                 MODE_HFNC
@@ -1704,22 +1452,22 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
                     }
 
-                    buttonAIVent -> {
+                    binding.buttonAIVent -> {
 
                         if (optionSelected) {
-                            this deSelect buttonVcCmv
-                            this deSelect buttonVcSimv
-                            this deSelect buttonAcv
-                            this deSelect buttonPcCmv
-                            this deSelect buttonPcSimv
-                            this deSelect buttonPcac
-                            this deSelect buttonPsv
-                            this deSelect buttonHFNC
-                            this select buttonAIVent
-                            this deSelect buttonPrvc
-                            this deSelect buttonBpap
-                            this deSelect buttonNCBpap
-                            this deSelect buttonCpap
+                            this deSelect binding.buttonVcCmv
+                            this deSelect binding.buttonVcSimv
+                            this deSelect binding.buttonAcv
+                            this deSelect binding.buttonPcCmv
+                            this deSelect binding.buttonPcSimv
+                            this deSelect binding.buttonPcac
+                            this deSelect binding.buttonPsv
+                            this deSelect binding.buttonHFNC
+                            this select binding.buttonAIVent
+                            this deSelect binding.buttonPrvc
+                            this deSelect binding.buttonBpap
+                            this deSelect binding.buttonNCBpap
+                            this deSelect binding.buttonCpap
                             globalModeType = ModeType.TYPE_AUTO_VENTILATION
                             ventMode =
                                 MODE_AUTO_VENTILATION
@@ -1727,22 +1475,22 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
                     }
 
-                    buttonBpap -> {
+                    binding.buttonBpap -> {
                         if (optionSelected) {
-                            this select buttonBpap
-                            this deSelect buttonVcCmv
-                            this deSelect buttonVcSimv
-                            this deSelect buttonAcv
-                            this deSelect buttonPcCmv
-                            this deSelect buttonPcSimv
-                            this deSelect buttonPcac
-                            this deSelect buttonPsv
-                            this deSelect buttonPrvc
-                            this deSelect buttonHFNC
-                            this deSelect buttonNCBpap
-                            this deSelect buttonAIVent
-                            this select buttonBpap
-                            this deSelect buttonCpap
+                            this select binding.buttonBpap
+                            this deSelect binding.buttonVcCmv
+                            this deSelect binding.buttonVcSimv
+                            this deSelect binding.buttonAcv
+                            this deSelect binding.buttonPcCmv
+                            this deSelect binding.buttonPcSimv
+                            this deSelect binding.buttonPcac
+                            this deSelect binding.buttonPsv
+                            this deSelect binding.buttonPrvc
+                            this deSelect binding.buttonHFNC
+                            this deSelect binding.buttonNCBpap
+                            this deSelect binding.buttonAIVent
+                            this select binding.buttonBpap
+                            this deSelect binding.buttonCpap
                             VentilatorApp.globalModeType = ModeType.TYPE_NIV
 
                             ventMode =
@@ -1751,22 +1499,22 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
                     }
 
-                    buttonNCBpap -> {
+                    binding.buttonNCBpap -> {
 
                         if (optionSelected) {
-                            this select buttonNCBpap
-                            this deSelect buttonVcCmv
-                            this deSelect buttonVcSimv
-                            this deSelect buttonAcv
-                            this deSelect buttonPcCmv
-                            this deSelect buttonPrvc
-                            this deSelect buttonPcSimv
-                            this deSelect buttonPcac
-                            this deSelect buttonPsv
-                            this deSelect buttonHFNC
-                            this deSelect buttonAIVent
-                            this select buttonBpap
-                            this deSelect buttonCpap
+                            this select binding.buttonNCBpap
+                            this deSelect binding.buttonVcCmv
+                            this deSelect binding.buttonVcSimv
+                            this deSelect binding.buttonAcv
+                            this deSelect binding.buttonPcCmv
+                            this deSelect binding.buttonPrvc
+                            this deSelect binding.buttonPcSimv
+                            this deSelect binding.buttonPcac
+                            this deSelect binding.buttonPsv
+                            this deSelect binding.buttonHFNC
+                            this deSelect binding.buttonAIVent
+                            this select binding.buttonBpap
+                            this deSelect binding.buttonCpap
                             VentilatorApp.globalModeType = ModeType.TYPE_NIV
 
                             ventMode = MODE_NC_IPPV
@@ -1774,21 +1522,21 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
                     }
 
-                    buttonCpap -> {
+                    binding.buttonCpap -> {
                         if (optionSelected) {
-                            this deSelect buttonVcCmv
-                            this deSelect buttonVcSimv
-                            this deSelect buttonAcv
-                            this deSelect buttonPcCmv
-                            this deSelect buttonPcSimv
-                            this deSelect buttonPcac
-                            this deSelect buttonPrvc
-                            this deSelect buttonNCBpap
-                            this deSelect buttonPsv
-                            this deSelect buttonAprv
-                            this deSelect buttonAIVent
-                            this deSelect buttonBpap
-                            this select buttonCpap
+                            this deSelect binding.buttonVcCmv
+                            this deSelect binding.buttonVcSimv
+                            this deSelect binding.buttonAcv
+                            this deSelect binding.buttonPcCmv
+                            this deSelect binding.buttonPcSimv
+                            this deSelect binding.buttonPcac
+                            this deSelect binding.buttonPrvc
+                            this deSelect binding.buttonNCBpap
+                            this deSelect binding.buttonPsv
+                            this deSelect binding.buttonAprv
+                            this deSelect binding.buttonAIVent
+                            this deSelect binding.buttonBpap
+                            this select binding.buttonCpap
                             VentilatorApp.globalModeType = ModeType.TYPE_NIV
 
 //                        ventMode = MODE_NIV_NCPAP
@@ -1803,21 +1551,21 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
             PatientProfile.TYPE_ADULT -> {
                 when (v) {
 
-                    buttonVcCmv -> {
+                    binding.buttonVcCmv -> {
 
                         if (optionSelected) {
-                            this select buttonVcCmv
-                            this deSelect buttonVcSimv
-                            this deSelect buttonAcv
-                            this deSelect buttonPcCmv
-                            this deSelect buttonPcSimv
-                            this deSelect buttonPcac
-                            this deSelect buttonPrvc
-                            this deSelect buttonPsv
-                            this deSelect buttonHFNC
-                            this deSelect buttonAIVent
-                            this deSelect buttonBpap
-                            this deSelect buttonCpap
+                            this select binding.buttonVcCmv
+                            this deSelect binding.buttonVcSimv
+                            this deSelect binding.buttonAcv
+                            this deSelect binding.buttonPcCmv
+                            this deSelect binding.buttonPcSimv
+                            this deSelect binding.buttonPcac
+                            this deSelect binding.buttonPrvc
+                            this deSelect binding.buttonPsv
+                            this deSelect binding.buttonHFNC
+                            this deSelect binding.buttonAIVent
+                            this deSelect binding.buttonBpap
+                            this deSelect binding.buttonCpap
                             // VentilatorApp.globalModeType = ModeType.TYPE_Volume.ordinal
 //                        modeType = ModeType.TYPE_Volume.ordinal
                             ventMode =
@@ -1829,21 +1577,21 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
                     }
 
 
-                    buttonVcSimv -> {
+                    binding.buttonVcSimv -> {
 
                         if (optionSelected) {
-                            this deSelect buttonVcCmv
-                            this select buttonVcSimv
-                            this deSelect buttonAcv
-                            this deSelect buttonPcCmv
-                            this deSelect buttonPcSimv
-                            this deSelect buttonPcac
-                            this deSelect buttonPrvc
-                            this deSelect buttonPsv
-                            this deSelect buttonHFNC
-                            this deSelect buttonAIVent
-                            this deSelect buttonBpap
-                            this deSelect buttonCpap
+                            this deSelect binding.buttonVcCmv
+                            this select binding.buttonVcSimv
+                            this deSelect binding.buttonAcv
+                            this deSelect binding.buttonPcCmv
+                            this deSelect binding.buttonPcSimv
+                            this deSelect binding.buttonPcac
+                            this deSelect binding.buttonPrvc
+                            this deSelect binding.buttonPsv
+                            this deSelect binding.buttonHFNC
+                            this deSelect binding.buttonAIVent
+                            this deSelect binding.buttonBpap
+                            this deSelect binding.buttonCpap
                             ventMode = MODE_VCV_SIMV
 
                             VentilatorApp.globalModeType = ModeType.TYPE_Volume
@@ -1851,20 +1599,20 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
                     }
 
-                    buttonAcv -> {
+                    binding.buttonAcv -> {
                         if (optionSelected) {
-                            this deSelect buttonVcCmv
-                            this deSelect buttonVcSimv
-                            this select buttonAcv
-                            this deSelect buttonPcCmv
-                            this deSelect buttonPcSimv
-                            this deSelect buttonPcac
-                            this deSelect buttonPrvc
-                            this deSelect buttonPsv
-                            this deSelect buttonHFNC
-                            this deSelect buttonAIVent
-                            this deSelect buttonBpap
-                            this deSelect buttonCpap
+                            this deSelect binding.buttonVcCmv
+                            this deSelect binding.buttonVcSimv
+                            this select binding.buttonAcv
+                            this deSelect binding.buttonPcCmv
+                            this deSelect binding.buttonPcSimv
+                            this deSelect binding.buttonPcac
+                            this deSelect binding.buttonPrvc
+                            this deSelect binding.buttonPsv
+                            this deSelect binding.buttonHFNC
+                            this deSelect binding.buttonAIVent
+                            this deSelect binding.buttonBpap
+                            this deSelect binding.buttonCpap
                             ventMode = MODE_VCV_ACV
 
                             VentilatorApp.globalModeType = ModeType.TYPE_Volume
@@ -1872,41 +1620,41 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
                     }
 
-                    buttonPcCmv -> {
+                    binding.buttonPcCmv -> {
 
                         if (optionSelected) {
-                            this deSelect buttonVcCmv
-                            this deSelect buttonVcSimv
-                            this deSelect buttonAcv
-                            this select buttonPcCmv
-                            this deSelect buttonPcSimv
-                            this deSelect buttonPcac
-                            this deSelect buttonPrvc
-                            this deSelect buttonPsv
-                            this deSelect buttonHFNC
-                            this deSelect buttonAIVent
-                            this deSelect buttonBpap
-                            this deSelect buttonCpap
+                            this deSelect binding.buttonVcCmv
+                            this deSelect binding.buttonVcSimv
+                            this deSelect binding.buttonAcv
+                            this select binding.buttonPcCmv
+                            this deSelect binding.buttonPcSimv
+                            this deSelect binding.buttonPcac
+                            this deSelect binding.buttonPrvc
+                            this deSelect binding.buttonPsv
+                            this deSelect binding.buttonHFNC
+                            this deSelect binding.buttonAIVent
+                            this deSelect binding.buttonBpap
+                            this deSelect binding.buttonCpap
                             ventMode = MODE_PC_CMV
                             VentilatorApp.globalModeType = ModeType.TYPE_Pressure
                         } else showToastForNonSelectOptions()
 
                     }
 
-                    buttonPcSimv -> {
+                    binding.buttonPcSimv -> {
                         if (optionSelected) {
-                            this deSelect buttonVcCmv
-                            this deSelect buttonVcSimv
-                            this deSelect buttonAcv
-                            this deSelect buttonPcCmv
-                            this select buttonPcSimv
-                            this deSelect buttonPcac
-                            this deSelect buttonPrvc
-                            this deSelect buttonPsv
-                            this deSelect buttonHFNC
-                            this deSelect buttonAIVent
-                            this deSelect buttonBpap
-                            this deSelect buttonCpap
+                            this deSelect binding.buttonVcCmv
+                            this deSelect binding.buttonVcSimv
+                            this deSelect binding.buttonAcv
+                            this deSelect binding.buttonPcCmv
+                            this select binding.buttonPcSimv
+                            this deSelect binding.buttonPcac
+                            this deSelect binding.buttonPrvc
+                            this deSelect binding.buttonPsv
+                            this deSelect binding.buttonHFNC
+                            this deSelect binding.buttonAIVent
+                            this deSelect binding.buttonBpap
+                            this deSelect binding.buttonCpap
 
                             ventMode = MODE_PC_SIMV
                             VentilatorApp.globalModeType = ModeType.TYPE_Pressure
@@ -1915,22 +1663,22 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
                     }
 
-                    buttonPrvc -> {
+                    binding.buttonPrvc -> {
 
                         if (optionSelected) {
-                            this select buttonPrvc
-                            this deSelect buttonVcCmv
-                            this deSelect buttonVcSimv
-                            this deSelect buttonAcv
-                            this deSelect buttonPcCmv
-                            this deSelect buttonPcSimv
-                            this deSelect buttonPcac
-                            this deSelect buttonPsv
-                            this deSelect buttonHFNC
-                            this deSelect buttonAIVent
-                            this deSelect buttonBpap
-                            this deSelect buttonCpap
-                            this deSelect buttonNCBpap
+                            this select binding.buttonPrvc
+                            this deSelect binding.buttonVcCmv
+                            this deSelect binding.buttonVcSimv
+                            this deSelect binding.buttonAcv
+                            this deSelect binding.buttonPcCmv
+                            this deSelect binding.buttonPcSimv
+                            this deSelect binding.buttonPcac
+                            this deSelect binding.buttonPsv
+                            this deSelect binding.buttonHFNC
+                            this deSelect binding.buttonAIVent
+                            this deSelect binding.buttonBpap
+                            this deSelect binding.buttonCpap
+                            this deSelect binding.buttonNCBpap
 
                             ventMode =
                                 MODE_PC_PRVC
@@ -1941,23 +1689,23 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
                     }
 
-                    buttonAprv -> {
+                    binding.buttonAprv -> {
 
                         if (optionSelected) {
-                            this deSelect buttonVcCmv
-                            this deSelect buttonVcSimv
-                            this deSelect buttonAcv
-                            this deSelect buttonPcCmv
-                            this select buttonAprv
-                            this deSelect buttonPcSimv
-                            this deSelect buttonPcac
-                            this deSelect buttonPrvc
-                            this deSelect buttonPsv
-                            this deSelect buttonHFNC
-                            this deSelect buttonAIVent
-                            this deSelect buttonBpap
-                            this deSelect buttonCpap
-                            this deSelect buttonNCBpap
+                            this deSelect binding.buttonVcCmv
+                            this deSelect binding.buttonVcSimv
+                            this deSelect binding.buttonAcv
+                            this deSelect binding.buttonPcCmv
+                            this select binding.buttonAprv
+                            this deSelect binding.buttonPcSimv
+                            this deSelect binding.buttonPcac
+                            this deSelect binding.buttonPrvc
+                            this deSelect binding.buttonPsv
+                            this deSelect binding.buttonHFNC
+                            this deSelect binding.buttonAIVent
+                            this deSelect binding.buttonBpap
+                            this deSelect binding.buttonCpap
+                            this deSelect binding.buttonNCBpap
 
                             ventMode = MODE_PC_ARPV
                             VentilatorApp.globalModeType = ModeType.TYPE_Pressure
@@ -1966,21 +1714,21 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
                     }
 
-                    buttonPcac -> {
+                    binding.buttonPcac -> {
 
                         if (optionSelected) {
-                            this deSelect buttonVcCmv
-                            this deSelect buttonVcSimv
-                            this deSelect buttonAcv
-                            this deSelect buttonPcCmv
-                            this deSelect buttonPcSimv
-                            this select buttonPcac
-                            this deSelect buttonPsv
-                            this deSelect buttonPrvc
-                            this deSelect buttonHFNC
-                            this deSelect buttonAIVent
-                            this deSelect buttonBpap
-                            this deSelect buttonCpap
+                            this deSelect binding.buttonVcCmv
+                            this deSelect binding.buttonVcSimv
+                            this deSelect binding.buttonAcv
+                            this deSelect binding.buttonPcCmv
+                            this deSelect binding.buttonPcSimv
+                            this select binding.buttonPcac
+                            this deSelect binding.buttonPsv
+                            this deSelect binding.buttonPrvc
+                            this deSelect binding.buttonHFNC
+                            this deSelect binding.buttonAIVent
+                            this deSelect binding.buttonBpap
+                            this deSelect binding.buttonCpap
 
 
                             ventMode =
@@ -1991,22 +1739,22 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
                     }
 
-                    buttonPsv -> {
+                    binding.buttonPsv -> {
 
                         if (optionSelected) {
 
-                            this deSelect buttonVcCmv
-                            this deSelect buttonVcSimv
-                            this deSelect buttonAcv
-                            this deSelect buttonPcCmv
-                            this deSelect buttonPcSimv
-                            this deSelect buttonPcac
-                            this select buttonPsv
-                            this deSelect buttonPrvc
-                            this deSelect buttonHFNC
-                            this deSelect buttonAIVent
-                            this deSelect buttonBpap
-                            this deSelect buttonCpap
+                            this deSelect binding.buttonVcCmv
+                            this deSelect binding.buttonVcSimv
+                            this deSelect binding.buttonAcv
+                            this deSelect binding.buttonPcCmv
+                            this deSelect binding.buttonPcSimv
+                            this deSelect binding.buttonPcac
+                            this select binding.buttonPsv
+                            this deSelect binding.buttonPrvc
+                            this deSelect binding.buttonHFNC
+                            this deSelect binding.buttonAIVent
+                            this deSelect binding.buttonBpap
+                            this deSelect binding.buttonCpap
 
                             ventMode =
                                 MODE_PC_PSV
@@ -2015,22 +1763,22 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
                     }
 
-                    buttonHFNC -> {
+                    binding.buttonHFNC -> {
 
                         if (optionSelected) {
 
-                            this deSelect buttonVcCmv
-                            this deSelect buttonVcSimv
-                            this deSelect buttonAcv
-                            this select buttonHFNC
-                            this deSelect buttonPcCmv
-                            this deSelect buttonPcSimv
-                            this deSelect buttonPrvc
-                            this deSelect buttonPcac
-                            this deSelect buttonPsv
-                            this deSelect buttonAIVent
-                            this deSelect buttonBpap
-                            this deSelect buttonCpap
+                            this deSelect binding.buttonVcCmv
+                            this deSelect binding.buttonVcSimv
+                            this deSelect binding.buttonAcv
+                            this select binding.buttonHFNC
+                            this deSelect binding.buttonPcCmv
+                            this deSelect binding.buttonPcSimv
+                            this deSelect binding.buttonPrvc
+                            this deSelect binding.buttonPcac
+                            this deSelect binding.buttonPsv
+                            this deSelect binding.buttonAIVent
+                            this deSelect binding.buttonBpap
+                            this deSelect binding.buttonCpap
                             ventMode =
                                 MODE_HFNC
                             VentilatorApp.globalModeType = ModeType.TYPE_HFNC
@@ -2040,22 +1788,22 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
                     }
 
-                    buttonAIVent -> {
+                    binding.buttonAIVent -> {
 
                         if (optionSelected) {
 
-                            this deSelect buttonVcCmv
-                            this deSelect buttonVcSimv
-                            this deSelect buttonAcv
-                            this deSelect buttonPcCmv
-                            this deSelect buttonPcSimv
-                            this deSelect buttonPrvc
-                            this deSelect buttonPcac
-                            this deSelect buttonPsv
-                            this deSelect buttonHFNC
-                            this select buttonAIVent
-                            this deSelect buttonBpap
-                            this deSelect buttonCpap
+                            this deSelect binding.buttonVcCmv
+                            this deSelect binding.buttonVcSimv
+                            this deSelect binding.buttonAcv
+                            this deSelect binding.buttonPcCmv
+                            this deSelect binding.buttonPcSimv
+                            this deSelect binding.buttonPrvc
+                            this deSelect binding.buttonPcac
+                            this deSelect binding.buttonPsv
+                            this deSelect binding.buttonHFNC
+                            this select binding.buttonAIVent
+                            this deSelect binding.buttonBpap
+                            this deSelect binding.buttonCpap
 
                             ventMode =
                                 MODE_AUTO_VENTILATION
@@ -2066,23 +1814,23 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
                     }
 
-                    buttonBpap -> {
+                    binding.buttonBpap -> {
 
                         if (optionSelected) {
 
-                            this select buttonBpap
-                            this deSelect buttonVcCmv
-                            this deSelect buttonVcSimv
-                            this deSelect buttonAcv
-                            this deSelect buttonPcCmv
-                            this deSelect buttonPcSimv
-                            this deSelect buttonPcac
-                            this deSelect buttonPrvc
-                            this deSelect buttonPsv
-                            this deSelect buttonHFNC
-                            this deSelect buttonAIVent
-                            this select buttonBpap
-                            this deSelect buttonCpap
+                            this select binding.buttonBpap
+                            this deSelect binding.buttonVcCmv
+                            this deSelect binding.buttonVcSimv
+                            this deSelect binding.buttonAcv
+                            this deSelect binding.buttonPcCmv
+                            this deSelect binding.buttonPcSimv
+                            this deSelect binding.buttonPcac
+                            this deSelect binding.buttonPrvc
+                            this deSelect binding.buttonPsv
+                            this deSelect binding.buttonHFNC
+                            this deSelect binding.buttonAIVent
+                            this select binding.buttonBpap
+                            this deSelect binding.buttonCpap
 
                             VentilatorApp.globalModeType = ModeType.TYPE_NIV
 
@@ -2094,22 +1842,22 @@ class ModeDialogFragment : DialogFragment(), View.OnClickListener {
 
                     }
 
-                    buttonCpap -> {
+                    binding.buttonCpap -> {
 
                         if (optionSelected) {
 
-                            this deSelect buttonVcCmv
-                            this deSelect buttonVcSimv
-                            this deSelect buttonAcv
-                            this deSelect buttonPcCmv
-                            this deSelect buttonPcSimv
-                            this deSelect buttonPrvc
-                            this deSelect buttonPcac
-                            this deSelect buttonPsv
-                            this deSelect buttonAprv
-                            this deSelect buttonAIVent
-                            this deSelect buttonBpap
-                            this select buttonCpap
+                            this deSelect binding.buttonVcCmv
+                            this deSelect binding.buttonVcSimv
+                            this deSelect binding.buttonAcv
+                            this deSelect binding.buttonPcCmv
+                            this deSelect binding.buttonPcSimv
+                            this deSelect binding.buttonPrvc
+                            this deSelect binding.buttonPcac
+                            this deSelect binding.buttonPsv
+                            this deSelect binding.buttonAprv
+                            this deSelect binding.buttonAIVent
+                            this deSelect binding.buttonBpap
+                            this select binding.buttonCpap
                             VentilatorApp.globalModeType = ModeType.TYPE_NIV
 
                             ventMode = MODE_NIV_CPAP

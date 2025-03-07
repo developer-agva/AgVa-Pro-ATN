@@ -26,7 +26,6 @@ import com.agvahealthcare.ventilator_ext.utility.setHeightWidthPercent
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_AND
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_MINUS
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_PLUS
-import kotlinx.android.synthetic.main.hold_buttons_layout.view.buttonView
 
 
 class GraphicsDialogFragment(

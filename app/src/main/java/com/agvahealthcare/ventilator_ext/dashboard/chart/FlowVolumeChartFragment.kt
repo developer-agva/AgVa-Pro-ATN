@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardViewModel
+import com.agvahealthcare.ventilator_ext.databinding.FragmentChartBinding
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.utility.*
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs
@@ -34,7 +35,6 @@ import com.scichart.core.model.IntegerValues
 import com.scichart.data.model.DoubleRange
 import com.scichart.drawing.common.FontStyle
 import com.scichart.drawing.utility.ColorUtil
-import kotlinx.android.synthetic.main.fragment_chart.*
 import java.util.*
 import kotlin.math.abs
 import kotlin.math.max
@@ -71,21 +71,24 @@ class FlowVolumeChartFragment  : GraphFragment() {
     private var prefManager : PreferenceManager? = null
     private var mDashBoardViewModel : DashBoardViewModel? = null
 
+
+    private lateinit var binding : FragmentChartBinding
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        return inflater.inflate(R.layout.fragment_chart, container, false)
-
+        binding = FragmentChartBinding.inflate(layoutInflater,container,false)
+        return binding.root
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         prefManager = PreferenceManager(requireContext())
         mDashBoardViewModel = ViewModelProvider(requireActivity()).get(DashBoardViewModel::class.java)
-        textViewChartType.text = requireContext().getString(R.string.flow_vol_l_min)
+        binding.textViewChartType.text = requireContext().getString(R.string.flow_vol_l_min)
 
         xMinRange =
             Configs.getRangeOfYAxisChartLoops(context, Configs.LoopsChartType.FlowVolumeChart_Type).first.first
@@ -138,11 +141,11 @@ class FlowVolumeChartFragment  : GraphFragment() {
         yAxis.drawMajorTicks = false
         yAxis.drawMajorTicks = false
 
-        chartSurface.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.black))
-        chartSurface.isHorizontalScrollBarEnabled=false
-        chartSurface.isVerticalFadingEdgeEnabled=false
-        chartSurface.isClickable=false
-        chartSurface.renderableSeriesAreaBorderStyle = sciChartBuilder.newPen().withColor(ColorUtil.Transparent).build();
+        binding.chartSurface.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.black))
+        binding.chartSurface.isHorizontalScrollBarEnabled=false
+        binding.chartSurface.isVerticalFadingEdgeEnabled=false
+        binding.chartSurface.isClickable=false
+        binding.chartSurface.renderableSeriesAreaBorderStyle = sciChartBuilder.newPen().withColor(ColorUtil.Transparent).build();
 
         dataSeries = sciChartBuilder.newXyDataSeries(
             Float::class.javaObjectType,
@@ -181,15 +184,15 @@ class FlowVolumeChartFragment  : GraphFragment() {
 
         Log.i("Horizantlelinecheck","Horizantal Line")
 
-        Collections.addAll(chartSurface.annotations, horizontalLine, verticalLine)
-        Collections.addAll(chartSurface.getChartModifiers(), RolloverModifier())
+        Collections.addAll(binding.chartSurface.annotations, horizontalLine, verticalLine)
+        Collections.addAll(binding.chartSurface.getChartModifiers(), RolloverModifier())
 
-        UpdateSuspender.using(chartSurface) {
+        UpdateSuspender.using(binding.chartSurface) {
 
-            chartSurface.layoutManager = CenterLayoutManager(xAxis, yAxis)
-            Collections.addAll(chartSurface.xAxes, xAxis)
-            Collections.addAll(chartSurface.yAxes, yAxis)
-            Collections.addAll(chartSurface.renderableSeries, rSeries,rSeries1)
+            binding.chartSurface.layoutManager = CenterLayoutManager(xAxis, yAxis)
+            Collections.addAll(binding.chartSurface.xAxes, xAxis)
+            Collections.addAll(binding.chartSurface.yAxes, yAxis)
+            Collections.addAll(binding.chartSurface.renderableSeries, rSeries,rSeries1)
         }
 
 
@@ -225,8 +228,8 @@ class FlowVolumeChartFragment  : GraphFragment() {
             yMaxValue = Float.MIN_VALUE
             yMinValue = 0.0f
 
-            chartSurface.yAxes.default.visibleRange = DoubleRange(yMinRange,yMaxRange)
-            chartSurface.xAxes.default.visibleRange = DoubleRange(xMinRange,xMaxRange)
+            binding.chartSurface.yAxes.default.visibleRange = DoubleRange(yMinRange,yMaxRange)
+            binding.chartSurface.xAxes.default.visibleRange = DoubleRange(xMinRange,xMaxRange)
 
         }else {
             if (mDashBoardViewModel?.graphPeekValue?.value == "A"){

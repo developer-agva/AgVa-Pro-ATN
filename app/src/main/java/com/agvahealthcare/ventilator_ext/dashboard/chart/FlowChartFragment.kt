@@ -15,6 +15,7 @@ import com.agvahealthcare.ventilator_ext.dashboard.DashBoardActivity
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardViewModel
 import com.agvahealthcare.ventilator_ext.dashboard.TraceArc
 import com.agvahealthcare.ventilator_ext.dashboard.chart.paletteprovider.ColouredLinePaletteProviderFlow
+import com.agvahealthcare.ventilator_ext.databinding.FragmentChartBinding
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.utility.*
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs
@@ -30,7 +31,6 @@ import com.scichart.data.model.DoubleRange
 import com.scichart.drawing.common.FontStyle
 import com.scichart.drawing.common.SolidPenStyle
 import com.scichart.drawing.utility.ColorUtil
-import kotlinx.android.synthetic.main.fragment_chart.*
 import java.util.*
 import kotlin.math.abs
 import kotlin.math.max
@@ -72,19 +72,19 @@ class FlowChartFragment : GraphFragment() {
     private var timePeek = -1
     private var isFirstTime = false
 
-
+    private lateinit var binding : FragmentChartBinding
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        return inflater.inflate(R.layout.fragment_chart, container, false)
-
+        binding = FragmentChartBinding.inflate(layoutInflater,container,false)
+        return binding.root
     }
 
     fun addTextOnMaxRange(xMaxRange: Double) {
-        txtMaxLabel.text = xMaxRange.toString().split('.')[0]
-        chartSurface.xAxes[1].visibleRange = DoubleRange(0.0, xMaxRange)
+        binding.txtMaxLabel.text = xMaxRange.toString().split('.')[0]
+        binding.chartSurface.xAxes[1].visibleRange = DoubleRange(0.0, xMaxRange)
     }
 
 
@@ -98,7 +98,7 @@ class FlowChartFragment : GraphFragment() {
         minValue = arguments?.getInt(KEY_MIN_VALUE_VIEW)
         maxValue = arguments?.getInt(KEY_MAX_VALUE_VIEW)
 
-        txtMaxLabel.text = xMaxRangeGlobal.toString().split('.')[0]
+        binding.txtMaxLabel.text = xMaxRangeGlobal.toString().split('.')[0]
 
         if (prefManager?.readGraphParentType() == parentType.LoopsFragmentGraph || prefManager?.readGraphParentType() == parentType.DivideQuadFragmentGraph) {
             if (prefManager?.readCurrentUid() == Configs.PatientProfile.TYPE_NEONAT) {
@@ -121,10 +121,10 @@ class FlowChartFragment : GraphFragment() {
 
         Log.i("fadaw", "$minRange , $maxRange")
 
-        textViewChartType.text = requireContext().getString(R.string.flow_l_min)
+        binding.textViewChartType.text = requireContext().getString(R.string.flow_l_min)
         initGraph()
 
-        txtMaxLabel.setOnClickListener {
+        binding.txtMaxLabel.setOnClickListener {
             Log.i("value_Adawd", xMaxRangeGlobal.toString())
             if (xMaxRangeGlobal == 12.9) (requireActivity() as DashBoardActivity).sendCommandForChangeXAxisGraph(
                 "2"
@@ -161,8 +161,8 @@ class FlowChartFragment : GraphFragment() {
             .withAutoRangeMode(AutoRange.Never)
             .build()
 
-        chartSurface.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.black))
-        chartSurface.renderableSeriesAreaBorderStyle = sciChartBuilder.newPen()
+        binding.chartSurface.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.black))
+        binding.chartSurface.renderableSeriesAreaBorderStyle = sciChartBuilder.newPen()
             .withColor(ColorUtil.Transparent)
             .build();
         xPrimaryAxis.visibility = View.GONE
@@ -223,7 +223,7 @@ class FlowChartFragment : GraphFragment() {
         horizontalLineAnnotation.stroke =
             SolidPenStyle(ColorUtil.Grey, false, 0.07f, floatArrayOf(0f, 0f))
         // horizontalLineAnnotation.horizontalGravity = Gravity.RIGHT
-        chartSurface.annotations.add(horizontalLineAnnotation)
+        binding.chartSurface.annotations.add(horizontalLineAnnotation)
 
         val verticalLine = sciChartBuilder.newLineAnnotation()
             .withPosition(0.0, 0.0, 0.0, 1.0)
@@ -243,16 +243,16 @@ class FlowChartFragment : GraphFragment() {
         modifier.showTooltip = true
         modifier.showAxisLabels = true
         modifier.isEnabled = true
-        Collections.addAll(chartSurface.chartModifiers, modifier)
-        Collections.addAll(chartSurface.annotations, horizontalLine, verticalLine)
+        Collections.addAll(binding.chartSurface.chartModifiers, modifier)
+        Collections.addAll(binding.chartSurface.annotations, horizontalLine, verticalLine)
 
         Log.i("Horizantlelinecheck", "Horizantal Line")
 
-        UpdateSuspender.using(chartSurface) {
-            Collections.addAll(chartSurface.xAxes, xPrimaryAxis)
-            Collections.addAll(chartSurface.xAxes, xSecondaryAxis)
-            Collections.addAll(chartSurface.yAxes, yAxis)
-            Collections.addAll(chartSurface.renderableSeries, rs2)
+        UpdateSuspender.using(binding.chartSurface) {
+            Collections.addAll(binding.chartSurface.xAxes, xPrimaryAxis)
+            Collections.addAll(binding.chartSurface.xAxes, xSecondaryAxis)
+            Collections.addAll(binding.chartSurface.yAxes, yAxis)
+            Collections.addAll(binding.chartSurface.renderableSeries, rs2)
 
         }
     }
@@ -261,17 +261,17 @@ class FlowChartFragment : GraphFragment() {
     private fun changeGraphRangeAtRunTime(peak: Float?, x: Int) {
 
         if (timePeek == x) {
-            chartSurface.yAxes.default.visibleRange = DoubleRange(minRange, maxRange)
+            binding.chartSurface.yAxes.default.visibleRange = DoubleRange(minRange, maxRange)
             timePeek = -1
         } else {
             filterGraphValue(peak)
             minRange = -abs(maxRange)
 
-            if (chartSurface.yAxes.default.visibleRange.max.toString() > maxRange.toString()) setTimePeekValue(
+            if (binding.chartSurface.yAxes.default.visibleRange.max.toString() > maxRange.toString()) setTimePeekValue(
                 setXToChangeGraph(x)
             )
-            else if (chartSurface.yAxes.default.visibleRange.max.toString() < maxRange.toString()) {
-                chartSurface.yAxes.default.visibleRange =
+            else if (binding.chartSurface.yAxes.default.visibleRange.max.toString() < maxRange.toString()) {
+                binding.chartSurface.yAxes.default.visibleRange =
                     DoubleRange(minRange, maxRange)
             }
 

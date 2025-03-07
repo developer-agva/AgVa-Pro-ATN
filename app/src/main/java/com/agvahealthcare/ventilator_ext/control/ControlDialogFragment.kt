@@ -44,7 +44,6 @@ import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_MINUS
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_PLUS
 
 import com.github.angads25.toggle.interfaces.OnToggledListener
-import kotlinx.android.synthetic.main.progress_dialog_view.seekBarId
 
 class ControlDialogFragment : DialogFragment() {
     private lateinit var binding:FragmentContolDialogBinding

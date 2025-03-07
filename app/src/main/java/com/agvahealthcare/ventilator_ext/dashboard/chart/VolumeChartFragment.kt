@@ -17,6 +17,7 @@ import com.agvahealthcare.ventilator_ext.dashboard.DashBoardActivity
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardViewModel
 import com.agvahealthcare.ventilator_ext.dashboard.TraceArc
 import com.agvahealthcare.ventilator_ext.dashboard.chart.paletteprovider.ColouredLinePaletteProviderVolume
+import com.agvahealthcare.ventilator_ext.databinding.FragmentChartBinding
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.utility.*
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs
@@ -30,7 +31,6 @@ import com.scichart.core.framework.UpdateSuspender
 import com.scichart.data.model.DoubleRange
 import com.scichart.drawing.common.FontStyle
 import com.scichart.drawing.utility.ColorUtil
-import kotlinx.android.synthetic.main.fragment_chart.*
 import java.util.*
 import kotlin.math.abs
 
@@ -70,15 +70,17 @@ class VolumeChartFragment : GraphFragment() {
     private var isFirstTime = false
     //  private var peekValue = Double.MIN_VALUE
 
+
+    private lateinit var binding : FragmentChartBinding
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        //    mDashBoardViewModel = ViewModelProvider(this)[DashBoardViewModel::class.java]
-        return inflater.inflate(R.layout.fragment_chart, container, false)
-
+        binding = FragmentChartBinding.inflate(layoutInflater,container,false)
+        return binding.root
     }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,9 +96,9 @@ class VolumeChartFragment : GraphFragment() {
 
         minValue = arguments?.getInt(KEY_MIN_VALUE_VIEW)
         maxValue = arguments?.getInt(KEY_MAX_VALUE_VIEW)
-        textViewChartType.text = requireContext().getString(R.string.vol_l_min)
+        binding.textViewChartType.text = requireContext().getString(R.string.vol_l_min)
 
-        txtMaxLabel.text = xMaxRangeGlobal.toString().split('.')[0]
+        binding.txtMaxLabel.text = xMaxRangeGlobal.toString().split('.')[0]
 
         // added at 20 jan 2023
         minRange =
@@ -107,7 +109,7 @@ class VolumeChartFragment : GraphFragment() {
         ).second
         initGraph()
 
-        txtMaxLabel.setOnClickListener {
+        binding.txtMaxLabel.setOnClickListener {
             Log.i("value_Adawd", xMaxRangeGlobal.toString())
             if (xMaxRangeGlobal == 12.9) (requireActivity() as DashBoardActivity).sendCommandForChangeXAxisGraph(
                 "2"
@@ -118,8 +120,8 @@ class VolumeChartFragment : GraphFragment() {
 
     fun addTextOnMaxRange(xMaxRange: Double) {
         Log.i("valuesea", "3")
-        txtMaxLabel.text = xMaxRange.toString().split('.')[0]
-        chartSurface.xAxes[1].visibleRange = DoubleRange(0.0, xMaxRange)
+        binding.txtMaxLabel.text = xMaxRange.toString().split('.')[0]
+        binding.chartSurface.xAxes[1].visibleRange = DoubleRange(0.0, xMaxRange)
     }
 
     private fun initGraph() {
@@ -148,8 +150,8 @@ class VolumeChartFragment : GraphFragment() {
             .withAutoRangeMode(AutoRange.Never)
             .build()
 
-        chartSurface.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.black))
-        chartSurface.renderableSeriesAreaBorderStyle =
+        binding.chartSurface.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.black))
+        binding.chartSurface.renderableSeriesAreaBorderStyle =
             sciChartBuilder.newPen().withColor(ColorUtil.Transparent).build();
         xPrimaryAxis.visibility = View.GONE
         xSecondaryAxis.visibility = View.VISIBLE
@@ -216,14 +218,14 @@ class VolumeChartFragment : GraphFragment() {
         modifier.showAxisLabels = true
         modifier.isEnabled = true
 
-        Collections.addAll(chartSurface.annotations, horizontalLine, verticalLine)
+        Collections.addAll(binding.chartSurface.annotations, horizontalLine, verticalLine)
 
-        UpdateSuspender.using(chartSurface) {
-            Collections.addAll(chartSurface.chartModifiers, modifier)
-            Collections.addAll(chartSurface.xAxes, xPrimaryAxis)
-            Collections.addAll(chartSurface.xAxes, xSecondaryAxis)
-            Collections.addAll(chartSurface.yAxes, yAxis)
-            Collections.addAll(chartSurface.renderableSeries ,rs2)
+        UpdateSuspender.using(binding.chartSurface) {
+            Collections.addAll(binding.chartSurface.chartModifiers, modifier)
+            Collections.addAll(binding.chartSurface.xAxes, xPrimaryAxis)
+            Collections.addAll(binding.chartSurface.xAxes, xSecondaryAxis)
+            Collections.addAll(binding.chartSurface.yAxes, yAxis)
+            Collections.addAll(binding.chartSurface.renderableSeries ,rs2)
         }
     }
 
@@ -231,7 +233,7 @@ class VolumeChartFragment : GraphFragment() {
     private fun changeGraphRangeAtRunTime(y: Float, x: Int) {
 
         if (x == timePeek) {
-            chartSurface.yAxes.default.visibleRange = DoubleRange(minRange, maxRange)
+            binding.chartSurface.yAxes.default.visibleRange = DoubleRange(minRange, maxRange)
             timePeek = -1
         } else {
             Log.i("timePeekValue", mDashBoardViewModel?.graphPeekValue?.value.toString())
@@ -245,15 +247,15 @@ class VolumeChartFragment : GraphFragment() {
                     } else if (y > 90.0) {
                         maxRange = MAX_RANGE_VOLUME_NEO
                         timePeek = -1
-                        chartSurface.yAxes.default.visibleRange = DoubleRange(minRange, maxRange)
+                        binding.chartSurface.yAxes.default.visibleRange = DoubleRange(minRange, maxRange)
                     } else if (y > 40.0) {
                         maxRange = MID_RANGE_VOLUME_NEO
 
-                        if (chartSurface.yAxes.default.visibleRange.getMax() == MAX_RANGE_VOLUME_NEO) {
+                        if (binding.chartSurface.yAxes.default.visibleRange.getMax() == MAX_RANGE_VOLUME_NEO) {
                             setTimePeekValue(setXToChangeGraph(x))
                         } else {
                             timePeek = -1
-                            chartSurface.yAxes.default.visibleRange =
+                            binding.chartSurface.yAxes.default.visibleRange =
                                 DoubleRange(minRange, maxRange)
                         }
                     }
@@ -264,15 +266,15 @@ class VolumeChartFragment : GraphFragment() {
                     } else if (y > 900.0) {
                         maxRange = MAX_RANGE_VOLUME_ADULT_PEDIA
                         timePeek = -1
-                        chartSurface.yAxes.default.visibleRange = DoubleRange(minRange, maxRange)
+                        binding.chartSurface.yAxes.default.visibleRange = DoubleRange(minRange, maxRange)
                     } else if (y > 400.0) {
                         maxRange = MID_RANGE_VOLUME_ADULT_PEDIA
 
-                        if (chartSurface.yAxes.default.visibleRange.getMax() == MAX_RANGE_VOLUME_ADULT_PEDIA) {
+                        if (binding.chartSurface.yAxes.default.visibleRange.getMax() == MAX_RANGE_VOLUME_ADULT_PEDIA) {
                             setTimePeekValue(setXToChangeGraph(x))
                         } else {
                             timePeek = -1
-                            chartSurface.yAxes.default.visibleRange =
+                            binding.chartSurface.yAxes.default.visibleRange =
                                 DoubleRange(minRange, maxRange)
                         }
                     }

@@ -93,9 +93,6 @@ import com.google.zxing.WriterException
 import com.google.zxing.qrcode.QRCodeWriter
 import io.socket.client.IO
 import io.socket.client.Socket
-import kotlinx.android.synthetic.main.activity_main.includeButtonCalibrate
-import kotlinx.android.synthetic.main.knob_progress_view.view.param_progress_bar
-import kotlinx.android.synthetic.main.knob_progress_view.view.textView
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first

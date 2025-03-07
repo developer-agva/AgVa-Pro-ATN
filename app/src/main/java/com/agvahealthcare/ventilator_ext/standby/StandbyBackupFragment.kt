@@ -14,30 +14,27 @@ import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.VentilatorApp
 import com.agvahealthcare.ventilator_ext.control.basic.ControlParameterAdapter
 import com.agvahealthcare.ventilator_ext.control.basic.ControlParameterClickListener
+import com.agvahealthcare.ventilator_ext.databinding.FragmentBackupBinding
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.model.ControlParameterModel
 import com.agvahealthcare.ventilator_ext.utility.GridSpacingItemDecoration
-
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs
-import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_AND
-import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_MINUS
-import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_PLUS
 import com.github.angads25.toggle.interfaces.OnToggledListener
-import kotlinx.android.synthetic.main.fragment_backup.*
 
 class StandbyBackupFragment(private var dataList : ArrayList<ControlParameterModel>, private  var controlParameterClickListener: ControlParameterClickListener?, private var onToggledListener: OnToggledListener?) : StandbyControlSettingFragment() {
 
     private var preferenceManager : PreferenceManager? = null
     var isactive:Boolean = true
     private var controlParamAdapter : ControlParameterAdapter? = null
-    private var backupButton : ControlParameterAdapter.ToggleVhControlParameterAdapter? = null
+    private lateinit var binding : FragmentBackupBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        return inflater.inflate(R.layout.fragment_backup, container, false)
+        binding = FragmentBackupBinding.inflate(layoutInflater, container, false)
+        return binding.root
 
     }
 
@@ -93,7 +90,7 @@ class StandbyBackupFragment(private var dataList : ArrayList<ControlParameterMod
         var mainActivity=MainActivity()
         var code = mainActivity.requestedModeCode
         if(code == 22 || code == 25){
-            layoutPaneltrigger.visibility = View.VISIBLE
+            binding.layoutPaneltrigger.visibility = View.VISIBLE
         }
     }
 
@@ -105,7 +102,7 @@ class StandbyBackupFragment(private var dataList : ArrayList<ControlParameterMod
     override fun setControlParameters() {
         controlParamAdapter = ControlParameterAdapter(requireContext(), dataList, controlParameterClickListener, Configs.ControlSettingType.BACKUP)
 
-        recyclerViewBackupParams?.apply {
+        binding.recyclerViewBackupParams.apply {
             Log.i("BACKUPCHECK", "Params = ${dataList.map { it.toString() }}")
 
             layoutManager = object: GridLayoutManager(requireContext(), 6){

@@ -18,6 +18,9 @@ import com.agvahealthcare.ventilator_ext.dashboard.DashBoardActivity
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardViewModel
 import com.agvahealthcare.ventilator_ext.dashboard.TraceArc
 import com.agvahealthcare.ventilator_ext.dashboard.chart.paletteprovider.ColouredLinePaletteProviderVolume
+import com.agvahealthcare.ventilator_ext.databinding.FragmentChartBinding
+import com.agvahealthcare.ventilator_ext.databinding.FragmentEtcuffBinding
+import com.agvahealthcare.ventilator_ext.databinding.FragmentSettingsBinding
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.utility.*
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs
@@ -33,7 +36,6 @@ import com.scichart.data.model.DoubleRange
 import com.scichart.drawing.common.FontStyle
 import com.scichart.drawing.common.SolidPenStyle
 import com.scichart.drawing.utility.ColorUtil
-import kotlinx.android.synthetic.main.fragment_chart.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Collections
@@ -61,9 +63,10 @@ class Etco2ChartFragment : GraphFragment() {
     }
 
     fun addTextOnMaxRange(xMaxRange: Double) {
-        txtMaxLabel.text = xMaxRange.toString().split('.')[0]
-        chartSurface.xAxes[1].visibleRange = DoubleRange(0.0, xMaxRange)
+        binding.txtMaxLabel.text = xMaxRange.toString().split('.')[0]
+        binding.chartSurface.xAxes[1].visibleRange = DoubleRange(0.0, xMaxRange)
     }
+
 
     private lateinit var dataSeries0: IXyDataSeries<Int, Float>
     private lateinit var dataSeries1: IXyDataSeries<Int, Float>
@@ -81,12 +84,14 @@ class Etco2ChartFragment : GraphFragment() {
     private var timePeek = -1
     private var isFirstTime = false
 
+    private lateinit var binding : FragmentChartBinding
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        return inflater.inflate(R.layout.fragment_chart, container, false)
+        binding = FragmentChartBinding.inflate(layoutInflater,container,false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -97,9 +102,9 @@ class Etco2ChartFragment : GraphFragment() {
 
         minValue = arguments?.getInt(KEY_MIN_VALUE_VIEW)
         maxValue = arguments?.getInt(KEY_MAX_VALUE_VIEW)
-        textViewChartType.text = requireContext().getString(R.string.etco2_mmHg)
+        binding.textViewChartType.text = requireContext().getString(R.string.etco2_mmHg)
 
-        txtMaxLabel.text = xMaxRangeGlobal.toString().split('.')[0]
+        binding.txtMaxLabel.text = xMaxRangeGlobal.toString().split('.')[0]
 
         // added at 20 jan 2023
         minRange = Configs.getRangeOfYAxisChart(
@@ -113,7 +118,7 @@ class Etco2ChartFragment : GraphFragment() {
         initGraph()
 
 
-        txtMaxLabel.setOnClickListener {
+        binding.txtMaxLabel.setOnClickListener {
             Log.i("value_Adawd", xMaxRangeGlobal.toString())
             if (xMaxRangeGlobal == 12.9) (requireActivity() as DashBoardActivity).sendCommandForChangeXAxisGraph("2")
             else (requireActivity() as DashBoardActivity).sendCommandForChangeXAxisGraph("1")
@@ -149,8 +154,8 @@ class Etco2ChartFragment : GraphFragment() {
             .withVisibleRange(minRange, maxRange)
             .build()
 
-        chartSurface.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.black))
-        chartSurface.renderableSeriesAreaBorderStyle =
+        binding.chartSurface.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.black))
+        binding.chartSurface.renderableSeriesAreaBorderStyle =
             sciChartBuilder.newPen().withColor(ColorUtil.Transparent).build();
         xPRimaryAxis.visibility = View.GONE
         xsecondaryAxis.visibility = View.VISIBLE
@@ -209,14 +214,14 @@ class Etco2ChartFragment : GraphFragment() {
         modifier.showAxisLabels = true
         modifier.isEnabled = true
 
-        Collections.addAll(chartSurface.annotations, horizontalLine, verticalLine)
-        Collections.addAll(chartSurface.chartModifiers, modifier)
-        UpdateSuspender.using(chartSurface) {
-            Collections.addAll(chartSurface.xAxes, xPRimaryAxis)
-            Collections.addAll(chartSurface.xAxes, xsecondaryAxis)
-            Collections.addAll(chartSurface.yAxes, yAxis)
-            Collections.addAll(chartSurface.renderableSeries,  rs2)
-            chartSurface.annotations.add(horizontalLineAnnotation)
+        Collections.addAll(binding.chartSurface.annotations, horizontalLine, verticalLine)
+        Collections.addAll(binding.chartSurface.chartModifiers, modifier)
+        UpdateSuspender.using(binding.chartSurface) {
+            Collections.addAll(binding.chartSurface.xAxes, xPRimaryAxis)
+            Collections.addAll(binding.chartSurface.xAxes, xsecondaryAxis)
+            Collections.addAll(binding.chartSurface.yAxes, yAxis)
+            Collections.addAll(binding.chartSurface.renderableSeries,  rs2)
+            binding.chartSurface.annotations.add(horizontalLineAnnotation)
         }
     }
 
@@ -225,7 +230,7 @@ class Etco2ChartFragment : GraphFragment() {
 
         Log.i("timeYValue", y.toString())
         if (x == timePeek) {
-            chartSurface.yAxes.default.visibleRange = DoubleRange(minRange, maxRange)
+            binding.chartSurface.yAxes.default.visibleRange = DoubleRange(minRange, maxRange)
             timePeek = -1
         } else {
 
@@ -242,7 +247,7 @@ class Etco2ChartFragment : GraphFragment() {
                     } else {
                         maxRange = MID_RANGE_PRESSURE_NEO
                         timePeek = -1
-                        chartSurface.yAxes.default.visibleRange = DoubleRange(minRange, maxRange)
+                        binding.chartSurface.yAxes.default.visibleRange = DoubleRange(minRange, maxRange)
                     }
                 } else {
                     if (y < 955.0) {
@@ -251,7 +256,7 @@ class Etco2ChartFragment : GraphFragment() {
 
                     } else {
                         maxRange = MAX_RANGE_ETCO2_ADULT_PEDIA
-                        chartSurface.yAxes.default.visibleRange = DoubleRange(minRange, maxRange)
+                        binding.chartSurface.yAxes.default.visibleRange = DoubleRange(minRange, maxRange)
                         timePeek = -1
                     }
                 }

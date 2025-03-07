@@ -7,23 +7,24 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import com.agvahealthcare.ventilator_ext.R
+import com.agvahealthcare.ventilator_ext.databinding.FragmentBasicBinding
 import com.agvahealthcare.ventilator_ext.model.ControlParameterModel
 import com.agvahealthcare.ventilator_ext.utility.GridSpacingItemDecoration
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs
-import kotlinx.android.synthetic.main.fragment_basic.*
 
 
 class BasicFragment(private var dataList : ArrayList<ControlParameterModel>, private  var controlParameterClickListener: ControlParameterClickListener?) : Fragment() {
 
     private var controlParamAdapter : ControlParameterAdapter? = null
+    private lateinit var binding: FragmentBasicBinding
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        return inflater.inflate(R.layout.fragment_basic, container, false)
 
+        binding = FragmentBasicBinding.inflate(layoutInflater,container,false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -37,7 +38,7 @@ class BasicFragment(private var dataList : ArrayList<ControlParameterModel>, pri
     private fun setUpAlarmsData() {
         controlParamAdapter = ControlParameterAdapter(requireContext(), dataList, controlParameterClickListener, Configs.ControlSettingType.BASIC)
 
-        recyclerViewControls?.apply {
+        binding.recyclerViewControls.apply {
             layoutManager = object: GridLayoutManager(requireContext(), 6){
                 override fun canScrollVertically(): Boolean = false
             }

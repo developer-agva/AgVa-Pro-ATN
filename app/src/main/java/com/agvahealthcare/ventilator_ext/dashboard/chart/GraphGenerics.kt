@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.callback.OnChartSwapListener
 import com.agvahealthcare.ventilator_ext.dashboard.TraceArc
+import com.agvahealthcare.ventilator_ext.databinding.FragmentChartBinding
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.utility.FIFO_CAPACITY
 import com.agvahealthcare.ventilator_ext.utility.GRAPH_THRESHOLD
@@ -28,7 +29,6 @@ import com.scichart.data.model.DoubleRange
 import com.scichart.drawing.common.FontStyle
 import com.scichart.drawing.common.SolidPenStyle
 import com.scichart.drawing.utility.ColorUtil
-import kotlinx.android.synthetic.main.fragment_chart.*
 import java.util.*
 
 class GraphGenerics  : GraphFragment() {
@@ -64,14 +64,17 @@ class GraphGenerics  : GraphFragment() {
     var horizontalLineAnnotation: HorizontalLineAnnotation? = null
     val titleStyle = FontStyle(14.0f, ColorUtil.White)
 
+
+    private lateinit var binding : FragmentChartBinding
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        return inflater.inflate(R.layout.fragment_chart, container, false)
-
+        binding = FragmentChartBinding.inflate(layoutInflater,container,false)
+        return binding.root
     }
+
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -113,8 +116,8 @@ class GraphGenerics  : GraphFragment() {
             .build()
 
 
-        chartSurface.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.black))
-        chartSurface.renderableSeriesAreaBorderStyle = sciChartBuilder.newPen().withColor(ColorUtil.Transparent).build();
+        binding.chartSurface.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.black))
+        binding.chartSurface.renderableSeriesAreaBorderStyle = sciChartBuilder.newPen().withColor(ColorUtil.Transparent).build();
         xPRimaryAxis.visibility = View.GONE
         xsecondaryAxis.visibility = View.VISIBLE
 
@@ -176,15 +179,15 @@ class GraphGenerics  : GraphFragment() {
 
         Log.i("Horizantlelinecheck","Horizantal Line")
 
-        Collections.addAll(chartSurface.annotations, horizontalLine, verticalLine)
+        Collections.addAll(binding.chartSurface.annotations, horizontalLine, verticalLine)
 
 
-        UpdateSuspender.using(chartSurface) {
-            Collections.addAll(chartSurface.xAxes, xPRimaryAxis)
-            Collections.addAll(chartSurface.xAxes,xsecondaryAxis)
-            Collections.addAll(chartSurface.yAxes, yAxis)
-            Collections.addAll(chartSurface.renderableSeries, rs1,rs2)
-            chartSurface.annotations.add(horizontalLineAnnotation)
+        UpdateSuspender.using(binding.chartSurface) {
+            Collections.addAll(binding.chartSurface.xAxes, xPRimaryAxis)
+            Collections.addAll(binding.chartSurface.xAxes,xsecondaryAxis)
+            Collections.addAll(binding.chartSurface.yAxes, yAxis)
+            Collections.addAll(binding.chartSurface.renderableSeries, rs1,rs2)
+            binding.chartSurface.annotations.add(horizontalLineAnnotation)
 
         }
 

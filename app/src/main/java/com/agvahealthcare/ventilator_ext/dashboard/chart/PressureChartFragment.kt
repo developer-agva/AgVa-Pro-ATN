@@ -19,6 +19,7 @@ import com.agvahealthcare.ventilator_ext.dashboard.DashBoardActivity
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardViewModel
 import com.agvahealthcare.ventilator_ext.dashboard.TraceArc
 import com.agvahealthcare.ventilator_ext.dashboard.chart.paletteprovider.ColouredLinePaletteProvider
+import com.agvahealthcare.ventilator_ext.databinding.FragmentChartBinding
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.utility.*
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs
@@ -34,10 +35,6 @@ import com.scichart.data.model.DoubleRange
 import com.scichart.drawing.common.FontStyle
 import com.scichart.drawing.common.SolidPenStyle
 import com.scichart.drawing.utility.ColorUtil
-import kotlinx.android.synthetic.main.fragment_chart.chartSurface
-import kotlinx.android.synthetic.main.fragment_chart.txtMaxLabel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.util.Collections
 import kotlin.math.abs
 
@@ -62,8 +59,8 @@ class PressureChartFragment : GraphFragment() {
     }
 
     fun addTextOnMaxRange(xMaxRange: Double) {
-        txtMaxLabel.text = xMaxRange.toString().split('.')[0]
-        chartSurface.xAxes[1].visibleRange = DoubleRange(0.0, xMaxRange)
+        binding.txtMaxLabel.text = xMaxRange.toString().split('.')[0]
+        binding.chartSurface.xAxes[1].visibleRange = DoubleRange(0.0, xMaxRange)
     }
 
     private lateinit var dataSeries0: IXyDataSeries<Int, Float>
@@ -86,13 +83,17 @@ class PressureChartFragment : GraphFragment() {
     private var timePeek = -1
     private var isFirstTime = false
 
+
+    private lateinit var binding : FragmentChartBinding
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        return inflater.inflate(R.layout.fragment_chart, container, false)
+        binding = FragmentChartBinding.inflate(layoutInflater,container,false)
+        return binding.root
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -103,7 +104,7 @@ class PressureChartFragment : GraphFragment() {
         minValue = arguments?.getInt(KEY_MIN_VALUE_VIEW)
         maxValue = arguments?.getInt(KEY_MAX_VALUE_VIEW)
 
-        txtMaxLabel.text = xMaxRangeGlobal.toString().split('.')[0]
+        binding.txtMaxLabel.text = xMaxRangeGlobal.toString().split('.')[0]
 
         // added at 20 jan 2023
         minRange = Configs.getRangeOfYAxisChart(
@@ -131,7 +132,7 @@ class PressureChartFragment : GraphFragment() {
         initGraph()
 
 
-        txtMaxLabel.setOnClickListener {
+        binding.txtMaxLabel.setOnClickListener {
             Log.i("value_Adawd", xMaxRangeGlobal.toString())
             if (xMaxRangeGlobal == 12.9) (requireActivity() as DashBoardActivity).sendCommandForChangeXAxisGraph("2")
             else (requireActivity() as DashBoardActivity).sendCommandForChangeXAxisGraph("1")
@@ -170,8 +171,8 @@ class PressureChartFragment : GraphFragment() {
             .build()
 
 
-        chartSurface.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.black))
-        chartSurface.renderableSeriesAreaBorderStyle =
+        binding.chartSurface.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.black))
+        binding.chartSurface.renderableSeriesAreaBorderStyle =
             sciChartBuilder.newPen().withColor(ColorUtil.Transparent).build();
 
         xPRimaryAxis.visibility = View.GONE
@@ -235,14 +236,14 @@ class PressureChartFragment : GraphFragment() {
         modifier.showAxisLabels = true
         modifier.isEnabled = true
 
-        Collections.addAll(chartSurface.chartModifiers, modifier)
-        UpdateSuspender.using(chartSurface) {
+        Collections.addAll(binding.chartSurface.chartModifiers, modifier)
+        UpdateSuspender.using(binding.chartSurface) {
             Log.i("SUSPEND", "")
-            Collections.addAll(chartSurface.xAxes, xPRimaryAxis)
-            Collections.addAll(chartSurface.xAxes, xsecondaryAxis)
-            Collections.addAll(chartSurface.yAxes, yAxis)
-            Collections.addAll(chartSurface.renderableSeries,  rs2)
-            Collections.addAll(chartSurface.annotations,horizontalLineAnnotation)
+            Collections.addAll(binding.chartSurface.xAxes, xPRimaryAxis)
+            Collections.addAll(binding.chartSurface.xAxes, xsecondaryAxis)
+            Collections.addAll(binding.chartSurface.yAxes, yAxis)
+            Collections.addAll(binding.chartSurface.renderableSeries,  rs2)
+            Collections.addAll(binding.chartSurface.annotations,horizontalLineAnnotation)
 //            Collections.addAll(chartSurface.annotations,horizontalLineAnnotation1)
 //            chartSurface.annotations.add(horizontalLineAnnotation)
 //            Collections.addAll(horizontalLineAnnotation?.annotationLabels,annotationLabel)
@@ -255,7 +256,7 @@ class PressureChartFragment : GraphFragment() {
 
         Log.i("timeYValue", y.toString())
         if (x == timePeek) {
-            chartSurface.yAxes.default.visibleRange = DoubleRange(minRange, maxRange)
+            binding.chartSurface.yAxes.default.visibleRange = DoubleRange(minRange, maxRange)
             timePeek = -1
         } else {
             Log.i("timePeekPressure", maxRange.toString())
@@ -271,7 +272,7 @@ class PressureChartFragment : GraphFragment() {
                     } else {
                         maxRange = MAX_RANGE_PRESSURE_ADULT_PEDIA
 
-                        chartSurface.yAxes.default.visibleRange = DoubleRange(minRange, maxRange)
+                        binding.chartSurface.yAxes.default.visibleRange = DoubleRange(minRange, maxRange)
                         timePeek = -1
                     }
                 }

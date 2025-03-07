@@ -12,13 +12,13 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.control.basic.ControlParameterAdapter
 import com.agvahealthcare.ventilator_ext.control.basic.ControlParameterClickListener
+import com.agvahealthcare.ventilator_ext.databinding.FragmentAdvancedBinding
+import com.agvahealthcare.ventilator_ext.databinding.FragmentBackupBinding
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.model.ControlParameterModel
 import com.agvahealthcare.ventilator_ext.utility.GridSpacingItemDecoration
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs
 import com.github.angads25.toggle.interfaces.OnToggledListener
-import kotlinx.android.synthetic.main.fragment_backup.*
-import kotlinx.android.synthetic.main.fragment_basic.*
 import java.util.*
 
 class BackupFragment(private var dataList : ArrayList<ControlParameterModel>, private  var controlParameterClickListener: ControlParameterClickListener?, private var onToggledListener: OnToggledListener?) : Fragment() {
@@ -29,13 +29,15 @@ class BackupFragment(private var dataList : ArrayList<ControlParameterModel>, pr
     var isactive:Boolean = true
 
     private var controlParamAdapter : ControlParameterAdapter? = null
+    private lateinit var binding: FragmentBackupBinding
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
 
-        return inflater.inflate(R.layout.fragment_backup, container, false)
+        binding = FragmentBackupBinding.inflate(layoutInflater,container,false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -68,8 +70,8 @@ class BackupFragment(private var dataList : ArrayList<ControlParameterModel>, pr
 
     private fun setUpAlarmsData() {
         controlParamAdapter = ControlParameterAdapter(requireContext(), dataList, controlParameterClickListener, Configs.ControlSettingType.BACKUP)
-        (recyclerViewBackupParams.getItemAnimator() as SimpleItemAnimator).supportsChangeAnimations = false
-        recyclerViewBackupParams?.apply {
+        (binding.recyclerViewBackupParams.getItemAnimator() as SimpleItemAnimator).supportsChangeAnimations = false
+        binding.recyclerViewBackupParams.apply {
             Log.i("BACKUPCHECK", "Params = ${dataList.map { it.toString() }}")
 
             layoutManager = object: GridLayoutManager(requireContext(), 6){

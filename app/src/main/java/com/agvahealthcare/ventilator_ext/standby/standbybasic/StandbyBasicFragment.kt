@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.control.basic.ControlParameterAdapter
 import com.agvahealthcare.ventilator_ext.control.basic.ControlParameterClickListener
+import com.agvahealthcare.ventilator_ext.databinding.FragmentStandbybasicBinding
 import com.agvahealthcare.ventilator_ext.model.ControlParameterModel
 import com.agvahealthcare.ventilator_ext.utility.GridSpacingItemDecoration
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs
-import kotlinx.android.synthetic.main.fragment_basic.*
 
 
 class StandbyBasicFragment(
@@ -36,12 +36,16 @@ class StandbyBasicFragment(
     // knob highlight logic ends here
 
 
+    private lateinit var binding : FragmentStandbybasicBinding
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        return inflater.inflate(R.layout.fragment_standbybasic, container, false)
+        binding = FragmentStandbybasicBinding.inflate(layoutInflater, container, false)
+        return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,9 +62,9 @@ class StandbyBasicFragment(
             controlParameterClickListener,
             Configs.ControlSettingType.BASIC
         )
-        (recyclerViewControls.itemAnimator as SimpleItemAnimator).supportsChangeAnimations =
+        (binding.recyclerViewControls.itemAnimator as SimpleItemAnimator).supportsChangeAnimations =
             false
-        recyclerViewControls?.apply {
+        binding.recyclerViewControls.apply {
             layoutManager = object : GridLayoutManager(requireContext(), 6) {
                 override fun canScrollVertically(): Boolean = false
             }

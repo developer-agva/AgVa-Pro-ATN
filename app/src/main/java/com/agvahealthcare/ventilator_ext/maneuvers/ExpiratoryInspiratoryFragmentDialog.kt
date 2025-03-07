@@ -10,10 +10,9 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import com.agvahealthcare.ventilator_ext.R
+import com.agvahealthcare.ventilator_ext.databinding.FragmentExpiratoryInspiratoryDialogBinding
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.utility.setHeightWidth
-import com.agvahealthcare.ventilator_ext.utility.utils.AppUtils
-import kotlinx.android.synthetic.main.fragment_expiratory_inspiratory_dialog.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -23,7 +22,7 @@ class ExpiratoryInspiratoryFragmentDialog : DialogFragment() {
     private var observedPplat: Float? = null
     private var staticCompliance: Float? = null
     private var autoPeep: Float? = null
-
+    private lateinit var binding : FragmentExpiratoryInspiratoryDialogBinding
 
     companion object {
         const val TAG = "ExpiratoryInspiManeuversDialog"
@@ -53,9 +52,9 @@ class ExpiratoryInspiratoryFragmentDialog : DialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        var view= inflater.inflate(R.layout.fragment_expiratory_inspiratory_dialog,container,false)
+        binding = FragmentExpiratoryInspiratoryDialogBinding.inflate(layoutInflater,container,false)
         isCancelable = false
-        return view
+        return binding.root
     }
 
 
@@ -65,7 +64,7 @@ class ExpiratoryInspiratoryFragmentDialog : DialogFragment() {
         preferenceManager = PreferenceManager(requireContext())
         setHeightWidth(WINDOW_WIDTH, WINDOW_HEIGHT)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
-        imageViewCross.setOnClickListener{ dismiss() }
+        binding.imageViewCross.setOnClickListener{ dismiss() }
         updateDataOnViewAndPreference()
     }
 
@@ -85,25 +84,25 @@ class ExpiratoryInspiratoryFragmentDialog : DialogFragment() {
 
         preferenceManager?.apply {
             if (isInspiratory == true) {
-                tvTitle.text = getString(R.string.inspiratory_hold_maneuver)
+                binding.tvTitle.text = getString(R.string.inspiratory_hold_maneuver)
                 setManeuversPplatValue(observedPplat)
                 setManeuversStaticComplianceValue(staticCompliance)
                 setInspiratoryDate("$inspTime")
 
-                tvPplatValue.text = observedPplat.toString()
-                tvPplatDateTime.text = readInspiratoryDate()
-                tvSCValue.text = staticCompliance.toString()
-                tvSCDateTime.text = readInspiratoryDate()
-                layoutAutoPeep.visibility = View.GONE
+                binding.tvPplatValue.text = observedPplat.toString()
+                binding.tvPplatDateTime.text = readInspiratoryDate()
+                binding.tvSCValue.text = staticCompliance.toString()
+                binding.tvSCDateTime.text = readInspiratoryDate()
+                binding.layoutAutoPeep.visibility = View.GONE
 
             } else {
-                tvTitle.text = getString(R.string.expiratory_hold_maneuver)
+                binding.tvTitle.text = getString(R.string.expiratory_hold_maneuver)
                 setManeuversAutoPeepValue(autoPeep)
                 setExpiratoryDate("$formatted")
-                tvAutoPeepValue.text = autoPeep.toString()
-                tvAutoPeepDateTime.text = readExpiratoryDate()
-                layoutPplat.visibility = View.GONE
-                layoutSC.visibility = View.GONE
+                binding.tvAutoPeepValue.text = autoPeep.toString()
+                binding.tvAutoPeepDateTime.text = readExpiratoryDate()
+                binding.layoutPplat.visibility = View.GONE
+                binding.layoutSC.visibility = View.GONE
             }
         }
 

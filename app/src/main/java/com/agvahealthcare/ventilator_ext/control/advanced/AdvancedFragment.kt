@@ -2,27 +2,21 @@ package com.agvahealthcare.ventilator_ext.control.advanced
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.os.CountDownTimer
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.agvahealthcare.ventilator_ext.MainActivityViewModel
-import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.VentilatorApp
 import com.agvahealthcare.ventilator_ext.control.basic.ControlParameterAdapter
 import com.agvahealthcare.ventilator_ext.control.basic.ControlParameterClickListener
+import com.agvahealthcare.ventilator_ext.databinding.FragmentAdvancedBinding
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.model.ControlParameterModel
 import com.agvahealthcare.ventilator_ext.standby.StandbyControlSettingFragment
 import com.agvahealthcare.ventilator_ext.utility.GridSpacingItemDecoration
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs
-import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_AND
-import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_MINUS
-import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_PLUS
-import kotlinx.android.synthetic.main.fragment_advanced.*
 
 class AdvancedFragment(
     private var dataList: MutableList<ControlParameterModel>,
@@ -32,13 +26,15 @@ class AdvancedFragment(
     private var controlParamsAdapter: ControlParameterAdapter? = null
     private var prefManager: PreferenceManager? = null
     private var mMainActivityViewModel: MainActivityViewModel? = null
+    private lateinit var binding : FragmentAdvancedBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_advanced, container, false)
+        binding = FragmentAdvancedBinding.inflate(layoutInflater,container,false)
+        return binding.root
     }
 
 
@@ -112,7 +108,7 @@ class AdvancedFragment(
                 Configs.ControlSettingType.ADVANCED
             )
 
-        recyclerViewAdvanced?.apply {
+        binding.recyclerViewAdvanced.apply {
             layoutManager = object : GridLayoutManager(requireContext(), 6) {
                 override fun canScrollVertically(): Boolean = false
             }

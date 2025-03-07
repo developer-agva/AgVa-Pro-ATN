@@ -14,15 +14,13 @@ import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.VentilatorApp
 import com.agvahealthcare.ventilator_ext.control.basic.ControlParameterAdapter
 import com.agvahealthcare.ventilator_ext.control.basic.ControlParameterClickListener
+import com.agvahealthcare.ventilator_ext.databinding.FragmentSmartFio2Binding
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.model.ControlParameterModel
 import com.agvahealthcare.ventilator_ext.standby.StandbyControlSettingFragment
 import com.agvahealthcare.ventilator_ext.utility.GridSpacingItemDecoration
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs
-import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_AND
-import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_MINUS
-import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_PLUS
-import kotlinx.android.synthetic.main.fragment_smart_fio2.*
+
 
 
 class SmartFio2(private var dataList:MutableList<ControlParameterModel>, private var controlParamClickListener: ControlParameterClickListener?=null): StandbyControlSettingFragment(){
@@ -30,13 +28,15 @@ class SmartFio2(private var dataList:MutableList<ControlParameterModel>, private
     private var controlParamsAdapter: ControlParameterAdapter? = null
     private var prefManager: PreferenceManager? = null
     private var mMainActivityViewModel : MainActivityViewModel? = null
+    private lateinit var binding : FragmentSmartFio2Binding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_smart_fio2, container, false )
+        binding = FragmentSmartFio2Binding.inflate(layoutInflater,container,false)
+        return binding.root
     }
 
     // knob highlight logic starts here
@@ -105,7 +105,7 @@ class SmartFio2(private var dataList:MutableList<ControlParameterModel>, private
                 Configs.ControlSettingType.SmartFio2
             )
 
-        recyclerViewsmartFiO2?.apply {
+        binding.recyclerViewsmartFiO2.apply {
             layoutManager = object: GridLayoutManager(requireContext(), 6){
                 override fun canScrollVertically(): Boolean = false
             }
@@ -129,6 +129,5 @@ class SmartFio2(private var dataList:MutableList<ControlParameterModel>, private
     }
 
     override fun notifyItemChangedAdapter(position: Int) = controlParamsAdapter?.notifyItemChanged(position)
-
 }
 

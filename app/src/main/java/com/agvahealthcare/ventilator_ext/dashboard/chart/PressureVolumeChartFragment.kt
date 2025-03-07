@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardViewModel
+import com.agvahealthcare.ventilator_ext.databinding.FragmentChartBinding
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.utility.*
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs
@@ -34,7 +35,6 @@ import com.scichart.core.model.IntegerValues
 import com.scichart.data.model.DoubleRange
 import com.scichart.drawing.common.FontStyle
 import com.scichart.drawing.utility.ColorUtil
-import kotlinx.android.synthetic.main.fragment_chart.*
 import java.util.*
 import kotlin.math.max
 
@@ -66,13 +66,17 @@ class PressureVolumeChartFragment  : GraphFragment() {
     private var prefManager: PreferenceManager? = null
     private var mDashBoardViewModel: DashBoardViewModel? = null
 
+
+    private lateinit var binding : FragmentChartBinding
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        return inflater.inflate(R.layout.fragment_chart, container, false)
+        binding = FragmentChartBinding.inflate(layoutInflater,container,false)
+        return binding.root
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -80,7 +84,7 @@ class PressureVolumeChartFragment  : GraphFragment() {
         prefManager = PreferenceManager(requireContext())
         mDashBoardViewModel =
             ViewModelProvider(requireActivity()).get(DashBoardViewModel::class.java)
-        textViewChartType.text = requireContext().getString(R.string.volume_pressure_l_min)
+        binding.textViewChartType.text = requireContext().getString(R.string.volume_pressure_l_min)
 
         // change here 15 feb
 
@@ -123,8 +127,8 @@ class PressureVolumeChartFragment  : GraphFragment() {
             .withDrawMajorGridLines(false)
             .withAutoRangeMode(AutoRange.Never).build()
 
-        chartSurface.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.black))
-        chartSurface.renderableSeriesAreaBorderStyle = sciChartBuilder.newPen().withColor(ColorUtil.Transparent).build()
+        binding.chartSurface.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.black))
+        binding.chartSurface.renderableSeriesAreaBorderStyle = sciChartBuilder.newPen().withColor(ColorUtil.Transparent).build()
 
         xAxis.drawMajorGridLines = false
         xAxis.drawMinorGridLines = false
@@ -138,9 +142,9 @@ class PressureVolumeChartFragment  : GraphFragment() {
         yAxis.drawMajorBands = false
         yAxis.drawMajorTicks = false
         yAxis.drawMajorTicks = false
-        chartSurface.isHorizontalScrollBarEnabled = false
-        chartSurface.isVerticalFadingEdgeEnabled = false
-        chartSurface.isClickable = false
+        binding.chartSurface.isHorizontalScrollBarEnabled = false
+        binding.chartSurface.isVerticalFadingEdgeEnabled = false
+        binding.chartSurface.isClickable = false
 
         dataSeries = sciChartBuilder.newXyDataSeries(
             Float::class.javaObjectType,
@@ -184,17 +188,17 @@ class PressureVolumeChartFragment  : GraphFragment() {
             .build()
 
 
-        Collections.addAll(chartSurface.annotations, horizontalLine, verticalLine)
-        Collections.addAll(chartSurface.chartModifiers,RolloverModifier())
+        Collections.addAll(binding.chartSurface.annotations, horizontalLine, verticalLine)
+        Collections.addAll(binding.chartSurface.chartModifiers,RolloverModifier())
 
 
-        UpdateSuspender.using(chartSurface) {
+        UpdateSuspender.using(binding.chartSurface) {
 
-            chartSurface.layoutManager = CenterLayoutManager(xAxis, yAxis)
+            binding.chartSurface.layoutManager = CenterLayoutManager(xAxis, yAxis)
 
-            Collections.addAll(chartSurface.xAxes, xAxis)
-            Collections.addAll(chartSurface.yAxes, yAxis)
-            Collections.addAll(chartSurface.renderableSeries, rSeries,rSeries1)
+            Collections.addAll(binding.chartSurface.xAxes, xAxis)
+            Collections.addAll(binding.chartSurface.yAxes, yAxis)
+            Collections.addAll(binding.chartSurface.renderableSeries, rSeries,rSeries1)
 
         }
     }
@@ -213,8 +217,8 @@ class PressureVolumeChartFragment  : GraphFragment() {
 
         if (mDashBoardViewModel?.graphPeekValue?.value == "D") {
 
-            if (chartSurface.yAxes.default.visibleRange.max.toString() > yMaxRange.toString()) chartSurface.yAxes.default.visibleRange = DoubleRange(yMinRange,yMaxRange)
-            if (chartSurface.xAxes.default.visibleRange.max.toString() > xMaxRange.toString())  chartSurface.xAxes.default.visibleRange = DoubleRange(xMinRange,xMaxRange)
+            if (binding.chartSurface.yAxes.default.visibleRange.max.toString() > yMaxRange.toString()) binding.chartSurface.yAxes.default.visibleRange = DoubleRange(yMinRange,yMaxRange)
+            if (binding.chartSurface.xAxes.default.visibleRange.max.toString() > xMaxRange.toString())  binding.chartSurface.xAxes.default.visibleRange = DoubleRange(xMinRange,xMaxRange)
 
         }
         else if (mDashBoardViewModel?.graphPeekValue?.value == "A") {
@@ -224,14 +228,14 @@ class PressureVolumeChartFragment  : GraphFragment() {
                     if (x < MIN_RANGE_PRESSURE_NEO_LOOPS) xMaxRange = MIN_RANGE_PRESSURE_NEO_LOOPS
                     else {
                         xMaxRange = MAX_RANGE_PRESSURE_NEO_LOOPS
-                        if (chartSurface.xAxes.default.visibleRange.max != xMaxRange)  chartSurface.xAxes.default.visibleRange = DoubleRange(xMinRange,xMaxRange)
+                        if (binding.chartSurface.xAxes.default.visibleRange.max != xMaxRange)  binding.chartSurface.xAxes.default.visibleRange = DoubleRange(xMinRange,xMaxRange)
                     }
 
                 } else {
                     if (x < 30.0) xMaxRange = MIN_RANGE_PRESSURE_ADULT_PEDIA_LOOPS
                     else {
                         xMaxRange = MAX_RANGE_PRESSURE_ADULT_PEDIA_LOOPS
-                        if (chartSurface.xAxes.default.visibleRange.max != xMaxRange)  chartSurface.xAxes.default.visibleRange = DoubleRange(xMinRange,xMaxRange)
+                        if (binding.chartSurface.xAxes.default.visibleRange.max != xMaxRange)  binding.chartSurface.xAxes.default.visibleRange = DoubleRange(xMinRange,xMaxRange)
                     }
 
 
@@ -244,7 +248,7 @@ class PressureVolumeChartFragment  : GraphFragment() {
                     if (y <= MIN_RANGE_VOLUME_NEO_LOOPS) yMaxRange = MIN_RANGE_VOLUME_NEO_LOOPS
                     else {
                         yMaxRange = MAX_RANGE_VOLUME_NEO_LOOPS
-                        if (chartSurface.yAxes.default.visibleRange.max != yMaxRange) chartSurface.yAxes.default.visibleRange = DoubleRange(yMinRange,yMaxRange)
+                        if (binding.chartSurface.yAxes.default.visibleRange.max != yMaxRange) binding.chartSurface.yAxes.default.visibleRange = DoubleRange(yMinRange,yMaxRange)
                     }
 
 
@@ -252,7 +256,7 @@ class PressureVolumeChartFragment  : GraphFragment() {
                     if (y < 600.0) yMaxRange = MIN_RANGE_VOLUME_ADULT_PEDIA_LOOPS
                     else  {
                         yMaxRange = MAX_RANGE_VOLUME_ADULT_PEDIA_LOOPS
-                        if (chartSurface.yAxes.default.visibleRange.max != yMaxRange) chartSurface.yAxes.default.visibleRange = DoubleRange(yMinRange,yMaxRange)
+                        if (binding.chartSurface.yAxes.default.visibleRange.max != yMaxRange) binding.chartSurface.yAxes.default.visibleRange = DoubleRange(yMinRange,yMaxRange)
                     }
                 }
             }

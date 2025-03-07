@@ -11,54 +11,44 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.agvahealthcare.ventilator_ext.R
-import com.agvahealthcare.ventilator_ext.VentilatorApp
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardViewModel
+import com.agvahealthcare.ventilator_ext.databinding.FragmentPatientBinding
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.utility.*
 import com.agvahealthcare.ventilator_ext.utility.utils.AppUtils
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs
-import kotlinx.android.synthetic.main.content_button_layout.view.*
-import kotlinx.android.synthetic.main.content_female_layout.view.*
-import kotlinx.android.synthetic.main.content_male_layout.view.*
-import kotlinx.android.synthetic.main.fragment_patient.*
-import kotlinx.android.synthetic.main.fragment_patient.et_uhid
-import kotlinx.android.synthetic.main.fragment_patient.includeProgressAge
-import kotlinx.android.synthetic.main.fragment_patient.includeProgressHeight
-import kotlinx.android.synthetic.main.fragment_patient.includeProgressWeight
-import kotlinx.android.synthetic.main.knob_progress_view_red.view.textView
-import kotlinx.android.synthetic.main.text_knob_view.view.*
+
 
 class PatientFragment : Fragment(), View.OnClickListener {
 
     private var prefManager: PreferenceManager? = null
     private var customCountDownTimer: CustomCountDownTimer? = null
     private var dashBoardViewModel: DashBoardViewModel? = null
+    private lateinit var binding: FragmentPatientBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val view = inflater.inflate(R.layout.fragment_patient, container, false)
+        binding = FragmentPatientBinding.inflate(layoutInflater, container, false)
         dashBoardViewModel = ViewModelProvider(requireActivity())[DashBoardViewModel::class.java]
 //Here this is implemented in a different way if the Input field is empty the field will be active else it will not be editable.
 
-        view.setOnTouchListener(object : View.OnTouchListener {
-            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-                et_uhid.isCursorVisible = false
-                et_uhid.setBackgroundColor(resources.getColor(R.color.uhid_grey, null))
-                try {
-                    val imm = activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    imm.hideSoftInputFromWindow(requireView().windowToken, 0)
-                } catch (e: Error) {
-                    e.printStackTrace()
-                }
-                et_uhid.text?.clear()
-                if (prefManager?.readUHID() != FIRST_FILTER_NAME) et_uhid?.setText(prefManager?.readUHID())
-                return true
+        binding.root.setOnClickListener {
+            binding.etUhid.isCursorVisible = false
+            binding.etUhid.setBackgroundColor(resources.getColor(R.color.uhid_grey, null))
+            try {
+                val imm =
+                    activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(requireView().windowToken, 0)
+            } catch (e: Error) {
+                e.printStackTrace()
             }
-        })
-        return view
+            binding.etUhid.text?.clear()
+            if (prefManager?.readUHID() != FIRST_FILTER_NAME) binding.etUhid?.setText(prefManager?.readUHID())
+        }
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -68,37 +58,37 @@ class PatientFragment : Fragment(), View.OnClickListener {
         initViewViaPreference()
         setOnClickListener()
 
-        if (prefManager?.readUHID() != FIRST_FILTER_NAME) et_uhid.setText(prefManager?.readUHID())
+        if (prefManager?.readUHID() != FIRST_FILTER_NAME) binding.etUhid.setText(prefManager?.readUHID())
 
-        et_uhid.isEnabled = et_uhid.text.toString().isEmpty()
+        binding.etUhid.isEnabled = binding.etUhid.text.toString().isEmpty()
 
-        et_uhid.setOnClickListener {
-            et_uhid.isCursorVisible = true
-            et_uhid.setBackgroundColor(resources.getColor(R.color.white, null))
+        binding.etUhid.setOnClickListener {
+            binding.etUhid.isCursorVisible = true
+            binding.etUhid.setBackgroundColor(resources.getColor(R.color.white, null))
         }
 
-        et_uhid.setOnEditorActionListener(object : TextView.OnEditorActionListener {
+        binding.etUhid.setOnEditorActionListener(object : TextView.OnEditorActionListener {
             override fun onEditorAction(p0: TextView?, p1: Int, p2: KeyEvent?): Boolean {
                 if (p1 == EditorInfo.IME_ACTION_DONE) {
 
-                    et_uhid.isEnabled = et_uhid.text.toString().isEmpty()
+                    binding.etUhid.isEnabled = binding.etUhid.text.toString().isEmpty()
 
-                    if (et_uhid.text.toString().length <= 10) {
-                        prefManager?.setUHID(et_uhid.text.toString())
+                    if (binding.etUhid.text.toString().length <= 10) {
+                        prefManager?.setUHID(binding.etUhid.text.toString())
 
                         dashBoardViewModel?.updateisUHIDSet(true)
-                        et_uhid.isCursorVisible = false
-                        et_uhid.setBackgroundColor(resources.getColor(R.color.uhid_grey, null))
+                        binding.etUhid.isCursorVisible = false
+                        binding.etUhid.setBackgroundColor(resources.getColor(R.color.uhid_grey, null))
                     } else {
                         if (prefManager?.readUHID() != null) {
                         } else {
                             ToastFactory.custom(context, "Invalid UHID. Please Re-enter")
                         }
-                        et_uhid.isCursorVisible = false
-                        et_uhid.setBackgroundColor(resources.getColor(R.color.uhid_grey, null))
+                        binding.etUhid.isCursorVisible = false
+                        binding.etUhid.setBackgroundColor(resources.getColor(R.color.uhid_grey, null))
                     }
-                    AppUtils.hideKeyBoard(context, et_uhid)
-                    if (prefManager?.readUHID() != FIRST_FILTER_NAME) et_uhid?.setText(prefManager?.readUHID())
+                    AppUtils.hideKeyBoard(context, binding.etUhid)
+                    if (prefManager?.readUHID() != FIRST_FILTER_NAME) binding.etUhid?.setText(prefManager?.readUHID())
                     return true
                 }
                 return false
@@ -112,53 +102,53 @@ class PatientFragment : Fragment(), View.OnClickListener {
         prefManager?.apply {
 
             readBodyHeight()?.toDouble()?.toInt()
-                ?.let { includeProgressHeight.progress_bar.progress = it }
+                ?.let {  binding.includeProgressHeight.progressBar.progress = it }
             readBodyWeight()?.toDouble()?.toInt()
-                ?.let { includeProgressWeight.progress_bar.progress = it }
-            readAge()?.toDouble()?.toInt()?.let { includeProgressAge.progress_bar.progress = it }
+                ?.let { binding.includeProgressWeight.progressBar.progress = it }
+            readAge()?.toDouble()?.toInt()?.let { binding.includeProgressAge.progressBar.progress = it }
 
-            includeProgressAge.progress_bar.max = PATIENT_AGE_UPPER
-            includeProgressHeight.progress_bar.max = PATIENT_ADULT_HEIGHT_UPPER
-            includeProgressWeight.progress_bar.max = PATIENT_ADULT_WEIGHT_UPPER
+            binding.includeProgressAge.progressBar.max = PATIENT_AGE_UPPER
+            binding.includeProgressHeight.progressBar.max = PATIENT_ADULT_HEIGHT_UPPER
+            binding.includeProgressWeight.progressBar.max = PATIENT_ADULT_WEIGHT_UPPER
 
-            includeProgressAge.textView.text = readAge()?.toDouble()?.toInt().toString()
-            includeProgressHeight.textView.text = readBodyHeight()?.toDouble()?.toInt().toString()
-            includeProgressWeight.textView.text = readBodyWeight()?.toDouble()?.toInt().toString()
+            binding.includeProgressAge.textView.text = readAge()?.toDouble()?.toInt().toString()
+            binding.includeProgressHeight.textView.text = readBodyHeight()?.toDouble()?.toInt().toString()
+            binding.includeProgressWeight.textView.text = readBodyWeight()?.toDouble()?.toInt().toString()
 
 
             readCurrentUid()?.let {
                 when (it) {
                     Configs.PatientProfile.TYPE_ADULT -> {
-                        patientType.text = "ADULT"
-                        txtYears.text = "years"
-                        txtAge.text = "AGE"
+                        binding.patientType.text = "ADULT"
+                        binding.txtYears.text = "years"
+                        binding.txtAge.text = "AGE"
                     }
 
                     Configs.PatientProfile.TYPE_PED -> {
-                        patientType.text = "Pediatric"
-                        txtYears.text = "years"
-                        txtAge.text = "AGE"
+                        binding.patientType.text = "Pediatric"
+                        binding.txtYears.text = "years"
+                        binding.txtAge.text = "AGE"
                     }
 
                     Configs.PatientProfile.TYPE_NEONAT -> {
-                        patientType.text = "Neonate"
-                        txtYears.text = "days"
-                        txtAge.text = "DAY"
+                        binding.patientType.text = "Neonate"
+                        binding.txtYears.text = "days"
+                        binding.txtAge.text = "DAY"
                     }
                 }
             }
             readCurrentUid()?.let {
                 when (it) {
                     Configs.PatientProfile.TYPE_ADULT -> {
-                        patientType.text = "ADULT"
+                        binding.patientType.text = "ADULT"
                     }
 
                     Configs.PatientProfile.TYPE_PED -> {
-                        patientType.text = "Pediatric"
+                        binding.patientType.text = "Pediatric"
                     }
 
                     Configs.PatientProfile.TYPE_NEONAT -> {
-                        patientType.text = "Neonate"
+                        binding.patientType.text = "Neonate"
                     }
                 }
             }
@@ -171,13 +161,13 @@ class PatientFragment : Fragment(), View.OnClickListener {
 
     private fun setOnClickListener() {
 
-        includeButtonReset.buttonView.text = getString(R.string.hint_reset)
-        includeButtonReset.buttonView.setTextColor(resources.getColor(R.color.white))
-        includeButtonReset.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-        includeButtonReset.buttonView.setPadding(50, 0, 50, 0)
+        binding.includeButtonReset.buttonView.text = getString(R.string.hint_reset)
+        binding.includeButtonReset.buttonView.setTextColor(resources.getColor(R.color.white))
+        binding.includeButtonReset.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonReset.buttonView.setPadding(50, 0, 50, 0)
 
 
-        includeButtonReset.buttonView.setOnClickListener {
+        binding.includeButtonReset.buttonView.setOnClickListener {
             customCountDownTimer?.count = 0L
             // Toast.makeText(context,"click",Toast.LENGTH_LONG).show()
 
@@ -189,12 +179,12 @@ class PatientFragment : Fragment(), View.OnClickListener {
 
 
     private fun setDataMale() {
-        layoutMale.imageViewMale.setImageResource(R.drawable.ic_male_select)
-        layoutMale.buttonMale.setBackgroundResource(R.drawable.background_green_border)
-        layoutMale.buttonMale.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        layoutFemale.imageViewFemale.setImageResource(R.drawable.ic_female_unselect)
-        layoutFemale.buttonFemale.setBackgroundResource(R.drawable.background_medium_grey)
-        layoutFemale.buttonFemale.setTextColor(
+        binding.layoutMale.imageViewMale.setImageResource(R.drawable.ic_male_select)
+        binding.layoutMale.buttonMale.setBackgroundResource(R.drawable.background_green_border)
+        binding.layoutMale.buttonMale.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+        binding.layoutFemale.imageViewFemale.setImageResource(R.drawable.ic_female_unselect)
+        binding.layoutFemale.buttonFemale.setBackgroundResource(R.drawable.background_medium_grey)
+        binding.layoutFemale.buttonFemale.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.black
@@ -203,12 +193,12 @@ class PatientFragment : Fragment(), View.OnClickListener {
     }
 
     private fun setDataFemale() {
-        layoutMale.imageViewMale.setImageResource(R.drawable.ic_male_unselect)
-        layoutMale.buttonMale.setBackgroundResource(R.drawable.background_medium_grey)
-        layoutMale.buttonMale.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
-        layoutFemale.imageViewFemale.setImageResource(R.drawable.ic_female_select)
-        layoutFemale.buttonFemale.setBackgroundResource(R.drawable.background_green_border)
-        layoutFemale.buttonFemale.setTextColor(
+        binding.layoutMale.imageViewMale.setImageResource(R.drawable.ic_male_unselect)
+        binding.layoutMale.buttonMale.setBackgroundResource(R.drawable.background_medium_grey)
+        binding.layoutMale.buttonMale.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+        binding.layoutFemale.imageViewFemale.setImageResource(R.drawable.ic_female_select)
+        binding.layoutFemale.buttonFemale.setBackgroundResource(R.drawable.background_green_border)
+        binding.layoutFemale.buttonFemale.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
@@ -218,7 +208,7 @@ class PatientFragment : Fragment(), View.OnClickListener {
 
     fun setVentilationTime(counterState: String, customCountDownTimer: CustomCountDownTimer) {
         this.customCountDownTimer = customCountDownTimer
-        textViewTime?.text = counterState
+        binding.textViewTime.text = counterState
     }
 
     override fun onPause() {

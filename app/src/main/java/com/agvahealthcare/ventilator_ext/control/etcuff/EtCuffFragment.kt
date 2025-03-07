@@ -14,16 +14,12 @@ import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.VentilatorApp
 import com.agvahealthcare.ventilator_ext.control.basic.ControlParameterAdapter
 import com.agvahealthcare.ventilator_ext.control.basic.ControlParameterClickListener
+import com.agvahealthcare.ventilator_ext.databinding.FragmentEtcuffBinding
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.model.ControlParameterModel
 import com.agvahealthcare.ventilator_ext.standby.StandbyControlSettingFragment
 import com.agvahealthcare.ventilator_ext.utility.GridSpacingItemDecoration
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs
-import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_AND
-import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_MINUS
-import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_PLUS
-import kotlinx.android.synthetic.main.fragment_advanced.*
-import kotlinx.android.synthetic.main.fragment_etcuff.*
 
 class EtCuffFragment(private var dataList:MutableList<ControlParameterModel>, private var controlParamClickListener: ControlParameterClickListener?=null): StandbyControlSettingFragment(){
 
@@ -31,12 +27,15 @@ class EtCuffFragment(private var dataList:MutableList<ControlParameterModel>, pr
     private var prefManager: PreferenceManager? = null
     private var mMainActivityViewModel : MainActivityViewModel? = null
 
+    private lateinit var binding: FragmentEtcuffBinding
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_etcuff, container, false )
+        savedInstanceState: Bundle?,
+    ): View {
+
+        binding = FragmentEtcuffBinding.inflate(layoutInflater,container,false)
+        return binding.root
     }
 
     // knob highlight logic starts here
@@ -106,7 +105,7 @@ class EtCuffFragment(private var dataList:MutableList<ControlParameterModel>, pr
                 Configs.ControlSettingType.EtCuff
             )
 
-        recyclerViewEtCuff?.apply {
+        binding.recyclerViewEtCuff.apply {
             layoutManager = object: GridLayoutManager(requireContext(), 6){
                 override fun canScrollVertically(): Boolean = false
             }

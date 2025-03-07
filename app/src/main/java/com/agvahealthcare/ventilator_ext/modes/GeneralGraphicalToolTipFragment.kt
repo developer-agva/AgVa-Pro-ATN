@@ -8,14 +8,13 @@ import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.VentilatorApp
 import com.agvahealthcare.ventilator_ext.callback.OnDismissDialogListener
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardActivity
+import com.agvahealthcare.ventilator_ext.databinding.FragmentPcvSettingDialogBinding
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.model.ControlParameterModel
 import com.agvahealthcare.ventilator_ext.utility.VENTILATOR_MODES
 import com.agvahealthcare.ventilator_ext.utility.hideSystemUI
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.*
-import kotlinx.android.synthetic.main.fragment_pcv_setting_dialog.*
-import kotlinx.android.synthetic.main.text_knob_view.*
 
 class GeneralGraphicalToolTipFragment : GraphicTooltipFragment("SettingPcv") {
 
@@ -52,14 +51,14 @@ class GeneralGraphicalToolTipFragment : GraphicTooltipFragment("SettingPcv") {
         }
     }
 
-
+    private lateinit var binding : FragmentPcvSettingDialogBinding
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        return inflater.inflate(R.layout.fragment_pcv_setting_dialog, container, false)
-
+        binding = FragmentPcvSettingDialogBinding.inflate(layoutInflater,container,false)
+        return binding.root
     }
 
     override fun onStart() {
@@ -79,12 +78,12 @@ class GeneralGraphicalToolTipFragment : GraphicTooltipFragment("SettingPcv") {
         // setHeightWidth()
 
         VentilatorApp.globalModeType?.let {
-            if (it == Configs.ModeType.TYPE_Volume) textViewPeepPiSign.visibility = View.GONE
-            else textViewPeepPiSign.visibility = View.VISIBLE
+            if (it == Configs.ModeType.TYPE_Volume) binding.textViewPeepPiSign.visibility = View.GONE
+            else binding.textViewPeepPiSign.visibility = View.VISIBLE
         } ?: kotlin.run {
-            if (preferenceManager?.readModeType() == Configs.ModeType.TYPE_Volume) textViewPeepPiSign.visibility =
+            if (preferenceManager?.readModeType() == Configs.ModeType.TYPE_Volume) binding.textViewPeepPiSign.visibility =
                 View.GONE
-            else textViewPeepPiSign.visibility = View.VISIBLE
+            else binding.textViewPeepPiSign.visibility = View.VISIBLE
         }
 
 
@@ -92,8 +91,7 @@ class GeneralGraphicalToolTipFragment : GraphicTooltipFragment("SettingPcv") {
         handleUIAccToCondition()
 
         checkMode()
-        imageViewCross.setOnClickListener {
-
+        binding.imageViewCross.setOnClickListener {
             closeListener?.handleDialogClose()
 
         }
@@ -106,15 +104,15 @@ class GeneralGraphicalToolTipFragment : GraphicTooltipFragment("SettingPcv") {
         preferenceManager?.apply {
 
             if (modeCode == MODE_PC_PSV) {
-                textViewPeepPiSign.visibility = View.GONE
-                textViewPi.text = "${getString(R.string.support_pressure)}=${readPplat()} %"
+                binding.textViewPeepPiSign.visibility = View.GONE
+                binding.textViewPi.text = "${getString(R.string.support_pressure)}=${readPplat()} %"
             } else if (modeCode == MODE_VCV_ACV || modeCode == MODE_PC_AC) {
-                textViewPi.visibility = View.GONE
+                binding.textViewPi.visibility = View.GONE
             } else if (modeCode == MODE_NIV_CPAP || modeCode == MODE_NIV_NCPAP || modeCode == MODE_NC_CPAP) {
-                textViewIERatio.visibility = View.GONE
-                textViewTinsp.visibility = View.GONE
-                textViewTexp.visibility = View.GONE
-                textViewPeepPiSign.visibility = View.GONE
+                binding.textViewIERatio.visibility = View.GONE
+                binding.textViewTinsp.visibility = View.GONE
+                binding.textViewTexp.visibility = View.GONE
+                binding.textViewPeepPiSign.visibility = View.GONE
             }
         }
     }
@@ -123,7 +121,7 @@ class GeneralGraphicalToolTipFragment : GraphicTooltipFragment("SettingPcv") {
         preferenceManager?.apply {
 
             val buff = "${getString(R.string.ti)} = ${readTinsp()} ${getString(R.string.hint_s)}"
-            textViewTinsp.text = "${getString(R.string.ti)} = ${
+            binding.textViewTinsp.text = "${getString(R.string.ti)} = ${
                 VentilatorApp.testingConditonMap.get(Configs.LBL_TINSP)?.let {
                     it
                 } ?: kotlin.run {
@@ -132,28 +130,28 @@ class GeneralGraphicalToolTipFragment : GraphicTooltipFragment("SettingPcv") {
             } ${getString(R.string.hint_s)}"
 
             val setTexp = Configs.calculateTexp(readRR().toInt(), readTinsp())
-            textViewTexp.text = "${getString(R.string.te)} = $setTexp ${getString(R.string.hint_s)}"
+            binding.textViewTexp.text = "${getString(R.string.te)} = $setTexp ${getString(R.string.hint_s)}"
 
-            textViewPeepPi.text =
+            binding.textViewPeepPi.text =
                 "${getString(R.string.peep)} = ${readPEEP().toInt()} ${getString(R.string.hint_cmH2o)}"
 
             val setTot = Configs.calculateTtot(readRR().toInt())
-            textViewTtot.text = "${getString(R.string.titot)} = $setTot"
+            binding.textViewTtot.text = "${getString(R.string.titot)} = $setTot"
 
             Log.i("mode_code", modeCode.toString())
 
-            textViewPeepPiSign.text = "${getString(R.string.pinsp)} = ${readPplat()} cmH₂O"
+            binding.textViewPeepPiSign.text = "${getString(R.string.pinsp)} = ${readPplat()} cmH₂O"
 
             //String.format("%02d",read)String.format("%02d",readSupportPressure())}
             //textViewPi.text="${getString(R.string.ps)} = "+String.format("%02f",readSupportPressure())
 
-            textViewPi.text = "${getString(R.string.support_pressure)}=${readSupportPressure()} cmH₂O"
+            binding.textViewPi.text = "${getString(R.string.support_pressure)}=${readSupportPressure()} cmH₂O"
 
-            textViewTrigERatio.text =
+            binding.textViewTrigERatio.text =
                 "${getString(R.string.tExp)} = ${readTexp().toInt().toString()} %"
 
 
-            textViewIERatio.text = "${getString(R.string.ieratio) + " "} = ${
+            binding.textViewIERatio.text = "${getString(R.string.ieratio) + " "} = ${
                 " " +
                         Configs.calculateIERatio(
                             VentilatorApp.testingConditonMap.get(Configs.LBL_RR)?.let {
@@ -180,7 +178,7 @@ class GeneralGraphicalToolTipFragment : GraphicTooltipFragment("SettingPcv") {
 
                 Configs.LBL_TEXP -> {
                     try {
-                        textViewTrigERatio.text = "${getString(R.string.tExp)} = ${
+                        binding.textViewTrigERatio.text = "${getString(R.string.tExp)} = ${
                             String.format(
                                 "%.1f",
                                 parameter.reading.toInt().toFloat()
@@ -202,7 +200,7 @@ class GeneralGraphicalToolTipFragment : GraphicTooltipFragment("SettingPcv") {
                                 readRR().toInt()
                             }, parameter.reading.toFloat()
                         )
-                        textViewTexp.text =
+                        binding.textViewTexp.text =
                             "${getString(R.string.te)} = $setTexp ${getString(R.string.hint_s)}"
 
                     } catch (e: Exception) {
@@ -217,15 +215,15 @@ class GeneralGraphicalToolTipFragment : GraphicTooltipFragment("SettingPcv") {
                     )
 
                     if (calculatedValue.split(":")[1].toFloat() < 1.0f) {
-                        ieRatioBack.setBackgroundResource(R.drawable.red_rect)
+                        binding.ieRatioBack.setBackgroundResource(R.drawable.red_rect)
 
                     } else {
-                        ieRatioBack.setBackgroundResource(R.drawable.rectangle)
+                        binding.ieRatioBack.setBackgroundResource(R.drawable.rectangle)
                     }
 
-                    textViewIERatio.text =
+                    binding.textViewIERatio.text =
                         "${getString(R.string.ieratio) + " "} = ${" " + calculatedValue}"
-                    textViewTinsp.text = "${getString(R.string.ti)} = ${
+                    binding.textViewTinsp.text = "${getString(R.string.ti)} = ${
                         String.format(
                             "%.1f",
                             parameter.reading.toFloat()
@@ -244,10 +242,10 @@ class GeneralGraphicalToolTipFragment : GraphicTooltipFragment("SettingPcv") {
                             } ?: kotlin.run {
                                 readTinsp()
                             })
-                        textViewTexp.text =
+                        binding.textViewTexp.text =
                             "${getString(R.string.te)} = $setTexp ${getString(R.string.hint_s)}"
                         val setTot = Configs.calculateTtot(parameter.reading.toInt())
-                        textViewTtot.text = "${getString(R.string.titot)} = $setTot"
+                        binding.textViewTtot.text = "${getString(R.string.titot)} = $setTot"
                         var calculatedValue = Configs.calculateIERatio(
                             parameter.reading.toInt(),
                             VentilatorApp.testingConditonMap.get(Configs.LBL_TINSP)?.let {
@@ -257,12 +255,12 @@ class GeneralGraphicalToolTipFragment : GraphicTooltipFragment("SettingPcv") {
                             })
 
                         if (calculatedValue.split(":")[1].toFloat() < 1.0f) {
-                            ieRatioBack.setBackgroundResource(R.drawable.red_rect)
+                            binding.ieRatioBack.setBackgroundResource(R.drawable.red_rect)
 
                         } else {
-                            ieRatioBack.setBackgroundResource(R.drawable.rectangle)
+                            binding.ieRatioBack.setBackgroundResource(R.drawable.rectangle)
                         }
-                        textViewIERatio.text = "${getString(R.string.ieratio) + " "}=${
+                        binding.textViewIERatio.text = "${getString(R.string.ieratio) + " "}=${
                             " " + Configs.calculateIERatio(
                                 parameter.reading.toInt(),
                                 VentilatorApp.testingConditonMap.get(Configs.LBL_TINSP)?.let {
@@ -277,17 +275,17 @@ class GeneralGraphicalToolTipFragment : GraphicTooltipFragment("SettingPcv") {
                 }
 
                 Configs.LBL_PPLAT -> {
-                    textViewPeepPiSign.text =
+                    binding.textViewPeepPiSign.text =
                         "${getString(R.string.pinsp)} = ${parameter.reading.toInt()} ${getString(R.string.hint_cmH2o)}"
                 }
 
                 Configs.LBL_PEEP -> {
-                    textViewPeepPi.text =
+                    binding.textViewPeepPi.text =
                         "${getString(R.string.peep)} = ${parameter.reading.toInt()} cmH₂O"
                 }
 
                 Configs.LBL_SUPPORT_PRESSURE -> {
-                    textViewPi.text = "${getString(R.string.support_pressure)} = ${
+                    binding.textViewPi.text = "${getString(R.string.support_pressure)} = ${
                         String.format(
                             "%.1f",
                             parameter.reading.toFloat()
@@ -306,14 +304,14 @@ class GeneralGraphicalToolTipFragment : GraphicTooltipFragment("SettingPcv") {
 
         when (modeCode) {
             Configs.MODE_PC_CMV -> {
-                textViewPi.visibility = View.GONE
-                textViewTrigERatio.visibility = View.GONE
+                binding.textViewPi.visibility = View.GONE
+                binding.textViewTrigERatio.visibility = View.GONE
                 // textViewPs.visibility = View.GONE
 
             }
             Configs.MODE_VCV_CMV -> {
-                textViewPi.visibility = View.GONE
-                textViewTrigERatio.visibility = View.GONE
+                binding.textViewPi.visibility = View.GONE
+                binding.textViewTrigERatio.visibility = View.GONE
             }
 
         }

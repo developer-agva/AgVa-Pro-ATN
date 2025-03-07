@@ -6,10 +6,10 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs
-import kotlinx.android.synthetic.main.settings_item.view.*
 
 class SettingsParamsAdapter(
     private val context: Context,
@@ -18,7 +18,15 @@ class SettingsParamsAdapter(
 ) :
     RecyclerView.Adapter<SettingsParamsAdapter.TableViewHolder>() {
 
-    class TableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    class TableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var txtLebel :TextView? = null
+        var txtValue :TextView? = null
+
+        init {
+            txtLebel = itemView.findViewById(R.id.labelTextView)
+            txtValue = itemView.findViewById(R.id.valueTextView)
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TableViewHolder {
         val view =
@@ -31,37 +39,37 @@ class SettingsParamsAdapter(
         val item = items[position]
 
         when (position) {
-            0 -> holder.itemView.labelTextView.text = "PIP"
+            0 -> holder.txtLebel?.text = "PIP"
 
             1 -> {
-                if (prefManager?.readModeType() == Configs.ModeType.TYPE_Pressure) holder.itemView.labelTextView.text = "Target Volume"
-                else holder.itemView.labelTextView.text = "VTI"
+                if (prefManager?.readModeType() == Configs.ModeType.TYPE_Pressure) holder.txtLebel?.text = "Target Volume"
+                else holder.txtLebel?.text = "VTI"
             }
 
-            2 -> holder.itemView.labelTextView.text = "Peep"
-            3 -> holder.itemView.labelTextView.text = "RR"
-            4 -> holder.itemView.labelTextView.text = "TrigFlow"
-            5 -> holder.itemView.labelTextView.text = "pPLat"
-            6 -> holder.itemView.labelTextView.text = "InhaleTime"
-            7 -> holder.itemView.labelTextView.text = "Flow"
-            8 -> holder.itemView.labelTextView.text = "Fio2"
-            9 -> holder.itemView.labelTextView.text = "Support Pressure"
-            10 -> holder.itemView.labelTextView.text = "Slope"
-            11 -> holder.itemView.labelTextView.text = "tLow"
-            12 -> holder.itemView.labelTextView.text = "Texp"
-            13-> holder.itemView.labelTextView.text = "statusApnea"
-            14 -> holder.itemView.labelTextView.text = "rrApnea"
-            15 -> holder.itemView.labelTextView.text = "tApnea"
-            16 -> holder.itemView.labelTextView.text = "vtApnea"
-            17 -> holder.itemView.labelTextView.text = "trigFlowApnea"
-            18 -> holder.itemView.labelTextView.text = "inspPause"
-            19 -> holder.itemView.labelTextView.text = "Peep Valve"
-            20 -> holder.itemView.labelTextView.text = "Status Neonate"
-            21 -> holder.itemView.labelTextView.text = "Status VGV"
+            2 -> holder.txtLebel?.text = "Peep"
+            3 -> holder.txtLebel?.text = "RR"
+            4 -> holder.txtLebel?.text = "TrigFlow"
+            5 -> holder.txtLebel?.text = "pPLat"
+            6 -> holder.txtLebel?.text = "InhaleTime"
+            7 -> holder.txtLebel?.text = "Flow"
+            8 -> holder.txtLebel?.text = "Fio2"
+            9 -> holder.txtLebel?.text = "Support Pressure"
+            10 -> holder.txtLebel?.text = "Slope"
+            11 -> holder.txtLebel?.text = "tLow"
+            12 -> holder.txtLebel?.text = "Texp"
+            13-> holder.txtLebel?.text = "statusApnea"
+            14 -> holder.txtLebel?.text = "rrApnea"
+            15 -> holder.txtLebel?.text = "tApnea"
+            16 -> holder.txtLebel?.text = "vtApnea"
+            17 -> holder.txtLebel?.text = "trigFlowApnea"
+            18 -> holder.txtLebel?.text = "inspPause"
+            19 -> holder.txtLebel?.text = "Peep Valve"
+            20 -> holder.txtLebel?.text = "Status Neonate"
+            21 -> holder.txtLebel?.text = "Status VGV"
 
         }
 
-        holder.itemView.valueTextView.text = item
+        holder.txtValue?.text = item
     }
 
     override fun getItemCount(): Int {

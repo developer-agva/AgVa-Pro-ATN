@@ -12,7 +12,6 @@ import com.agvahealthcare.ventilator_ext.dashboard.DashBoardViewModel
 import com.agvahealthcare.ventilator_ext.dashboard.GraphLayoutFragment
 import com.agvahealthcare.ventilator_ext.dashboard.chart.*
 import com.agvahealthcare.ventilator_ext.utility.*
-import kotlinx.android.synthetic.main.fragment_chart.*
 
 class TrioFragmentGraph : GraphLayoutFragment("TrioGraphFragment") {
 

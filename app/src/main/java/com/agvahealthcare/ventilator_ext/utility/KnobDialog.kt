@@ -19,14 +19,11 @@ import com.agvahealthcare.ventilator_ext.callback.OnKnobPressListener
 import com.agvahealthcare.ventilator_ext.callback.OnLimitChangeListener
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardActivity
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardViewModel
+import com.agvahealthcare.ventilator_ext.databinding.ProgressDialogViewBinding
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.*
 import com.uk.tastytoasty.TastyToasty
-import kotlinx.android.synthetic.main.activity_dashboard.*
-import kotlinx.android.synthetic.main.content_button_layout.view.*
-import kotlinx.android.synthetic.main.progress_dialog_view.*
-import kotlinx.android.synthetic.main.progress_dialog_view.view.*
 
 class KnobDialog : DialogFragment() {
 
@@ -34,6 +31,7 @@ class KnobDialog : DialogFragment() {
     private var onTimeoutListener: OnDismissDialogListener? = null
     private var onCloseListener: OnDismissDialogListener? = null
     private var onLimitChangeListener: OnLimitChangeListener? = null
+    private lateinit var binding : ProgressDialogViewBinding
 
     //Parameter model needs to be changed to null safety
     private lateinit var parameterModel: KnobParameterModel
@@ -87,15 +85,16 @@ class KnobDialog : DialogFragment() {
         prefManager = PreferenceManager(requireContext());
         mDashBoardViewModel =
             ViewModelProvider(requireActivity()).get(DashBoardViewModel::class.java)
-        return inflater.inflate(R.layout.progress_dialog_view, container, false)
+        binding = ProgressDialogViewBinding.inflate(layoutInflater,container,false)
+        return binding.root
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupView(view)
-        if (prefManager?.readKnobStatus() == false && tag == "FromDashBoardActivity") cp_bg_view.visibility =View.GONE
-        else cp_bg_view.visibility = View.VISIBLE
+        if (prefManager?.readKnobStatus() == false && tag == "FromDashBoardActivity") binding.cpBgView.visibility =View.GONE
+        else binding.cpBgView.visibility = View.VISIBLE
     }
 
     override fun onStart() {
@@ -119,31 +118,31 @@ class KnobDialog : DialogFragment() {
     @SuppressLint("ClickableViewAccessibility")
     private fun setupView(view: View) {
 
-        view.includeAccept.buttonView.text = "Accept"
-        view.includeAccept.buttonView.textAlignment = View.TEXT_ALIGNMENT_CENTER
+        binding.includeAccept.buttonView.text = "Accept"
+        binding.includeAccept.buttonView.textAlignment = View.TEXT_ALIGNMENT_CENTER
 
-        view.textMinRange.text = encoderValue.lowerLimit.toInt().toString()
-        view.textMaxRange.text = encoderValue.upperLimit.toInt().toString()
+        binding.textMinRange.text = encoderValue.lowerLimit.toInt().toString()
+        binding.textMaxRange.text = encoderValue.upperLimit.toInt().toString()
 
         currentValue = parameterModel.reading
 
         if (isDecimalSupported(parameterModel.key)) {
-            view.seekBarId?.min = (encoderValue.lowerLimit * 10)
-            view.seekBarId?.max = (encoderValue.upperLimit * 10)
-            view.seekBarId?.progress = (currentValue * 10)
+            binding.seekBarId.min = (encoderValue.lowerLimit * 10)
+            binding.seekBarId.max = (encoderValue.upperLimit * 10)
+            binding.seekBarId.progress = (currentValue * 10)
         } else {
-            view.seekBarId?.min = encoderValue.lowerLimit
-            view.seekBarId?.max = encoderValue.upperLimit
-            view.seekBarId?.progress = currentValue
+            binding.seekBarId.min = encoderValue.lowerLimit
+            binding.seekBarId.max = encoderValue.upperLimit
+            binding.seekBarId.progress = currentValue
         }
 
-        view.imageViewSubtract.setOnClickListener {
+        binding.imageViewSubtract.setOnClickListener {
 
             if (tag == "LimitOneFragment") subtractionForLimitOne()
             else subtraction()
         }
 
-        view.imageViewAddition.setOnClickListener {
+        binding.imageViewAddition.setOnClickListener {
 
             if (tag == "LimitOneFragment") {
                 additionForLimitOne()
@@ -162,7 +161,7 @@ class KnobDialog : DialogFragment() {
             }
         }
 
-        view.includeAccept.buttonView.setOnClickListener {
+        binding.includeAccept.buttonView.setOnClickListener {
             ok()
         }
 
@@ -313,8 +312,8 @@ class KnobDialog : DialogFragment() {
         onLimitChangeListener?.onLimitChange(parameterModel.reading, currentValue)
 
         // seekbar
-        if (isDecimalSupported(parameterModel.key)) view?.seekBarId?.changeProgress(currentValue * 10)
-        else view?.seekBarId?.changeProgress(currentValue)
+        if (isDecimalSupported(parameterModel.key)) binding.seekBarId.changeProgress(currentValue * 10)
+        else binding.seekBarId.changeProgress(currentValue)
     }
 
     private fun additionForLimitOne() {
@@ -352,8 +351,8 @@ class KnobDialog : DialogFragment() {
         onLimitChangeListener?.onLimitChange(parameterModel.reading, currentValue)
 
         // seekbar
-        if (isDecimalSupported(parameterModel.key)) view?.seekBarId?.changeProgress(currentValue * 10)
-        else view?.seekBarId?.changeProgress(currentValue)
+        if (isDecimalSupported(parameterModel.key)) binding.seekBarId.changeProgress(currentValue * 10)
+        else binding.seekBarId.changeProgress(currentValue)
 
     }
 
@@ -509,8 +508,8 @@ class KnobDialog : DialogFragment() {
 
 
         // seekbar
-        if (isDecimalSupported(parameterModel.key)) view?.seekBarId?.changeProgress(currentValue * 10)
-        else view?.seekBarId?.changeProgress(currentValue)
+        if (isDecimalSupported(parameterModel.key)) binding.seekBarId.changeProgress(currentValue * 10)
+        else binding.seekBarId.changeProgress(currentValue)
     }
 
     private fun subtraction() {
@@ -563,8 +562,8 @@ class KnobDialog : DialogFragment() {
         onLimitChangeListener?.onLimitChange(parameterModel.reading, currentValue)
 
 
-        if (isDecimalSupported(parameterModel.key)) view?.seekBarId?.changeProgress(currentValue * 10)
-        else view?.seekBarId?.changeProgress(currentValue)
+        if (isDecimalSupported(parameterModel.key)) binding.seekBarId.changeProgress(currentValue * 10)
+        else binding.seekBarId.changeProgress(currentValue)
     }
 
     private fun subtractionForLimitOne() {
@@ -598,8 +597,8 @@ class KnobDialog : DialogFragment() {
         // notify change in value
         onLimitChangeListener?.onLimitChange(parameterModel.reading, currentValue)
 
-        if (isDecimalSupported(parameterModel.key)) view?.seekBarId?.changeProgress(currentValue * 10)
-        else view?.seekBarId?.changeProgress(currentValue)
+        if (isDecimalSupported(parameterModel.key)) binding.seekBarId.changeProgress(currentValue * 10)
+        else binding.seekBarId.changeProgress(currentValue)
     }
 
     // integrated here

@@ -31,7 +31,6 @@ import com.github.angads25.toggle.interfaces.OnToggledListener
 import com.github.angads25.toggle.model.ToggleableView
 import com.github.angads25.toggle.widget.LabeledSwitch
 import com.scichart.drawing.utility.ColorUtil
-import kotlinx.android.synthetic.main.knob_progress_view.view.param_progress_bar
 
 
 class SettingFragment : Fragment(), OnKnobPressListener, onDropDownSelectionListener,

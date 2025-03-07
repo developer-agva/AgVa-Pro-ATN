@@ -6,18 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.agvahealthcare.ventilator_ext.R
-import kotlinx.android.synthetic.main.content_button_layout.view.*
-import kotlinx.android.synthetic.main.fragment_loops.*
+import com.agvahealthcare.ventilator_ext.databinding.FragmentLoopsBinding
 
 class LoopsFragment : Fragment() {
 
+    private lateinit var binding : FragmentLoopsBinding
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_loops, container, false)
-
+        binding = FragmentLoopsBinding.inflate(layoutInflater,container,false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -27,39 +27,39 @@ class LoopsFragment : Fragment() {
 
     private fun setupClickListener() {
 
-        includeButtonPressureVolume.buttonView.text = getString(R.string.hint_pressure_volume)
-        includeButtonPressureFlow.buttonView.text = getString(R.string.hint_pressure_flow)
-        includeButtonVolumeFlow.buttonView.text = getString(R.string.hint_volume_flow)
-        includeButtonVolumePCO2.buttonView.text = getString(R.string.hint_volume_pco2)
-        includeButtonVolumeFCO2.buttonView.text = getString(R.string.hint_volume_fco2)
-        includeButtonPesVolume.buttonView.text = getString(R.string.hint_pes_volume)
-        includeButtonPtranspulmVolume.buttonView.text = getString(R.string.hint_ptranspulm_volume)
+        binding.includeButtonPressureVolume.buttonView.text = getString(R.string.hint_pressure_volume)
+        binding.includeButtonPressureFlow.buttonView.text = getString(R.string.hint_pressure_flow)
+        binding.includeButtonVolumeFlow.buttonView.text = getString(R.string.hint_volume_flow)
+        binding.includeButtonVolumePCO2.buttonView.text = getString(R.string.hint_volume_pco2)
+        binding.includeButtonVolumeFCO2.buttonView.text = getString(R.string.hint_volume_fco2)
+        binding.includeButtonPesVolume.buttonView.text = getString(R.string.hint_pes_volume)
+        binding.includeButtonPtranspulmVolume.buttonView.text = getString(R.string.hint_ptranspulm_volume)
 
-        includeButtonPressureVolume.buttonView.setOnClickListener {
-
-        }
-
-        includeButtonPressureFlow.buttonView.setOnClickListener {
+        binding.includeButtonPressureVolume.buttonView.setOnClickListener {
 
         }
 
-        includeButtonVolumeFlow.buttonView.setOnClickListener {
+        binding.includeButtonPressureFlow.buttonView.setOnClickListener {
 
         }
 
-        includeButtonVolumePCO2.buttonView.setOnClickListener {
+        binding.includeButtonVolumeFlow.buttonView.setOnClickListener {
 
         }
 
-        includeButtonVolumeFCO2.buttonView.setOnClickListener {
+        binding.includeButtonVolumePCO2.buttonView.setOnClickListener {
 
         }
 
-        includeButtonPesVolume.buttonView.setOnClickListener {
+        binding.includeButtonVolumeFCO2.buttonView.setOnClickListener {
 
         }
 
-        includeButtonPtranspulmVolume.buttonView.setOnClickListener {
+        binding.includeButtonPesVolume.buttonView.setOnClickListener {
+
+        }
+
+        binding.includeButtonPtranspulmVolume.buttonView.setOnClickListener {
 
         }
     }

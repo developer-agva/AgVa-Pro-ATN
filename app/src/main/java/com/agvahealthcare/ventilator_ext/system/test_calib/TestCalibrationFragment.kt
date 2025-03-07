@@ -14,17 +14,12 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.agvahealthcare.ventilator_ext.MainActivity
 import com.agvahealthcare.ventilator_ext.R
-import com.agvahealthcare.ventilator_ext.logging.FileLogger
+import com.agvahealthcare.ventilator_ext.databinding.FragmentTestCalibBinding
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.service.CommunicationService
 import com.agvahealthcare.ventilator_ext.system.SystemDialogFragment
 import com.agvahealthcare.ventilator_ext.utility.DialogBoxFactory
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs
-import kotlinx.android.synthetic.main.content_button_layout.view.*
-import kotlinx.android.synthetic.main.fragment_test_calib.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class TestCalibrationFragment(private var communicationService: CommunicationService?) : Fragment(),
     View.OnClickListener {
@@ -32,13 +27,14 @@ class TestCalibrationFragment(private var communicationService: CommunicationSer
     companion object {
         const val TAG = "TestCalibrationFragment"
     }
-
+    private lateinit var binding: FragmentTestCalibBinding
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        return inflater.inflate(R.layout.fragment_test_calib, container, false)
+        binding = FragmentTestCalibBinding.inflate(layoutInflater,container,false)
+        return binding.root
     }
 
     private var o2CalibrateDialog: AlertDialog? = null
@@ -52,9 +48,9 @@ class TestCalibrationFragment(private var communicationService: CommunicationSer
 
         when (highlightedIndex) {
 
-            0 -> if (topBarTestCalib.isVisible) backBtnTestCalib.callOnClick() else includeButtonO2Sensor.buttonView.callOnClick()
-            1 -> if (topBarTestCalib.isVisible) includeButtonSendCmd.buttonView.callOnClick() else includeButtonExhaleValve.buttonView.callOnClick()
-            2 -> includeButtonExpFlowSensor.buttonView.callOnClick()
+            0 -> if (binding.topBarTestCalib.isVisible) binding.backBtnTestCalib.callOnClick() else binding.includeButtonO2Sensor.buttonView.callOnClick()
+            1 -> if (binding.topBarTestCalib.isVisible) binding.includeButtonSendCmd.buttonView.callOnClick() else binding.includeButtonExhaleValve.buttonView.callOnClick()
+            2 -> binding.includeButtonExpFlowSensor.buttonView.callOnClick()
 
         }
     }
@@ -71,12 +67,12 @@ class TestCalibrationFragment(private var communicationService: CommunicationSer
     fun clearPreviousConstraints() {
         try {
             val constraintSet = ConstraintSet()
-            constraintSet.clone(mainViewPanelTestCalib)
-            constraintSet.clear(focusLayoutTestCalib.id, ConstraintSet.TOP)
-            constraintSet.clear(focusLayoutTestCalib.id, ConstraintSet.BOTTOM)
-            constraintSet.clear(focusLayoutTestCalib.id, ConstraintSet.LEFT)
-            constraintSet.clear(focusLayoutTestCalib.id, ConstraintSet.RIGHT)
-            constraintSet.applyTo(mainViewPanelTestCalib)
+            constraintSet.clone(binding.mainViewPanelTestCalib)
+            constraintSet.clear(binding.focusLayoutTestCalib.id, ConstraintSet.TOP)
+            constraintSet.clear(binding.focusLayoutTestCalib.id, ConstraintSet.BOTTOM)
+            constraintSet.clear(binding.focusLayoutTestCalib.id, ConstraintSet.LEFT)
+            constraintSet.clear(binding.focusLayoutTestCalib.id, ConstraintSet.RIGHT)
+            constraintSet.applyTo(binding.mainViewPanelTestCalib)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -84,36 +80,36 @@ class TestCalibrationFragment(private var communicationService: CommunicationSer
 
     private fun changeConstraintsOfFocusLayout(view: View) {
         val constraintSet = ConstraintSet()
-        constraintSet.clone(mainViewPanelTestCalib)
+        constraintSet.clone(binding.mainViewPanelTestCalib)
         constraintSet.connect(
-            focusLayoutTestCalib.id,
+            binding.focusLayoutTestCalib.id,
             ConstraintSet.RIGHT,
             view.id,
             ConstraintSet.RIGHT,
             0
         )
         constraintSet.connect(
-            focusLayoutTestCalib.id,
+            binding.focusLayoutTestCalib.id,
             ConstraintSet.TOP,
             view.id,
             ConstraintSet.TOP,
             0
         )
         constraintSet.connect(
-            focusLayoutTestCalib.id,
+            binding.focusLayoutTestCalib.id,
             ConstraintSet.BOTTOM,
             view.id,
             ConstraintSet.BOTTOM,
             0
         )
         constraintSet.connect(
-            focusLayoutTestCalib.id,
+            binding.focusLayoutTestCalib.id,
             ConstraintSet.LEFT,
             view.id,
             ConstraintSet.LEFT,
             0
         )
-        constraintSet.applyTo(mainViewPanelTestCalib)
+        constraintSet.applyTo(binding.mainViewPanelTestCalib)
     }
 
     //
@@ -122,9 +118,9 @@ class TestCalibrationFragment(private var communicationService: CommunicationSer
         data?.let {
             return when (highlightedIndex) {
 
-                0 -> if (topBarTestCalib.isVisible) backBtnTestCalib else includeButtonO2Sensor
-                1 -> if (topBarTestCalib.isVisible) includeButtonSendCmd else includeButtonExhaleValve
-                2 -> includeButtonExpFlowSensor
+                0 -> if (binding.topBarTestCalib.isVisible) binding.backBtnTestCalib else binding.includeButtonO2Sensor.root
+                1 -> if (binding.topBarTestCalib.isVisible) binding.includeButtonSendCmd.root else binding.includeButtonExhaleValve.root
+                2 -> binding.includeButtonExpFlowSensor.root
 
                 else -> null
             }
@@ -145,13 +141,13 @@ class TestCalibrationFragment(private var communicationService: CommunicationSer
 
     @SuppressLint("SetTextI18n")
     private fun setUpView() {
-        includeButtonExpFlowSensor.buttonView.text = getString(R.string.hint_Exp_Flow_Calibration)
-        includeButtonO2Sensor.buttonView.text = getString(R.string.hint_O2_Calibration)
-        includeButtonExhaleValve.buttonView.text = getString(R.string.hint_ExhaleValve_Calibration)
-        includeButtonSendCmd.buttonView.text = "START CALIBRATION"
-        includeButtonSendCmd.buttonView.textAlignment = View.TEXT_ALIGNMENT_INHERIT
-        includeButtonSendCmd.buttonView.setBackgroundColor(R.drawable.background_black_border_white)
-        includeButtonSendCmd.buttonView.setTextColor(
+        binding.includeButtonExpFlowSensor.buttonView.text = getString(R.string.hint_Exp_Flow_Calibration)
+        binding.includeButtonO2Sensor.buttonView.text = getString(R.string.hint_O2_Calibration)
+        binding.includeButtonExhaleValve.buttonView.text = getString(R.string.hint_ExhaleValve_Calibration)
+        binding.includeButtonSendCmd.buttonView.text = "START CALIBRATION"
+        binding.includeButtonSendCmd.buttonView.textAlignment = View.TEXT_ALIGNMENT_INHERIT
+        binding.includeButtonSendCmd.buttonView.setBackgroundColor(R.drawable.background_black_border_white)
+        binding.includeButtonSendCmd.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
@@ -164,14 +160,14 @@ class TestCalibrationFragment(private var communicationService: CommunicationSer
 
     private fun setUpOnClickListener() {
         if (tag == "FromDashboard") {
-            includeButtonExpFlowSensor.buttonView.setOnClickListener {
+            binding.includeButtonExpFlowSensor.buttonView.setOnClickListener {
                 DialogBoxFactory.dismissDialogs()
                 DialogBoxFactory.showNeonateSensorDialog(
                     requireContext(),
                     "Switch to standby for calibration process"
                 )
             }
-            includeButtonO2Sensor.buttonView.setOnClickListener {
+            binding.includeButtonO2Sensor.buttonView.setOnClickListener {
                 DialogBoxFactory.dismissDialogs()
                 DialogBoxFactory.showNeonateSensorDialog(
                     requireContext(),
@@ -179,7 +175,7 @@ class TestCalibrationFragment(private var communicationService: CommunicationSer
                 )
             }
 
-            includeButtonExhaleValve.buttonView.setOnClickListener {
+            binding.includeButtonExhaleValve.buttonView.setOnClickListener {
                 DialogBoxFactory.dismissDialogs()
                 DialogBoxFactory.showNeonateSensorDialog(
                     requireContext(),
@@ -188,13 +184,13 @@ class TestCalibrationFragment(private var communicationService: CommunicationSer
             }
 
         } else {
-            includeButtonExpFlowSensor.buttonView.setOnClickListener(this)
-            includeButtonO2Sensor.buttonView.setOnClickListener(this)
-            includeButtonExhaleValve.buttonView.setOnClickListener(this)
-            includeButtonSendCmd.buttonView.setOnClickListener(this)
+            binding.includeButtonExpFlowSensor.buttonView.setOnClickListener(this)
+            binding.includeButtonO2Sensor.buttonView.setOnClickListener(this)
+            binding.includeButtonExhaleValve.buttonView.setOnClickListener(this)
+            binding.includeButtonSendCmd.buttonView.setOnClickListener(this)
         }
 
-        backBtnTestCalib.setOnClickListener {
+        binding.backBtnTestCalib.setOnClickListener {
             (parentFragment as SystemDialogFragment).highlightedIndex = -1
             (parentFragment as SystemDialogFragment).sizeOfCurrentArray = 2
 
@@ -208,52 +204,52 @@ class TestCalibrationFragment(private var communicationService: CommunicationSer
 
         if (isCalib) {
             // pre op check layout
-            topBarTestCalib.visibility = View.GONE
-            backBtnTestCalib.visibility = View.GONE
-            tvMainTitleTestCalib.visibility = View.GONE
-            ventigif.visibility = View.GONE
-            capgif.visibility = View.GONE
-            calibratorimg.visibility = View.GONE
-            tvtext1.visibility = View.GONE
-            tvtext2.visibility = View.GONE
-            tvtext3.visibility = View.GONE
-            tvtextHeadingTestCalib.visibility = View.GONE
-            includeButtonSendCmd.visibility = View.GONE
+            binding.topBarTestCalib.visibility = View.GONE
+            binding.backBtnTestCalib.visibility = View.GONE
+            binding.tvMainTitleTestCalib.visibility = View.GONE
+            binding.ventigif.visibility = View.GONE
+            binding.capgif.visibility = View.GONE
+            binding.calibratorimg.visibility = View.GONE
+            binding.tvtext1.visibility = View.GONE
+            binding.tvtext2.visibility = View.GONE
+            binding.tvtext3.visibility = View.GONE
+            binding.tvtextHeadingTestCalib.visibility = View.GONE
+            binding.includeButtonSendCmd.root.visibility = View.GONE
 
             // calib layouts
-            testCalibText.visibility = View.VISIBLE
-            includeButtonExpFlowSensor.visibility = View.VISIBLE
-            includeButtonO2Sensor.visibility = View.VISIBLE
-            includeButtonExhaleValve.visibility = View.VISIBLE
-            ivExpFlowSensorStatus.visibility = View.VISIBLE
-            ivO2SensorStatus.visibility = View.VISIBLE
-            ivExhaleValveStatus.visibility = View.VISIBLE
-            tvO2Sensor.visibility = View.VISIBLE
-            tvExhaleValve.visibility = View.VISIBLE
-            tvExpFlowSensor.visibility = View.VISIBLE
+            binding.testCalibText.visibility = View.VISIBLE
+            binding.includeButtonExpFlowSensor.root.visibility = View.VISIBLE
+            binding.includeButtonO2Sensor.root.visibility = View.VISIBLE
+            binding.includeButtonExhaleValve.root.visibility = View.VISIBLE
+            binding.ivExpFlowSensorStatus.visibility = View.VISIBLE
+            binding.ivO2SensorStatus.visibility = View.VISIBLE
+            binding.ivExhaleValveStatus.visibility = View.VISIBLE
+            binding.tvO2Sensor.visibility = View.VISIBLE
+            binding.tvExhaleValve.visibility = View.VISIBLE
+            binding.tvExpFlowSensor.visibility = View.VISIBLE
 
         } else {
             // pre op check layout
-            topBarTestCalib.visibility = View.VISIBLE
-            backBtnTestCalib.visibility = View.VISIBLE
-            tvMainTitleTestCalib.visibility = View.VISIBLE
-            tvtext1.visibility = View.VISIBLE
-            tvtext2.visibility = View.VISIBLE
-            tvtext3.visibility = View.VISIBLE
-            tvtextHeadingTestCalib.visibility = View.VISIBLE
-            includeButtonSendCmd.visibility = View.VISIBLE
+            binding.topBarTestCalib.visibility = View.VISIBLE
+            binding.backBtnTestCalib.visibility = View.VISIBLE
+            binding.tvMainTitleTestCalib.visibility = View.VISIBLE
+            binding.tvtext1.visibility = View.VISIBLE
+            binding.tvtext2.visibility = View.VISIBLE
+            binding.tvtext3.visibility = View.VISIBLE
+            binding.tvtextHeadingTestCalib.visibility = View.VISIBLE
+            binding.includeButtonSendCmd.root.visibility = View.VISIBLE
 
             // calib layouts
-            testCalibText.visibility = View.GONE
-            includeButtonExpFlowSensor.visibility = View.GONE
-            includeButtonO2Sensor.visibility = View.GONE
-            includeButtonExhaleValve.visibility = View.GONE
-            ivExpFlowSensorStatus.visibility = View.GONE
-            ivO2SensorStatus.visibility = View.GONE
-            ivExhaleValveStatus.visibility = View.GONE
-            tvO2Sensor.visibility = View.GONE
-            tvExhaleValve.visibility = View.GONE
-            tvExpFlowSensor.visibility = View.GONE
+            binding.testCalibText.visibility = View.GONE
+            binding.includeButtonExpFlowSensor.root.visibility = View.GONE
+            binding.includeButtonO2Sensor.root.visibility = View.GONE
+            binding.includeButtonExhaleValve.root.visibility = View.GONE
+            binding.ivExpFlowSensorStatus.visibility = View.GONE
+            binding.ivO2SensorStatus.visibility = View.GONE
+            binding.ivExhaleValveStatus.visibility = View.GONE
+            binding.tvO2Sensor.visibility = View.GONE
+            binding.tvExhaleValve.visibility = View.GONE
+            binding.tvExpFlowSensor.visibility = View.GONE
         }
     }
 
@@ -261,50 +257,50 @@ class TestCalibrationFragment(private var communicationService: CommunicationSer
     override fun onClick(v: View?) {
 
         when (v) {
-            includeButtonExpFlowSensor.buttonView -> {
+            binding.includeButtonExpFlowSensor.buttonView -> {
                 (parentFragment as SystemDialogFragment).highlightedIndex = -1
                 (parentFragment as SystemDialogFragment).sizeOfCurrentArray = 1
                 currentTag = "Exp Flow"
                 hideGoneFunction(false)
-                tvMainTitleTestCalib.text = "Exp Flow sensor pre-calibration check"
-                tvtext1.text = "1. Connect calibration tubing"
-                tvtext2.text = "2. Make sure the ventilator is connected to mains supply"
-                tvtext3.text = ""
-                ventigif.visibility = View.VISIBLE
-                capgif.visibility = View.GONE
-                calibratorimg.visibility = View.GONE
+                binding.tvMainTitleTestCalib.text = "Exp Flow sensor pre-calibration check"
+                binding.tvtext1.text = "1. Connect calibration tubing"
+                binding.tvtext2.text = "2. Make sure the ventilator is connected to mains supply"
+                binding.tvtext3.text = ""
+                binding.ventigif.visibility = View.VISIBLE
+                binding.capgif.visibility = View.GONE
+                binding.calibratorimg.visibility = View.GONE
             }
 
-            includeButtonO2Sensor.buttonView -> {
+            binding.includeButtonO2Sensor.buttonView -> {
                 (parentFragment as SystemDialogFragment).highlightedIndex = -1
                 (parentFragment as SystemDialogFragment).sizeOfCurrentArray = 1
                 currentTag = "Oxygen"
                 hideGoneFunction(false)
-                tvMainTitleTestCalib.text = "Oxygen pre-calibration check"
-                tvtext1.text = "1. Make sure the ventilator is connected to mains supply"
-                tvtext2.text = "2. Connect calibration tubing"
-                tvtext3.text = "3. Ensure ventilator is connected to high pressure O2 line"
-                ventigif.visibility = View.VISIBLE
-                capgif.visibility = View.GONE
-                calibratorimg.visibility = View.GONE
+                binding.tvMainTitleTestCalib.text = "Oxygen pre-calibration check"
+                binding.tvtext1.text = "1. Make sure the ventilator is connected to mains supply"
+                binding.tvtext2.text = "2. Connect calibration tubing"
+                binding.tvtext3.text = "3. Ensure ventilator is connected to high pressure O2 line"
+                binding.ventigif.visibility = View.VISIBLE
+                binding.capgif.visibility = View.GONE
+                binding.calibratorimg.visibility = View.GONE
             }
 
-            includeButtonExhaleValve.buttonView -> {
+            binding.includeButtonExhaleValve.buttonView -> {
                 (parentFragment as SystemDialogFragment).highlightedIndex = -1
                 (parentFragment as SystemDialogFragment).sizeOfCurrentArray = 1
                 currentTag = "exhale_valve"
                 hideGoneFunction(false)
-                tvMainTitleTestCalib.text = "Exhale valve pre-calibration check"
-                tvtext1.text = "1. Make sure the ventilator is connected to mains supply"
-                tvtext2.text = "2. Connect calibration tubing"
-                tvtext3.text = "3. Ensure the exhale valve is connected properly"
-                ventigif.visibility = View.VISIBLE
-                capgif.visibility = View.GONE
-                calibratorimg.visibility = View.GONE
+                binding.tvMainTitleTestCalib.text = "Exhale valve pre-calibration check"
+                binding.tvtext1.text = "1. Make sure the ventilator is connected to mains supply"
+                binding.tvtext2.text = "2. Connect calibration tubing"
+                binding.tvtext3.text = "3. Ensure the exhale valve is connected properly"
+                binding.ventigif.visibility = View.VISIBLE
+                binding.capgif.visibility = View.GONE
+                binding.calibratorimg.visibility = View.GONE
 
             }
 
-            includeButtonSendCmd.buttonView -> {
+            binding.includeButtonSendCmd.buttonView -> {
                 when (currentTag) {
                     "exhale_valve" -> { sendCalibrationCommandToVentilator(Configs.TAG_SENSOR_EXHALE_VALVE) }
 
@@ -326,28 +322,28 @@ class TestCalibrationFragment(private var communicationService: CommunicationSer
             Log.i("CALIBCHECK", "Sensor data is refreshing on the view......")
 
             if (readOxygenCalibrationStatus()) {
-                tvO2Sensor.text = readOxygenCalibrationDate()
-                ivO2SensorStatus.setImageResource(R.drawable.ic_green_circle_tick)
+                binding.tvO2Sensor.text = readOxygenCalibrationDate()
+                binding.ivO2SensorStatus.setImageResource(R.drawable.ic_green_circle_tick)
             } else {
-                tvO2Sensor.text = getString(R.string.sensore_not_calibrated)
-                ivO2SensorStatus.setImageResource(R.drawable.ic_red_cross)
+                binding.tvO2Sensor.text = getString(R.string.sensore_not_calibrated)
+                binding.ivO2SensorStatus.setImageResource(R.drawable.ic_red_cross)
             }
 
             // Flow Exp sensor
             if (readExpFlowCalibrationStatus()) {
-                tvExpFlowSensor.text = readExpFlowCalibrationDate()
-                ivExpFlowSensorStatus.setImageResource(R.drawable.ic_green_circle_tick)
+                binding.tvExpFlowSensor.text = readExpFlowCalibrationDate()
+                binding.ivExpFlowSensorStatus.setImageResource(R.drawable.ic_green_circle_tick)
             } else {
-                tvExpFlowSensor.text = getString(R.string.sensore_not_calibrated)
-                ivExpFlowSensorStatus.setImageResource(R.drawable.ic_red_cross)
+                binding.tvExpFlowSensor.text = getString(R.string.sensore_not_calibrated)
+                binding.ivExpFlowSensorStatus.setImageResource(R.drawable.ic_red_cross)
             }
 
             if (readExhaleValveCalibrationStatus()) {
-                tvExhaleValve.text = readExhaleValveCalibrationDate()
-                ivExhaleValveStatus.setImageResource(R.drawable.ic_green_circle_tick)
+                binding.tvExhaleValve.text = readExhaleValveCalibrationDate()
+                binding.ivExhaleValveStatus.setImageResource(R.drawable.ic_green_circle_tick)
             } else {
-                tvExhaleValve.text = getString(R.string.sensore_not_calibrated)
-                ivExhaleValveStatus.setImageResource(R.drawable.ic_red_cross)
+                binding.tvExhaleValve.text = getString(R.string.sensore_not_calibrated)
+                binding.ivExhaleValveStatus.setImageResource(R.drawable.ic_red_cross)
             }
         }
     }

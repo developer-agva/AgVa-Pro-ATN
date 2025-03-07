@@ -1,12 +1,10 @@
 package com.agvahealthcare.ventilator_ext.system.tube
 
-import android.app.ProgressDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -14,18 +12,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.agvahealthcare.ventilator_ext.MainActivity
 import com.agvahealthcare.ventilator_ext.R
-import com.agvahealthcare.ventilator_ext.logging.FileLogger
+import com.agvahealthcare.ventilator_ext.databinding.FragmentTubeDiaBinding
 import com.agvahealthcare.ventilator_ext.logs.event.EventViewModel
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.service.CommunicationService
 import com.agvahealthcare.ventilator_ext.system.SystemDialogFragment
 import com.agvahealthcare.ventilator_ext.utility.DialogBoxFactory
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs
-import kotlinx.android.synthetic.main.content_button_layout.view.*
-import kotlinx.android.synthetic.main.fragment_tube_dia.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class TubeDiaFragment(private var communicationService: CommunicationService?) : Fragment(),
     View.OnClickListener {
@@ -33,13 +26,14 @@ class TubeDiaFragment(private var communicationService: CommunicationService?) :
     companion object {
         const val TAG = "TubeDiaFragment"
     }
-
+    private lateinit var binding: FragmentTubeDiaBinding
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        return inflater.inflate(R.layout.fragment_tube_dia, container, false)
+        binding = FragmentTubeDiaBinding.inflate(layoutInflater, container, false)
+        return binding.root
     }
 
     private var prefManager: PreferenceManager? = null
@@ -55,16 +49,16 @@ class TubeDiaFragment(private var communicationService: CommunicationService?) :
 
         when (highlightedIndex) {
 
-            0 -> if (topBarTube.isVisible) backBtnTube.callOnClick() else includeButtonCompliance.buttonView.callOnClick()
+            0 -> if (binding.topBarTube.isVisible) binding.backBtnTube.callOnClick() else binding.includeButtonCompliance.buttonView.callOnClick()
 
-            1 -> if (topBarTube.isVisible) includeButtonAdultProfile.buttonView.callOnClick() else includeButtonResistance.buttonView.callOnClick()
+            1 -> if (binding.topBarTube.isVisible) binding.includeButtonAdultProfile.buttonView.callOnClick() else binding.includeButtonResistance.buttonView.callOnClick()
 
-            2 -> includeButtonPediatricProfile.buttonView.callOnClick()
-            3 -> includeButtonNeonatalProfile.buttonView.callOnClick()
-            4 -> includetubeAdult.buttonView.callOnClick()
-            5 -> includetubePediatric.buttonView.callOnClick()
-            6 -> includetubeNeoNate.buttonView.callOnClick()
-            7 -> includeButtoncmdSend.buttonView.callOnClick()
+            2 -> binding.includeButtonPediatricProfile.buttonView.callOnClick()
+            3 -> binding.includeButtonNeonatalProfile.buttonView.callOnClick()
+            4 -> binding.includetubeAdult.buttonView.callOnClick()
+            5 -> binding.includetubePediatric.buttonView.callOnClick()
+            6 -> binding.includetubeNeoNate.buttonView.callOnClick()
+            7 -> binding.includeButtoncmdSend.buttonView.callOnClick()
         }
     }
 
@@ -80,12 +74,12 @@ class TubeDiaFragment(private var communicationService: CommunicationService?) :
     fun clearPreviousConstraints() {
         try {
             val constraintSet = ConstraintSet()
-            constraintSet.clone(mainViewPanelTube)
-            constraintSet.clear(focusLayoutTube.id, ConstraintSet.TOP)
-            constraintSet.clear(focusLayoutTube.id, ConstraintSet.BOTTOM)
-            constraintSet.clear(focusLayoutTube.id, ConstraintSet.LEFT)
-            constraintSet.clear(focusLayoutTube.id, ConstraintSet.RIGHT)
-            constraintSet.applyTo(mainViewPanelTube)
+            constraintSet.clone(binding.mainViewPanelTube)
+            constraintSet.clear(binding.focusLayoutTube.id, ConstraintSet.TOP)
+            constraintSet.clear(binding.focusLayoutTube.id, ConstraintSet.BOTTOM)
+            constraintSet.clear(binding.focusLayoutTube.id, ConstraintSet.LEFT)
+            constraintSet.clear(binding.focusLayoutTube.id, ConstraintSet.RIGHT)
+            constraintSet.applyTo(binding.mainViewPanelTube)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -93,36 +87,36 @@ class TubeDiaFragment(private var communicationService: CommunicationService?) :
 
     private fun changeConstraintsOfFocusLayout(view: View) {
         val constraintSet = ConstraintSet()
-        constraintSet.clone(mainViewPanelTube)
+        constraintSet.clone(binding.mainViewPanelTube)
         constraintSet.connect(
-            focusLayoutTube.id,
+            binding.focusLayoutTube.id,
             ConstraintSet.RIGHT,
             view.id,
             ConstraintSet.RIGHT,
             0
         )
         constraintSet.connect(
-            focusLayoutTube.id,
+            binding.focusLayoutTube.id,
             ConstraintSet.TOP,
             view.id,
             ConstraintSet.TOP,
             0
         )
         constraintSet.connect(
-            focusLayoutTube.id,
+            binding.focusLayoutTube.id,
             ConstraintSet.BOTTOM,
             view.id,
             ConstraintSet.BOTTOM,
             0
         )
         constraintSet.connect(
-            focusLayoutTube.id,
+            binding.focusLayoutTube.id,
             ConstraintSet.LEFT,
             view.id,
             ConstraintSet.LEFT,
             0
         )
-        constraintSet.applyTo(mainViewPanelTube)
+        constraintSet.applyTo(binding.mainViewPanelTube)
     }
 
     //
@@ -132,14 +126,14 @@ class TubeDiaFragment(private var communicationService: CommunicationService?) :
 
             return when (highlightedIndex) {
 
-                0 -> if (topBarTube.isVisible) backBtnTube else includeButtonCompliance
-                1 -> if (topBarTube.isVisible) includeButtonAdultProfile else includeButtonResistance
-                2 -> includeButtonPediatricProfile
-                3 -> includeButtonNeonatalProfile
-                4 -> includetubeAdult
-                5 -> includetubePediatric
-                6 -> includetubeNeoNate
-                7 -> includeButtoncmdSend
+                0 -> if (binding.topBarTube.isVisible) binding.backBtnTube else binding.includeButtonCompliance.root
+                1 -> if (binding.topBarTube.isVisible) binding.includeButtonAdultProfile.root else binding.includeButtonResistance.root
+                2 -> binding.includeButtonPediatricProfile.root
+                3 -> binding.includeButtonNeonatalProfile.root
+                4 -> binding.includetubeAdult.root
+                5 -> binding.includetubePediatric.root
+                6 -> binding.includetubeNeoNate.root
+                7 -> binding.includeButtoncmdSend.root
 
                 else -> null
             }
@@ -154,57 +148,57 @@ class TubeDiaFragment(private var communicationService: CommunicationService?) :
 
         if (isCalib) {
             // pre op check layout
-            topBarTube.visibility = View.GONE
-            backBtnTube.visibility = View.GONE
-            tvMainTitleTube.visibility = View.GONE
-            includeButtonAdultProfile.visibility = View.GONE
-            includeButtonPediatricProfile.visibility = View.GONE
-            includeButtonNeonatalProfile.visibility = View.GONE
-            tvtubelength.visibility = View.GONE
-            tvtextHeadingTube.visibility = View.GONE
-            tvtext1Tube.visibility = View.GONE
-            tvtext2Tube.visibility = View.GONE
-            tvtext3Tube.visibility = View.GONE
-            ventigifCompliance.visibility = View.GONE
-            ventigifResistance.visibility = View.GONE
-            includeButtoncmdSend.visibility = View.GONE
+            binding.topBarTube.visibility = View.GONE
+            binding.backBtnTube.visibility = View.GONE
+            binding.tvMainTitleTube.visibility = View.GONE
+            binding.includeButtonAdultProfile.root.visibility = View.GONE
+            binding.includeButtonPediatricProfile.root.visibility = View.GONE
+            binding.includeButtonNeonatalProfile.root.visibility = View.GONE
+            binding.tvtubelength.visibility = View.GONE
+            binding.tvtextHeadingTube.visibility = View.GONE
+            binding.tvtext1Tube.visibility = View.GONE
+            binding.tvtext2Tube.visibility = View.GONE
+            binding.tvtext3Tube.visibility = View.GONE
+            binding.ventigifCompliance.visibility = View.GONE
+            binding.ventigifResistance.visibility = View.GONE
+            binding.includeButtoncmdSend.root.visibility = View.GONE
 
             // calib layouts
-            tubeText.visibility = View.VISIBLE
-            includeButtonCompliance.visibility = View.VISIBLE
-            includeButtonResistance.visibility = View.VISIBLE
-            tvCompensation.visibility = View.VISIBLE
-            tvResistance.visibility = View.VISIBLE
-            tvCompensationDate.visibility = View.VISIBLE
-            tvResistanceDate.visibility = View.VISIBLE
-            ivCompensationStatus.visibility = View.VISIBLE
-            ivResistanceStatus.visibility = View.VISIBLE
+            binding.tubeText.visibility = View.VISIBLE
+            binding.includeButtonCompliance.root.visibility = View.VISIBLE
+            binding.includeButtonResistance.root.visibility = View.VISIBLE
+            binding.tvCompensation.visibility = View.VISIBLE
+            binding.tvResistance.visibility = View.VISIBLE
+            binding.tvCompensationDate.visibility = View.VISIBLE
+            binding.tvResistanceDate.visibility = View.VISIBLE
+            binding.ivCompensationStatus.visibility = View.VISIBLE
+            binding.ivResistanceStatus.visibility = View.VISIBLE
 
         } else {
             // pre op check layout
-            topBarTube.visibility = View.VISIBLE
-            backBtnTube.visibility = View.VISIBLE
-            tvMainTitleTube.visibility = View.VISIBLE
-            includeButtonAdultProfile.visibility = View.VISIBLE
-            includeButtonPediatricProfile.visibility = View.VISIBLE
-            includeButtonNeonatalProfile.visibility = View.VISIBLE
-            tvtubelength.visibility = View.VISIBLE
-            tvtextHeadingTube.visibility = View.VISIBLE
-            tvtext1Tube.visibility = View.VISIBLE
-            tvtext2Tube.visibility = View.VISIBLE
-            tvtext3Tube.visibility = View.VISIBLE
-            includeButtoncmdSend.visibility = View.VISIBLE
+            binding.topBarTube.visibility = View.VISIBLE
+            binding.backBtnTube.visibility = View.VISIBLE
+            binding.tvMainTitleTube.visibility = View.VISIBLE
+            binding.includeButtonAdultProfile.root.visibility = View.VISIBLE
+            binding.includeButtonPediatricProfile.root.visibility = View.VISIBLE
+            binding.includeButtonNeonatalProfile.root.visibility = View.VISIBLE
+            binding.tvtubelength.visibility = View.VISIBLE
+            binding.tvtextHeadingTube.visibility = View.VISIBLE
+            binding.tvtext1Tube.visibility = View.VISIBLE
+            binding.tvtext2Tube.visibility = View.VISIBLE
+            binding.tvtext3Tube.visibility = View.VISIBLE
+            binding.includeButtoncmdSend.root.visibility = View.VISIBLE
 
             // calib layouts
-            tubeText.visibility = View.GONE
-            includeButtonCompliance.visibility = View.GONE
-            includeButtonResistance.visibility = View.GONE
-            tvCompensation.visibility = View.GONE
-            tvResistance.visibility = View.GONE
-            tvCompensationDate.visibility = View.GONE
-            tvResistanceDate.visibility = View.GONE
-            ivCompensationStatus.visibility = View.GONE
-            ivResistanceStatus.visibility = View.GONE
+            binding.tubeText.visibility = View.GONE
+            binding.includeButtonCompliance.root.visibility = View.GONE
+            binding.includeButtonResistance.root.visibility = View.GONE
+            binding.tvCompensation.visibility = View.GONE
+            binding.tvResistance.visibility = View.GONE
+            binding.tvCompensationDate.visibility = View.GONE
+            binding.tvResistanceDate.visibility = View.GONE
+            binding.ivCompensationStatus.visibility = View.GONE
+            binding.ivResistanceStatus.visibility = View.GONE
         }
     }
 
@@ -222,47 +216,47 @@ class TubeDiaFragment(private var communicationService: CommunicationService?) :
     }
 
     private fun setUpView() {
-        includeButtonCompliance.buttonView.text = getString(R.string.hint_compensation)
-        includeButtonResistance.buttonView.text = getString(R.string.hint_resistance)
-        includeButtonAdultProfile.buttonView.text = getString(R.string.hint_adult)
-        includeButtonNeonatalProfile.buttonView.text = getString(R.string.hint_neonatal)
-        includeButtonPediatricProfile.buttonView.text = getString(R.string.hint_ped)
+        binding.includeButtonCompliance.buttonView.text = getString(R.string.hint_compensation)
+        binding.includeButtonResistance.buttonView.text = getString(R.string.hint_resistance)
+        binding.includeButtonAdultProfile.buttonView.text = getString(R.string.hint_adult)
+        binding.includeButtonNeonatalProfile.buttonView.text = getString(R.string.hint_neonatal)
+        binding.includeButtonPediatricProfile.buttonView.text = getString(R.string.hint_ped)
 
-        includetubeAdult.buttonView.text = "22 mm"
-        includetubePediatric.buttonView.text = "15 mm"
-        includetubeNeoNate.buttonView.text = "10 mm"
+        binding.includetubeAdult.buttonView.text = "22 mm"
+        binding.includetubePediatric.buttonView.text = "15 mm"
+        binding.includetubeNeoNate.buttonView.text = "10 mm"
 
-        includeButtoncmdSend.buttonView.text = "START CALIBRATION"
+        binding.includeButtoncmdSend.buttonView.text = "START CALIBRATION"
 
-        includeButtoncmdSend.buttonView.setBackgroundColor(R.drawable.background_black_border_white)
-        includeButtoncmdSend.buttonView.setTextColor(
+        binding.includeButtoncmdSend.buttonView.setBackgroundColor(R.drawable.background_black_border_white)
+        binding.includeButtoncmdSend.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
 
-        backBtnTube.setOnClickListener{
+        binding.backBtnTube.setOnClickListener{
             (parentFragment as SystemDialogFragment).highlightedIndex = -1
             (parentFragment as SystemDialogFragment).sizeOfCurrentArray = 1
             hideGoneFunction(true)
-            includetubeAdult.visibility = View.GONE
-            includetubePediatric.visibility = View.GONE
-            includetubeNeoNate.visibility = View.GONE
+            binding.includetubeAdult.root.visibility = View.GONE
+            binding.includetubePediatric.root.visibility = View.GONE
+            binding.includetubeNeoNate.root.visibility = View.GONE
         }
 
     }
 
     private fun setUpOnClickListener() {
         if (tag == "FromDashboard") {
-            includeButtonCompliance.buttonView.setOnClickListener {
+            binding.includeButtonCompliance.buttonView.setOnClickListener {
                 DialogBoxFactory.dismissDialogs()
                 DialogBoxFactory.showNeonateSensorDialog(
                     requireContext(),
                     "Switch to standby for calibration process"
                 )
             }
-            includeButtonResistance.buttonView.setOnClickListener {
+            binding.includeButtonResistance.buttonView.setOnClickListener {
                 DialogBoxFactory.dismissDialogs()
                 DialogBoxFactory.showNeonateSensorDialog(
                     requireContext(),
@@ -270,11 +264,11 @@ class TubeDiaFragment(private var communicationService: CommunicationService?) :
                 )
             }
         } else {
-            includeButtonCompliance.buttonView.setOnClickListener(this)
-            includeButtonResistance.buttonView.setOnClickListener(this)
+            binding.includeButtonCompliance.buttonView.setOnClickListener(this)
+            binding.includeButtonResistance.buttonView.setOnClickListener(this)
         }
 
-        includeButtonNeonatalProfile.buttonView.setOnClickListener {
+        binding.includeButtonNeonatalProfile.buttonView.setOnClickListener {
             if (prefManager?.readCurrentUid() != Configs.PatientProfile.TYPE_NEONAT) {
                 DialogBoxFactory.dismissDialogs()
                 DialogBoxFactory.showNeonateSensorDialog(
@@ -282,37 +276,37 @@ class TubeDiaFragment(private var communicationService: CommunicationService?) :
                     "Switch to neonate profile"
                 )
             } else {
-                includeButtonNeonatalProfile.buttonView.setBackgroundResource(R.color.racing_green)
-                includeButtonNeonatalProfile.buttonView.setTextColor(
+                binding.includeButtonNeonatalProfile.buttonView.setBackgroundResource(R.color.racing_green)
+                binding.includeButtonNeonatalProfile.buttonView.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.white
                     )
                 )
-                includeButtonAdultProfile.buttonView.setBackgroundResource(R.color.dolphin_grey)
-                includeButtonAdultProfile.buttonView.setTextColor(
+                binding.includeButtonAdultProfile.buttonView.setBackgroundResource(R.color.dolphin_grey)
+                binding.includeButtonAdultProfile.buttonView.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.black
                     )
                 )
-                includeButtonPediatricProfile.buttonView.setBackgroundResource(R.color.dolphin_grey)
-                includeButtonPediatricProfile.buttonView.setTextColor(
+                binding.includeButtonPediatricProfile.buttonView.setBackgroundResource(R.color.dolphin_grey)
+                binding.includeButtonPediatricProfile.buttonView.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.black
                     )
                 )
 
-                includetubeAdult.visibility = View.VISIBLE
-                includetubePediatric.visibility = View.VISIBLE
-                includetubeNeoNate.visibility = View.VISIBLE
+                binding.includetubeAdult.root.visibility = View.VISIBLE
+                binding.includetubePediatric.root.visibility = View.VISIBLE
+                binding.includetubeNeoNate.root.visibility = View.VISIBLE
 
-                includetubeNeoNate.buttonView.callOnClick()
+                binding.includetubeNeoNate.buttonView.callOnClick()
             }
         }
 
-        includeButtonAdultProfile.buttonView.setOnClickListener {
+        binding.includeButtonAdultProfile.buttonView.setOnClickListener {
 
             if (prefManager?.readCurrentUid() != Configs.PatientProfile.TYPE_ADULT) {
                 DialogBoxFactory.dismissDialogs()
@@ -321,38 +315,38 @@ class TubeDiaFragment(private var communicationService: CommunicationService?) :
                     "Switch to adult profile"
                 )
             }else {
-                includeButtonAdultProfile.buttonView.setBackgroundResource(R.color.racing_green)
-                includeButtonAdultProfile.buttonView.setTextColor(
+                binding.includeButtonAdultProfile.buttonView.setBackgroundResource(R.color.racing_green)
+                binding.includeButtonAdultProfile.buttonView.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.white
                     )
                 )
-                includeButtonPediatricProfile.buttonView.setBackgroundResource(R.color.dolphin_grey)
-                includeButtonPediatricProfile.buttonView.setTextColor(
+                binding.includeButtonPediatricProfile.buttonView.setBackgroundResource(R.color.dolphin_grey)
+                binding.includeButtonPediatricProfile.buttonView.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.black
                     )
                 )
 
-                includeButtonNeonatalProfile.buttonView.setBackgroundResource(R.color.dolphin_grey)
-                includeButtonNeonatalProfile.buttonView.setTextColor(
+                binding.includeButtonNeonatalProfile.buttonView.setBackgroundResource(R.color.dolphin_grey)
+                binding.includeButtonNeonatalProfile.buttonView.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.black
                     )
                 )
 
-                includetubeAdult.visibility = View.VISIBLE
-                includetubePediatric.visibility = View.VISIBLE
-                includetubeNeoNate.visibility = View.VISIBLE
+                binding.includetubeAdult.root.visibility = View.VISIBLE
+                binding.includetubePediatric.root.visibility = View.VISIBLE
+                binding.includetubeNeoNate.root.visibility = View.VISIBLE
 
-                includetubeAdult.buttonView.callOnClick()
+                binding.includetubeAdult.buttonView.callOnClick()
             }
         }
 
-        includeButtonPediatricProfile.buttonView.setOnClickListener {
+        binding.includeButtonPediatricProfile.buttonView.setOnClickListener {
 
             if (prefManager?.readCurrentUid() != Configs.PatientProfile.TYPE_PED) {
                 DialogBoxFactory.dismissDialogs()
@@ -361,94 +355,94 @@ class TubeDiaFragment(private var communicationService: CommunicationService?) :
                     "Switch to pediatric profile"
                 )
             }else {
-                includeButtonPediatricProfile.buttonView.setBackgroundResource(R.color.racing_green)
-                includeButtonPediatricProfile.buttonView.setTextColor(
+                binding.includeButtonPediatricProfile.buttonView.setBackgroundResource(R.color.racing_green)
+                binding.includeButtonPediatricProfile.buttonView.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.white
                     )
                 )
-                includeButtonAdultProfile.buttonView.setBackgroundResource(R.color.dolphin_grey)
-                includeButtonAdultProfile.buttonView.setTextColor(
+                binding.includeButtonAdultProfile.buttonView.setBackgroundResource(R.color.dolphin_grey)
+                binding.includeButtonAdultProfile.buttonView.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.black
                     )
                 )
 
-                includeButtonNeonatalProfile.buttonView.setBackgroundResource(R.color.dolphin_grey)
-                includeButtonNeonatalProfile.buttonView.setTextColor(
+                binding.includeButtonNeonatalProfile.buttonView.setBackgroundResource(R.color.dolphin_grey)
+                binding.includeButtonNeonatalProfile.buttonView.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.black
                     )
                 )
 
-                includetubeAdult.visibility = View.VISIBLE
-                includetubePediatric.visibility = View.VISIBLE
-                includetubeNeoNate.visibility = View.VISIBLE
+                binding.includetubeAdult.root.visibility = View.VISIBLE
+                binding.includetubePediatric.root.visibility = View.VISIBLE
+                binding.includetubeNeoNate.root.visibility = View.VISIBLE
 
-                includetubePediatric.buttonView.callOnClick()
+                binding.includetubePediatric.buttonView.callOnClick()
             }
         }
 
-        includetubePediatric.buttonView.setOnClickListener(this)
-        includetubeAdult.buttonView.setOnClickListener(this)
-        includetubeNeoNate.buttonView.setOnClickListener(this)
-        includeButtoncmdSend.buttonView.setOnClickListener(this)
+        binding.includetubePediatric.buttonView.setOnClickListener(this)
+        binding.includetubeAdult.buttonView.setOnClickListener(this)
+        binding.includetubeNeoNate.buttonView.setOnClickListener(this)
+        binding.includeButtoncmdSend.buttonView.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
 
         when (v) {
 
-            includeButtonCompliance.buttonView -> {
+            binding.includeButtonCompliance.buttonView -> {
                 (parentFragment as SystemDialogFragment).highlightedIndex = -1
                 (parentFragment as SystemDialogFragment).sizeOfCurrentArray = 7
                 currentTag = "Compliance"
                 hideGoneFunction(false)
                 highlightProfileButton()
-                ventigifCompliance.visibility = View.VISIBLE
-                ventigifResistance.visibility = View.GONE
-                tvMainTitleTube.text = "Compliance pre-calibration check"
-                tvtext1Tube.text = "1. Make sure the ventilator is connected to mains supply"
-                tvtext2Tube.text = "2. Ensure the patient is not connected to the ventilator"
-                tvtext3Tube.text = "3. Block the patient end of the breathing circuit using your thumb"
+                binding.ventigifCompliance.visibility = View.VISIBLE
+                binding.ventigifResistance.visibility = View.GONE
+                binding.tvMainTitleTube.text = "Compliance pre-calibration check"
+                binding.tvtext1Tube.text = "1. Make sure the ventilator is connected to mains supply"
+                binding.tvtext2Tube.text = "2. Ensure the patient is not connected to the ventilator"
+                binding.tvtext3Tube.text = "3. Block the patient end of the breathing circuit using your thumb"
 
             }
 
-            includeButtonResistance.buttonView -> {
+            binding.includeButtonResistance.buttonView -> {
                 (parentFragment as SystemDialogFragment).highlightedIndex = -1
                 (parentFragment as SystemDialogFragment).sizeOfCurrentArray = 7
                 currentTag = "Resistance"
                 hideGoneFunction(false)
                 highlightProfileButton()
-                ventigifCompliance.visibility = View.GONE
-                ventigifResistance.visibility = View.VISIBLE
-                tvMainTitleTube.text = "Resistance pre-calibration check"
-                tvtext1Tube.text = "1. Make sure the ventilator is connected to mains supply"
-                tvtext2Tube.text = "2. Ensure the patient is not connected to the ventilator"
-                tvtext3Tube.text = "3. Keep the breathing circuit open"
+                binding.ventigifCompliance.visibility = View.GONE
+                binding.ventigifResistance.visibility = View.VISIBLE
+                binding.tvMainTitleTube.text = "Resistance pre-calibration check"
+                binding.tvtext1Tube.text = "1. Make sure the ventilator is connected to mains supply"
+                binding.tvtext2Tube.text = "2. Ensure the patient is not connected to the ventilator"
+                binding.tvtext3Tube.text = "3. Keep the breathing circuit open"
             }
 
-            includetubeAdult.buttonView -> {
+            binding.includetubeAdult.buttonView -> {
                 tubeDiameter = "22 mm"
-                includetubeAdult.buttonView.setBackgroundResource(R.color.racing_green)
-                includetubeAdult.buttonView.setTextColor(
+                binding.includetubeAdult.buttonView.setBackgroundResource(R.color.racing_green)
+                binding.includetubeAdult.buttonView.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.white
                     )
                 )
-                includetubePediatric.buttonView.setBackgroundResource(R.color.dolphin_grey)
-                includetubePediatric.buttonView.setTextColor(
+                binding.includetubePediatric.buttonView.setBackgroundResource(R.color.dolphin_grey)
+                binding.includetubePediatric.buttonView.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.black
                     )
                 )
-                includetubeNeoNate.buttonView.setBackgroundResource(R.color.dolphin_grey)
-                includetubeNeoNate.buttonView.setTextColor(
+                binding.includetubeNeoNate.buttonView.setBackgroundResource(R.color.dolphin_grey)
+                binding.includetubeNeoNate.buttonView.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.black
@@ -457,24 +451,24 @@ class TubeDiaFragment(private var communicationService: CommunicationService?) :
 
             }
 
-            includetubePediatric.buttonView -> {
+            binding.includetubePediatric.buttonView -> {
                 tubeDiameter = "15 mm"
-                includetubePediatric.buttonView.setBackgroundResource(R.color.racing_green)
-                includetubePediatric.buttonView.setTextColor(
+                binding.includetubePediatric.buttonView.setBackgroundResource(R.color.racing_green)
+                binding.includetubePediatric.buttonView.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.white
                     )
                 )
-                includetubeAdult.buttonView.setBackgroundResource(R.color.dolphin_grey)
-                includetubeAdult.buttonView.setTextColor(
+                binding.includetubeAdult.buttonView.setBackgroundResource(R.color.dolphin_grey)
+                binding.includetubeAdult.buttonView.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.black
                     )
                 )
-                includetubeNeoNate.buttonView.setBackgroundResource(R.color.dolphin_grey)
-                includetubeNeoNate.buttonView.setTextColor(
+                binding.includetubeNeoNate.buttonView.setBackgroundResource(R.color.dolphin_grey)
+                binding.includetubeNeoNate.buttonView.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.black
@@ -482,24 +476,24 @@ class TubeDiaFragment(private var communicationService: CommunicationService?) :
                 )
             }
 
-            includetubeNeoNate.buttonView -> {
+            binding.includetubeNeoNate.buttonView -> {
                 tubeDiameter = "10 mm"
-                includetubeNeoNate.buttonView.setBackgroundResource(R.color.racing_green)
-                includetubeNeoNate.buttonView.setTextColor(
+                binding.includetubeNeoNate.buttonView.setBackgroundResource(R.color.racing_green)
+                binding.includetubeNeoNate.buttonView.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.white
                     )
                 )
-                includetubePediatric.buttonView.setBackgroundResource(R.color.dolphin_grey)
-                includetubePediatric.buttonView.setTextColor(
+                binding.includetubePediatric.buttonView.setBackgroundResource(R.color.dolphin_grey)
+                binding.includetubePediatric.buttonView.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.black
                     )
                 )
-                includetubeAdult.buttonView.setBackgroundResource(R.color.dolphin_grey)
-                includetubeAdult.buttonView.setTextColor(
+                binding.includetubeAdult.buttonView.setBackgroundResource(R.color.dolphin_grey)
+                binding.includetubeAdult.buttonView.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.black
@@ -508,7 +502,7 @@ class TubeDiaFragment(private var communicationService: CommunicationService?) :
 
             }
 
-            includeButtoncmdSend.buttonView -> {
+            binding.includeButtoncmdSend.buttonView -> {
                 when (currentTag) {
                     "Compliance" -> {
                         communicationService?.takeIf { it.isPortsConnected }?.apply {
@@ -540,18 +534,18 @@ class TubeDiaFragment(private var communicationService: CommunicationService?) :
 
     private fun highlightProfileButton() {
         when (prefManager?.readCurrentUid()) {
-            Configs.PatientProfile.TYPE_ADULT -> includeButtonAdultProfile.buttonView.callOnClick()
-            Configs.PatientProfile.TYPE_PED -> includeButtonPediatricProfile.buttonView.callOnClick()
-            Configs.PatientProfile.TYPE_NEONAT -> includeButtonNeonatalProfile.buttonView.callOnClick()
+            Configs.PatientProfile.TYPE_ADULT -> binding.includeButtonAdultProfile.buttonView.callOnClick()
+            Configs.PatientProfile.TYPE_PED -> binding.includeButtonPediatricProfile.buttonView.callOnClick()
+            Configs.PatientProfile.TYPE_NEONAT -> binding.includeButtonNeonatalProfile.buttonView.callOnClick()
             else -> {}
         }
     }
 
     fun updateTubeComplianceCalibrationStatus() {
         hideGoneFunction(true)
-        includetubeAdult.visibility = View.GONE
-        includetubePediatric.visibility = View.GONE
-        includetubeNeoNate.visibility = View.GONE
+        binding.includetubeAdult.root.visibility = View.GONE
+        binding.includetubePediatric.root.visibility = View.GONE
+        binding.includetubeNeoNate.root.visibility = View.GONE
         prefManager?.apply {
             Log.i("tubeCheck", "Sensor data is refreshing on the view......")
 
@@ -562,32 +556,32 @@ class TubeDiaFragment(private var communicationService: CommunicationService?) :
                 ) {
                     Log.i("DataAvaiasd", "2")
                     Log.i("CHECK_COMPL", readComplianceTubeCalibration().toString())
-                    tvCompensation.text = "${readComplianceTubeCalibration()} mL/cmH₂O"
-                    ivCompensationStatus.setImageResource(R.drawable.ic_green_circle_tick)
+                    binding.tvCompensation.text = "${readComplianceTubeCalibration()} mL/cmH₂O"
+                    binding.ivCompensationStatus.setImageResource(R.drawable.ic_green_circle_tick)
                     setTubeComplianceCalibrationDate()
-                    tvCompensationDate.text = readTubeComplianceCalibrationDate()
+                    binding.tvCompensationDate.text = readTubeComplianceCalibrationDate()
 
                 } else {
                     Log.i("DataAvaiasd", readComplianceTubeCalibration().toString())
                     if (readComplianceTubeCalibration().contains("0.00")) {
-                        tvCompensation.text = "-"
-                        tvCompensationDate.text = "-"
-                        ivCompensationStatus.setImageResource(R.drawable.ic_red_cross)
+                        binding.tvCompensation.text = "-"
+                        binding.tvCompensationDate.text = "-"
+                        binding.ivCompensationStatus.setImageResource(R.drawable.ic_red_cross)
 
 
                     } else {
                         Log.i("DataAvaiasd", "5")
-                        tvCompensation.text =
+                        binding.tvCompensation.text =
                             "${readComplianceTubeCalibration().subSequence(0, 4)} mL/cmH₂O"
-                        ivCompensationStatus.setImageResource(R.drawable.ic_green_circle_tick)
+                        binding.ivCompensationStatus.setImageResource(R.drawable.ic_green_circle_tick)
                         setTubeComplianceCalibrationDate()
-                        tvCompensationDate.text = readTubeComplianceCalibrationDate()
+                        binding.tvCompensationDate.text = readTubeComplianceCalibrationDate()
                     }
                 }
             } else {
-                tvCompensation.text = getString(R.string.sensore_not_calibrated)
-                ivCompensationStatus.setImageResource(R.drawable.ic_red_cross)
-                tvCompensationDate.text = "-"
+                binding.tvCompensation.text = getString(R.string.sensore_not_calibrated)
+                binding.ivCompensationStatus.setImageResource(R.drawable.ic_red_cross)
+                binding.tvCompensationDate.text = "-"
             }
 
         }
@@ -595,9 +589,9 @@ class TubeDiaFragment(private var communicationService: CommunicationService?) :
 
     fun updateTubeResistanceCalibrationStatus() {
         hideGoneFunction(true)
-        includetubeAdult.visibility = View.GONE
-        includetubePediatric.visibility = View.GONE
-        includetubeNeoNate.visibility = View.GONE
+        binding.includetubeAdult.root.visibility = View.GONE
+        binding.includetubePediatric.root.visibility = View.GONE
+        binding.includetubeNeoNate.root.visibility = View.GONE
         prefManager?.apply {
             // tube resistance
             if (readResistanceTubeCalibrationStatus()) {
@@ -606,21 +600,21 @@ class TubeDiaFragment(private var communicationService: CommunicationService?) :
                         ""
                     )
                 ) {
-                    tvResistance.text = "${readResistanceTubeCalibration()} cmH₂O/L"
-                    ivResistanceStatus.setImageResource(R.drawable.ic_green_circle_tick)
+                    binding.tvResistance.text = "${readResistanceTubeCalibration()} cmH₂O/L"
+                    binding.ivResistanceStatus.setImageResource(R.drawable.ic_green_circle_tick)
                     setTubeResistanceCalibrationDate()
-                    tvResistanceDate.text = readTubeResistanceCalibrationDate()
+                    binding.tvResistanceDate.text = readTubeResistanceCalibrationDate()
                 } else {
-                    tvResistance.text =
+                    binding.tvResistance.text =
                         "${readResistanceTubeCalibration().subSequence(0, 4)} cmH₂O/L"
-                    ivResistanceStatus.setImageResource(R.drawable.ic_green_circle_tick)
+                    binding.ivResistanceStatus.setImageResource(R.drawable.ic_green_circle_tick)
                     setTubeResistanceCalibrationDate()
-                    tvResistanceDate.text = readTubeResistanceCalibrationDate()
+                    binding.tvResistanceDate.text = readTubeResistanceCalibrationDate()
                 }
             } else {
-                tvResistance.text = getString(R.string.sensore_not_calibrated)
-                ivResistanceStatus.setImageResource(R.drawable.ic_red_cross)
-                tvResistanceDate.text = "-"
+                binding.tvResistance.text = getString(R.string.sensore_not_calibrated)
+                binding.ivResistanceStatus.setImageResource(R.drawable.ic_red_cross)
+                binding.tvResistanceDate.text = "-"
             }
 
         }
@@ -637,28 +631,28 @@ class TubeDiaFragment(private var communicationService: CommunicationService?) :
                 ) {
                     Log.i("DataAvaiasd", "2")
                     Log.i("CHECK_COMPL", readComplianceTubeCalibration().toString())
-                    tvCompensation.text = "${readComplianceTubeCalibration()} mL/cmH₂O"
-                    ivCompensationStatus.setImageResource(R.drawable.ic_green_circle_tick)
-                    tvCompensationDate.text = readTubeComplianceCalibrationDate()
+                    binding.tvCompensation.text = "${readComplianceTubeCalibration()} mL/cmH₂O"
+                    binding.ivCompensationStatus.setImageResource(R.drawable.ic_green_circle_tick)
+                    binding.tvCompensationDate.text = readTubeComplianceCalibrationDate()
 
                 } else {
                     Log.i("DataAvaiasd", readComplianceTubeCalibration().toString())
                     if (readComplianceTubeCalibration().contains("0.00")) {
-                        tvCompensation.text = "-"
-                        tvCompensationDate.text = "-"
-                        ivCompensationStatus.setImageResource(R.drawable.ic_red_cross)
+                        binding.tvCompensation.text = "-"
+                        binding.tvCompensationDate.text = "-"
+                        binding.ivCompensationStatus.setImageResource(R.drawable.ic_red_cross)
                     } else {
                         Log.i("DataAvaiasd", "5")
-                        tvCompensation.text =
+                        binding.tvCompensation.text =
                             "${readComplianceTubeCalibration().subSequence(0, 4)} mL/cmH₂O"
-                        ivCompensationStatus.setImageResource(R.drawable.ic_green_circle_tick)
-                        tvCompensationDate.text = readTubeComplianceCalibrationDate()
+                        binding.ivCompensationStatus.setImageResource(R.drawable.ic_green_circle_tick)
+                        binding.tvCompensationDate.text = readTubeComplianceCalibrationDate()
                     }
                 }
             } else {
-                tvCompensation.text = getString(R.string.sensore_not_calibrated)
-                ivCompensationStatus.setImageResource(R.drawable.ic_red_cross)
-                tvCompensationDate.text = "-"
+                binding.tvCompensation.text = getString(R.string.sensore_not_calibrated)
+                binding.ivCompensationStatus.setImageResource(R.drawable.ic_red_cross)
+                binding.tvCompensationDate.text = "-"
             }
 
             // tube resistance
@@ -668,19 +662,19 @@ class TubeDiaFragment(private var communicationService: CommunicationService?) :
                         ""
                     )
                 ) {
-                    tvResistance.text = "${readResistanceTubeCalibration()} cmH₂O/L"
-                    ivResistanceStatus.setImageResource(R.drawable.ic_green_circle_tick)
-                    tvResistanceDate.text = readTubeResistanceCalibrationDate()
+                    binding.tvResistance.text = "${readResistanceTubeCalibration()} cmH₂O/L"
+                    binding.ivResistanceStatus.setImageResource(R.drawable.ic_green_circle_tick)
+                    binding.tvResistanceDate.text = readTubeResistanceCalibrationDate()
                 } else {
-                    tvResistance.text =
+                    binding.tvResistance.text =
                         "${readResistanceTubeCalibration().subSequence(0, 4)} cmH₂O/L"
-                    ivResistanceStatus.setImageResource(R.drawable.ic_green_circle_tick)
-                    tvResistanceDate.text = readTubeResistanceCalibrationDate()
+                    binding.ivResistanceStatus.setImageResource(R.drawable.ic_green_circle_tick)
+                    binding.tvResistanceDate.text = readTubeResistanceCalibrationDate()
                 }
             } else {
-                tvResistance.text = getString(R.string.sensore_not_calibrated)
-                ivResistanceStatus.setImageResource(R.drawable.ic_red_cross)
-                tvResistanceDate.text = "-"
+                binding.tvResistance.text = getString(R.string.sensore_not_calibrated)
+                binding.ivResistanceStatus.setImageResource(R.drawable.ic_red_cross)
+                binding.tvResistanceDate.text = "-"
             }
         }
     }

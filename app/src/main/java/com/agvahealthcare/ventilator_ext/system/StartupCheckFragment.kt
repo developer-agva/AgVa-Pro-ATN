@@ -7,24 +7,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.agvahealthcare.ventilator_ext.R
+import com.agvahealthcare.ventilator_ext.databinding.FragmentStartupBinding
 import com.agvahealthcare.ventilator_ext.manager.DataStoreManager
-import com.agvahealthcare.ventilator_ext.utility.LOG_TYPE_DEBUG
-import kotlinx.android.synthetic.main.fragment_startup.*
-import kotlinx.android.synthetic.main.fragment_startup.ivO2Sensor
-import kotlinx.android.synthetic.main.layout_dialog_startup_check.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class StartupCheckFragment : Fragment() {
+    private lateinit var binding:FragmentStartupBinding
     private var dataStoreManager: DataStoreManager? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_startup, container, false)
+        binding = FragmentStartupBinding.inflate(layoutInflater,container,false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -40,84 +39,83 @@ class StartupCheckFragment : Fragment() {
             if (list.size >= 12) {
                 list[11] = "1"
                 try {
-                    if (list[1].toFloat() < 3.0f && list[5].toFloat() > 3.0f) layoutTurbineError.visibility =
-                        View.GONE else if (list[1].toFloat() > 3.0f && list[5].toFloat() < 3.0f) layoutTurbineError.visibility =
-                        View.GONE else if (list[1].toFloat() > 3.0f && list[5].toFloat() > 3.0f) layoutTurbineError.visibility =
-                        View.GONE else layoutTurbineError.visibility = View.VISIBLE
+                    if (list[1].toFloat() < 3.0f && list[5].toFloat() > 3.0f) binding.layoutTurbineError.visibility =
+                        View.GONE else if (list[1].toFloat() > 3.0f && list[5].toFloat() < 3.0f) binding.layoutTurbineError.visibility =
+                        View.GONE else if (list[1].toFloat() > 3.0f && list[5].toFloat() > 3.0f) binding.layoutTurbineError.visibility =
+                        View.GONE else binding.layoutTurbineError.visibility = View.VISIBLE
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
                 if (list.get(8) == "1") {
-                    ivInspFlowSensor.setImageDrawable(
+                    binding.ivInspFlowSensor.setImageDrawable(
                         requireContext().getResources().getDrawable(R.drawable.ic_green_circle_tick)
                     )
-                    tvInspFlowSensor.setText("Expiratory Flow Sensor Pass")
+                    binding.tvInspFlowSensor.setText("Expiratory Flow Sensor Pass")
                 } else {
-                    ivInspFlowSensor.setImageDrawable(
+                    binding.ivInspFlowSensor.setImageDrawable(
                         requireContext().getResources().getDrawable(R.drawable.ic_red_cross)
                     )
-                    tvInspFlowSensor.setText("Expiratory Flow Sensor Failed")
+                    binding.tvInspFlowSensor.setText("Expiratory Flow Sensor Failed")
                 }
                 if (list.get(7) == "1") {
-                    ivExpFlowSensor.setImageDrawable(
+                    binding.ivExpFlowSensor.setImageDrawable(
                         requireContext().getResources().getDrawable(R.drawable.ic_green_circle_tick)
                     )
-                    tvExpFlowSensor.setText("Inspiratory Flow Sensor Pass")
+                    binding.tvExpFlowSensor.setText("Inspiratory Flow Sensor Pass")
                 } else {
-                    ivExpFlowSensor.setImageDrawable(
+                    binding.ivExpFlowSensor.setImageDrawable(
                         requireContext().getResources().getDrawable(R.drawable.ic_red_cross)
                     )
-                    tvExpFlowSensor.setText("Inspiratory Flow Sensor Failed")
+                    binding.tvExpFlowSensor.setText("Inspiratory Flow Sensor Failed")
                 }
 
                 if (list.get(9) == "1") {
-                    ivInspPressureSensor.setImageDrawable(
+                    binding.ivInspPressureSensor.setImageDrawable(
                         requireContext().getResources().getDrawable(R.drawable.ic_green_circle_tick)
                     )
-                    tvInspPressureSensor.setText("Inspiratory Pressure Sensor Pass")
+                    binding.tvInspPressureSensor.setText("Inspiratory Pressure Sensor Pass")
                 } else {
-                    ivInspPressureSensor.setImageDrawable(
+                    binding.ivInspPressureSensor.setImageDrawable(
                         requireContext().getResources().getDrawable(R.drawable.ic_red_cross)
                     )
-                    tvInspPressureSensor.setText("Inspiratory Pressure Sensor Failed")
+                    binding.tvInspPressureSensor.setText("Inspiratory Pressure Sensor Failed")
                 }
                 if (list.get(10) == "1") {
-                    ivO2PressureSensor.setImageDrawable(
+                    binding.ivO2PressureSensor.setImageDrawable(
                         requireContext().getResources().getDrawable(R.drawable.ic_green_circle_tick)
                     )
-                    tvO2PressureSensor.setText("O2 Pressure Sensor Pass")
+                    binding.tvO2PressureSensor.setText("O2 Pressure Sensor Pass")
                 } else {
-                    ivO2PressureSensor.setImageDrawable(
+                    binding.ivO2PressureSensor.setImageDrawable(
                         requireContext().getResources().getDrawable(R.drawable.ic_red_cross)
                     )
-                    tvO2PressureSensor.setText("O2 Pressure Sensor Failed")
+                    binding.tvO2PressureSensor.setText("O2 Pressure Sensor Failed")
                 }
                 if (list.get(11) == "1") {
-                    ivO2Sensor.setImageDrawable(
+                    binding.ivO2Sensor.setImageDrawable(
                         requireContext().getResources().getDrawable(R.drawable.ic_green_circle_tick)
                     )
-                    tvO2Sensor.setText("O2 Sensor Pass")
+                    binding.tvO2Sensor.setText("O2 Sensor Pass")
                 } else {
-                    ivO2Sensor.setImageDrawable(
+                    binding.ivO2Sensor.setImageDrawable(
                         requireContext().getResources().getDrawable(R.drawable.ic_red_cross)
                     )
-                    tvO2Sensor.setText("O2 Sensor Failed")
+                    binding.tvO2Sensor.setText("O2 Sensor Failed")
                 }
 
                 if (list.get(12) == "1") {
-                    ivNeoSensor.setImageDrawable(
+                    binding.ivNeoSensor.setImageDrawable(
                         requireContext().getResources().getDrawable(R.drawable.ic_green_circle_tick)
                     )
-                    tvNeoSensor.setText("Neo Sensor Pass")
+                    binding.tvNeoSensor.setText("Neo Sensor Pass")
                 } else {
-                    ivNeoSensor.setImageDrawable(
+                    binding.ivNeoSensor.setImageDrawable(
                         requireContext().getResources().getDrawable(R.drawable.ic_red_cross)
                     )
-                    tvNeoSensor.setText("Neo Sensor Failed")
+                    binding.tvNeoSensor.setText("Neo Sensor Failed")
                 }
             }
         }
-
     }
 
 }

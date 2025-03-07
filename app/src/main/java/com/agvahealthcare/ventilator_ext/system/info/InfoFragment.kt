@@ -21,11 +21,11 @@ import com.agvahealthcare.ventilator_ext.VentilatorApp
 import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.globalCount
 import com.agvahealthcare.ventilator_ext.api.BatteryHealthStaus
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardViewModel
+import com.agvahealthcare.ventilator_ext.databinding.FragmentInfoBinding
 import com.agvahealthcare.ventilator_ext.manager.DataStoreManager
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.service.CommunicationService
 import com.agvahealthcare.ventilator_ext.utility.DialogBoxFactory
-import kotlinx.android.synthetic.main.fragment_info.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -36,6 +36,7 @@ import java.util.concurrent.TimeUnit
 
 class InfoFragment(private var communicationService: CommunicationService?) : Fragment() {
 
+    private lateinit var binding: FragmentInfoBinding
     private var timerForBatteryData: CountDownTimer? = null
     private var batteryLevel: Int? = null
     private var batteryHealth: Int? = null
@@ -54,7 +55,8 @@ class InfoFragment(private var communicationService: CommunicationService?) : Fr
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_info, container, false)
+        binding = FragmentInfoBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,7 +65,7 @@ class InfoFragment(private var communicationService: CommunicationService?) : Fr
         dataStoreManager = DataStoreManager(requireContext())
 
 
-        textViewLogDeviceIdData.text = Settings.Secure.getString(
+        binding.textViewLogDeviceIdData.text = Settings.Secure.getString(
             requireContext().contentResolver,
             Settings.Secure.ANDROID_ID
         )
@@ -99,12 +101,12 @@ class InfoFragment(private var communicationService: CommunicationService?) : Fr
             //Operational hours in hours and minutes.
             (activityViewModel as MainActivityViewModel).OPHours.observe(viewLifecycleOwner,
                 Observer {
-                    textViewOpHoursData.text = it
+                    binding.textViewOpHoursData.text = it
                     Log.i("CHECK_OP_HOURS", it.toString())
                 })
             (activityViewModel as MainActivityViewModel).serviceHours.observe(viewLifecycleOwner,
                 Observer {
-                    textViewServiceHoursData.text = it
+                    binding.textViewServiceHoursData.text = it
                     Log.i("CHECK_SERVICE_HOURS", it.toString())
                 })
 
@@ -136,17 +138,17 @@ class InfoFragment(private var communicationService: CommunicationService?) : Fr
             (activityViewModel as DashBoardViewModel).OPHours.observe(viewLifecycleOwner,
                 Observer {
                     Log.i("CHECK_OP_HOURS_DASH", it.toString())
-                    textViewOpHoursData.text = it
+                    binding.textViewOpHoursData.text = it
                 })
             (activityViewModel as DashBoardViewModel).serviceHours.observe(viewLifecycleOwner,
                 Observer {
-                    textViewServiceHoursData.text = it
+                    binding.textViewServiceHoursData.text = it
                     Log.i("CHECK_SERVICE_HOURS_DASH", it.toString())
                 })
         }
         if (tag == "MainActivity") {
 
-            layout_content.visibility = View.VISIBLE
+            binding.layoutContent.visibility = View.VISIBLE
 
         }
         prefManager?.apply {
@@ -159,9 +161,9 @@ class InfoFragment(private var communicationService: CommunicationService?) : Fr
 // for the serial number
         CoroutineScope(Dispatchers.Main).launch {
             try {
-                textViewSerialNumberData.text =
+                binding.textViewSerialNumberData.text =
                     dataStoreManager?.getHardwareSerialNumber()?.first().toString()
-                dataStoreManager?.saveHardwareSerialNumber(textViewSerialNumberData.text.toString())
+                dataStoreManager?.saveHardwareSerialNumber(binding.textViewSerialNumberData.text.toString())
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -169,20 +171,20 @@ class InfoFragment(private var communicationService: CommunicationService?) : Fr
         }
 
         // set hardware serial number
-        textViewHardwareSerialNumberData.text = VentilatorApp.hardwareSerialNumber
+        binding.textViewHardwareSerialNumberData.text = VentilatorApp.hardwareSerialNumber
 
         // set hardware version
 
         CoroutineScope(Dispatchers.Main).launch {
             try {
                 val dataArr = dataStoreManager?.getStartUpCheckValue()?.first()?.split(',')
-                textViewOperatingHoursData.text = dataArr?.get(0).toString()
+                binding.textViewOperatingHoursData.text = dataArr?.get(0).toString()
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
 
-        textViewVersionData.setOnClickListener {
+        binding.textViewVersionData.setOnClickListener {
 
             DialogBoxFactory.showCommandDialog(requireContext()) { command ->
                 sendRawCommandToVentilator(
@@ -198,16 +200,16 @@ class InfoFragment(private var communicationService: CommunicationService?) : Fr
                 requireContext().packageManager.getPackageInfo(requireContext().packageName, 0)
             val version = pInfo.versionName
             Log.i("version name", version + "  " + pInfo.versionCode)
-            textViewVersionData.text = version
-            textViewModelData.text = "AGVAC Pro".uppercase()
+            binding.textViewVersionData.text = version
+            binding.textViewModelData.text = "AGVAC Pro".uppercase()
         } catch (e: PackageManager.NameNotFoundException) {
             Toast.makeText(requireContext(), "" + e.printStackTrace(), Toast.LENGTH_LONG).show()
         }
 
         VentilatorApp.connectivityObserver?.observe()?.distinctUntilChanged()
             ?.observe(viewLifecycleOwner) {
-                if (it) textViewInternetConnectivityData.text = "Connected"
-                else textViewInternetConnectivityData.text = "Disconnected"
+                if (it) binding.textViewInternetConnectivityData.text = "Connected"
+                else binding.textViewInternetConnectivityData.text = "Disconnected"
             }
     }
 
@@ -254,9 +256,9 @@ class InfoFragment(private var communicationService: CommunicationService?) : Fr
     // TODO : WRONG - WRITE IN DASHBOARD ACTIVITY
     private fun setBatteryLevelUpdate(btryLevel: Int) {
         if (btryLevel < 0 || btryLevel > 100) {
-            textViewBattery1Data.text = "-"
+            binding.textViewBattery1Data.text = "-"
         } else {
-            textViewBattery1Data.text = "$btryLevel %"
+            binding.textViewBattery1Data.text = "$btryLevel %"
         }
         this.batteryLevel = btryLevel
     }
@@ -264,16 +266,16 @@ class InfoFragment(private var communicationService: CommunicationService?) : Fr
     private fun setBatteryHealthUpdate(health: Int) {
         when (health) {
             in 0..50 -> {
-                textViewBatteryHealthData.text = "${BatteryHealthStaus.Bad}"
-                textViewBatteryHealthData.setTextColor(Color.RED)
+                binding.textViewBatteryHealthData.text = "${BatteryHealthStaus.Bad}"
+                binding.textViewBatteryHealthData.setTextColor(Color.RED)
             }
             in 51..70 -> {
-                textViewBatteryHealthData.text = "${BatteryHealthStaus.Marginal}"
-                textViewBatteryHealthData.setTextColor(Color.YELLOW)
+                binding.textViewBatteryHealthData.text = "${BatteryHealthStaus.Marginal}"
+                binding.textViewBatteryHealthData.setTextColor(Color.YELLOW)
             }
             in 71..85 -> {
-                textViewBatteryHealthData.text = "${BatteryHealthStaus.Good}"
-                textViewBatteryHealthData.setTextColor(
+                binding.textViewBatteryHealthData.text = "${BatteryHealthStaus.Good}"
+                binding.textViewBatteryHealthData.setTextColor(
                     resources.getColor(
                         R.color.racing_green,
                         null
@@ -281,8 +283,8 @@ class InfoFragment(private var communicationService: CommunicationService?) : Fr
                 )
             }
             in 86..100 -> {
-                textViewBatteryHealthData.text = "${BatteryHealthStaus.Excellent}"
-                textViewBatteryHealthData.setTextColor(
+                binding.textViewBatteryHealthData.text = "${BatteryHealthStaus.Excellent}"
+                binding.textViewBatteryHealthData.setTextColor(
                     resources.getColor(
                         R.color.racing_green,
                         null
@@ -290,12 +292,12 @@ class InfoFragment(private var communicationService: CommunicationService?) : Fr
                 )
             }
             !in 0..100 -> {
-                textViewBatteryHealthData.text = "-"
-                textViewBatteryHealthData.setTextColor(Color.BLACK)
+                binding.textViewBatteryHealthData.text = "-"
+                binding.textViewBatteryHealthData.setTextColor(Color.BLACK)
             }
             else -> {
-                textViewBatteryHealthData.text = "-"
-                textViewBatteryHealthData.setTextColor(Color.BLACK)
+                binding.textViewBatteryHealthData.text = "-"
+                binding.textViewBatteryHealthData.setTextColor(Color.BLACK)
             }
         }
 
@@ -315,7 +317,7 @@ class InfoFragment(private var communicationService: CommunicationService?) : Fr
     private fun setBatteryTTEUpdate(timeInMins: Int) {
 
         if (isBatteryConnected == false) {
-            textViewBatteryRemTimeData.text = "-"
+            binding.textViewBatteryRemTimeData.text = "-"
             isClicked = false
         } else {
 
@@ -338,13 +340,13 @@ class InfoFragment(private var communicationService: CommunicationService?) : Fr
 //            }
 
             if (globalCount >= 60) {
-                textViewBatteryRemTimeData.text =
+                binding.textViewBatteryRemTimeData.text =
                     if (hour == 0) "${formatter.format(mins)} min" else "$hour hr ${
                         formatter.format(mins)
                     } min"
             } else {
                 if (!isClicked) {
-                    textViewBatteryRemTimeData.text = "Calculating...."
+                    binding.textViewBatteryRemTimeData.text = "Calculating...."
                     isClicked = true
                 }
             }
@@ -354,7 +356,7 @@ class InfoFragment(private var communicationService: CommunicationService?) : Fr
 
     fun setSoftWareUpdate(softwareUpdate: String?) {
         softwareUpdate?.apply {
-            textViewOperatingHoursData.text = this
+            binding.textViewOperatingHoursData.text = this
         }
     }
 
@@ -370,7 +372,7 @@ class InfoFragment(private var communicationService: CommunicationService?) : Fr
         cancelTimeOut()
         if (tag == "MainActivity") {
 
-            layout_content.visibility = View.VISIBLE
+            binding.layoutContent.visibility = View.VISIBLE
         }
         super.onPause()
     }
@@ -379,8 +381,8 @@ class InfoFragment(private var communicationService: CommunicationService?) : Fr
         super.onResume()
         try {
         } catch (ex: Exception) {
-            textViewOpHoursData.text = "updating"
-            textViewServiceHoursData.text = "updating"
+            binding.textViewOpHoursData.text = "updating"
+            binding.textViewServiceHoursData.text = "updating"
         }
     }
 

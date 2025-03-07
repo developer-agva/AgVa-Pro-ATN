@@ -34,6 +34,8 @@ import com.agvahealthcare.ventilator_ext.callback.PasswordCallbackListener
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardActivity
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardViewModel
 import com.agvahealthcare.ventilator_ext.database.entities.ServiceDataModel
+import com.agvahealthcare.ventilator_ext.databinding.FragmentServiceBinding
+import com.agvahealthcare.ventilator_ext.databinding.FragmentSettingsBinding
 import com.agvahealthcare.ventilator_ext.logging.FileLogger
 import com.agvahealthcare.ventilator_ext.manager.DataStoreManager
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
@@ -50,7 +52,6 @@ import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
 import com.google.zxing.WriterException
 import com.google.zxing.qrcode.QRCodeWriter
-import kotlinx.android.synthetic.main.fragment_service.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -62,7 +63,7 @@ import kotlin.collections.ArrayList
 class ServiceFragment : Fragment(), OtpVerifyListener, PasswordCallbackListener,
     OnIssueCloseListener, OnServiceClickListener,
     OnIssueSelectListener {
-
+    private lateinit var binding: FragmentServiceBinding
     private var mAdapter: ServiceAdapter? = null
     private var mIssueAdapter: IssueAdapter? = null
     private var mLayoutManager: LinearLayoutManager? = null
@@ -79,26 +80,22 @@ class ServiceFragment : Fragment(), OtpVerifyListener, PasswordCallbackListener,
     private var deviceId = ""
 
 
-
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_service, container, false)
+        binding = FragmentServiceBinding.inflate(layoutInflater, container, false)
 
-        if (view !is EditText) {
-            view.setOnTouchListener { _, _ ->
-                AppUtils.hideKeyBoard(requireContext(), nameET)
-                AppUtils.hideKeyBoard(requireContext(), contactNoET)
-                AppUtils.hideKeyBoard(requireContext(), departmentET)
-                AppUtils.hideKeyBoard(requireContext(), wardET)
-                AppUtils.hideKeyBoard(requireContext(), emailET)
-                false
-            }
+        binding.root.setOnClickListener {
+            AppUtils.hideKeyBoard(requireContext(), binding.nameET)
+            AppUtils.hideKeyBoard(requireContext(), binding.contactNoET)
+            AppUtils.hideKeyBoard(requireContext(), binding.departmentET)
+            AppUtils.hideKeyBoard(requireContext(), binding.wardET)
+            AppUtils.hideKeyBoard(requireContext(), binding.emailET)
         }
-        return view
+        return binding.root
 
     }
 
@@ -108,20 +105,22 @@ class ServiceFragment : Fragment(), OtpVerifyListener, PasswordCallbackListener,
         preferenceManager = PreferenceManager(requireContext())
         dataStoreManager = DataStoreManager(requireContext())
         mServiceViewModel = ViewModelProvider(requireActivity())[ServiceViewModel::class.java]
-        mMainActivityViewModel = ViewModelProvider(requireActivity())[MainActivityViewModel::class.java]
+        mMainActivityViewModel =
+            ViewModelProvider(requireActivity())[MainActivityViewModel::class.java]
 
         deviceId = Settings.Secure.getString(
             requireContext().contentResolver,
             Settings.Secure.ANDROID_ID
         )
 
-        val input = "https://wa.me/7330405060?text=Hi, i need support for this ventilator id - +${deviceId}"
+        val input =
+            "https://wa.me/7330405060?text=Hi, i need support for this ventilator id - +${deviceId}"
 
         setupClickListener()
         setUpServiceData()
 
         val qrCodeBitmap = qrCode(input)
-        qrCode.setImageBitmap(qrCodeBitmap)
+        binding.qrCode.setImageBitmap(qrCodeBitmap)
 
         mServiceViewModel?.readAllService(deviceId)
 
@@ -146,8 +145,8 @@ class ServiceFragment : Fragment(), OtpVerifyListener, PasswordCallbackListener,
 
         // for service open
         if (isServiceOpen) {
-            includeButtonRaiseRequest.setBackgroundResource(R.drawable.background_grey_border_white)
-            txtRaiseServiceButtonName.setTextColor(
+            binding.includeButtonRaiseRequest.setBackgroundResource(R.drawable.background_grey_border_white)
+            binding.txtRaiseServiceButtonName.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
                     R.color.black
@@ -174,18 +173,21 @@ class ServiceFragment : Fragment(), OtpVerifyListener, PasswordCallbackListener,
 
                         val request = ServiceDataModel(
                             issues,
-                            nameET.text.toString(),
-                            departmentET.text.toString(),
-                            wardET.text.toString(),
-                            hospitalET.text.toString(),
-                            emailET.text.toString(),
-                            contactNoET.text.toString(),
+                            binding.nameET.text.toString(),
+                            binding.departmentET.text.toString(),
+                            binding.wardET.text.toString(),
+                            binding.hospitalET.text.toString(),
+                            binding.emailET.text.toString(),
+                            binding.contactNoET.text.toString(),
                             AppUtils.getCurrentDateTime()
                         )
                         mServiceViewModel?.addService(requireContext(), request)
 
 
-                        DialogBoxFactory.showServiceRegisterDialog(context,"Your complaint has been successfully registered")
+                        DialogBoxFactory.showServiceRegisterDialog(
+                            context,
+                            "Your complaint has been successfully registered"
+                        )
 
 //                        ToastFactory.custom(
 //                            requireContext(),
@@ -228,14 +230,20 @@ class ServiceFragment : Fragment(), OtpVerifyListener, PasswordCallbackListener,
                             setServiceHoursEndTime(0L)
                             setDashBoardRunningTimeForService(0L)
 
-                            withContext(Dispatchers.IO){
+                            withContext(Dispatchers.IO) {
                                 FileLogger.writeServiceFile("0")
                             }
 
                             try {
                                 (requireActivity() as DashBoardActivity).lastServiceRunningTime = 0L
-                            }catch (e:Exception){
-                                mMainActivityViewModel?.serviceHours?.postValue(String.format("%d hr, %d min", 0L, 0L))
+                            } catch (e: Exception) {
+                                mMainActivityViewModel?.serviceHours?.postValue(
+                                    String.format(
+                                        "%d hr, %d min",
+                                        0L,
+                                        0L
+                                    )
+                                )
                             }
                         }
 
@@ -257,18 +265,18 @@ class ServiceFragment : Fragment(), OtpVerifyListener, PasswordCallbackListener,
 
     override fun closeDialog() {
 
-        includeButtonRaiseRequest.setBackgroundResource(R.drawable.background_grey_border_white)
-        txtRaiseServiceButtonName.setTextColor(
+        binding.includeButtonRaiseRequest.setBackgroundResource(R.drawable.background_grey_border_white)
+        binding.txtRaiseServiceButtonName.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.black
             )
         )
-        AppUtils.hideKeyBoard(requireContext(), nameET)
-        AppUtils.hideKeyBoard(requireContext(), contactNoET)
-        AppUtils.hideKeyBoard(requireContext(), departmentET)
-        AppUtils.hideKeyBoard(requireContext(), wardET)
-        AppUtils.hideKeyBoard(requireContext(), emailET)
+        AppUtils.hideKeyBoard(requireContext(), binding.nameET)
+        AppUtils.hideKeyBoard(requireContext(), binding.contactNoET)
+        AppUtils.hideKeyBoard(requireContext(), binding.departmentET)
+        AppUtils.hideKeyBoard(requireContext(), binding.wardET)
+        AppUtils.hideKeyBoard(requireContext(), binding.emailET)
 
     }
 
@@ -280,29 +288,29 @@ class ServiceFragment : Fragment(), OtpVerifyListener, PasswordCallbackListener,
 
     private fun normaliseUI() {
         mServiceViewModel?.readAllService(deviceId)
-        mainLayout.visibility = View.VISIBLE
-        addServiceLayout.visibility = View.GONE
+        binding.mainLayout.visibility = View.VISIBLE
+        binding.addServiceLayout.visibility = View.GONE
 
-        nameET.text?.clear()
-        contactNoET.text?.clear()
-        departmentET.text?.clear()
-        emailET.text?.clear()
-        wardET.text?.clear()
+        binding.nameET.text?.clear()
+        binding.contactNoET.text?.clear()
+        binding.departmentET.text?.clear()
+        binding.emailET.text?.clear()
+        binding.wardET.text?.clear()
     }
 
     private fun setupClickListener() {
 
-        backBtn.setOnClickListener {
+        binding.backBtn.setOnClickListener {
             normaliseUI()
         }
 
-        includeButtonAddService.setOnClickListener {
-            mainLayout.visibility = View.GONE
-            addServiceLayout.visibility = View.VISIBLE
+        binding.includeButtonAddService.setOnClickListener {
+            binding.mainLayout.visibility = View.GONE
+            binding.addServiceLayout.visibility = View.VISIBLE
             setUpServiceIssueData()
         }
 
-        includeButtonRaiseRequest.setOnClickListener {
+        binding.includeButtonRaiseRequest.setOnClickListener {
 
             issues = ""
             for (i in 0 until issueList.size) {
@@ -312,15 +320,15 @@ class ServiceFragment : Fragment(), OtpVerifyListener, PasswordCallbackListener,
                 }
             }
 
-            Log.i("asd3123",issues.toString())
+            Log.i("asd3123", issues.toString())
 
             if (!FormValidation.service_details_validations(
-                    nameET,
-                    contactNoET,
-                    emailET,
-                    hospitalET,
-                    wardET,
-                    departmentET
+                    binding.nameET,
+                    binding.contactNoET,
+                    binding.emailET,
+                    binding.hospitalET,
+                    binding.wardET,
+                    binding.departmentET
                 )
             ) ToastFactory.custom(requireContext(), "Please enter service details...")
             else if (issues.isEmpty()) ToastFactory.custom(
@@ -328,8 +336,8 @@ class ServiceFragment : Fragment(), OtpVerifyListener, PasswordCallbackListener,
                 "Please select issues..."
             )
             else {
-                includeButtonRaiseRequest.setBackgroundResource(R.drawable.background_green_border)
-                txtRaiseServiceButtonName.setTextColor(
+                binding.includeButtonRaiseRequest.setBackgroundResource(R.drawable.background_green_border)
+                binding.txtRaiseServiceButtonName.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.white
@@ -341,12 +349,12 @@ class ServiceFragment : Fragment(), OtpVerifyListener, PasswordCallbackListener,
                     requestApi.apply {
                         did = deviceId
                         date = AppUtils.getCurrentDateTime()
-                        name = nameET.text.toString()
-                        department = departmentET.text.toString()
-                        hospitalName = hospitalET.text.toString()
-                        wardNo = wardET.text.toString()
-                        email = emailET.text.toString()
-                        contactNo = contactNoET.text.toString()
+                        name = binding.nameET.text.toString()
+                        department = binding.departmentET.text.toString()
+                        hospitalName = binding.hospitalET.text.toString()
+                        wardNo = binding.wardET.text.toString()
+                        email = binding.emailET.text.toString()
+                        contactNo = binding.contactNoET.text.toString()
                         message = issues
                     }
 
@@ -355,16 +363,19 @@ class ServiceFragment : Fragment(), OtpVerifyListener, PasswordCallbackListener,
                     withContext(Dispatchers.Main) {
 
                         response?.let {
-                            if (it.body()?.status == 201){
+                            if (it.body()?.status == 201) {
                                 DialogBoxFactory.dismissDialogs()
                                 DialogBoxFactory.showOtpVerifyDialog(
                                     requireContext(), this@ServiceFragment, this@ServiceFragment,
                                     requireContext().resources.getString(R.string.info_otp_sent),
                                     true
                                 )
-                            }else {
+                            } else {
                                 // show error dialog for msg
-                                ToastFactory.custom(requireContext(),"Service request already raised..")
+                                ToastFactory.custom(
+                                    requireContext(),
+                                    "Service request already raised.."
+                                )
                             }
                         }
 
@@ -381,13 +392,18 @@ class ServiceFragment : Fragment(), OtpVerifyListener, PasswordCallbackListener,
 
         try {
             val writer = QRCodeWriter()
-            val bitMatrix = writer.encode(inputValue.toString(), BarcodeFormat.QR_CODE, 512, 512, hints)
+            val bitMatrix =
+                writer.encode(inputValue.toString(), BarcodeFormat.QR_CODE, 512, 512, hints)
             val width = bitMatrix.width
             val height = bitMatrix.height
             val bmp = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
             for (x in 0 until width) {
                 for (y in 0 until height) {
-                    bmp.setPixel(x, y, if (bitMatrix[x, y]) 0xFF000000.toInt() else 0xFFFFFFFF.toInt())
+                    bmp.setPixel(
+                        x,
+                        y,
+                        if (bitMatrix[x, y]) 0xFF000000.toInt() else 0xFFFFFFFF.toInt()
+                    )
                 }
             }
             return bmp
@@ -441,7 +457,7 @@ class ServiceFragment : Fragment(), OtpVerifyListener, PasswordCallbackListener,
         mAdapter = ServiceAdapter(requireContext(), dataList, this)
         mLayoutManager = LinearLayoutManager(requireContext())
 
-        recyclerViewService?.apply {
+        binding.recyclerViewService.apply {
             layoutManager = mLayoutManager
             adapter = mAdapter
             isVerticalScrollBarEnabled = true
@@ -455,7 +471,7 @@ class ServiceFragment : Fragment(), OtpVerifyListener, PasswordCallbackListener,
         issueList[position].isTrue = !issueList[position].isTrue
     }
 
-    override fun issueClose(_id: String, contactNo: String,name:String,uid:String) {
+    override fun issueClose(_id: String, contactNo: String, name: String, uid: String) {
         CoroutineScope(Dispatchers.IO).launch {
             val requestApi = ServiceCloseRequestModel()
             requestApi.apply {
@@ -483,9 +499,9 @@ class ServiceFragment : Fragment(), OtpVerifyListener, PasswordCallbackListener,
     private fun setUpServiceIssueData() {
 
         val infoVenti = preferenceManager?.readVentiDetails()?.split(",")
-        wardET.setText(infoVenti?.get(0) ?: "")
-        hospitalET.setText(infoVenti?.get(1) ?: "")
-        departmentET.setText(infoVenti?.get(2) ?: "")
+        binding.wardET.setText(infoVenti?.get(0) ?: "")
+        binding.hospitalET.setText(infoVenti?.get(1) ?: "")
+        binding.departmentET.setText(infoVenti?.get(2) ?: "")
 
         issueList.clear()
         issueList.add(ServiceIssueModel(requireContext().getString(R.string.issue_1), false))
@@ -499,7 +515,7 @@ class ServiceFragment : Fragment(), OtpVerifyListener, PasswordCallbackListener,
         mIssueAdapter = IssueAdapter(issueList, this)
         mIssueLayoutManager = GridLayoutManager(requireContext(), 2)
 
-        issueRecyclerView?.apply {
+        binding.issueRecyclerView.apply {
             layoutManager = mIssueLayoutManager
             adapter = mIssueAdapter
             isVerticalScrollBarEnabled = true
@@ -507,16 +523,15 @@ class ServiceFragment : Fragment(), OtpVerifyListener, PasswordCallbackListener,
         }
     }
 
-    private fun changeTextListener(){
+    private fun changeTextListener() {
 
-        nameET.setOnEditorActionListener(object : TextView.OnEditorActionListener {
+        binding.nameET.setOnEditorActionListener(object : TextView.OnEditorActionListener {
             override fun onEditorAction(p0: TextView?, p1: Int, p2: KeyEvent?): Boolean {
                 if (p1 == EditorInfo.IME_ACTION_NEXT) {
-                    if (nameET.text?.length!! < 5 || nameET?.text?.startsWith(" ")!!){
-                        nameLayout.boxStrokeColor = requireContext().resources.getColor(R.color.red)
-                    }
-                    else {
-                        contactNoET.requestFocus()
+                    if (binding.nameET.text?.length!! < 5 || binding.nameET?.text?.startsWith(" ")!!) {
+                        binding.nameLayout.boxStrokeColor = requireContext().resources.getColor(R.color.red)
+                    } else {
+                        binding.contactNoET.requestFocus()
                     }
                     return true
                 }
@@ -524,14 +539,14 @@ class ServiceFragment : Fragment(), OtpVerifyListener, PasswordCallbackListener,
             }
         })
 
-        contactNoET.setOnEditorActionListener(object : TextView.OnEditorActionListener {
+        binding.contactNoET.setOnEditorActionListener(object : TextView.OnEditorActionListener {
             override fun onEditorAction(p0: TextView?, p1: Int, p2: KeyEvent?): Boolean {
                 if (p1 == EditorInfo.IME_ACTION_NEXT) {
-                    if (contactNoET.text?.length!! < 10 || contactNoET?.text?.startsWith("0")!!){
-                        phoneLayout.boxStrokeColor = requireContext().resources.getColor(R.color.red)
-                    }
-                    else {
-                        emailET.requestFocus()
+                    if (binding.contactNoET.text?.length!! < 10 || binding.contactNoET?.text?.startsWith("0")!!) {
+                        binding.phoneLayout.boxStrokeColor =
+                            requireContext().resources.getColor(R.color.red)
+                    } else {
+                        binding.emailET.requestFocus()
                     }
                     return true
                 }
@@ -539,14 +554,14 @@ class ServiceFragment : Fragment(), OtpVerifyListener, PasswordCallbackListener,
             }
         })
 
-        emailET.setOnEditorActionListener(object : TextView.OnEditorActionListener {
+        binding.emailET.setOnEditorActionListener(object : TextView.OnEditorActionListener {
             override fun onEditorAction(p0: TextView?, p1: Int, p2: KeyEvent?): Boolean {
                 if (p1 == EditorInfo.IME_ACTION_NEXT) {
-                    if (!emailET.text?.matches(Regex(FormValidation.emailPattern))!!){
-                        emailLayout.boxStrokeColor = requireContext().resources.getColor(R.color.red)
-                    }
-                    else {
-                        wardET.requestFocus()
+                    if (!binding.emailET.text?.matches(Regex(FormValidation.emailPattern))!!) {
+                        binding.emailLayout.boxStrokeColor =
+                            requireContext().resources.getColor(R.color.red)
+                    } else {
+                        binding.wardET.requestFocus()
                     }
                     return true
                 }
@@ -555,14 +570,13 @@ class ServiceFragment : Fragment(), OtpVerifyListener, PasswordCallbackListener,
         })
 
 
-        wardET.setOnEditorActionListener(object : TextView.OnEditorActionListener {
+        binding.wardET.setOnEditorActionListener(object : TextView.OnEditorActionListener {
             override fun onEditorAction(p0: TextView?, p1: Int, p2: KeyEvent?): Boolean {
                 if (p1 == EditorInfo.IME_ACTION_NEXT) {
-                    if (wardET.text?.isEmpty()!!){
-                        WardLayout.boxStrokeColor = requireContext().resources.getColor(R.color.red)
-                    }
-                    else {
-                        departmentET.requestFocus()
+                    if (binding.wardET.text?.isEmpty()!!) {
+                        binding.WardLayout.boxStrokeColor = requireContext().resources.getColor(R.color.red)
+                    } else {
+                        binding.departmentET.requestFocus()
                     }
                     return true
                 }
@@ -570,11 +584,12 @@ class ServiceFragment : Fragment(), OtpVerifyListener, PasswordCallbackListener,
             }
         })
 
-        departmentET.setOnEditorActionListener(object : TextView.OnEditorActionListener {
+        binding.departmentET.setOnEditorActionListener(object : TextView.OnEditorActionListener {
             override fun onEditorAction(p0: TextView?, p1: Int, p2: KeyEvent?): Boolean {
                 if (p1 == EditorInfo.IME_ACTION_NEXT) {
-                    if (departmentET.text?.isEmpty()!!){
-                        DepartmentLayout.boxStrokeColor = requireContext().resources.getColor(R.color.red)
+                    if (binding.departmentET.text?.isEmpty()!!) {
+                        binding.DepartmentLayout.boxStrokeColor =
+                            requireContext().resources.getColor(R.color.red)
                     }
                     return true
                 }
@@ -582,44 +597,44 @@ class ServiceFragment : Fragment(), OtpVerifyListener, PasswordCallbackListener,
             }
         })
 
-        nameET.addTextChangedListener {
-            if (it?.length!! < 5 || it.startsWith(" ")){
-                nameLayout.boxStrokeColor = requireContext().resources.getColor(R.color.red)
-            }else{
-                nameLayout.boxStrokeColor = requireContext().resources.getColor(R.color.green)
+        binding.nameET.addTextChangedListener {
+            if (it?.length!! < 5 || it.startsWith(" ")) {
+                binding.nameLayout.boxStrokeColor = requireContext().resources.getColor(R.color.red)
+            } else {
+                binding.nameLayout.boxStrokeColor = requireContext().resources.getColor(R.color.green)
             }
         }
 
-        contactNoET.addTextChangedListener {
-            if (it?.length!! < 10 || it.startsWith("0")){
-                phoneLayout.boxStrokeColor = requireContext().resources.getColor(R.color.red)
-            }else{
-                phoneLayout.boxStrokeColor = requireContext().resources.getColor(R.color.green)
+        binding.contactNoET.addTextChangedListener {
+            if (it?.length!! < 10 || it.startsWith("0")) {
+                binding.phoneLayout.boxStrokeColor = requireContext().resources.getColor(R.color.red)
+            } else {
+                binding.phoneLayout.boxStrokeColor = requireContext().resources.getColor(R.color.green)
             }
         }
 
-        emailET.addTextChangedListener {
-            if (!emailET.text?.matches(Regex(FormValidation.emailPattern))!!){
-                emailLayout.boxStrokeColor = requireContext().resources.getColor(R.color.red)
-            }else{
-                emailLayout.boxStrokeColor = requireContext().resources.getColor(R.color.green)
+        binding.emailET.addTextChangedListener {
+            if (!binding.emailET.text?.matches(Regex(FormValidation.emailPattern))!!) {
+                binding.emailLayout.boxStrokeColor = requireContext().resources.getColor(R.color.red)
+            } else {
+                binding.emailLayout.boxStrokeColor = requireContext().resources.getColor(R.color.green)
             }
         }
 
-        wardET.addTextChangedListener {
-            if (wardET.text?.isEmpty()!!){
-                WardLayout.boxStrokeColor = requireContext().resources.getColor(R.color.red)
-            }else{
-                WardLayout.boxStrokeColor = requireContext().resources.getColor(R.color.green)
+        binding.wardET.addTextChangedListener {
+            if (binding.wardET.text?.isEmpty()!!) {
+                binding.WardLayout.boxStrokeColor = requireContext().resources.getColor(R.color.red)
+            } else {
+                binding.WardLayout.boxStrokeColor = requireContext().resources.getColor(R.color.green)
             }
         }
 
 
-        departmentET.addTextChangedListener {
-            if (departmentET.text?.isEmpty()!!){
-                DepartmentLayout.boxStrokeColor = requireContext().resources.getColor(R.color.red)
-            }else{
-                DepartmentLayout.boxStrokeColor = requireContext().resources.getColor(R.color.green)
+        binding.departmentET.addTextChangedListener {
+            if (binding.departmentET.text?.isEmpty()!!) {
+                binding.DepartmentLayout.boxStrokeColor = requireContext().resources.getColor(R.color.red)
+            } else {
+                binding.DepartmentLayout.boxStrokeColor = requireContext().resources.getColor(R.color.green)
             }
         }
 

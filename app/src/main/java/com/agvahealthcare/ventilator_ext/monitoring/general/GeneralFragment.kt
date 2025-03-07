@@ -1,24 +1,24 @@
 package com.agvahealthcare.ventilator_ext.monitoring.general
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import com.agvahealthcare.ventilator_ext.R
+import com.agvahealthcare.ventilator_ext.databinding.FragmentGeneralBinding
 import com.agvahealthcare.ventilator_ext.model.ObservedParameterModel
-import kotlinx.android.synthetic.main.fragment_general.*
 
 class GeneralFragment : Fragment(){
 
+    private lateinit var binding:FragmentGeneralBinding
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_general, container, false)
+        binding = FragmentGeneralBinding.inflate(layoutInflater,container,false)
+        return binding.root
     }
 
     private var observedList: ArrayList<ObservedParameterModel>? = null
@@ -33,7 +33,7 @@ class GeneralFragment : Fragment(){
     // RecyclerView Data Setup
     private fun setUpGeneralData() {
         mAdapter = ObservedParameterAdapter(observedList)
-        recyclerViewGeneral?.apply {
+        binding.recyclerViewGeneral.apply {
             layoutManager = GridLayoutManager(requireContext(), 7)
             adapter = mAdapter
         }

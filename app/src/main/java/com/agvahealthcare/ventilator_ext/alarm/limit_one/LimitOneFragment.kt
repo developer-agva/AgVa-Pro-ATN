@@ -20,6 +20,8 @@ import com.agvahealthcare.ventilator_ext.callback.OnDismissDialogListener
 import com.agvahealthcare.ventilator_ext.callback.OnKnobPressListener
 import com.agvahealthcare.ventilator_ext.callback.OnLimitChangeListener
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardActivity
+import com.agvahealthcare.ventilator_ext.databinding.FragmentAlarmDialogBinding
+import com.agvahealthcare.ventilator_ext.databinding.FragmentLimitOneBinding
 import com.agvahealthcare.ventilator_ext.logs.event.EventViewModel
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.model.ControlParameterLimit
@@ -27,14 +29,6 @@ import com.agvahealthcare.ventilator_ext.service.CommunicationService
 import com.agvahealthcare.ventilator_ext.utility.KnobDialog
 import com.agvahealthcare.ventilator_ext.utility.hideSystemUI
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.*
-import kotlinx.android.synthetic.main.fragment_alarm_dialog.focusLayoutAlarmDialog
-import kotlinx.android.synthetic.main.fragment_alarm_dialog.imageViewCrossAlarmDialog
-import kotlinx.android.synthetic.main.fragment_alarm_dialog.includeButtonBuffer
-import kotlinx.android.synthetic.main.fragment_alarm_dialog.includeButtonLimit1
-import kotlinx.android.synthetic.main.fragment_alarm_dialog.includeButtonLimit2
-import kotlinx.android.synthetic.main.fragment_alarm_dialog.mainViewPanelAlarmDialog
-import kotlinx.android.synthetic.main.fragment_limit_one.*
-import kotlinx.android.synthetic.main.knob_progress_view.view.*
 
 
 class LimitOneFragment(
@@ -45,7 +39,7 @@ class LimitOneFragment(
     companion object {
         val TAG = "LimitOneFragment"
     }
-
+    private lateinit var binding : FragmentLimitOneBinding
     private var prefManager: PreferenceManager? = null
     private var presserUpperLimit: Float? = null
     private var presserLowerLimit: Float? = null
@@ -102,16 +96,16 @@ class LimitOneFragment(
 
         when (highlightedIndex) {
 
-            0 -> includePressureUpperLimit.callOnClick()
-            1 -> includePressureLoweLimit.callOnClick()
-            2 -> includeVTeUpperLimit.callOnClick()
-            3 -> includeVTeLowerLimit.callOnClick()
-            4 -> includePeepUpperLimit.callOnClick()
-            5 -> includePeepLowerLimit.callOnClick()
-            6 -> includeRRUpperLimit.callOnClick()
-            7 -> includeRRLowerLimit.callOnClick()
-            8 -> includeMVEUpperLimit.callOnClick()
-            9 -> includeMVELowerLimit.callOnClick()
+            0 -> binding.includePressureUpperLimit.root.callOnClick()
+            1 -> binding.includePressureLoweLimit.root.callOnClick()
+            2 -> binding.includeVTeUpperLimit.root.callOnClick()
+            3 -> binding.includeVTeLowerLimit.root.callOnClick()
+            4 -> binding.includePeepUpperLimit.root.callOnClick()
+            5 -> binding.includePeepLowerLimit.root.callOnClick()
+            6 -> binding.includeRRUpperLimit.root.callOnClick()
+            7 -> binding.includeRRLowerLimit.root.callOnClick()
+            8 -> binding.includeMVEUpperLimit.root.callOnClick()
+            9 -> binding.includeMVELowerLimit.root.callOnClick()
         }
 
     }
@@ -130,12 +124,12 @@ class LimitOneFragment(
     fun clearPreviousConstraints() {
         try {
             val constraintSet = ConstraintSet()
-            constraintSet.clone(mainViewPanelLimitOne)
-            constraintSet.clear(focusLayoutLimitOne.id, ConstraintSet.TOP)
-            constraintSet.clear(focusLayoutLimitOne.id, ConstraintSet.BOTTOM)
-            constraintSet.clear(focusLayoutLimitOne.id, ConstraintSet.LEFT)
-            constraintSet.clear(focusLayoutLimitOne.id, ConstraintSet.RIGHT)
-            constraintSet.applyTo(mainViewPanelLimitOne)
+            constraintSet.clone(binding.mainViewPanelLimitOne)
+            constraintSet.clear(binding.focusLayoutLimitOne.id, ConstraintSet.TOP)
+            constraintSet.clear(binding.focusLayoutLimitOne.id, ConstraintSet.BOTTOM)
+            constraintSet.clear(binding.focusLayoutLimitOne.id, ConstraintSet.LEFT)
+            constraintSet.clear(binding.focusLayoutLimitOne.id, ConstraintSet.RIGHT)
+            constraintSet.applyTo(binding.mainViewPanelLimitOne)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -143,52 +137,52 @@ class LimitOneFragment(
 
     private fun changeConstraintsOfFocusLayout(view: View) {
         val constraintSet = ConstraintSet()
-        constraintSet.clone(mainViewPanelLimitOne)
+        constraintSet.clone(binding.mainViewPanelLimitOne)
         constraintSet.connect(
-            focusLayoutLimitOne.id,
+            binding.focusLayoutLimitOne.id,
             ConstraintSet.RIGHT,
             view.id,
             ConstraintSet.RIGHT,
             0
         )
         constraintSet.connect(
-            focusLayoutLimitOne.id,
+            binding.focusLayoutLimitOne.id,
             ConstraintSet.TOP,
             view.id,
             ConstraintSet.TOP,
             0
         )
         constraintSet.connect(
-            focusLayoutLimitOne.id,
+            binding.focusLayoutLimitOne.id,
             ConstraintSet.BOTTOM,
             view.id,
             ConstraintSet.BOTTOM,
             0
         )
         constraintSet.connect(
-            focusLayoutLimitOne.id,
+            binding.focusLayoutLimitOne.id,
             ConstraintSet.LEFT,
             view.id,
             ConstraintSet.LEFT,
             0
         )
-        constraintSet.applyTo(mainViewPanelLimitOne)
+        constraintSet.applyTo(binding.mainViewPanelLimitOne)
     }
 
     private fun getViewForFocus(highlightedIndex: Int): View? {
 
         return when (highlightedIndex) {
 
-            0 -> layout1LimitOne
-            1 -> layout2LimitOne
-            2 -> layout3LimitOne
-            3 -> layout4LimitOne
-            4 -> layout5LimitOne
-            5 -> layout6LimitOne
-            6 -> layout7LimitOne
-            7 -> layout8LimitOne
-            8 -> layout9LimitOne
-            9 -> layout10LimitOne
+            0 -> binding.layout1LimitOne
+            1 -> binding.layout2LimitOne
+            2 -> binding.layout3LimitOne
+            3 -> binding.layout4LimitOne
+            4 -> binding.layout5LimitOne
+            5 -> binding.layout6LimitOne
+            6 -> binding.layout7LimitOne
+            7 -> binding.layout8LimitOne
+            8 -> binding.layout9LimitOne
+            9 -> binding.layout10LimitOne
 
             else -> null
         }
@@ -202,7 +196,8 @@ class LimitOneFragment(
         savedInstanceState: Bundle?,
     ): View {
         Log.i("ACTIVITY_LIFECYCLE", "ON_CREATE $javaClass")
-        return inflater.inflate(R.layout.fragment_limit_one, container, false)
+        binding = FragmentLimitOneBinding.inflate(layoutInflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -223,11 +218,11 @@ class LimitOneFragment(
 
     private fun initTogalState() {
         prefManager?.apply {
-            presserToggle.isOn = readPipLimitState()
-            vteToggle.isOn = readVteLimitState()
-            peepToggle.isOn = readPeepLimitState()
-            rrToggle.isOn = readRRLimitState()
-            mveToggle.isOn = readMveLimitState()
+            binding.presserToggle.isOn = readPipLimitState()
+            binding.vteToggle.isOn = readVteLimitState()
+            binding.peepToggle.isOn = readPeepLimitState()
+            binding.rrToggle.isOn = readRRLimitState()
+            binding.mveToggle.isOn = readMveLimitState()
         }
 
     }
@@ -285,20 +280,20 @@ class LimitOneFragment(
 
     // set on ClickListener
     private fun setupClickListener() {
-        includePressureUpperLimit.setOnClickListener(this)
-        includePressureLoweLimit.setOnClickListener(this)
+        binding.includePressureUpperLimit.root.setOnClickListener(this)
+        binding.includePressureLoweLimit.root.setOnClickListener(this)
         //ToDo:-includeVTeUpperLimit
-        includeVTeUpperLimit.setOnClickListener(this)
-        includeVTeLowerLimit.setOnClickListener(this)
+        binding.includeVTeUpperLimit.root.setOnClickListener(this)
+        binding.includeVTeLowerLimit.root.setOnClickListener(this)
         //ToDo:-includePeepUpperLimit
-        includePeepUpperLimit.setOnClickListener(this)
-        includePeepLowerLimit.setOnClickListener(this)
+        binding.includePeepUpperLimit.root.setOnClickListener(this)
+        binding.includePeepLowerLimit.root.setOnClickListener(this)
         //ToDo:-includeRRUpperLimit
-        includeRRUpperLimit.setOnClickListener(this)
-        includeRRLowerLimit.setOnClickListener(this)
+        binding.includeRRUpperLimit.root.setOnClickListener(this)
+        binding.includeRRLowerLimit.root.setOnClickListener(this)
         //ToDo:-includemveUpperLimit
-        includeMVEUpperLimit.setOnClickListener(this)
-        includeMVELowerLimit.setOnClickListener(this)
+        binding.includeMVEUpperLimit.root.setOnClickListener(this)
+        binding.includeMVELowerLimit.root.setOnClickListener(this)
     }
 
     private fun initUserSetLimits() {
@@ -326,36 +321,36 @@ class LimitOneFragment(
             var lowerLimitView: View? = null
             when (lbl) {
                 LBL_PIP -> {
-                    upperLimitView = includePressureUpperLimit
-                    lowerLimitView = includePressureLoweLimit
+                    upperLimitView = binding.includePressureUpperLimit.root
+                    lowerLimitView = binding.includePressureLoweLimit.root
                     defaultUpperLimit = default_presserUpperLimit
                     defaultLowerLimit = default_presserLowerLimit
                 }
 
                 LBL_VTE -> {
-                    upperLimitView = includeVTeUpperLimit
-                    lowerLimitView = includeVTeLowerLimit
+                    upperLimitView = binding.includeVTeUpperLimit.root
+                    lowerLimitView = binding.includeVTeLowerLimit.root
                     defaultUpperLimit = default_vteUpperLimit
                     defaultLowerLimit = default_vteLowerLimit
                 }
 
                 LBL_PEEP -> {
-                    upperLimitView = includePeepUpperLimit
-                    lowerLimitView = includePeepLowerLimit
+                    upperLimitView = binding.includePeepUpperLimit.root
+                    lowerLimitView = binding.includePeepLowerLimit.root
                     defaultUpperLimit = default_peepUpperLimit
                     defaultLowerLimit = default_peepLowerLimit
                 }
 
                 LBL_RR -> {
-                    upperLimitView = includeRRUpperLimit
-                    lowerLimitView = includeRRLowerLimit
+                    upperLimitView = binding.includeRRUpperLimit.root
+                    lowerLimitView = binding.includeRRLowerLimit.root
                     defaultUpperLimit = default_respiratoryUpperLimit
                     defaultLowerLimit = default_respiratoryLowerLimit
                 }
 
                 LBL_MVE -> {
-                    upperLimitView = includeMVEUpperLimit
-                    lowerLimitView = includeMVELowerLimit
+                    upperLimitView = binding.includeMVEUpperLimit.root
+                    lowerLimitView = binding.includeMVELowerLimit.root
                     defaultUpperLimit = default_mveUpperLimit
                     defaultLowerLimit = default_mveLowerLimit
                 }
@@ -391,7 +386,7 @@ class LimitOneFragment(
             prefManager?.apply {
                 when (it) {
 
-                    includePressureUpperLimit -> {
+                    binding.includePressureUpperLimit.root -> {
                         setPipLimits(presserLowerLimit, presserUpperLimit)
                         limitChangeListener.onChangeAlarmLimit(
                             currentKey,
@@ -400,7 +395,7 @@ class LimitOneFragment(
                         )
                     }
 
-                    includePressureLoweLimit -> {
+                    binding.includePressureLoweLimit.root -> {
                         setPipLimits(presserLowerLimit, presserUpperLimit)
                         limitChangeListener.onChangeAlarmLimit(
                             currentKey,
@@ -409,7 +404,7 @@ class LimitOneFragment(
                         )
                     }
 
-                    includeVTeUpperLimit -> {
+                    binding.includeVTeUpperLimit.root -> {
                         setVteLimits(vteLowerLimit, vteUpperLimit)
                         limitChangeListener.onChangeAlarmLimit(
                             currentKey,
@@ -418,7 +413,7 @@ class LimitOneFragment(
                         )
                     }
 
-                    includeVTeLowerLimit -> {
+                    binding.includeVTeLowerLimit.root -> {
                         setVteLimits(vteLowerLimit, vteUpperLimit)
                         limitChangeListener.onChangeAlarmLimit(
                             currentKey,
@@ -427,7 +422,7 @@ class LimitOneFragment(
                         )
                     }
 
-                    includePeepUpperLimit -> {
+                    binding.includePeepUpperLimit.root -> {
                         setPEEPLimits(peepLowerLimit, peepUpperLimit)
                         limitChangeListener.onChangeAlarmLimit(
                             currentKey,
@@ -436,7 +431,7 @@ class LimitOneFragment(
                         )
                     }
 
-                    includePeepLowerLimit -> {
+                    binding.includePeepLowerLimit.root -> {
                         setPEEPLimits(peepLowerLimit, peepUpperLimit)
                         limitChangeListener.onChangeAlarmLimit(
                             currentKey,
@@ -445,7 +440,7 @@ class LimitOneFragment(
                         )
                     }
 
-                    includeRRUpperLimit -> {
+                    binding.includeRRUpperLimit.root -> {
                         setRRLimits(respiratoryLowerLimit, respiratoryUpperLimit)
                         limitChangeListener.onChangeAlarmLimit(
                             currentKey,
@@ -454,7 +449,7 @@ class LimitOneFragment(
                         )
                     }
 
-                    includeRRLowerLimit -> {
+                    binding.includeRRLowerLimit.root -> {
                         setRRLimits(respiratoryLowerLimit, respiratoryUpperLimit)
                         limitChangeListener.onChangeAlarmLimit(
                             currentKey,
@@ -463,7 +458,7 @@ class LimitOneFragment(
                         )
                     }
 
-                    includeMVEUpperLimit -> {
+                    binding.includeMVEUpperLimit.root -> {
                         setMveLimits(mveLowerLimit, mveUpperLimit)
                         limitChangeListener.onChangeAlarmLimit(
                             currentKey,
@@ -472,7 +467,7 @@ class LimitOneFragment(
                         )
                     }
 
-                    includeMVELowerLimit -> {
+                    binding.includeMVELowerLimit.root -> {
                         setMveLimits(mveLowerLimit, mveUpperLimit)
                         limitChangeListener.onChangeAlarmLimit(
                             currentKey,
@@ -513,71 +508,119 @@ class LimitOneFragment(
     }
 
     private fun setValueOnProgressView(activeView: View, lowerLimit: Float, upperLimit: Float) {
-        activeView.param_progress_bar.maxProgress = upperLimit.toInt().toDouble()
+        when (activeView) {
+            binding.includePressureUpperLimit.root -> {
+                binding.includePressureUpperLimit.paramProgressBar.maxProgress = upperLimit.toInt().toDouble()
+            }
+
+            binding.includePressureLoweLimit.root -> {
+                binding.includePressureLoweLimit.paramProgressBar.maxProgress = upperLimit.toInt().toDouble()
+            }
+
+            binding.includeVTeUpperLimit.root -> {
+                binding.includeVTeUpperLimit.paramProgressBar.maxProgress = upperLimit.toInt().toDouble()
+            }
+
+            binding.includeVTeLowerLimit.root -> {
+                binding.includeVTeLowerLimit.paramProgressBar.maxProgress = upperLimit.toInt().toDouble()
+            }
+
+            binding.includePeepUpperLimit.root -> {
+                binding.includePeepUpperLimit.paramProgressBar.maxProgress = upperLimit.toInt().toDouble()
+            }
+
+            binding.includePeepLowerLimit.root -> {
+                binding.includePeepLowerLimit.paramProgressBar.maxProgress = upperLimit.toInt().toDouble()
+            }
+
+            binding.includeRRUpperLimit.root -> {
+                binding.includeRRUpperLimit.paramProgressBar.maxProgress = upperLimit.toInt().toDouble()
+            }
+
+            binding.includeRRLowerLimit.root -> {
+                binding.includeRRLowerLimit.paramProgressBar.maxProgress = upperLimit.toInt().toDouble()
+            }
+
+            binding.includeMVEUpperLimit.root -> {
+                binding.includeMVEUpperLimit.paramProgressBar.maxProgress = upperLimit.toInt().toDouble()
+            }
+
+            binding.includeMVELowerLimit.root -> {
+                binding.includeMVELowerLimit.paramProgressBar.maxProgress = upperLimit.toInt().toDouble()
+            }
+        }
     }
 
     private fun setValueOnLimitView(activeView: View, newValue: Float) {
 
-
-        // update the view
-        //activeView.progress_bar.progress = newValue.toInt()
-        // activeView.param_progress_bar.setProgress(newValue.toInt())
-        activeView.param_progress_bar.setCurrentProgress(newValue.toInt().toDouble())
-        Log.i("LIMIT1_CHECK", "value = ${supportPrecision(activeView, newValue.toString())}")
-        activeView.textView.text = supportPrecision(activeView, newValue.toString())
-
         // update runtime variable value
         when (activeView) {
-            includePressureUpperLimit -> {
+            binding.includePressureUpperLimit.root -> {
                 presserUpperLimit = newValue
+                binding.includePressureUpperLimit.paramProgressBar.setCurrentProgress(newValue.toInt().toDouble())
+                binding.includePressureUpperLimit.textView.text = supportPrecision(activeView, newValue.toString())
             }
 
-            includePressureLoweLimit -> {
+            binding.includePressureLoweLimit.root -> {
                 presserLowerLimit = newValue
+                binding.includePressureLoweLimit.paramProgressBar.setCurrentProgress(newValue.toInt().toDouble())
+                binding.includePressureLoweLimit.textView.text = supportPrecision(activeView, newValue.toString())
             }
 
-            includeVTeUpperLimit -> {
+            binding.includeVTeUpperLimit.root -> {
                 vteUpperLimit = newValue
+                binding.includeVTeUpperLimit.paramProgressBar.setCurrentProgress(newValue.toInt().toDouble())
+                binding.includeVTeUpperLimit.textView.text = supportPrecision(activeView, newValue.toString())
             }
 
-            includeVTeLowerLimit -> {
+            binding.includeVTeLowerLimit.root -> {
                 vteLowerLimit = newValue
+                binding.includeVTeLowerLimit.paramProgressBar.setCurrentProgress(newValue.toInt().toDouble())
+                binding.includeVTeLowerLimit.textView.text = supportPrecision(activeView, newValue.toString())
             }
 
-            includePeepUpperLimit -> {
+            binding.includePeepUpperLimit.root -> {
                 peepUpperLimit = newValue
+                binding.includePeepUpperLimit.paramProgressBar.setCurrentProgress(newValue.toInt().toDouble())
+                binding.includePeepUpperLimit.textView.text = supportPrecision(activeView, newValue.toString())
             }
 
-            includePeepLowerLimit -> {
+            binding.includePeepLowerLimit.root -> {
                 peepLowerLimit = newValue
+                binding.includePeepLowerLimit.paramProgressBar.setCurrentProgress(newValue.toInt().toDouble())
+                binding.includePeepLowerLimit.textView.text = supportPrecision(activeView, newValue.toString())
             }
 
-            includeRRUpperLimit -> {
+            binding.includeRRUpperLimit.root -> {
                 respiratoryUpperLimit = newValue
-
+                binding.includeRRUpperLimit.paramProgressBar.setCurrentProgress(newValue.toInt().toDouble())
+                binding.includeRRUpperLimit.textView.text = supportPrecision(activeView, newValue.toString())
             }
 
-            includeRRLowerLimit -> {
+            binding.includeRRLowerLimit.root -> {
                 respiratoryLowerLimit = newValue
+                binding.includeRRLowerLimit.paramProgressBar.setCurrentProgress(newValue.toInt().toDouble())
+                binding.includeRRLowerLimit.textView.text = supportPrecision(activeView, newValue.toString())
             }
 
-            includeMVEUpperLimit -> {
+            binding.includeMVEUpperLimit.root -> {
                 mveUpperLimit = newValue
+                binding.includeMVEUpperLimit.paramProgressBar.setCurrentProgress(newValue.toInt().toDouble())
+                binding.includeMVEUpperLimit.textView.text = supportPrecision(activeView, newValue.toString())
             }
 
-            includeMVELowerLimit -> {
+            binding.includeMVELowerLimit.root -> {
                 mveLowerLimit = newValue
+                binding.includeMVELowerLimit.paramProgressBar.setCurrentProgress(newValue.toInt().toDouble())
+                binding.includeMVELowerLimit.textView.text = supportPrecision(activeView, newValue.toString())
             }
         }
-        /* mveToggle.id -> {
-            setmveLimitState(isOn)
-        }*/
     }
 
     private fun supportPrecision(v: View, value: String): String {
         val decimalSupportedViews = listOf<View>(
-            includeMVELowerLimit,
-            includeMVEUpperLimit
+            binding.includeMVELowerLimit.root,
+            binding.includeMVEUpperLimit.root
         )
 
         return if (v in decimalSupportedViews) {
@@ -591,26 +634,135 @@ class LimitOneFragment(
     }
 
     private fun select(limitView: View?) {
-        limitView?.param_progress_bar?.run {
-            val progressValue = progress
-            //  val progressMin = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) min else 0
-            val progressMax = maxProgress
-            // setValueOnProgressView(limitView, progressMin.toFloat(), progressMax.toFloat())
-            setValueOnLimitView(limitView, progressValue.toFloat())
-            this.background =
-                ContextCompat.getDrawable(context, R.drawable.progresscircle_with_selection_yellow)
 
+        context?.let {
+            when (limitView) {
+                binding.includePressureUpperLimit.root -> {
+                    setValueOnLimitView(limitView, binding.includePressureUpperLimit.paramProgressBar.progress.toFloat())
+                    binding.includePressureUpperLimit.paramProgressBar.background = ContextCompat.getDrawable(it, R.drawable.progresscircle_with_selection_yellow)
+                    binding.includePressureUpperLimit.textView.setTextColor(Color.BLACK)
+                }
+
+                binding.includePressureLoweLimit.root -> {
+                    setValueOnLimitView(limitView, binding.includePressureLoweLimit.paramProgressBar.progress.toFloat())
+                    binding.includePressureLoweLimit.paramProgressBar.background = ContextCompat.getDrawable(it, R.drawable.progresscircle_with_selection_yellow)
+                    binding.includePressureLoweLimit.textView.setTextColor(Color.BLACK)
+                }
+
+                binding.includeVTeUpperLimit.root -> {
+                    setValueOnLimitView(limitView, binding.includeVTeUpperLimit.paramProgressBar.progress.toFloat())
+                    binding.includeVTeUpperLimit.paramProgressBar.background = ContextCompat.getDrawable(it, R.drawable.progresscircle_with_selection_yellow)
+                    binding.includeVTeUpperLimit.textView.setTextColor(Color.BLACK)
+                }
+
+                binding.includeVTeLowerLimit.root -> {
+                    setValueOnLimitView(limitView, binding.includeVTeLowerLimit.paramProgressBar.progress.toFloat())
+                    binding.includeVTeLowerLimit.paramProgressBar.background = ContextCompat.getDrawable(it, R.drawable.progresscircle_with_selection_yellow)
+                    binding.includeVTeLowerLimit.textView.setTextColor(Color.BLACK)
+                }
+
+                binding.includePeepUpperLimit.root -> {
+                    setValueOnLimitView(limitView, binding.includePeepUpperLimit.paramProgressBar.progress.toFloat())
+                    binding.includePeepUpperLimit.paramProgressBar.background = ContextCompat.getDrawable(it, R.drawable.progresscircle_with_selection_yellow)
+                    binding.includePeepUpperLimit.textView.setTextColor(Color.BLACK)
+                }
+
+                binding.includePeepLowerLimit.root -> {
+                    setValueOnLimitView(limitView, binding.includePeepLowerLimit.paramProgressBar.progress.toFloat())
+                    binding.includePeepLowerLimit.paramProgressBar.background = ContextCompat.getDrawable(it, R.drawable.progresscircle_with_selection_yellow)
+                    binding.includePeepLowerLimit.textView.setTextColor(Color.BLACK)
+                }
+
+                binding.includeRRUpperLimit.root -> {
+                    setValueOnLimitView(limitView, binding.includeRRUpperLimit.paramProgressBar.progress.toFloat())
+                    binding.includeRRUpperLimit.paramProgressBar.background = ContextCompat.getDrawable(it, R.drawable.progresscircle_with_selection_yellow)
+                    binding.includeRRUpperLimit.textView.setTextColor(Color.BLACK)
+                }
+
+                binding.includeRRLowerLimit.root -> {
+                    setValueOnLimitView(limitView, binding.includeRRLowerLimit.paramProgressBar.progress.toFloat())
+                    binding.includeRRLowerLimit.paramProgressBar.background = ContextCompat.getDrawable(it, R.drawable.progresscircle_with_selection_yellow)
+                    binding.includeRRLowerLimit.textView.setTextColor(Color.BLACK)
+                }
+
+                binding.includeMVEUpperLimit.root -> {
+                    setValueOnLimitView(limitView, binding.includeMVEUpperLimit.paramProgressBar.progress.toFloat())
+                    binding.includeMVEUpperLimit.paramProgressBar.background = ContextCompat.getDrawable(it, R.drawable.progresscircle_with_selection_yellow)
+                    binding.includeMVEUpperLimit.textView.setTextColor(Color.BLACK)
+                }
+
+                binding.includeMVELowerLimit.root -> {
+                    setValueOnLimitView(limitView, binding.includeMVELowerLimit.paramProgressBar.progress.toFloat())
+                    binding.includeMVELowerLimit.paramProgressBar.background = ContextCompat.getDrawable(it, R.drawable.progresscircle_with_selection_yellow)
+                    binding.includeMVELowerLimit.textView.setTextColor(Color.BLACK)
+                }
+            }
         }
-
-        limitView?.textView?.setTextColor(Color.BLACK)
     }
 
     private infix fun LimitOneFragment.deSelect(limitView: View?) {
-        limitView?.param_progress_bar?.progress
-        limitView?.textView?.setTextColor(Color.BLACK)
         context?.let {
-            limitView?.param_progress_bar?.background =
-                ContextCompat.getDrawable(it, R.drawable.progresscircle)
+            when (limitView) {
+                binding.includePressureUpperLimit.root -> {
+                    binding.includePressureUpperLimit.textView.setTextColor(Color.BLACK)
+                    binding.includePressureUpperLimit.paramProgressBar.background =
+                        ContextCompat.getDrawable(it, R.drawable.progresscircle)
+                }
+
+                binding.includePressureLoweLimit.root -> {
+                    binding.includePressureLoweLimit.textView.setTextColor(Color.BLACK)
+                    binding.includePressureLoweLimit.paramProgressBar.background =
+                        ContextCompat.getDrawable(it, R.drawable.progresscircle)
+                }
+
+                binding.includeVTeUpperLimit.root -> {
+                    binding.includeVTeUpperLimit.textView.setTextColor(Color.BLACK)
+                    binding.includeVTeUpperLimit.paramProgressBar.background =
+                        ContextCompat.getDrawable(it, R.drawable.progresscircle)
+                }
+
+                binding.includeVTeLowerLimit.root -> {
+                    binding.includeVTeLowerLimit.textView.setTextColor(Color.BLACK)
+                    binding.includeVTeLowerLimit.paramProgressBar.background =
+                        ContextCompat.getDrawable(it, R.drawable.progresscircle)
+                }
+
+                binding.includePeepUpperLimit.root -> {
+                    binding.includePeepUpperLimit.textView.setTextColor(Color.BLACK)
+                    binding.includePeepUpperLimit.paramProgressBar.background =
+                        ContextCompat.getDrawable(it, R.drawable.progresscircle)
+                }
+
+                binding.includePeepLowerLimit.root -> {
+                    binding.includePeepLowerLimit.textView.setTextColor(Color.BLACK)
+                    binding.includePeepLowerLimit.paramProgressBar.background =
+                        ContextCompat.getDrawable(it, R.drawable.progresscircle)
+                }
+
+                binding.includeRRUpperLimit.root -> {
+                    binding.includeRRUpperLimit.textView.setTextColor(Color.BLACK)
+                    binding.includeRRUpperLimit.paramProgressBar.background =
+                        ContextCompat.getDrawable(it, R.drawable.progresscircle)
+                }
+
+                binding.includeRRLowerLimit.root -> {
+                    binding.includeRRLowerLimit.textView.setTextColor(Color.BLACK)
+                    binding.includeRRLowerLimit.paramProgressBar.background =
+                        ContextCompat.getDrawable(it, R.drawable.progresscircle)
+                }
+
+                binding.includeMVEUpperLimit.root -> {
+                    binding.includeMVEUpperLimit.textView.setTextColor(Color.BLACK)
+                    binding.includeMVEUpperLimit.paramProgressBar.background =
+                        ContextCompat.getDrawable(it, R.drawable.progresscircle)
+                }
+
+                binding.includeMVELowerLimit.root -> {
+                    binding.includeMVELowerLimit.textView.setTextColor(Color.BLACK)
+                    binding.includeMVELowerLimit.paramProgressBar.background =
+                        ContextCompat.getDrawable(it, R.drawable.progresscircle)
+                }
+            }
         }
     }
 
@@ -621,52 +773,52 @@ class LimitOneFragment(
         var activeLabel: String? = null
         var isUpperLimit: Boolean? = null
         when (selectedView) {
-            includePressureLoweLimit -> {
+            binding.includePressureLoweLimit.root -> {
                 activeLabel = LBL_PIP
                 isUpperLimit = false
             }
 
-            includePressureUpperLimit -> {
+            binding.includePressureUpperLimit.root -> {
                 activeLabel = LBL_PIP
                 isUpperLimit = true
             }
 
-            includeVTeUpperLimit -> {
+            binding.includeVTeUpperLimit.root -> {
                 activeLabel = LBL_VTE
                 isUpperLimit = true
             }
 
-            includeVTeLowerLimit -> {
+            binding.includeVTeLowerLimit.root -> {
                 activeLabel = LBL_VTE
                 isUpperLimit = false
             }
 
-            includePeepUpperLimit -> {
+            binding.includePeepUpperLimit.root -> {
                 activeLabel = LBL_PEEP
                 isUpperLimit = true
             }
 
-            includePeepLowerLimit -> {
+            binding.includePeepLowerLimit.root -> {
                 activeLabel = LBL_PEEP
                 isUpperLimit = false
             }
 
-            includeRRUpperLimit -> {
+            binding.includeRRUpperLimit.root -> {
                 activeLabel = LBL_RR
                 isUpperLimit = true
             }
 
-            includeRRLowerLimit -> {
+            binding.includeRRLowerLimit.root -> {
                 activeLabel = LBL_RR
                 isUpperLimit = false
             }
 
-            includeMVEUpperLimit -> {
+            binding.includeMVEUpperLimit.root -> {
                 activeLabel = LBL_MVE
                 isUpperLimit = true
             }
 
-            includeMVELowerLimit -> {
+            binding.includeMVELowerLimit.root -> {
                 activeLabel = LBL_MVE
                 isUpperLimit = false
             }
@@ -886,16 +1038,16 @@ class LimitOneFragment(
 
         override fun onPause(owner: LifecycleOwner) {
             super.onPause(owner)
-            includePressureLoweLimit.param_progress_bar.setCurrentProgress(0.0)
-            includePressureUpperLimit.param_progress_bar.setCurrentProgress(0.0)
-            includeVTeUpperLimit.param_progress_bar.setCurrentProgress(0.0)
-            includeVTeLowerLimit.param_progress_bar.setCurrentProgress(0.0)
-            includePeepUpperLimit.param_progress_bar.setCurrentProgress(0.0)
-            includePeepLowerLimit.param_progress_bar.setCurrentProgress(0.0)
-            includeRRUpperLimit.param_progress_bar.setCurrentProgress(0.0)
-            includeRRLowerLimit.param_progress_bar.setCurrentProgress(0.0)
-            includeMVEUpperLimit.param_progress_bar.setCurrentProgress(0.0)
-            includeMVELowerLimit.param_progress_bar.setCurrentProgress(0.0)
+            binding.includePressureLoweLimit.paramProgressBar.setCurrentProgress(0.0)
+            binding.includePressureUpperLimit.paramProgressBar.setCurrentProgress(0.0)
+            binding.includeVTeUpperLimit.paramProgressBar.setCurrentProgress(0.0)
+            binding.includeVTeLowerLimit.paramProgressBar.setCurrentProgress(0.0)
+            binding.includePeepUpperLimit.paramProgressBar.setCurrentProgress(0.0)
+            binding.includePeepLowerLimit.paramProgressBar.setCurrentProgress(0.0)
+            binding.includeRRUpperLimit.paramProgressBar.setCurrentProgress(0.0)
+            binding.includeRRLowerLimit.paramProgressBar.setCurrentProgress(0.0)
+            binding.includeMVEUpperLimit.paramProgressBar.setCurrentProgress(0.0)
+            binding.includeMVELowerLimit.paramProgressBar.setCurrentProgress(0.0)
 
             default_presserUpperLimit = null
             default_presserLowerLimit = null

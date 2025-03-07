@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.alarm.limit_one.EncoderValue
 import com.agvahealthcare.ventilator_ext.alarm.limit_one.KnobParameterModel
@@ -21,6 +22,7 @@ import com.agvahealthcare.ventilator_ext.callback.OnAlarmLimitChangeListener
 import com.agvahealthcare.ventilator_ext.callback.OnDismissDialogListener
 import com.agvahealthcare.ventilator_ext.callback.OnKnobPressListener
 import com.agvahealthcare.ventilator_ext.callback.OnLimitChangeListener
+import com.agvahealthcare.ventilator_ext.databinding.FragmentLimitTwoBinding
 import com.agvahealthcare.ventilator_ext.logs.event.EventViewModel
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.model.ControlParameterLimit
@@ -31,30 +33,6 @@ import com.agvahealthcare.ventilator_ext.utility.utils.Configs
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.*
 import com.github.angads25.toggle.interfaces.OnToggledListener
 import com.github.angads25.toggle.model.ToggleableView
-import kotlinx.android.synthetic.main.fragment_limit_one.focusLayoutLimitOne
-import kotlinx.android.synthetic.main.fragment_limit_one.includeMVELowerLimit
-import kotlinx.android.synthetic.main.fragment_limit_one.includeMVEUpperLimit
-import kotlinx.android.synthetic.main.fragment_limit_one.includePeepLowerLimit
-import kotlinx.android.synthetic.main.fragment_limit_one.includePeepUpperLimit
-import kotlinx.android.synthetic.main.fragment_limit_one.includePressureLoweLimit
-import kotlinx.android.synthetic.main.fragment_limit_one.includePressureUpperLimit
-import kotlinx.android.synthetic.main.fragment_limit_one.includeRRLowerLimit
-import kotlinx.android.synthetic.main.fragment_limit_one.includeRRUpperLimit
-import kotlinx.android.synthetic.main.fragment_limit_one.includeVTeLowerLimit
-import kotlinx.android.synthetic.main.fragment_limit_one.includeVTeUpperLimit
-import kotlinx.android.synthetic.main.fragment_limit_one.layout10LimitOne
-import kotlinx.android.synthetic.main.fragment_limit_one.layout1LimitOne
-import kotlinx.android.synthetic.main.fragment_limit_one.layout2LimitOne
-import kotlinx.android.synthetic.main.fragment_limit_one.layout3LimitOne
-import kotlinx.android.synthetic.main.fragment_limit_one.layout4LimitOne
-import kotlinx.android.synthetic.main.fragment_limit_one.layout5LimitOne
-import kotlinx.android.synthetic.main.fragment_limit_one.layout6LimitOne
-import kotlinx.android.synthetic.main.fragment_limit_one.layout7LimitOne
-import kotlinx.android.synthetic.main.fragment_limit_one.layout8LimitOne
-import kotlinx.android.synthetic.main.fragment_limit_one.layout9LimitOne
-import kotlinx.android.synthetic.main.fragment_limit_one.mainViewPanelLimitOne
-import kotlinx.android.synthetic.main.fragment_limit_two.*
-import kotlinx.android.synthetic.main.knob_progress_view.view.*
 
 class LimitTwoFragment(
     private val communicationService: CommunicationService?,
@@ -66,6 +44,7 @@ class LimitTwoFragment(
         val TAG = "LimitTwoFragment"
     }
 
+    private lateinit var binding:FragmentLimitTwoBinding
     private var fio2UpperLimit: Float? = null
     private var fio2LowerLimit: Float? = null
 
@@ -105,10 +84,10 @@ class LimitTwoFragment(
 
         when (highlightedIndex) {
 
-            0 -> includefio2Upperlimit.callOnClick()
-            1 -> includefio2lowerlimit.callOnClick()
-            2 -> includeSpO2Upperlimit.callOnClick()
-            3 -> includeSpO2lowerlimit.callOnClick()
+            0 -> binding.includefio2Upperlimit.root.callOnClick()
+            1 -> binding.includefio2lowerlimit.root.callOnClick()
+            2 -> binding.includeSpO2Upperlimit.root.callOnClick()
+            3 -> binding.includeSpO2lowerlimit.root.callOnClick()
         }
     }
 
@@ -124,12 +103,12 @@ class LimitTwoFragment(
     fun clearPreviousConstraints() {
         try {
             val constraintSet = ConstraintSet()
-            constraintSet.clone(mainViewPanelLimitTwo)
-            constraintSet.clear(focusLayoutLimitTwo.id, ConstraintSet.TOP)
-            constraintSet.clear(focusLayoutLimitTwo.id, ConstraintSet.BOTTOM)
-            constraintSet.clear(focusLayoutLimitTwo.id, ConstraintSet.LEFT)
-            constraintSet.clear(focusLayoutLimitTwo.id, ConstraintSet.RIGHT)
-            constraintSet.applyTo(mainViewPanelLimitTwo)
+            constraintSet.clone(binding.mainViewPanelLimitTwo)
+            constraintSet.clear(binding.focusLayoutLimitTwo.id, ConstraintSet.TOP)
+            constraintSet.clear(binding.focusLayoutLimitTwo.id, ConstraintSet.BOTTOM)
+            constraintSet.clear(binding.focusLayoutLimitTwo.id, ConstraintSet.LEFT)
+            constraintSet.clear(binding.focusLayoutLimitTwo.id, ConstraintSet.RIGHT)
+            constraintSet.applyTo(binding.mainViewPanelLimitTwo)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -137,46 +116,46 @@ class LimitTwoFragment(
 
     private fun changeConstraintsOfFocusLayout(view: View) {
         val constraintSet = ConstraintSet()
-        constraintSet.clone(mainViewPanelLimitTwo)
+        constraintSet.clone(binding.mainViewPanelLimitTwo)
         constraintSet.connect(
-            focusLayoutLimitTwo.id,
+            binding.focusLayoutLimitTwo.id,
             ConstraintSet.RIGHT,
             view.id,
             ConstraintSet.RIGHT,
             0
         )
         constraintSet.connect(
-            focusLayoutLimitTwo.id,
+            binding.focusLayoutLimitTwo.id,
             ConstraintSet.TOP,
             view.id,
             ConstraintSet.TOP,
             0
         )
         constraintSet.connect(
-            focusLayoutLimitTwo.id,
+            binding.focusLayoutLimitTwo.id,
             ConstraintSet.BOTTOM,
             view.id,
             ConstraintSet.BOTTOM,
             0
         )
         constraintSet.connect(
-            focusLayoutLimitTwo.id,
+            binding.focusLayoutLimitTwo.id,
             ConstraintSet.LEFT,
             view.id,
             ConstraintSet.LEFT,
             0
         )
-        constraintSet.applyTo(mainViewPanelLimitTwo)
+        constraintSet.applyTo(binding.mainViewPanelLimitTwo)
     }
 
     private fun getViewForFocus(highlightedIndex: Int): View? {
 
         return when (highlightedIndex) {
 
-            0 -> layout1LimitTwo
-            1 -> layout2LimitTwo
-            2 -> layout3LimitTwo
-            3 -> layout4LimitTwo
+            0 -> binding.layout1LimitTwo
+            1 -> binding.layout2LimitTwo
+            2 -> binding.layout3LimitTwo
+            3 -> binding.layout4LimitTwo
 
             else -> null
         }
@@ -196,7 +175,8 @@ class LimitTwoFragment(
             requireActivity().getString(R.string.default_max_spo2_limit).toFloat()
         default_spo2LowerLimit =
             requireActivity().getString(R.string.default_min_spo2_limit).toFloat()
-        return inflater.inflate(R.layout.fragment_limit_two, container, false)
+        binding = FragmentLimitTwoBinding.inflate(layoutInflater,container,false)
+        return binding.root
     }
 
 
@@ -208,8 +188,8 @@ class LimitTwoFragment(
 
     private fun initToggalState() {
         prefManager?.apply {
-            fio2Toggale.isOn = readFio2LimitState()
-            spO2Toggle.isOn = readSpO2LimitState()
+            binding.fio2Toggale.isOn = readFio2LimitState()
+            binding.spO2Toggle.isOn = readSpO2LimitState()
         }
     }
 
@@ -255,11 +235,11 @@ class LimitTwoFragment(
 
     private fun setupClickListener() {
 
-        includefio2Upperlimit.setOnClickListener(this)
-        includefio2lowerlimit.setOnClickListener(this)
+        binding.includefio2Upperlimit.root.setOnClickListener(this)
+        binding.includefio2lowerlimit.root.setOnClickListener(this)
 
-        includeSpO2Upperlimit.setOnClickListener(this)
-        includeSpO2lowerlimit.setOnClickListener(this)
+        binding.includeSpO2Upperlimit.root.setOnClickListener(this)
+        binding.includeSpO2lowerlimit.root.setOnClickListener(this)
     }
 
     private fun initUserSetLimits() {
@@ -282,15 +262,15 @@ class LimitTwoFragment(
 
             when (lbl) {
                 LBL_FIO2 -> {
-                    upperLimitView = includefio2Upperlimit
-                    lowerLimitView = includefio2lowerlimit
+                    upperLimitView = binding.includefio2Upperlimit.root
+                    lowerLimitView = binding.includefio2lowerlimit.root
                     defaultUpperLimit = default_fio2UpperLimit
                     defaultLowerLimit = default_fio2LowerLimit
                 }
 
                 LBL_SPO2 -> {
-                    upperLimitView = includeSpO2Upperlimit
-                    lowerLimitView = includeSpO2lowerlimit
+                    upperLimitView = binding.includeSpO2Upperlimit.root
+                    lowerLimitView = binding.includeSpO2lowerlimit.root
                     defaultUpperLimit = default_spo2UpperLimit
                     defaultLowerLimit = default_spo2LowerLimit
                 }
@@ -319,42 +299,61 @@ class LimitTwoFragment(
     }
 
     private fun setValueOnProgressView(activeView: View, lowerLimit: Float, upperLimit: Float) {
-        activeView.param_progress_bar.maxProgress = upperLimit.toInt().toDouble()
+        when (activeView) {
+            binding.includeSpO2lowerlimit.root -> {
+                binding.includeSpO2lowerlimit.paramProgressBar.maxProgress = upperLimit.toInt().toDouble()
+            }
+
+            binding.includeSpO2Upperlimit.root -> {
+                binding.includeSpO2Upperlimit.paramProgressBar.maxProgress = upperLimit.toInt().toDouble()
+            }
+
+            binding.includefio2lowerlimit.root -> {
+                binding.includefio2lowerlimit.paramProgressBar.maxProgress = upperLimit.toInt().toDouble()
+            }
+
+            binding.includefio2Upperlimit.root -> {
+                binding.includefio2Upperlimit.paramProgressBar.maxProgress = upperLimit.toInt().toDouble()
+            }
+        }
     }
 
     //method to set the progress bar value of the individual view in selection
     private fun setValueOnLimitView(activeView: View, newValue: Float) {
-        //update the view
-        activeView.param_progress_bar.setCurrentProgress(newValue.toInt().toDouble())
-        Log.i("LIMIT2_CHECK", "value = ${nonDecimal(activeView, newValue.toString())}")
-        activeView.textView.text = nonDecimal(activeView, newValue.toString())
 
-        //update runtime variable value
         when (activeView) {
-            includefio2Upperlimit -> {
-                fio2UpperLimit = newValue
-            }
-
-            includefio2lowerlimit -> {
-                fio2LowerLimit = newValue
-            }
-
-            includeSpO2lowerlimit -> {
+            binding.includeSpO2lowerlimit.root -> {
+                binding.includeSpO2lowerlimit.paramProgressBar.setCurrentProgress(newValue.toInt().toDouble())
+                binding.includeSpO2lowerlimit.textView.text = nonDecimal(activeView, newValue.toString())
                 spo2LowerLimit = newValue
             }
 
-            includeSpO2Upperlimit -> {
+            binding.includeSpO2Upperlimit.root -> {
+                binding.includeSpO2Upperlimit.paramProgressBar.setCurrentProgress(newValue.toInt().toDouble())
+                binding.includeSpO2Upperlimit.textView.text = nonDecimal(activeView, newValue.toString())
                 spo2UpperLimit = newValue
+            }
+
+            binding.includefio2lowerlimit.root -> {
+                binding.includefio2lowerlimit.paramProgressBar.setCurrentProgress(newValue.toInt().toDouble())
+                binding.includefio2lowerlimit.textView.text = nonDecimal(activeView, newValue.toString())
+                fio2LowerLimit = newValue
+            }
+
+            binding.includefio2Upperlimit.root -> {
+                binding.includefio2Upperlimit.paramProgressBar.setCurrentProgress(newValue.toInt().toDouble())
+                binding.includefio2Upperlimit.textView.text = nonDecimal(activeView, newValue.toString())
+                fio2UpperLimit = newValue
             }
         }
     }
 
     private fun nonDecimal(v: View, value: String): String {
         val decimalSupportedValues = listOf<View>(
-            includefio2Upperlimit,
-            includefio2lowerlimit,
-            includeSpO2Upperlimit,
-            includeSpO2lowerlimit
+            binding.includefio2Upperlimit.root,
+            binding.includefio2lowerlimit.root,
+            binding.includeSpO2Upperlimit.root,
+            binding.includeSpO2lowerlimit.root
         )
         return if (v in decimalSupportedValues) {
             value.toFloatOrNull()?.toInt()?.toString() ?: value
@@ -374,7 +373,7 @@ class LimitTwoFragment(
 
             prefManager?.apply {
                 when (it) {
-                    includefio2lowerlimit -> {
+                    binding.includefio2lowerlimit.root -> {
                         setFiO2Limits(fio2LowerLimit, fio2UpperLimit)
                         limitChangeListener.onChangeAlarmLimit(
                             currentKey,
@@ -383,7 +382,7 @@ class LimitTwoFragment(
                         )
                     }
 
-                    includefio2Upperlimit -> {
+                    binding.includefio2Upperlimit.root -> {
                         setFiO2Limits(fio2LowerLimit, fio2UpperLimit)
                         limitChangeListener.onChangeAlarmLimit(
                             currentKey,
@@ -392,7 +391,7 @@ class LimitTwoFragment(
                         )
                     }
 
-                    includeSpO2lowerlimit -> {
+                    binding.includeSpO2lowerlimit.root -> {
                         setSpO2Limits(spo2LowerLimit, spo2UpperLimit)
                         limitChangeListener.onChangeAlarmLimit(
                             currentKey,
@@ -401,7 +400,7 @@ class LimitTwoFragment(
                         )
                     }
 
-                    includeSpO2Upperlimit -> {
+                    binding.includeSpO2Upperlimit.root -> {
                         setSpO2Limits(spo2LowerLimit, spo2UpperLimit)
                         limitChangeListener.onChangeAlarmLimit(
                             currentKey,
@@ -427,8 +426,8 @@ class LimitTwoFragment(
 
     override fun onSwitched(toggleableView: ToggleableView?, isOn: Boolean) {
         when (toggleableView?.id) {
-            fio2Toggale.id -> prefManager?.setFio2LimitState(isOn)
-            spO2Toggle.id -> prefManager?.setSpO2LimitState(isOn)
+            binding.fio2Toggale.id -> prefManager?.setFio2LimitState(isOn)
+            binding.spO2Toggle.id -> prefManager?.setSpO2LimitState(isOn)
         }
     }
 
@@ -446,22 +445,22 @@ class LimitTwoFragment(
 
 
         when (selectedView) {
-            includeSpO2lowerlimit -> {
+            binding.includeSpO2lowerlimit.root -> {
                 isUpperLimit = false
                 activeLabel = LBL_SPO2
             }
 
-            includeSpO2Upperlimit -> {
+            binding.includeSpO2Upperlimit.root -> {
                 isUpperLimit = true
                 activeLabel = LBL_SPO2
             }
 
-            includefio2lowerlimit -> {
+            binding.includefio2lowerlimit.root -> {
                 isUpperLimit = false
                 activeLabel = LBL_FIO2
             }
 
-            includefio2Upperlimit -> {
+            binding.includefio2Upperlimit.root -> {
                 isUpperLimit = true
                 activeLabel = LBL_FIO2
             }
@@ -564,28 +563,58 @@ class LimitTwoFragment(
     }
 
     private fun select(limitView: View?) {
-        //limitView?.progress_bar?.progressDrawable=ContextCompat.getDrawable(requireContext(),R.drawable.progresscircle_with_selection)
-        //  limitView?.textView?.setTextColor(Color.WHITE)
-        limitView?.param_progress_bar?.run {
-            val progressValue = progress
-            //  val progressMin = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) min else 0
-            val progressMax = maxProgress
-            // setValueOnProgressView(limitView, progressMin.toFloat(), progressMax.toFloat())
-            setValueOnLimitView(limitView, progressValue.toFloat())
-            this.background =
-                ContextCompat.getDrawable(context, R.drawable.progresscircle_with_selection_yellow)
+        context?.let {
+            when (limitView) {
+                binding.includeSpO2lowerlimit.root -> {
+                    setValueOnLimitView(limitView, binding.includeSpO2lowerlimit.paramProgressBar.progress.toFloat())
+                    binding.includeSpO2lowerlimit.paramProgressBar.background = ContextCompat.getDrawable(it,R.drawable.progresscircle_with_selection_yellow)
+                    binding.includeSpO2lowerlimit.textView.setTextColor(Color.BLACK)
+                }
 
+                binding.includeSpO2Upperlimit.root -> {
+                    setValueOnLimitView(limitView, binding.includeSpO2Upperlimit.paramProgressBar.progress.toFloat())
+                    binding.includeSpO2Upperlimit.paramProgressBar.background = ContextCompat.getDrawable(it,R.drawable.progresscircle_with_selection_yellow)
+                    binding.includeSpO2Upperlimit.textView.setTextColor(Color.BLACK)
+                }
+
+                binding.includefio2lowerlimit.root -> {
+                    setValueOnLimitView(limitView, binding.includefio2lowerlimit.paramProgressBar.progress.toFloat())
+                    binding.includefio2lowerlimit.paramProgressBar.background = ContextCompat.getDrawable(it,R.drawable.progresscircle_with_selection_yellow)
+                    binding.includefio2lowerlimit.textView.setTextColor(Color.BLACK)
+                }
+
+                binding.includefio2Upperlimit.root -> {
+                    setValueOnLimitView(limitView, binding.includefio2Upperlimit.paramProgressBar.progress.toFloat())
+                    binding.includefio2Upperlimit.paramProgressBar.background = ContextCompat.getDrawable(it,R.drawable.progresscircle_with_selection_yellow)
+                    binding.includefio2Upperlimit.textView.setTextColor(Color.BLACK)
+                }
+            }
         }
-
-        limitView?.textView?.setTextColor(Color.BLACK)
     }
 
     private infix fun LimitTwoFragment.deSelect(limitView: View?) {
-        val progressValue = limitView?.param_progress_bar?.progress
-        limitView?.textView?.setTextColor(Color.BLACK)
         context?.let {
-            limitView?.param_progress_bar?.background =
-                ContextCompat.getDrawable(it, R.drawable.progresscircle)
+            when (limitView) {
+                binding.includeSpO2lowerlimit.root -> {
+                    binding.includeSpO2lowerlimit.paramProgressBar.background = ContextCompat.getDrawable(it,R.drawable.progresscircle)
+                    binding.includeSpO2lowerlimit.textView.setTextColor(Color.BLACK)
+                }
+
+                binding.includeSpO2Upperlimit.root -> {
+                    binding.includeSpO2Upperlimit.paramProgressBar.background = ContextCompat.getDrawable(it,R.drawable.progresscircle)
+                    binding.includeSpO2Upperlimit.textView.setTextColor(Color.BLACK)
+                }
+
+                binding.includefio2lowerlimit.root -> {
+                    binding.includefio2lowerlimit.paramProgressBar.background = ContextCompat.getDrawable(it,R.drawable.progresscircle)
+                    binding.includefio2lowerlimit.textView.setTextColor(Color.BLACK)
+                }
+
+                binding.includefio2Upperlimit.root -> {
+                    binding.includefio2Upperlimit.paramProgressBar.background = ContextCompat.getDrawable(it,R.drawable.progresscircle)
+                    binding.includefio2Upperlimit.textView.setTextColor(Color.BLACK)
+                }
+            }
         }
     }
 
@@ -629,13 +658,13 @@ class LimitTwoFragment(
 
         override fun onPause(owner: LifecycleOwner) {
             super.onPause(owner)
-            includeSpO2lowerlimit.param_progress_bar.setCurrentProgress(0.0)
+            binding.includeSpO2lowerlimit.paramProgressBar.setCurrentProgress(0.0)
 
-            includeSpO2Upperlimit.param_progress_bar.setCurrentProgress(0.0)
+            binding.includeSpO2Upperlimit.paramProgressBar.setCurrentProgress(0.0)
 
-            includefio2lowerlimit.param_progress_bar.setCurrentProgress(0.0)
+            binding.includefio2lowerlimit.paramProgressBar.setCurrentProgress(0.0)
 
-            includefio2Upperlimit.param_progress_bar.setCurrentProgress(0.0)
+            binding.includefio2Upperlimit.paramProgressBar.setCurrentProgress(0.0)
 
             default_fio2UpperLimit = null
 

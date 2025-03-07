@@ -7,45 +7,23 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatRadioButton
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import com.agvahealthcare.ventilator_ext.R
-import com.agvahealthcare.ventilator_ext.VentilatorApp
 import com.agvahealthcare.ventilator_ext.callback.OnDismissDialogListener
+import com.agvahealthcare.ventilator_ext.databinding.FragmentMonitoringDialogBinding
 import com.agvahealthcare.ventilator_ext.model.ObservedParameterModel
 import com.agvahealthcare.ventilator_ext.monitoring.general.GeneralFragment
-import com.agvahealthcare.ventilator_ext.monitoring.plateau.PlateauFragment
 import com.agvahealthcare.ventilator_ext.monitoring.spo.SpO2Fragment
-import com.agvahealthcare.ventilator_ext.utility.utils.Configs
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_AND
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_MINUS
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_PLUS
-import kotlinx.android.synthetic.main.activity_main.includeFemale
-import kotlinx.android.synthetic.main.content_button_layout.view.*
-import kotlinx.android.synthetic.main.fragment_mode_dialog.buttonAIVent
-import kotlinx.android.synthetic.main.fragment_mode_dialog.buttonAcv
-import kotlinx.android.synthetic.main.fragment_mode_dialog.buttonBpap
-import kotlinx.android.synthetic.main.fragment_mode_dialog.buttonCpap
-import kotlinx.android.synthetic.main.fragment_mode_dialog.buttonHFNC
-import kotlinx.android.synthetic.main.fragment_mode_dialog.buttonPcCmv
-import kotlinx.android.synthetic.main.fragment_mode_dialog.buttonPcSimv
-import kotlinx.android.synthetic.main.fragment_mode_dialog.buttonPcac
-import kotlinx.android.synthetic.main.fragment_mode_dialog.buttonPsv
-import kotlinx.android.synthetic.main.fragment_mode_dialog.buttonVcCmv
-import kotlinx.android.synthetic.main.fragment_mode_dialog.buttonVcSimv
-import kotlinx.android.synthetic.main.fragment_mode_dialog.focusLayoutMode
-import kotlinx.android.synthetic.main.fragment_mode_dialog.imageViewCrossMode
-import kotlinx.android.synthetic.main.fragment_mode_dialog.mainLayoutPanelMode
-import kotlinx.android.synthetic.main.fragment_mode_dialog.rbInvasive
-import kotlinx.android.synthetic.main.fragment_mode_dialog.rbNonInvasive
-import kotlinx.android.synthetic.main.fragment_monitoring_dialog.*
 
 
 class MonitoringDialogFragment : DialogFragment() {
 
-
+    private lateinit var binding: FragmentMonitoringDialogBinding
     companion object {
         const val TAG = "MonitoringDialog"
         private const val KEY_HEIGHT = "KEY_HEIGHT"
@@ -94,22 +72,22 @@ class MonitoringDialogFragment : DialogFragment() {
                 if (highlightedIndex < 3) highlightedIndex++
                 else highlightedIndex = 1
 
-                getViewForFocus()?.let { changeConstraintsOfFocusLayout(it) }
+                getViewForFocus()?.let { changeConstraintsOfFocusLayout(it.second) }
             }
 
             PREFIX_MINUS -> {
                 if (highlightedIndex > 1) highlightedIndex--
                 else highlightedIndex = 3
 
-                getViewForFocus()?.let { changeConstraintsOfFocusLayout(it) }
+                getViewForFocus()?.let { changeConstraintsOfFocusLayout(it.second) }
             }
 
             PREFIX_AND -> {
 
                 if (highlightedIndex == 3) {
-                    getViewForFocus()?.callOnClick()
+                    getViewForFocus()?.first?.callOnClick()
                 } else {
-                    getViewForFocus()?.buttonView?.callOnClick()
+                    getViewForFocus()?.first?.callOnClick()
                 }
             }
         }
@@ -118,12 +96,12 @@ class MonitoringDialogFragment : DialogFragment() {
     private fun clearPreviousConstraints() {
         try {
             val constraintSet = ConstraintSet()
-            constraintSet.clone(mainViewPanelMonitoring)
-            constraintSet.clear(focusLayoutMonitoring.id, ConstraintSet.TOP)
-            constraintSet.clear(focusLayoutMonitoring.id, ConstraintSet.BOTTOM)
-            constraintSet.clear(focusLayoutMonitoring.id, ConstraintSet.LEFT)
-            constraintSet.clear(focusLayoutMonitoring.id, ConstraintSet.RIGHT)
-            constraintSet.applyTo(mainViewPanelMonitoring)
+            constraintSet.clone(binding.mainViewPanelMonitoring)
+            constraintSet.clear(binding.focusLayoutMonitoring.id, ConstraintSet.TOP)
+            constraintSet.clear(binding.focusLayoutMonitoring.id, ConstraintSet.BOTTOM)
+            constraintSet.clear(binding.focusLayoutMonitoring.id, ConstraintSet.LEFT)
+            constraintSet.clear(binding.focusLayoutMonitoring.id, ConstraintSet.RIGHT)
+            constraintSet.applyTo(binding.mainViewPanelMonitoring)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -131,45 +109,55 @@ class MonitoringDialogFragment : DialogFragment() {
 
     private fun changeConstraintsOfFocusLayout(view: View) {
         val constraintSet = ConstraintSet()
-        constraintSet.clone(mainViewPanelMonitoring)
+        constraintSet.clone(binding.mainViewPanelMonitoring)
         constraintSet.connect(
-            focusLayoutMonitoring.id,
+            binding.focusLayoutMonitoring.id,
             ConstraintSet.RIGHT,
             view.id,
             ConstraintSet.RIGHT,
             0
         )
         constraintSet.connect(
-            focusLayoutMonitoring.id,
+            binding.focusLayoutMonitoring.id,
             ConstraintSet.TOP,
             view.id,
             ConstraintSet.TOP,
             0
         )
         constraintSet.connect(
-            focusLayoutMonitoring.id,
+            binding.focusLayoutMonitoring.id,
             ConstraintSet.BOTTOM,
             view.id,
             ConstraintSet.BOTTOM,
             0
         )
         constraintSet.connect(
-            focusLayoutMonitoring.id,
+            binding.focusLayoutMonitoring.id,
             ConstraintSet.LEFT,
             view.id,
             ConstraintSet.LEFT,
             0
         )
-        constraintSet.applyTo(mainViewPanelMonitoring)
+        constraintSet.applyTo(binding.mainViewPanelMonitoring)
     }
 
-    private fun getViewForFocus(): View? {
+    private fun getViewForFocus(): Pair<View,View>? {
 
 
         return when (highlightedIndex) {
-            1 -> includeButtonGeneral
-            2 -> includeButtonSPO2
-            3 -> imageViewCrossMonitoring
+            1 -> {
+                val pair = Pair(binding.includeButtonGeneral.buttonView, binding.includeButtonGeneral.root)
+                pair
+            }
+            2 -> {
+                val pair = Pair(binding.includeButtonSPO2.buttonView, binding.includeButtonSPO2.root)
+                pair
+            }
+            3 -> {
+                val pair =
+                    Pair(binding.imageViewCrossMonitoring, binding.imageViewCrossMonitoring)
+                pair
+            }
 
             else -> null
         }
@@ -205,9 +193,8 @@ class MonitoringDialogFragment : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        val layout = inflater.inflate(R.layout.fragment_monitoring_dialog, container, false)
-        return layout
+        binding = FragmentMonitoringDialogBinding.inflate(layoutInflater,container,false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -221,10 +208,10 @@ class MonitoringDialogFragment : DialogFragment() {
     // ClickListener on Button
     private fun setupClickListener() {
 
-        includeButtonGeneral.buttonView.text = getString(R.string.hint_general)
-        includeButtonSPO2.buttonView.text = getString(R.string.hint_spo2)
+        binding.includeButtonGeneral.buttonView.text = getString(R.string.hint_general)
+        binding.includeButtonSPO2.buttonView.text = getString(R.string.hint_spo2)
 
-        imageViewCrossMonitoring.setOnClickListener {
+        binding.imageViewCrossMonitoring.setOnClickListener {
 
             requireActivity().supportFragmentManager
                 .beginTransaction()
@@ -235,12 +222,12 @@ class MonitoringDialogFragment : DialogFragment() {
 
         }
 
-        includeButtonGeneral.buttonView.setOnClickListener {
+        binding.includeButtonGeneral.buttonView.setOnClickListener {
             setUpGeneral()
         }
 
 
-        includeButtonSPO2.buttonView.setOnClickListener {
+        binding.includeButtonSPO2.buttonView.setOnClickListener {
 
             setUSpO2()
         }
@@ -262,18 +249,18 @@ class MonitoringDialogFragment : DialogFragment() {
 
         }
 
-        includeButtonGeneral.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
-        includeButtonGeneral.buttonView.setTextColor(
+        binding.includeButtonGeneral.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
+        binding.includeButtonGeneral.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
 
-        includeButtonSPO2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonSPO2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
 
-        includeButtonSPO2.buttonView.setTextColor(
+        binding.includeButtonSPO2.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
@@ -297,23 +284,22 @@ class MonitoringDialogFragment : DialogFragment() {
         }
 
 
-        includeButtonGeneral.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-        includeButtonSPO2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
+        binding.includeButtonGeneral.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonSPO2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
 
 
-        includeButtonGeneral.buttonView.setTextColor(
+        binding.includeButtonGeneral.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
-        includeButtonSPO2.buttonView.setTextColor(
+        binding.includeButtonSPO2.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
-
 
     }
 
@@ -321,9 +307,6 @@ class MonitoringDialogFragment : DialogFragment() {
         super.onStart()
         val heightDialog = arguments?.getInt(KEY_HEIGHT)
         val widthDialog = arguments?.getInt(KEY_WIDTH)
-
-//        setHeightWidthPercent(heightDialog , widthDialog , true)
-
     }
 
 

@@ -20,31 +20,14 @@ import com.agvahealthcare.ventilator_ext.alarm.limit_one.LimitOneFragment
 import com.agvahealthcare.ventilator_ext.alarm.limit_two.LimitTwoFragment
 import com.agvahealthcare.ventilator_ext.callback.OnAlarmLimitChangeListener
 import com.agvahealthcare.ventilator_ext.callback.OnDismissDialogListener
-import com.agvahealthcare.ventilator_ext.control.advanced.AdvancedFragment
-import com.agvahealthcare.ventilator_ext.control.etcuff.EtCuffFragment
-import com.agvahealthcare.ventilator_ext.control.smartfio2.SmartFio2
-import com.agvahealthcare.ventilator_ext.control.vtas.Vtas
+import com.agvahealthcare.ventilator_ext.databinding.FragmentAlarmDialogBinding
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.service.CommunicationService
-import com.agvahealthcare.ventilator_ext.standby.StandbyBackupFragment
-import com.agvahealthcare.ventilator_ext.standby.StandbyBasicFragment
 import com.agvahealthcare.ventilator_ext.utility.*
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_AND
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_MINUS
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_PLUS
-import kotlinx.android.synthetic.main.content_button_layout.view.*
-import kotlinx.android.synthetic.main.fragment_alarm_dialog.*
-import kotlinx.android.synthetic.main.fragment_standbycontrol_dialog.buttonStartVent
-import kotlinx.android.synthetic.main.fragment_standbycontrol_dialog.focusLayoutStandbyControls
-import kotlinx.android.synthetic.main.fragment_standbycontrol_dialog.imageViewCrossStandbyControls
-import kotlinx.android.synthetic.main.fragment_standbycontrol_dialog.includeButtonStandbyAdvanced
-import kotlinx.android.synthetic.main.fragment_standbycontrol_dialog.includeButtonStandbyBackup
-import kotlinx.android.synthetic.main.fragment_standbycontrol_dialog.includeButtonStandbyBasic
-import kotlinx.android.synthetic.main.fragment_standbycontrol_dialog.includeButtonStandbySmartFio2
-import kotlinx.android.synthetic.main.fragment_standbycontrol_dialog.includeButtonStandbyVTas
-import kotlinx.android.synthetic.main.fragment_standbycontrol_dialog.mainViewPanelStandbyControls
-
 
 class AlarmDialogFragment : DialogFragment() {
 
@@ -73,7 +56,7 @@ class AlarmDialogFragment : DialogFragment() {
             return fragment
         }
     }
-
+    private lateinit var binding : FragmentAlarmDialogBinding
     private var closeListener: OnDismissDialogListener? = null
     private var onAlarmLimitChangeListener: OnAlarmLimitChangeListener? = null
 
@@ -143,7 +126,7 @@ class AlarmDialogFragment : DialogFragment() {
 
                     getViewForFocus(false)?.let {
                         highlightAdapters(-1)
-                        changeConstraintsOfFocusLayout(it)
+                        changeConstraintsOfFocusLayout(it.second)
                     } ?: kotlin.run {
                         highlightAdapters(highlightedIndex)
                     }
@@ -158,7 +141,7 @@ class AlarmDialogFragment : DialogFragment() {
 
                     getViewForFocus(true)?.let {
                         highlightAdapters(-1)
-                        changeConstraintsOfFocusLayout(it)
+                        changeConstraintsOfFocusLayout(it.second)
                     } ?: kotlin.run {
                         highlightAdapters(highlightedIndex)
                     }
@@ -167,11 +150,11 @@ class AlarmDialogFragment : DialogFragment() {
                 PREFIX_AND -> {
                     getViewForFocus(null)?.let {
                         if (highlightedIndex == sizeOfCurrentArray + 1) {
-                            it.callOnClick()
+                            it.first.callOnClick()
                         }
 
                         else {
-                            it.buttonView.callOnClick()
+                            it.first.callOnClick()
 
                             // reset highlight index to starting position after clicking on any fragments
                             highlightedIndex = -1
@@ -189,12 +172,12 @@ class AlarmDialogFragment : DialogFragment() {
     private fun clearPreviousConstraints() {
         try {
             val constraintSet = ConstraintSet()
-            constraintSet.clone(mainViewPanelAlarmDialog)
-            constraintSet.clear(focusLayoutAlarmDialog.id, ConstraintSet.TOP)
-            constraintSet.clear(focusLayoutAlarmDialog.id, ConstraintSet.BOTTOM)
-            constraintSet.clear(focusLayoutAlarmDialog.id, ConstraintSet.LEFT)
-            constraintSet.clear(focusLayoutAlarmDialog.id, ConstraintSet.RIGHT)
-            constraintSet.applyTo(mainViewPanelAlarmDialog)
+            constraintSet.clone(binding.mainViewPanelAlarmDialog)
+            constraintSet.clear(binding.focusLayoutAlarmDialog.id, ConstraintSet.TOP)
+            constraintSet.clear(binding.focusLayoutAlarmDialog.id, ConstraintSet.BOTTOM)
+            constraintSet.clear(binding.focusLayoutAlarmDialog.id, ConstraintSet.LEFT)
+            constraintSet.clear(binding.focusLayoutAlarmDialog.id, ConstraintSet.RIGHT)
+            constraintSet.applyTo(binding.mainViewPanelAlarmDialog)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -202,39 +185,39 @@ class AlarmDialogFragment : DialogFragment() {
 
     private fun changeConstraintsOfFocusLayout(view: View) {
         val constraintSet = ConstraintSet()
-        constraintSet.clone(mainViewPanelAlarmDialog)
+        constraintSet.clone(binding.mainViewPanelAlarmDialog)
         constraintSet.connect(
-            focusLayoutAlarmDialog.id,
+            binding.focusLayoutAlarmDialog.id,
             ConstraintSet.RIGHT,
             view.id,
             ConstraintSet.RIGHT,
             0
         )
         constraintSet.connect(
-            focusLayoutAlarmDialog.id,
+            binding.focusLayoutAlarmDialog.id,
             ConstraintSet.TOP,
             view.id,
             ConstraintSet.TOP,
             0
         )
         constraintSet.connect(
-            focusLayoutAlarmDialog.id,
+            binding.focusLayoutAlarmDialog.id,
             ConstraintSet.BOTTOM,
             view.id,
             ConstraintSet.BOTTOM,
             0
         )
         constraintSet.connect(
-            focusLayoutAlarmDialog.id,
+            binding.focusLayoutAlarmDialog.id,
             ConstraintSet.LEFT,
             view.id,
             ConstraintSet.LEFT,
             0
         )
-        constraintSet.applyTo(mainViewPanelAlarmDialog)
+        constraintSet.applyTo(binding.mainViewPanelAlarmDialog)
     }
 
-    private fun getViewForFocus(isMinus: Boolean?): View? {
+    private fun getViewForFocus(isMinus: Boolean?): Pair<View,View>? {
 
         return when (highlightedIndex) {
 
@@ -247,10 +230,14 @@ class AlarmDialogFragment : DialogFragment() {
                 }else null
             }
 
-            sizeOfCurrentArray + 1 -> imageViewCrossAlarmDialog
+            sizeOfCurrentArray + 1 -> {
+                val pair = Pair(binding.imageViewCrossAlarmDialog,binding.imageViewCrossAlarmDialog)
+                pair
+            }
             sizeOfCurrentArray + 2 -> {
-                if (includeButtonLimit1.isVisible) {
-                    includeButtonLimit1
+                if (binding.includeButtonLimit1.root.isVisible) {
+                    val pair = Pair(binding.includeButtonLimit1.buttonView,binding.includeButtonLimit1.root)
+                    pair
                 } else {
                     isMinus?.let {
                         if (isMinus) highlightedIndex-- else highlightedIndex++
@@ -259,9 +246,15 @@ class AlarmDialogFragment : DialogFragment() {
                 }
             }
 
-            sizeOfCurrentArray + 3 -> includeButtonLimit2
+            sizeOfCurrentArray + 3 -> {
+                val pair = Pair(binding.includeButtonLimit2.buttonView,binding.includeButtonLimit2.root)
+                pair
+            }
 
-            sizeOfCurrentArray + 4 -> includeButtonBuffer
+            sizeOfCurrentArray + 4 -> {
+                val pair = Pair(binding.includeButtonBuffer.buttonView,binding.includeButtonBuffer.root)
+                pair
+            }
 
             else -> null
         }
@@ -296,7 +289,8 @@ class AlarmDialogFragment : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        return inflater.inflate(R.layout.fragment_alarm_dialog, container, false)
+        binding = FragmentAlarmDialogBinding.inflate(layoutInflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -305,14 +299,14 @@ class AlarmDialogFragment : DialogFragment() {
         preferenceManager = PreferenceManager(requireContext())
 
         if (preferenceManager?.readLastVentMode() == Configs.MODE_HFNC) {
-            includeButtonLimit1.visibility = View.GONE
+            binding.includeButtonLimit1.root.visibility = View.GONE
         } else {
-            includeButtonLimit1.visibility = View.VISIBLE
+            binding.includeButtonLimit1.root.visibility = View.VISIBLE
         }
         setupClickListener()
-        includeButtonLimit1.buttonView.setPadding(10, 0, 10, 0)
-        includeButtonLimit2.buttonView.setPadding(10, 0, 10, 0)
-        includeButtonBuffer.buttonView.setPadding(10, 0, 10, 0)
+        binding.includeButtonLimit1.buttonView.setPadding(10, 0, 10, 0)
+        binding.includeButtonLimit2.buttonView.setPadding(10, 0, 10, 0)
+        binding.includeButtonBuffer.buttonView.setPadding(10, 0, 10, 0)
     }
 
     override fun onStart() {
@@ -332,29 +326,29 @@ class AlarmDialogFragment : DialogFragment() {
         limitOneFragment?.apply {
             replaceFragment(this, this::class.java.javaClass.simpleName, R.id.alarm_nav_container)
         }
-        includeButtonLimit2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-        includeButtonLimit1.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
+        binding.includeButtonLimit2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonLimit1.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
 
-        includeButtonLimit2.buttonView.setTextColor(
+        binding.includeButtonLimit2.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
-        includeButtonLimit1.buttonView.setTextColor(
+        binding.includeButtonLimit1.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
 
-        includeButtonBuffer.buttonView.setTextColor(
+        binding.includeButtonBuffer.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
-        includeButtonBuffer.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonBuffer.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
         //setPaddingOnButton()
 
     }
@@ -362,24 +356,24 @@ class AlarmDialogFragment : DialogFragment() {
     // ClickListener on Buttons
     private fun setupClickListener() {
 
-        includeButtonLimit1.buttonView.text = getString(R.string.hint_basic_limits)
-        includeButtonLimit2.buttonView.text = getString(R.string.hint_advance_limits)
-        includeButtonBuffer.buttonView.text = getString(R.string.hint_active_alarms)
+        binding.includeButtonLimit1.buttonView.text = getString(R.string.hint_basic_limits)
+        binding.includeButtonLimit2.buttonView.text = getString(R.string.hint_advance_limits)
+        binding.includeButtonBuffer.buttonView.text = getString(R.string.hint_active_alarms)
 
-        includeButtonBuffer.buttonView.isEnabled = true
-        includeButtonBuffer.buttonView.isFocusable = false
-        includeButtonBuffer.buttonView.isClickable = false
+        binding.includeButtonBuffer.buttonView.isEnabled = true
+        binding.includeButtonBuffer.buttonView.isFocusable = false
+        binding.includeButtonBuffer.buttonView.isClickable = false
 
-        includeButtonBuffer.buttonView.setTextColor(
+        binding.includeButtonBuffer.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
-        includeButtonBuffer.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonBuffer.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
 
-        imageViewCrossAlarmDialog.setOnClickListener {
+        binding.imageViewCrossAlarmDialog.setOnClickListener {
 
 
             requireActivity().supportFragmentManager
@@ -394,11 +388,11 @@ class AlarmDialogFragment : DialogFragment() {
              dismiss()*/
         }
 
-        includeButtonLimit1.buttonView.setOnClickListener {
+        binding.includeButtonLimit1.buttonView.setOnClickListener {
             setUpLimitOne()
         }
 
-        includeButtonLimit2.buttonView.setOnClickListener {
+        binding.includeButtonLimit2.buttonView.setOnClickListener {
 
             sizeOfCurrentArray = 3
             makeAllFragmentsNull()
@@ -414,34 +408,34 @@ class AlarmDialogFragment : DialogFragment() {
                 )
             }
 
-            includeButtonLimit2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
-            includeButtonLimit1.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+            binding.includeButtonLimit2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
+            binding.includeButtonLimit1.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
-            includeButtonLimit2.buttonView.setTextColor(
+            binding.includeButtonLimit2.buttonView.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
                     R.color.white
                 )
             )
-            includeButtonLimit1.buttonView.setTextColor(
+            binding.includeButtonLimit1.buttonView.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
                     R.color.white
                 )
             )
 
-            includeButtonBuffer.buttonView.setTextColor(
+            binding.includeButtonBuffer.buttonView.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
                     R.color.white
                 )
             )
-            includeButtonBuffer.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+            binding.includeButtonBuffer.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
             //setPaddingOnButton()
 
         }
 
-        includeButtonBuffer.buttonView.setOnClickListener {
+        binding.includeButtonBuffer.buttonView.setOnClickListener {
             //var fragment:BufferFragment?=null
 
             sizeOfCurrentArray = 0
@@ -459,9 +453,9 @@ class AlarmDialogFragment : DialogFragment() {
                     .commit()
             }
 
-            includeButtonLimit1.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-            includeButtonLimit2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-            includeButtonBuffer.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
+            binding.includeButtonLimit1.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+            binding.includeButtonLimit2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+            binding.includeButtonBuffer.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
             //setPaddingOnButton()
 
         }
@@ -494,23 +488,23 @@ class AlarmDialogFragment : DialogFragment() {
             setHeightWidthPercent(heightDialog, widthDialog, true)
             if (bundle?.getString("fragment_val") == "BufferFragment") {
                 //button background color specification
-                includeButtonLimit1.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-                includeButtonLimit2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-                includeButtonBuffer.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
+                binding.includeButtonLimit1.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+                binding.includeButtonLimit2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+                binding.includeButtonBuffer.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
                 //button text color specification
-                includeButtonLimit2.buttonView.setTextColor(
+                binding.includeButtonLimit2.buttonView.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.white
                     )
                 )
-                includeButtonLimit1.buttonView.setTextColor(
+                binding.includeButtonLimit1.buttonView.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.white
                     )
                 )
-                includeButtonBuffer.buttonView.setTextColor(
+                binding.includeButtonBuffer.buttonView.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.white
@@ -532,7 +526,7 @@ class AlarmDialogFragment : DialogFragment() {
                     }
                 }
             } else if (bundle?.getString("fragment_val") == "FromButton") {
-                if (preferenceManager?.readLastVentMode() == Configs.MODE_HFNC) includeButtonLimit2.buttonView.callOnClick()
+                if (preferenceManager?.readLastVentMode() == Configs.MODE_HFNC) binding.includeButtonLimit2.buttonView.callOnClick()
                 else setUpLimitOne()
             }
 

@@ -14,14 +14,12 @@ import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.callback.SimpleCallbackListener
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardViewModel
 import com.agvahealthcare.ventilator_ext.database.entities.EventDataModel
+import com.agvahealthcare.ventilator_ext.databinding.FragmentHoldBinding
 import com.agvahealthcare.ventilator_ext.logs.event.EventViewModel
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.maneuvers.ManeuversDialogFragment
 import com.agvahealthcare.ventilator_ext.service.CommunicationService
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs
-import com.google.android.material.transition.Hold
-import kotlinx.android.synthetic.main.content_button_layout.view.*
-import kotlinx.android.synthetic.main.fragment_hold.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -39,7 +37,7 @@ class HoldFragment
     private var dashBoardViewModel: DashBoardViewModel? = null
     private var mEventViewModel: EventViewModel? = null
     private var TagFromFragment: String? = null
-
+    private lateinit var binding:FragmentHoldBinding
     // logic knob highlight starts here
 
     fun handleClick(highlightedIndex: Int) {
@@ -47,18 +45,18 @@ class HoldFragment
 
         when (highlightedIndex) {
 
-            0 -> if (topBar.isVisible) backBtn.callOnClick() else {
+            0 -> if (binding.topBar.isVisible) binding.backBtn.callOnClick() else {
 
-                includeButtonExpirationHold.buttonView.callOnClick()
+                binding.includeButtonExpirationHold.buttonView.callOnClick()
             }
 
-            1 -> if (topBar.isVisible) btnDec.callOnClick() else {
+            1 -> if (binding.topBar.isVisible) binding.btnDec.callOnClick() else {
 
-                includeButtonInspirationHold.buttonView.callOnClick()
+                binding.includeButtonInspirationHold.buttonView.callOnClick()
             }
 
-            2 -> btnInc.callOnClick()
-            3 -> if (btnInspHoldStart.isVisible) btnInspHoldStart.callOnClick() else btnExpiratHoldStart.callOnClick()
+            2 -> binding.btnInc.callOnClick()
+            3 -> if (binding.btnInspHoldStart.isVisible) binding.btnInspHoldStart.callOnClick() else binding.btnExpiratHoldStart.callOnClick()
         }
     }
 
@@ -75,12 +73,12 @@ class HoldFragment
     fun clearPreviousConstraints() {
         try {
             val constraintSet = ConstraintSet()
-            constraintSet.clone(mainViewPanelHold)
-            constraintSet.clear(focusLayoutHold.id, ConstraintSet.TOP)
-            constraintSet.clear(focusLayoutHold.id, ConstraintSet.BOTTOM)
-            constraintSet.clear(focusLayoutHold.id, ConstraintSet.LEFT)
-            constraintSet.clear(focusLayoutHold.id, ConstraintSet.RIGHT)
-            constraintSet.applyTo(mainViewPanelHold)
+            constraintSet.clone(binding.mainViewPanelHold)
+            constraintSet.clear(binding.focusLayoutHold.id, ConstraintSet.TOP)
+            constraintSet.clear(binding.focusLayoutHold.id, ConstraintSet.BOTTOM)
+            constraintSet.clear(binding.focusLayoutHold.id, ConstraintSet.LEFT)
+            constraintSet.clear(binding.focusLayoutHold.id, ConstraintSet.RIGHT)
+            constraintSet.applyTo(binding.mainViewPanelHold)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -88,36 +86,36 @@ class HoldFragment
 
     private fun changeConstraintsOfFocusLayout(view: View) {
         val constraintSet = ConstraintSet()
-        constraintSet.clone(mainViewPanelHold)
+        constraintSet.clone(binding.mainViewPanelHold)
         constraintSet.connect(
-            focusLayoutHold.id,
+            binding.focusLayoutHold.id,
             ConstraintSet.RIGHT,
             view.id,
             ConstraintSet.RIGHT,
             0
         )
         constraintSet.connect(
-            focusLayoutHold.id,
+            binding.focusLayoutHold.id,
             ConstraintSet.TOP,
             view.id,
             ConstraintSet.TOP,
             0
         )
         constraintSet.connect(
-            focusLayoutHold.id,
+            binding.focusLayoutHold.id,
             ConstraintSet.BOTTOM,
             view.id,
             ConstraintSet.BOTTOM,
             0
         )
         constraintSet.connect(
-            focusLayoutHold.id,
+            binding.focusLayoutHold.id,
             ConstraintSet.LEFT,
             view.id,
             ConstraintSet.LEFT,
             0
         )
-        constraintSet.applyTo(mainViewPanelHold)
+        constraintSet.applyTo(binding.mainViewPanelHold)
     }
 
     //
@@ -125,18 +123,17 @@ class HoldFragment
 
         data?.let {
 
-            Log.i("valueasd213", topBar.isVisible.toString() + " " + highlightedIndex + " " + data)
 
             return when (highlightedIndex) {
 
-                0 -> if (topBar.isVisible) backBtn else holdLayout1
-                1 -> if (topBar.isVisible) holdLayout3 else holdLayout2
+                0 -> if (binding.topBar.isVisible) binding.backBtn else binding.holdLayout1
+                1 -> if (binding.topBar.isVisible) binding.holdLayout3 else binding.holdLayout2
                 2 -> {
-                    if (topBar.isVisible) holdLayout4 else null
+                    if (binding.topBar.isVisible) binding.holdLayout4 else null
                 }
 
                 3 -> {
-                    if (topBar.isVisible) holdLayout5 else null
+                    if (binding.topBar.isVisible) binding.holdLayout5 else null
                 }
 
                 else -> null
@@ -153,7 +150,8 @@ class HoldFragment
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_hold, container, false)
+        binding = FragmentHoldBinding.inflate(layoutInflater,container,false)
+        return binding.root
     }
 
     override fun onDetach() {
@@ -177,25 +175,25 @@ class HoldFragment
             if(limits.size>1){
                 minTimeLimit = limits[0]!!
                 maxTimeLimit = limits[1]!!
-                tvTime.text = minTimeLimit.toString()
+                binding.tvTime.text = minTimeLimit.toString()
             }
         }
 
         setOnClickListener()
 
-        btnInc.setOnClickListener {
+        binding.btnInc.setOnClickListener {
             clickAdd()
         }
 
-        btnDec.setOnClickListener {
+        binding.btnDec.setOnClickListener {
             clickSubtract()
         }
 
-        btnInspHoldStart.setOnClickListener {
+        binding.btnInspHoldStart.setOnClickListener {
             inspiraterClicView()
         }
 
-        btnExpiratHoldStart.setOnClickListener {
+        binding.btnExpiratHoldStart.setOnClickListener {
             expiratoryClickView()
         }
 
@@ -219,10 +217,10 @@ class HoldFragment
 
     @SuppressLint("DefaultLocale")
     private fun expiratoryClickView() {
-        setDurationBoxLayout.visibility = View.GONE
+        binding.setDurationBoxLayout.visibility = View.GONE
 
         try {
-            val timePeriod = String.format("%.1f", tvTime.text.toString().toFloat())
+            val timePeriod = String.format("%.1f", binding.tvTime.text.toString().toFloat())
             communicationService?.takeIf { it.isPortsConnected }?.apply {
                 send(resources.getString(R.string.prefix_expiratory_hold) + timePeriod)
                 onCloseListener?.doAction()
@@ -242,10 +240,10 @@ class HoldFragment
 
     @SuppressLint("DefaultLocale")
     private fun inspiraterClicView() {
-        setDurationBoxLayout.visibility = View.GONE
+        binding.setDurationBoxLayout.visibility = View.GONE
 
         try {
-            val timePeriod = String.format("%.1f", tvTime.text.toString().toFloat())
+            val timePeriod = String.format("%.1f", binding.tvTime.text.toString().toFloat())
 
             communicationService?.takeIf { it.isPortsConnected }?.apply {
                 send(resources.getString(R.string.prefix_inspiratory_hold) + timePeriod)
@@ -266,48 +264,48 @@ class HoldFragment
 
     private fun handleBackButton() {
 
-        backBtn.setOnClickListener {
+        binding.backBtn.setOnClickListener {
             (parentFragment as ManeuversDialogFragment).highlightedIndex = -1
             (parentFragment as ManeuversDialogFragment).sizeOfCurrentArray = 1
             if (TagFromFragment == "Expiratory" || TagFromFragment == "Inspiratory") {
-                topBar.visibility = View.GONE
-                tvMainTitle.visibility = View.GONE
-                backBtn.visibility = View.GONE
-                tvMainTitle.text = ""
+                binding.topBar.visibility = View.GONE
+                binding.tvMainTitle.visibility = View.GONE
+                binding.backBtn.visibility = View.GONE
+                binding.tvMainTitle.text = ""
 
                 setupData()
-                setDurationBoxLayout.visibility = View.GONE
-                holdFragmentButtonsLayout.visibility = View.VISIBLE
-                includeButtonInspirationHold.buttonView.setOnClickListener {
+                binding.setDurationBoxLayout.visibility = View.GONE
+                binding.holdFragmentButtonsLayout.visibility = View.VISIBLE
+                binding.includeButtonInspirationHold.buttonView.setOnClickListener {
                     (parentFragment as ManeuversDialogFragment).highlightedIndex = -1
                     (parentFragment as ManeuversDialogFragment).sizeOfCurrentArray = 3
-                    setDurationBoxLayout.visibility = View.VISIBLE
+                    binding.setDurationBoxLayout.visibility = View.VISIBLE
 
-                    btnInspHoldStart.visibility = View.VISIBLE
-                    btnExpiratHoldStart.visibility = View.GONE
+                    binding.btnInspHoldStart.visibility = View.VISIBLE
+                    binding.btnExpiratHoldStart.visibility = View.GONE
 
-                    holdFragmentButtonsLayout.visibility = View.GONE
+                    binding.holdFragmentButtonsLayout.visibility = View.GONE
 
-                    topBar.visibility = View.VISIBLE
-                    tvMainTitle.visibility = View.VISIBLE
-                    backBtn.visibility = View.VISIBLE
-                    tvMainTitle.text = "Inspiratory hold"
+                    binding.topBar.visibility = View.VISIBLE
+                    binding.tvMainTitle.visibility = View.VISIBLE
+                    binding.backBtn.visibility = View.VISIBLE
+                    binding.tvMainTitle.text = "Inspiratory hold"
                 }
 
-                includeButtonExpirationHold.buttonView.setOnClickListener {
+                binding.includeButtonExpirationHold.buttonView.setOnClickListener {
                     (parentFragment as ManeuversDialogFragment).highlightedIndex = -1
                     (parentFragment as ManeuversDialogFragment).sizeOfCurrentArray = 3
-                    setDurationBoxLayout.visibility = View.VISIBLE
+                    binding.setDurationBoxLayout.visibility = View.VISIBLE
 
-                    btnExpiratHoldStart.visibility = View.VISIBLE
-                    btnInspHoldStart.visibility = View.GONE
+                    binding.btnExpiratHoldStart.visibility = View.VISIBLE
+                    binding.btnInspHoldStart.visibility = View.GONE
 
-                    holdFragmentButtonsLayout.visibility = View.GONE
+                    binding.holdFragmentButtonsLayout.visibility = View.GONE
 
-                    topBar.visibility = View.VISIBLE
-                    tvMainTitle.visibility = View.VISIBLE
-                    backBtn.visibility = View.VISIBLE
-                    tvMainTitle.text = "Expiratory hold"
+                    binding.topBar.visibility = View.VISIBLE
+                    binding.tvMainTitle.visibility = View.VISIBLE
+                    binding.backBtn.visibility = View.VISIBLE
+                    binding.tvMainTitle.text = "Expiratory hold"
 
                 }
             }
@@ -316,48 +314,48 @@ class HoldFragment
 
     // setUp Data
     private fun setupData() {
-        topBar.visibility = View.GONE
-        tvMainTitle.visibility = View.GONE
-        backBtn.visibility = View.GONE
-        tvMainTitle.text = ""
+        binding.topBar.visibility = View.GONE
+        binding.tvMainTitle.visibility = View.GONE
+        binding.backBtn.visibility = View.GONE
+        binding.tvMainTitle.text = ""
 
-        includeButtonInspirationHold.buttonView.text = getString(R.string.hint_inspiration_hold)
-        includeButtonExpirationHold.buttonView.text = getString(R.string.hint_expiration_hold)
-        includeButtonInspirationHold.buttonView.setPaddingRelative(40, 10, 40, 10)
-        includeButtonExpirationHold.buttonView.setPaddingRelative(42, 10, 42, 10)
+        binding.includeButtonInspirationHold.buttonView.text = getString(R.string.hint_inspiration_hold)
+        binding.includeButtonExpirationHold.buttonView.text = getString(R.string.hint_expiration_hold)
+        binding.includeButtonInspirationHold.buttonView.setPaddingRelative(40, 10, 40, 10)
+        binding.includeButtonExpirationHold.buttonView.setPaddingRelative(42, 10, 42, 10)
 
         preferenceManager?.apply {
 
             if (readManeuversPplatValue().toString().contains("0.0")) {
-                textViewInspirationHoldValue.text = "Pplat -"
-                textViewInspirationHoldTime.text = "-"
+                binding.textViewInspirationHoldValue.text = "Pplat -"
+                binding.textViewInspirationHoldTime.text = "-"
             } else {
-                textViewInspirationHoldValue.text = "Pplat = ${readManeuversPplatValue()} cmH₂O"
-                textViewInspirationHoldTime.text = readInspiratoryDate()
+                binding.textViewInspirationHoldValue.text = "Pplat = ${readManeuversPplatValue()} cmH₂O"
+                binding.textViewInspirationHoldTime.text = readInspiratoryDate()
             }
 
             if (readManeuversStaticComplianceValue().toString().contains("0.0")) {
-                textViewInspirationHoldValuesecond.text = "Static Comp -"
-                textViewInspirationHoldTime.text = "-"
+                binding.textViewInspirationHoldValuesecond.text = "Static Comp -"
+                binding.textViewInspirationHoldTime.text = "-"
 
             } else {
-                textViewInspirationHoldValuesecond.text = "Static Comp = ${
+                binding.textViewInspirationHoldValuesecond.text = "Static Comp = ${
                     readManeuversStaticComplianceValue().toString().substring(
                         0,
                         readManeuversStaticComplianceValue().toString().indexOf('.') + 2
                     )
                 } mL/cmH₂O"
-                textViewInspirationHoldTime.text = readInspiratoryDate()
+                binding.textViewInspirationHoldTime.text = readInspiratoryDate()
             }
 
             if (readManeuversAutoPeepValue().toString().contains("0.0")) {
-                textViewExpirationHoldValue.text = "Auto PEEP -"
-                textViewExpirationHoldTime.text = "-"
+                binding.textViewExpirationHoldValue.text = "Auto PEEP -"
+                binding.textViewExpirationHoldTime.text = "-"
 
             } else {
-                textViewExpirationHoldValue.text =
+                binding.textViewExpirationHoldValue.text =
                     "Auto PEEP = ${readManeuversAutoPeepValue()} cmH₂O"
-                textViewExpirationHoldTime.text = readExpiratoryDate()
+                binding.textViewExpirationHoldTime.text = readExpiratoryDate()
             }
         }
     }
@@ -369,73 +367,73 @@ class HoldFragment
         if (isFromKnob.equals(Configs.EXPIRATORY_HOLD)) {
             (parentFragment as ManeuversDialogFragment).highlightedIndex = -1
             (parentFragment as ManeuversDialogFragment).sizeOfCurrentArray = 3
-            setDurationBoxLayout.visibility = View.VISIBLE
-            btnExpiratHoldStart.visibility = View.VISIBLE
-            btnInspHoldStart.visibility = View.GONE
+            binding.setDurationBoxLayout.visibility = View.VISIBLE
+            binding.btnExpiratHoldStart.visibility = View.VISIBLE
+            binding.btnInspHoldStart.visibility = View.GONE
 
-            holdFragmentButtonsLayout.visibility = View.GONE
+            binding.holdFragmentButtonsLayout.visibility = View.GONE
 
-            topBar.visibility = View.VISIBLE
-            tvMainTitle.visibility = View.VISIBLE
-            backBtn.visibility = View.VISIBLE
-            tvMainTitle.text = "Expiratory hold"
+            binding.topBar.visibility = View.VISIBLE
+            binding.tvMainTitle.visibility = View.VISIBLE
+            binding.backBtn.visibility = View.VISIBLE
+            binding.tvMainTitle.text = "Expiratory hold"
             TagFromFragment = "Expiratory"
 
         } else if (isFromKnob.equals(Configs.INSPIRATORY_HOLD)) {
             (parentFragment as ManeuversDialogFragment).highlightedIndex = -1
             (parentFragment as ManeuversDialogFragment).sizeOfCurrentArray = 3
-            setDurationBoxLayout.visibility = View.VISIBLE
+            binding.setDurationBoxLayout.visibility = View.VISIBLE
 
-            btnInspHoldStart.visibility = View.VISIBLE
-            btnExpiratHoldStart.visibility = View.GONE
+            binding.btnInspHoldStart.visibility = View.VISIBLE
+            binding.btnExpiratHoldStart.visibility = View.GONE
 
-            holdFragmentButtonsLayout.visibility = View.GONE
-            topBar.visibility = View.VISIBLE
-            tvMainTitle.visibility = View.VISIBLE
-            backBtn.visibility = View.VISIBLE
-            tvMainTitle.text = "Inspiratory hold"
+            binding.holdFragmentButtonsLayout.visibility = View.GONE
+            binding.topBar.visibility = View.VISIBLE
+            binding.tvMainTitle.visibility = View.VISIBLE
+            binding.backBtn.visibility = View.VISIBLE
+            binding.tvMainTitle.text = "Inspiratory hold"
             TagFromFragment = "Inspiratory"
         } else {
-            topBar.visibility = View.GONE
-            tvMainTitle.visibility = View.GONE
-            backBtn.visibility = View.GONE
-            tvMainTitle.text = ""
+            binding.topBar.visibility = View.GONE
+            binding.tvMainTitle.visibility = View.GONE
+            binding.backBtn.visibility = View.GONE
+            binding.tvMainTitle.text = ""
 
-            setDurationBoxLayout.visibility = View.GONE
-            includeButtonInspirationHold.buttonView.setOnClickListener {
+            binding.setDurationBoxLayout.visibility = View.GONE
+            binding.includeButtonInspirationHold.buttonView.setOnClickListener {
                 (parentFragment as ManeuversDialogFragment).highlightedIndex = -1
                 (parentFragment as ManeuversDialogFragment).sizeOfCurrentArray = 3
-                setDurationBoxLayout.visibility = View.VISIBLE
+                binding.setDurationBoxLayout.visibility = View.VISIBLE
 
-                btnInspHoldStart.visibility = View.VISIBLE
-                btnExpiratHoldStart.visibility = View.GONE
+                binding.btnInspHoldStart.visibility = View.VISIBLE
+                binding.btnExpiratHoldStart.visibility = View.GONE
 
 
-                holdFragmentButtonsLayout.visibility = View.GONE
+                binding.holdFragmentButtonsLayout.visibility = View.GONE
 
-                topBar.visibility = View.VISIBLE
-                tvMainTitle.visibility = View.VISIBLE
-                backBtn.visibility = View.VISIBLE
-                tvMainTitle.text = "Inspiratory hold"
+                binding.topBar.visibility = View.VISIBLE
+                binding.tvMainTitle.visibility = View.VISIBLE
+                binding.backBtn.visibility = View.VISIBLE
+                binding.tvMainTitle.text = "Inspiratory hold"
                 TagFromFragment = "Inspiratory"
 
             }
 
-            includeButtonExpirationHold.buttonView.setOnClickListener {
+            binding.includeButtonExpirationHold.buttonView.setOnClickListener {
                 (parentFragment as ManeuversDialogFragment).highlightedIndex = -1
                 (parentFragment as ManeuversDialogFragment).sizeOfCurrentArray = 3
 
-                setDurationBoxLayout.visibility = View.VISIBLE
+                binding.setDurationBoxLayout.visibility = View.VISIBLE
 
-                btnExpiratHoldStart.visibility = View.VISIBLE
-                btnInspHoldStart.visibility = View.GONE
+                binding.btnExpiratHoldStart.visibility = View.VISIBLE
+                binding.btnInspHoldStart.visibility = View.GONE
 
-                holdFragmentButtonsLayout.visibility = View.GONE
+                binding.holdFragmentButtonsLayout.visibility = View.GONE
 
-                topBar.visibility = View.VISIBLE
-                tvMainTitle.visibility = View.VISIBLE
-                backBtn.visibility = View.VISIBLE
-                tvMainTitle.text = "Expiratory hold"
+                binding.topBar.visibility = View.VISIBLE
+                binding.tvMainTitle.visibility = View.VISIBLE
+                binding.backBtn.visibility = View.VISIBLE
+                binding.tvMainTitle.text = "Expiratory hold"
                 TagFromFragment = "Expiratory"
 
             }
@@ -446,10 +444,10 @@ class HoldFragment
 
     private fun clickAdd() {
         try {
-            var currentTime = tvTime.text.toString().toFloat()
+            var currentTime = binding.tvTime.text.toString().toFloat()
             currentTime = currentTime.plus(0.5f)
             if (currentTime <= maxTimeLimit && currentTime >= minTimeLimit)
-                tvTime.text = String.format("%.1f", currentTime);
+                binding.tvTime.text = String.format("%.1f", currentTime);
         } catch (e: Exception) {
             Log.e("PARSE_ERROR", "Error in parsing expiratory time period")
             e.printStackTrace()
@@ -458,10 +456,10 @@ class HoldFragment
 
     private fun clickSubtract() {
         try {
-            var currentTime = tvTime.text.toString().toFloat()
+            var currentTime = binding.tvTime.text.toString().toFloat()
             currentTime -= 0.5f
             if (currentTime <= maxTimeLimit && currentTime >= minTimeLimit)
-                tvTime.text = String.format("%.1f", currentTime)
+                binding.tvTime.text = String.format("%.1f", currentTime)
         } catch (e: Exception) {
             Log.e("PARSE_ERROR", "Error in parsing expiratory time period")
             e.printStackTrace()

@@ -3,7 +3,6 @@ package com.agvahealthcare.ventilator_ext.graphics
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.os.PerformanceHintManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,32 +11,22 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import com.agvahealthcare.ventilator_ext.R
-import com.agvahealthcare.ventilator_ext.VentilatorApp
 import com.agvahealthcare.ventilator_ext.callback.OnDismissDialogListener
 import com.agvahealthcare.ventilator_ext.callback.OnGraphSelectListener
 import com.agvahealthcare.ventilator_ext.dashboard.GraphLayoutFragment
 import com.agvahealthcare.ventilator_ext.dashboard.chart.parentType
 import com.agvahealthcare.ventilator_ext.dashboard.duo_graph.DuoFragmentGraph
-import com.agvahealthcare.ventilator_ext.dashboard.linear_quad.LinearQuadGraphFragment
 import com.agvahealthcare.ventilator_ext.dashboard.loops_graph.LoopsFragmentGraph
 import com.agvahealthcare.ventilator_ext.dashboard.quad_graph.DivideQuadFragmentGraph
-import com.agvahealthcare.ventilator_ext.dashboard.quad_graph.QuadFragmentGraph
 import com.agvahealthcare.ventilator_ext.dashboard.trio_graph.DivideTrioFragmentGraph
 import com.agvahealthcare.ventilator_ext.dashboard.trio_graph.TrioFragmentGraph
+import com.agvahealthcare.ventilator_ext.databinding.FragmentGraphicsDialogBinding
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.utility.setHeightWidthPercent
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_AND
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_MINUS
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_PLUS
-import kotlinx.android.synthetic.main.content_button_layout.view.buttonView
-import kotlinx.android.synthetic.main.fragment_graphics_dialog.*
-import kotlinx.android.synthetic.main.fragment_monitoring_dialog.focusLayoutMonitoring
-import kotlinx.android.synthetic.main.fragment_monitoring_dialog.imageViewCrossMonitoring
-import kotlinx.android.synthetic.main.fragment_monitoring_dialog.includeButtonGeneral
-import kotlinx.android.synthetic.main.fragment_monitoring_dialog.includeButtonSPO2
-import kotlinx.android.synthetic.main.fragment_monitoring_dialog.mainViewPanelMonitoring
-import kotlinx.android.synthetic.main.fragment_settings.layoutDay
-import kotlinx.android.synthetic.main.item_mode_data_layout.view.*
+import kotlinx.android.synthetic.main.hold_buttons_layout.view.buttonView
 
 
 class GraphicsDialogFragment(
@@ -46,7 +35,7 @@ class GraphicsDialogFragment(
     val graphLayoutListener: GraphLayoutListener?
 ) : DialogFragment() {
 
-
+    private lateinit var binding : FragmentGraphicsDialogBinding
     private var prefManager: PreferenceManager? = null
 
     interface GraphLayoutListener {
@@ -75,22 +64,22 @@ class GraphicsDialogFragment(
                 if (highlightedIndex < 7) highlightedIndex++
                 else highlightedIndex = 1
 
-                getViewForFocus()?.let { changeConstraintsOfFocusLayout(it) }
+                getViewForFocus()?.let { changeConstraintsOfFocusLayout(it.second) }
             }
 
             PREFIX_MINUS -> {
                 if (highlightedIndex > 1) highlightedIndex--
                 else highlightedIndex = 7
 
-                getViewForFocus()?.let { changeConstraintsOfFocusLayout(it) }
+                getViewForFocus()?.let { changeConstraintsOfFocusLayout(it.second) }
             }
 
             PREFIX_AND -> {
 
                 if (highlightedIndex != 7) {
-                    getViewForFocus()?.callOnClick()
+                    getViewForFocus()?.first?.callOnClick()
                 } else {
-                    getViewForFocus()?.buttonView?.callOnClick()
+                    getViewForFocus()?.first?.callOnClick()
                 }
             }
         }
@@ -99,12 +88,12 @@ class GraphicsDialogFragment(
     private fun clearPreviousConstraints() {
         try {
             val constraintSet = ConstraintSet()
-            constraintSet.clone(mainViewPanelGraphics)
-            constraintSet.clear(focusLayoutGraphics.id, ConstraintSet.TOP)
-            constraintSet.clear(focusLayoutGraphics.id, ConstraintSet.BOTTOM)
-            constraintSet.clear(focusLayoutGraphics.id, ConstraintSet.LEFT)
-            constraintSet.clear(focusLayoutGraphics.id, ConstraintSet.RIGHT)
-            constraintSet.applyTo(mainViewPanelGraphics)
+            constraintSet.clone(binding.mainViewPanelGraphics)
+            constraintSet.clear(binding.focusLayoutGraphics.id, ConstraintSet.TOP)
+            constraintSet.clear(binding.focusLayoutGraphics.id, ConstraintSet.BOTTOM)
+            constraintSet.clear(binding.focusLayoutGraphics.id, ConstraintSet.LEFT)
+            constraintSet.clear(binding.focusLayoutGraphics.id, ConstraintSet.RIGHT)
+            constraintSet.applyTo(binding.mainViewPanelGraphics)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -112,49 +101,69 @@ class GraphicsDialogFragment(
 
     private fun changeConstraintsOfFocusLayout(view: View) {
         val constraintSet = ConstraintSet()
-        constraintSet.clone(mainViewPanelGraphics)
+        constraintSet.clone(binding.mainViewPanelGraphics)
         constraintSet.connect(
-            focusLayoutGraphics.id,
+            binding.focusLayoutGraphics.id,
             ConstraintSet.RIGHT,
             view.id,
             ConstraintSet.RIGHT,
             0
         )
         constraintSet.connect(
-            focusLayoutGraphics.id,
+            binding.focusLayoutGraphics.id,
             ConstraintSet.TOP,
             view.id,
             ConstraintSet.TOP,
             0
         )
         constraintSet.connect(
-            focusLayoutGraphics.id,
+            binding.focusLayoutGraphics.id,
             ConstraintSet.BOTTOM,
             view.id,
             ConstraintSet.BOTTOM,
             0
         )
         constraintSet.connect(
-            focusLayoutGraphics.id,
+            binding.focusLayoutGraphics.id,
             ConstraintSet.LEFT,
             view.id,
             ConstraintSet.LEFT,
             0
         )
-        constraintSet.applyTo(mainViewPanelGraphics)
+        constraintSet.applyTo(binding.mainViewPanelGraphics)
     }
 
-    private fun getViewForFocus(): View? {
-
+    private fun getViewForFocus(): Pair<View,View>? {
 
         return when (highlightedIndex) {
-            1 -> imageViewCrossGraphics
-            2 -> layoutPanelTrio
-            3 -> layoutPanelDuo
-            4 -> layoutPanelDivideQuad
-            5 -> layoutPanelDivideTrio
-            6 -> layoutPanelDividePent
-            7 -> includeButtonDefault
+            1 -> {
+                val pair = Pair(binding.imageViewCrossGraphics,binding.imageViewCrossGraphics)
+                pair
+            }
+            2 -> {
+                val pair = Pair(binding.layoutPanelTrio,binding.layoutPanelTrio)
+                pair
+            }
+            3 -> {
+                val pair = Pair(binding.layoutPanelDuo,binding.layoutPanelDuo)
+                pair
+            }
+            4 -> {
+                val pair = Pair(binding.layoutPanelDivideQuad,binding.layoutPanelDivideQuad)
+                pair
+            }
+            5 -> {
+                val pair = Pair(binding.layoutPanelDivideTrio,binding.layoutPanelDivideTrio)
+                pair
+            }
+            6 -> {
+                val pair = Pair(binding.layoutPanelDividePent,binding.layoutPanelDividePent)
+                pair
+            }
+            7 -> {
+                val pair = Pair(binding.includeButtonDefault.buttonView,binding.includeButtonDefault.root)
+                pair
+            }
 
             else -> null
         }
@@ -190,7 +199,9 @@ class GraphicsDialogFragment(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_graphics_dialog, container, false)
+
+        binding = FragmentGraphicsDialogBinding.inflate(layoutInflater,container,false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -204,50 +215,50 @@ class GraphicsDialogFragment(
     }
 
     private fun initView() {
-        includeButtonLayout2.buttonView.text = getString(R.string.hint_layout_2)
-        includeButtonLayout3.buttonView.text = getString(R.string.hint_layout_4)
-        includeButtonLayout4.buttonView.text = getString(R.string.hint_layout_3)
-        includeButtonLayout5.buttonView.text = getString(R.string.hint_layout_5)
-        includeButtonLayout6.buttonView.text = getString(R.string.hint_layout_loops)
-        includeButtonDefault.buttonView.text = getString(R.string.hint_defaults)
+        binding.includeButtonLayout2.buttonView.text = getString(R.string.hint_layout_2)
+        binding.includeButtonLayout3.buttonView.text = getString(R.string.hint_layout_4)
+        binding.includeButtonLayout4.buttonView.text = getString(R.string.hint_layout_3)
+        binding.includeButtonLayout5.buttonView.text = getString(R.string.hint_layout_5)
+        binding.includeButtonLayout6.buttonView.text = getString(R.string.hint_layout_loops)
+        binding.includeButtonDefault.buttonView.text = getString(R.string.hint_defaults)
 
 
-        includeButtonDefault.buttonView.setPadding(35, 10, 35, 10)
+        binding.includeButtonDefault.buttonView.setPadding(35, 10, 35, 10)
 
-        includeButtonLayout2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-        includeButtonLayout2.buttonView.setTextColor(
+        binding.includeButtonLayout2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonLayout2.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
 
-        includeButtonLayout3.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-        includeButtonLayout3.buttonView.setTextColor(
+        binding.includeButtonLayout3.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonLayout3.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
 
-        includeButtonLayout4.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-        includeButtonLayout4.buttonView.setTextColor(
+        binding.includeButtonLayout4.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonLayout4.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
 
-        includeButtonLayout5.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-        includeButtonLayout5.buttonView.setTextColor(
+        binding.includeButtonLayout5.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonLayout5.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
 
-        includeButtonLayout6.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-        includeButtonLayout6.buttonView.setTextColor(
+        binding.includeButtonLayout6.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonLayout6.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
@@ -255,8 +266,8 @@ class GraphicsDialogFragment(
         )
 
 
-        includeButtonDefault.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-        includeButtonDefault.buttonView.setTextColor(
+        binding.includeButtonDefault.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonDefault.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
@@ -268,23 +279,23 @@ class GraphicsDialogFragment(
         if (graph != null)
             if (graph is DivideQuadFragmentGraph) {
 
-                includeButtonLayout2.buttonView.setBackgroundResource(R.drawable.background_green_border)
+                binding.includeButtonLayout2.buttonView.setBackgroundResource(R.drawable.background_green_border)
 
             } else if (graph is DuoFragmentGraph) {
 
-                includeButtonLayout3.buttonView.setBackgroundResource(R.drawable.background_green_border)
+                binding.includeButtonLayout3.buttonView.setBackgroundResource(R.drawable.background_green_border)
 
             } else if (graph is TrioFragmentGraph) {
 
-                includeButtonLayout4.buttonView.setBackgroundResource(R.drawable.background_green_border)
+                binding.includeButtonLayout4.buttonView.setBackgroundResource(R.drawable.background_green_border)
 
             } else if (graph is DivideTrioFragmentGraph) {
 
-                includeButtonLayout5.buttonView.setBackgroundResource(R.drawable.background_green_border)
+                binding.includeButtonLayout5.buttonView.setBackgroundResource(R.drawable.background_green_border)
 
             } else if (graph is LoopsFragmentGraph) {
 
-                includeButtonLayout6.buttonView.setBackgroundResource(R.drawable.background_green_border)
+                binding.includeButtonLayout6.buttonView.setBackgroundResource(R.drawable.background_green_border)
             }
 
 
@@ -294,7 +305,7 @@ class GraphicsDialogFragment(
     private fun setupClickListener() {
 
 
-        imageViewCrossGraphics.setOnClickListener {
+        binding.imageViewCrossGraphics.setOnClickListener {
 
             requireActivity().supportFragmentManager
                 .beginTransaction()
@@ -305,14 +316,14 @@ class GraphicsDialogFragment(
 
         }
 
-        layoutPanelDividePent.setOnClickListener {
+        binding.layoutPanelDividePent.setOnClickListener {
             prefManager?.setGraphParentType(parentType.LoopsFragmentGraph)
             onGraphSelectListener?.onSelectLoopsGraph()
             closeListener?.handleDialogClose()
             closeDialog()
         }
 
-        layoutPanelDivideQuad.setOnClickListener {
+        binding.layoutPanelDivideQuad.setOnClickListener {
             prefManager?.setGraphParentType(parentType.DivideQuadFragmentGraph)
             onGraphSelectListener?.onSelectDivideQuadGraph()
             closeListener?.handleDialogClose()
@@ -320,28 +331,28 @@ class GraphicsDialogFragment(
         }
 
 
-        layoutPanelDuo.setOnClickListener {
+        binding.layoutPanelDuo.setOnClickListener {
             prefManager?.setGraphParentType(parentType.DuoFragmentGraph)
             onGraphSelectListener?.onSelectDuoGraph()
             closeListener?.handleDialogClose()
             closeDialog()
         }
 
-        layoutPanelTrio.setOnClickListener {
+        binding.layoutPanelTrio.setOnClickListener {
             prefManager?.setGraphParentType(parentType.TrioFragmentGraph)
             onGraphSelectListener?.onSelectTrioGraph()
             closeListener?.handleDialogClose()
             closeDialog()
         }
 
-        layoutPanelDivideTrio.setOnClickListener {
+        binding.layoutPanelDivideTrio.setOnClickListener {
             prefManager?.setGraphParentType(parentType.DivideTrioFragmentGraph)
             onGraphSelectListener?.onSelectDivideTrioGraph()
             closeListener?.handleDialogClose()
             closeDialog()
         }
 
-        includeButtonDefault.buttonView.setOnClickListener {
+        binding.includeButtonDefault.buttonView.setOnClickListener {
             prefManager?.setGraphParentType(parentType.DuoFragmentGraph)
             onGraphSelectListener?.onSelectDuoGraph()
             closeListener?.handleDialogClose()

@@ -16,22 +16,14 @@ import androidx.lifecycle.ViewModelProvider
 import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.callback.OnDismissDialogListener
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardViewModel
+import com.agvahealthcare.ventilator_ext.databinding.FragmentLogsDialogBinding
 import com.agvahealthcare.ventilator_ext.logs.alarm.AlarmFragment
 import com.agvahealthcare.ventilator_ext.logs.event.EventsFragment
 import com.agvahealthcare.ventilator_ext.utility.replaceFragment
 import com.agvahealthcare.ventilator_ext.utility.setHeightWidthPercent
-import com.agvahealthcare.ventilator_ext.utility.utils.AppUtils
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_AND
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_MINUS
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_PLUS
-import kotlinx.android.synthetic.main.content_button_layout.view.*
-import kotlinx.android.synthetic.main.fragment_logs_dialog.*
-import kotlinx.android.synthetic.main.fragment_logs_table_demo.*
-import kotlinx.android.synthetic.main.fragment_monitoring_dialog.focusLayoutMonitoring
-import kotlinx.android.synthetic.main.fragment_monitoring_dialog.imageViewCrossMonitoring
-import kotlinx.android.synthetic.main.fragment_monitoring_dialog.includeButtonGeneral
-import kotlinx.android.synthetic.main.fragment_monitoring_dialog.includeButtonSPO2
-import kotlinx.android.synthetic.main.fragment_monitoring_dialog.mainViewPanelMonitoring
 
 class LogsDialogFragment : DialogFragment() {
 
@@ -55,6 +47,7 @@ class LogsDialogFragment : DialogFragment() {
         }
     }
 
+    private lateinit var binding : FragmentLogsDialogBinding
     private var closeListener: OnDismissDialogListener? = null
     private var eventsFragment: EventsFragment? = null
     private var alarmFragment: AlarmFragment? = null
@@ -99,7 +92,7 @@ class LogsDialogFragment : DialogFragment() {
                         if (highlightedIndex < 5) highlightedIndex++
                         else highlightedIndex = 1
 
-                        getViewForFocus()?.let { changeConstraintsOfFocusLayout(it) }
+                        getViewForFocus()?.let { changeConstraintsOfFocusLayout(it.second) }
                     }
                 }
 
@@ -115,7 +108,7 @@ class LogsDialogFragment : DialogFragment() {
                         if (highlightedIndex > 1) highlightedIndex--
                         else highlightedIndex = 5
 
-                        getViewForFocus()?.let { changeConstraintsOfFocusLayout(it) }
+                        getViewForFocus()?.let { changeConstraintsOfFocusLayout(it.second) }
                     }
                 }
             }
@@ -131,10 +124,10 @@ class LogsDialogFragment : DialogFragment() {
                         if (logsType != LogsType.ALARMS) LogsType.ALARMS else null
                     }
                 } else if (highlightedIndex == 4) {
-                    getViewForFocus()?.callOnClick()
+                    getViewForFocus()?.first?.callOnClick()
                 } else {
                     logsType = null
-                    getViewForFocus()?.buttonView?.callOnClick()
+                    getViewForFocus()?.first?.callOnClick()
                 }
             }
         }
@@ -143,12 +136,12 @@ class LogsDialogFragment : DialogFragment() {
     private fun clearPreviousConstraints() {
         try {
             val constraintSet = ConstraintSet()
-            constraintSet.clone(mainViewPanelLogs)
-            constraintSet.clear(focusLayoutLogs.id, ConstraintSet.TOP)
-            constraintSet.clear(focusLayoutLogs.id, ConstraintSet.BOTTOM)
-            constraintSet.clear(focusLayoutLogs.id, ConstraintSet.LEFT)
-            constraintSet.clear(focusLayoutLogs.id, ConstraintSet.RIGHT)
-            constraintSet.applyTo(mainViewPanelLogs)
+            constraintSet.clone(binding.mainViewPanelLogs)
+            constraintSet.clear(binding.focusLayoutLogs.id, ConstraintSet.TOP)
+            constraintSet.clear(binding.focusLayoutLogs.id, ConstraintSet.BOTTOM)
+            constraintSet.clear(binding.focusLayoutLogs.id, ConstraintSet.LEFT)
+            constraintSet.clear(binding.focusLayoutLogs.id, ConstraintSet.RIGHT)
+            constraintSet.applyTo(binding.mainViewPanelLogs)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -156,47 +149,48 @@ class LogsDialogFragment : DialogFragment() {
 
     private fun changeConstraintsOfFocusLayout(view: View) {
         val constraintSet = ConstraintSet()
-        constraintSet.clone(mainViewPanelLogs)
+        constraintSet.clone(binding.mainViewPanelLogs)
         constraintSet.connect(
-            focusLayoutLogs.id,
+            binding.focusLayoutLogs.id,
             ConstraintSet.RIGHT,
             view.id,
             ConstraintSet.RIGHT,
             0
         )
         constraintSet.connect(
-            focusLayoutLogs.id,
+            binding.focusLayoutLogs.id,
             ConstraintSet.TOP,
             view.id,
             ConstraintSet.TOP,
             0
         )
         constraintSet.connect(
-            focusLayoutLogs.id,
+            binding.focusLayoutLogs.id,
             ConstraintSet.BOTTOM,
             view.id,
             ConstraintSet.BOTTOM,
             0
         )
         constraintSet.connect(
-            focusLayoutLogs.id,
+            binding.focusLayoutLogs.id,
             ConstraintSet.LEFT,
             view.id,
             ConstraintSet.LEFT,
             0
         )
-        constraintSet.applyTo(mainViewPanelLogs)
+        constraintSet.applyTo(binding.mainViewPanelLogs)
     }
 
-    private fun getViewForFocus(): View? {
+    private fun getViewForFocus(): Pair<View,View>? {
 
 
         return when (highlightedIndex) {
-            1 -> includeButtonTrends
-            2 -> includeButtonEvents
-            3 -> includeButtonAlarms
-            4 -> imageViewCrossLogs
-            5 -> logs_nav_container
+            1 -> Pair(binding.includeButtonTrends.buttonView,binding.includeButtonTrends.root)
+
+            2 -> Pair(binding.includeButtonEvents.buttonView,binding.includeButtonEvents.root)
+            3 -> Pair(binding.includeButtonAlarms.buttonView,binding.includeButtonAlarms.root)
+            4 -> Pair(binding.imageViewCrossLogs,binding.imageViewCrossLogs)
+            5 -> Pair(binding.logsNavContainer,binding.logsNavContainer)
 
             else -> null
         }
@@ -232,7 +226,8 @@ class LogsDialogFragment : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_logs_dialog, container, false)
+        binding = FragmentLogsDialogBinding.inflate(layoutInflater,container,false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -245,7 +240,7 @@ class LogsDialogFragment : DialogFragment() {
         dashBoardViewModel?.updateIsAlarmsFragmentVisible(false)
         dashBoardViewModel?.logsDateUpdate?.observe(viewLifecycleOwner, Observer {
             Log.i("dadw123", it.toString())
-            tvDate.text = it?.split(" ")?.get(0) ?: ""
+            binding.tvDate.text = it?.split(" ")?.get(0) ?: ""
         })
         setUpTrends()
         setupClickListener()
@@ -253,9 +248,9 @@ class LogsDialogFragment : DialogFragment() {
 
     private fun setPaddingOnButton() {
 
-        includeButtonTrends.buttonView.setPadding(35, 10, 35, 10)
-        includeButtonEvents.buttonView.setPadding(35, 10, 35, 10)
-        includeButtonAlarms.buttonView.setPadding(35, 10, 35, 10)
+        binding.includeButtonTrends.buttonView.setPadding(35, 10, 35, 10)
+        binding.includeButtonEvents.buttonView.setPadding(35, 10, 35, 10)
+        binding.includeButtonAlarms.buttonView.setPadding(35, 10, 35, 10)
 
     }
 
@@ -274,11 +269,11 @@ class LogsDialogFragment : DialogFragment() {
     // ClickListener on Buttons
     private fun setupClickListener() {
 
-        includeButtonTrends.buttonView.text = getString(R.string.hint_trends)
-        includeButtonEvents.buttonView.text = getString(R.string.hint_events)
-        includeButtonAlarms.buttonView.text = getString(R.string.hint_alarms)
+        binding.includeButtonTrends.buttonView.text = getString(R.string.hint_trends)
+        binding.includeButtonEvents.buttonView.text = getString(R.string.hint_events)
+        binding.includeButtonAlarms.buttonView.text = getString(R.string.hint_alarms)
 
-        imageViewCrossLogs.setOnClickListener {
+        binding.imageViewCrossLogs.setOnClickListener {
 
             requireActivity().supportFragmentManager
                 .beginTransaction()
@@ -288,15 +283,15 @@ class LogsDialogFragment : DialogFragment() {
             closeListener?.handleDialogClose()
         }
         //ToDo:- paging functionality
-        includeButtonTrends.buttonView.setOnClickListener {
+        binding.includeButtonTrends.buttonView.setOnClickListener {
             setUpTrends()
         }
 
-        includeButtonEvents.buttonView.setOnClickListener {
+        binding.includeButtonEvents.buttonView.setOnClickListener {
             setUpEvents()
         }
 
-        includeButtonAlarms.buttonView.setOnClickListener {
+        binding.includeButtonAlarms.buttonView.setOnClickListener {
             setupAlarms()
         }
     }
@@ -306,8 +301,8 @@ class LogsDialogFragment : DialogFragment() {
         setAllFragmentsFalse()
         if (logsType != null) logsType = LogsType.TRENDS
         if (trendsOtherFragment == null) {
-            tvDate.visibility = View.VISIBLE
-            tvlogsDate.visibility = View.VISIBLE
+            binding.tvDate.visibility = View.VISIBLE
+            binding.tvlogsDate.visibility = View.VISIBLE
 
             trendsOtherFragment = LogsTrendsFragment()
             trendsOtherFragment?.apply {
@@ -319,22 +314,22 @@ class LogsDialogFragment : DialogFragment() {
             }
 
 
-            includeButtonTrends.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
-            includeButtonEvents.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-            includeButtonAlarms.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-            includeButtonTrends.buttonView.setTextColor(
+            binding.includeButtonTrends.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
+            binding.includeButtonEvents.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+            binding.includeButtonAlarms.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+            binding.includeButtonTrends.buttonView.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
                     R.color.white
                 )
             )
-            includeButtonEvents.buttonView.setTextColor(
+            binding.includeButtonEvents.buttonView.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
                     R.color.white
                 )
             )
-            includeButtonAlarms.buttonView.setTextColor(
+            binding.includeButtonAlarms.buttonView.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
                     R.color.white
@@ -348,8 +343,8 @@ class LogsDialogFragment : DialogFragment() {
     private fun setUpEvents() {
         makeAllFragmentsNull()
         setAllFragmentsFalse()
-        tvDate.visibility = View.GONE
-        tvlogsDate.visibility = View.GONE
+        binding.tvDate.visibility = View.GONE
+        binding.tvlogsDate.visibility = View.GONE
         if (logsType != null) logsType = LogsType.EVENTS
         if (eventsFragment == null) {
             eventsFragment = EventsFragment()
@@ -361,22 +356,22 @@ class LogsDialogFragment : DialogFragment() {
                 )
             }
 
-            includeButtonTrends.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-            includeButtonEvents.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
-            includeButtonAlarms.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-            includeButtonEvents.buttonView.setTextColor(
+            binding.includeButtonTrends.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+            binding.includeButtonEvents.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
+            binding.includeButtonAlarms.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+            binding.includeButtonEvents.buttonView.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
                     R.color.white
                 )
             )
-            includeButtonTrends.buttonView.setTextColor(
+            binding.includeButtonTrends.buttonView.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
                     R.color.white
                 )
             )
-            includeButtonAlarms.buttonView.setTextColor(
+            binding.includeButtonAlarms.buttonView.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
                     R.color.white
@@ -392,8 +387,8 @@ class LogsDialogFragment : DialogFragment() {
     private fun setupAlarms() {
         makeAllFragmentsNull()
         setAllFragmentsFalse()
-        tvDate.visibility = View.GONE
-        tvlogsDate.visibility = View.GONE
+        binding.tvDate.visibility = View.GONE
+        binding.tvlogsDate.visibility = View.GONE
         if (logsType != null) logsType = LogsType.ALARMS
         if (alarmFragment == null) {
             alarmFragment = AlarmFragment()
@@ -404,22 +399,22 @@ class LogsDialogFragment : DialogFragment() {
                     R.id.logs_nav_container
                 )
             }
-            includeButtonTrends.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-            includeButtonEvents.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-            includeButtonAlarms.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
-            includeButtonAlarms.buttonView.setTextColor(
+            binding.includeButtonTrends.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+            binding.includeButtonEvents.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+            binding.includeButtonAlarms.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
+            binding.includeButtonAlarms.buttonView.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
                     R.color.white
                 )
             )
-            includeButtonTrends.buttonView.setTextColor(
+            binding.includeButtonTrends.buttonView.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
                     R.color.white
                 )
             )
-            includeButtonEvents.buttonView.setTextColor(
+            binding.includeButtonEvents.buttonView.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
                     R.color.white

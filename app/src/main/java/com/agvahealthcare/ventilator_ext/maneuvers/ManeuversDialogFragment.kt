@@ -15,6 +15,7 @@ import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.callback.OnDismissDialogListener
 import com.agvahealthcare.ventilator_ext.callback.SimpleCallbackListener
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardViewModel
+import com.agvahealthcare.ventilator_ext.databinding.FragmentManeuversDialogBinding
 import com.agvahealthcare.ventilator_ext.manager.DataStoreManager
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.maneuvers.hold.HoldFragment
@@ -24,12 +25,9 @@ import com.agvahealthcare.ventilator_ext.utility.ToastFactory
 import com.agvahealthcare.ventilator_ext.utility.replaceFragment
 import com.agvahealthcare.ventilator_ext.utility.setHeightWidthPercent
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs
-import com.agvahealthcare.ventilator_ext.utility.utils.Configs.NEBULIZER
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_AND
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_MINUS
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_PLUS
-import kotlinx.android.synthetic.main.content_button_layout.view.*
-import kotlinx.android.synthetic.main.fragment_maneuvers_dialog.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -64,6 +62,7 @@ class ManeuversDialogFragment : DialogFragment(), SimpleCallbackListener {
         }
     }
 
+    private lateinit var binding : FragmentManeuversDialogBinding
     private var closeListener: OnDismissDialogListener? = null
     private var communicationService: CommunicationService? = null
     private var prefManager: PreferenceManager? = null
@@ -116,7 +115,7 @@ class ManeuversDialogFragment : DialogFragment(), SimpleCallbackListener {
 
                     getViewForFocus(false)?.let {
                         highlightAdapters(-1,data)
-                        changeConstraintsOfFocusLayout(it)
+                        changeConstraintsOfFocusLayout(it.second)
                     } ?: kotlin.run {
                         highlightAdapters(highlightedIndex,data)
                     }
@@ -129,7 +128,7 @@ class ManeuversDialogFragment : DialogFragment(), SimpleCallbackListener {
 
                     getViewForFocus(true)?.let {
                         highlightAdapters(-1,data)
-                        changeConstraintsOfFocusLayout(it)
+                        changeConstraintsOfFocusLayout(it.second)
                     } ?: kotlin.run {
                         highlightAdapters(highlightedIndex,data)
                     }
@@ -138,9 +137,9 @@ class ManeuversDialogFragment : DialogFragment(), SimpleCallbackListener {
                 PREFIX_AND -> {
                     getViewForFocus(null)?.let {
                         if (highlightedIndex == sizeOfCurrentArray + 1) {
-                            it.callOnClick()
+                            it.first.callOnClick()
                         } else {
-                            it.buttonView.callOnClick()
+                            it.first.callOnClick()
 
                             // reset highlight index to starting position after clicking on any fragments
                             highlightedIndex = -1
@@ -158,12 +157,12 @@ class ManeuversDialogFragment : DialogFragment(), SimpleCallbackListener {
     private fun clearPreviousConstraints() {
         try {
             val constraintSet = ConstraintSet()
-            constraintSet.clone(mainViewPanelManeuvers)
-            constraintSet.clear(focusLayoutManeuvers.id, ConstraintSet.TOP)
-            constraintSet.clear(focusLayoutManeuvers.id, ConstraintSet.BOTTOM)
-            constraintSet.clear(focusLayoutManeuvers.id, ConstraintSet.LEFT)
-            constraintSet.clear(focusLayoutManeuvers.id, ConstraintSet.RIGHT)
-            constraintSet.applyTo(mainViewPanelManeuvers)
+            constraintSet.clone(binding.mainViewPanelManeuvers)
+            constraintSet.clear(binding.focusLayoutManeuvers.id, ConstraintSet.TOP)
+            constraintSet.clear(binding.focusLayoutManeuvers.id, ConstraintSet.BOTTOM)
+            constraintSet.clear(binding.focusLayoutManeuvers.id, ConstraintSet.LEFT)
+            constraintSet.clear(binding.focusLayoutManeuvers.id, ConstraintSet.RIGHT)
+            constraintSet.applyTo(binding.mainViewPanelManeuvers)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -171,39 +170,39 @@ class ManeuversDialogFragment : DialogFragment(), SimpleCallbackListener {
 
     private fun changeConstraintsOfFocusLayout(view: View) {
         val constraintSet = ConstraintSet()
-        constraintSet.clone(mainViewPanelManeuvers)
+        constraintSet.clone(binding.mainViewPanelManeuvers)
         constraintSet.connect(
-            focusLayoutManeuvers.id,
+            binding.focusLayoutManeuvers.id,
             ConstraintSet.RIGHT,
             view.id,
             ConstraintSet.RIGHT,
             0
         )
         constraintSet.connect(
-            focusLayoutManeuvers.id,
+            binding.focusLayoutManeuvers.id,
             ConstraintSet.TOP,
             view.id,
             ConstraintSet.TOP,
             0
         )
         constraintSet.connect(
-            focusLayoutManeuvers.id,
+            binding.focusLayoutManeuvers.id,
             ConstraintSet.BOTTOM,
             view.id,
             ConstraintSet.BOTTOM,
             0
         )
         constraintSet.connect(
-            focusLayoutManeuvers.id,
+            binding.focusLayoutManeuvers.id,
             ConstraintSet.LEFT,
             view.id,
             ConstraintSet.LEFT,
             0
         )
-        constraintSet.applyTo(mainViewPanelManeuvers)
+        constraintSet.applyTo(binding.mainViewPanelManeuvers)
     }
 
-    private fun getViewForFocus(isMinus: Boolean?): View? {
+    private fun getViewForFocus(isMinus: Boolean?): Pair<View,View>? {
 
         return when (highlightedIndex) {
 
@@ -216,10 +215,19 @@ class ManeuversDialogFragment : DialogFragment(), SimpleCallbackListener {
                 } else null
             }
 
-            sizeOfCurrentArray + 1 -> imageViewCrossManeuvers
-            sizeOfCurrentArray + 2 -> includeButtonHold
+            sizeOfCurrentArray + 1 -> {
+                val pair = Pair(binding.imageViewCrossManeuvers,binding.imageViewCrossManeuvers)
+                pair
+            }
+            sizeOfCurrentArray + 2 -> {
+                val pair = Pair(binding.includeButtonHold.buttonView,binding.includeButtonHold.root)
+                pair
+            }
 
-            sizeOfCurrentArray + 3 -> includeButtonNebuliser
+            sizeOfCurrentArray + 3 -> {
+                val pair = Pair(binding.includeButtonNebuliser.buttonView,binding.includeButtonNebuliser.root)
+                pair
+            }
 
             else -> null
         }
@@ -255,7 +263,8 @@ class ManeuversDialogFragment : DialogFragment(), SimpleCallbackListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        return inflater.inflate(R.layout.fragment_maneuvers_dialog, container, false)
+        binding = FragmentManeuversDialogBinding.inflate(layoutInflater,container,false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -266,9 +275,9 @@ class ManeuversDialogFragment : DialogFragment(), SimpleCallbackListener {
         prefManager = PreferenceManager(requireContext())
         dataStoreManager = DataStoreManager(requireContext())
 
-        if (prefManager?.readCurrentUid() == Configs.PatientProfile.TYPE_NEONAT) includeButtonNebuliser.buttonView.visibility =
+        if (prefManager?.readCurrentUid() == Configs.PatientProfile.TYPE_NEONAT) binding.includeButtonNebuliser.root.visibility =
             View.GONE
-        else includeButtonNebuliser.buttonView.visibility = View.VISIBLE
+        else binding.includeButtonNebuliser.root.visibility = View.VISIBLE
 
 
         if (tag == Configs.NEBULIZER) {
@@ -284,14 +293,14 @@ class ManeuversDialogFragment : DialogFragment(), SimpleCallbackListener {
     // clickListener on Buttons
     private fun setOnClickListener() {
 
-        includeButtonHold.buttonView.text = getString(R.string.hint_hold)
-        includeButtonNebuliser.buttonView.text = getString(R.string.hint_Nebuliser)
+        binding.includeButtonHold.buttonView.text = getString(R.string.hint_hold)
+        binding.includeButtonNebuliser.buttonView.text = getString(R.string.hint_Nebuliser)
         //  includeButtonNebuliser.buttonView.alpha=0.3f
 
         /*  includeButtonNebuliser.buttonView.isClickable = false
           includeButtonNebuliser.buttonView.isFocusable = false
           includeButtonNebuliser.buttonView.isEnabled = false*/
-        imageViewCrossManeuvers.setOnClickListener {
+        binding.imageViewCrossManeuvers.setOnClickListener {
 
             requireActivity().supportFragmentManager
                 .beginTransaction()
@@ -306,11 +315,11 @@ class ManeuversDialogFragment : DialogFragment(), SimpleCallbackListener {
         }
 
 
-        includeButtonHold.buttonView.setOnClickListener {
+        binding.includeButtonHold.buttonView.setOnClickListener {
             setUpHold()
         }
 
-        includeButtonNebuliser.buttonView.setOnClickListener {
+        binding.includeButtonNebuliser.buttonView.setOnClickListener {
             CoroutineScope(Dispatchers.Main).launch {
                 if (dataStoreManager?.getNebulizerCheck()?.first() == true)
                     setUpUtilities()
@@ -337,15 +346,15 @@ class ManeuversDialogFragment : DialogFragment(), SimpleCallbackListener {
                 )
             }
 
-            includeButtonHold.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
-            includeButtonHold.buttonView.setTextColor(
+            binding.includeButtonHold.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
+            binding.includeButtonHold.buttonView.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
                     R.color.white
                 )
             )
-            includeButtonNebuliser.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-            includeButtonNebuliser.buttonView.setTextColor(
+            binding.includeButtonNebuliser.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+            binding.includeButtonNebuliser.buttonView.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
                     R.color.white
@@ -371,15 +380,15 @@ class ManeuversDialogFragment : DialogFragment(), SimpleCallbackListener {
                 )
             }
             Log.i("LOG_CHECKed", "This is Data${tag}")
-            includeButtonNebuliser.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
-            includeButtonNebuliser.buttonView.setTextColor(
+            binding.includeButtonNebuliser.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
+            binding.includeButtonNebuliser.buttonView.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
                     R.color.white
                 )
             )
-            includeButtonHold.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-            includeButtonHold.buttonView.setTextColor(
+            binding.includeButtonHold.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+            binding.includeButtonHold.buttonView.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
                     R.color.white
@@ -391,8 +400,8 @@ class ManeuversDialogFragment : DialogFragment(), SimpleCallbackListener {
     }
 
     private fun setPaddingButton() {
-        includeButtonHold.buttonView.setPadding(30, 10, 30, 10)
-        includeButtonNebuliser.buttonView.setPadding(25, 10, 25, 10)
+        binding.includeButtonHold.buttonView.setPadding(30, 10, 30, 10)
+        binding.includeButtonNebuliser.buttonView.setPadding(25, 10, 25, 10)
     }
 
     override fun onStart() {

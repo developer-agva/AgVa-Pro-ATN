@@ -16,9 +16,8 @@ import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.VentilatorApp
 import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.uhidDataListAlarm
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardViewModel
+import com.agvahealthcare.ventilator_ext.databinding.FragmentLogsAlarmBinding
 import com.agvahealthcare.ventilator_ext.logging.FileLogger
-import kotlinx.android.synthetic.main.fragment_events.*
-import kotlinx.android.synthetic.main.fragment_logs_alarm.*
 
 
 class AlarmFragment : Fragment(), View.OnClickListener {
@@ -32,15 +31,15 @@ class AlarmFragment : Fragment(), View.OnClickListener {
     private var uhid = ""
     private var startIndex = 0
     private var endIndex = 9
+    private lateinit var binding : FragmentLogsAlarmBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val view = inflater.inflate(R.layout.fragment_logs_alarm, container, false)
-
-        return view
+        binding = FragmentLogsAlarmBinding.inflate(layoutInflater,container,false)
+        return binding.root
     }
 
     override fun onPause() {
@@ -156,8 +155,8 @@ class AlarmFragment : Fragment(), View.OnClickListener {
         spinnerAlarm = view.findViewById<Spinner>(R.id.spinnerAlarm)
         buttonLayout = view.findViewById(R.id.btnLayout)
 
-        topButtonAlarm.setOnClickListener(this)
-        bottomButtonAlarm.setOnClickListener(this)
+        binding.topButtonAlarm.setOnClickListener(this)
+        binding.bottomButtonAlarm.setOnClickListener(this)
 
         setupAdapter()
         setupDataDefault("")
@@ -169,7 +168,7 @@ class AlarmFragment : Fragment(), View.OnClickListener {
         mAdapter = AlarmAdapter(dataList)
         mLayoutManager = LinearLayoutManager(requireContext())
 
-        recyclerViewAlarm?.apply {
+        binding.recyclerViewAlarm.apply {
             layoutManager = mLayoutManager
             adapter = mAdapter
             isVerticalScrollBarEnabled = true
@@ -177,6 +176,6 @@ class AlarmFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    fun scrollForward() = bottomButtonAlarm.callOnClick()
-    fun scrollBack() = topButtonAlarm.callOnClick()
+    fun scrollForward() = binding.bottomButtonAlarm.callOnClick()
+    fun scrollBack() = binding.topButtonAlarm.callOnClick()
 }

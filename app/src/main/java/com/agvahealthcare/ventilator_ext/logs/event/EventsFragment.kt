@@ -11,29 +11,20 @@ import android.widget.Spinner
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.distinctUntilChanged
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.VentilatorApp
 import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.uhidDataListEvent
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardViewModel
-import com.agvahealthcare.ventilator_ext.database.entities.EventDataModel
+import com.agvahealthcare.ventilator_ext.databinding.FragmentEventsBinding
 import com.agvahealthcare.ventilator_ext.logging.FileLogger
-import com.agvahealthcare.ventilator_ext.utility.utils.AppUtils
-import kotlinx.android.synthetic.main.activity_dashboard.*
-import kotlinx.android.synthetic.main.fragment_events.*
-import kotlinx.android.synthetic.main.fragment_logs_alarm.*
 import java.util.*
-import kotlin.math.abs
-import kotlin.math.max
 
 
 class EventsFragment : Fragment(), View.OnClickListener {
 
+    private lateinit var binding : FragmentEventsBinding
     private lateinit var mEventViewModel: EventViewModel
-    lateinit var buttonLayout : LinearLayoutCompat
     private var dataList = ArrayList<String>()
     private var dashBoardViewModel: DashBoardViewModel? = null
     lateinit var mLayoutManager: LinearLayoutManager
@@ -47,19 +38,18 @@ class EventsFragment : Fragment(), View.OnClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val view = inflater.inflate(R.layout.fragment_events, container, false)
+        binding = FragmentEventsBinding.inflate(layoutInflater,container,false)
         mEventViewModel = ViewModelProvider(this).get(EventViewModel::class.java)
         dashBoardViewModel =
             ViewModelProvider(requireActivity()).get(DashBoardViewModel::class.java)
-        buttonLayout = view.findViewById(R.id.btnLayout)
 
-        return view
+        return binding.root
     }
 
     private fun setupSpinnerAdapter(){
 
-        if (uhidDataListEvent.size == 0) buttonLayout.visibility = View.GONE
-        else buttonLayout.visibility = View.VISIBLE
+        if (uhidDataListEvent.size == 0) binding.btnLayout.visibility = View.GONE
+        else binding.btnLayout.visibility = View.VISIBLE
 
         val eventScrollAdapter = ArrayAdapter(
             requireContext(),
@@ -67,7 +57,7 @@ class EventsFragment : Fragment(), View.OnClickListener {
             VentilatorApp.uhidDataListEvent
         )
 
-        spinnerEvent.apply {
+        binding.spinnerEvent.apply {
             adapter = eventScrollAdapter
             this.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
@@ -104,8 +94,8 @@ class EventsFragment : Fragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
 
         Log.i("eventTesting", "event")
-        topButton.setOnClickListener(this)
-        bottomButton.setOnClickListener(this)
+        binding.topButton.setOnClickListener(this)
+        binding.bottomButton.setOnClickListener(this)
 
         setupSpinnerAdapter()
         setupDataDefault("")
@@ -181,14 +171,14 @@ class EventsFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    fun scrollForward() = bottomButton.callOnClick()
-    fun scrollBack() = topButton.callOnClick()
+    fun scrollForward() = binding.bottomButton.callOnClick()
+    fun scrollBack() = binding.topButton.callOnClick()
 
     private fun setDataForEvents() {
         mAdapter = EventAdapter(dataList)
         mLayoutManager = LinearLayoutManager(requireContext())
 
-        recyclerViewEvents?.apply {
+        binding.recyclerViewEvents.apply {
             adapter = mAdapter
             layoutManager = mLayoutManager
             isVerticalScrollBarEnabled = true

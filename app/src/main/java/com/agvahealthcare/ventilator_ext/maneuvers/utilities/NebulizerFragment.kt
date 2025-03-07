@@ -20,17 +20,15 @@ import com.agvahealthcare.ventilator_ext.alarm.limit_one.KnobParameterModel
 import com.agvahealthcare.ventilator_ext.callback.OnDismissDialogListener
 import com.agvahealthcare.ventilator_ext.callback.OnKnobPressListener
 import com.agvahealthcare.ventilator_ext.callback.OnLimitChangeListener
-import com.agvahealthcare.ventilator_ext.callback.SimpleCallbackListener
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardViewModel
+import com.agvahealthcare.ventilator_ext.databinding.FragmentNebulizerBinding
+import com.agvahealthcare.ventilator_ext.databinding.FragmentUtilitiesBinding
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.service.CommunicationService
 import com.agvahealthcare.ventilator_ext.system.settings.SettingFragment
 import com.agvahealthcare.ventilator_ext.utility.KnobDialog
 import com.agvahealthcare.ventilator_ext.utility.ToastFactory
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs
-import kotlinx.android.synthetic.main.content_button_layout.view.*
-import kotlinx.android.synthetic.main.fragment_utilities.*
-import kotlinx.android.synthetic.main.knob_progress_view.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -45,7 +43,7 @@ class NebulizerFragment
     private var preferenceManager: PreferenceManager? = null
     var customProgressDialog: KnobDialog? = null
     private var dashBoardViewModel: DashBoardViewModel? = null
-
+    private lateinit var binding: FragmentUtilitiesBinding
 
     // logic knob highlight starts here
 
@@ -53,9 +51,9 @@ class NebulizerFragment
 
         when (highlightedIndex) {
 
-            0 -> progress_nebuliser.callOnClick()
+            0 -> binding.progressNebuliser.root.callOnClick()
             1 -> {
-                if (btnNebulizationsttart.isVisible) btnNebulizationsttart.callOnClick() else btnNebulizationend.callOnClick()
+                if (binding.btnNebulizationsttart.isVisible) binding.btnNebulizationsttart.callOnClick() else binding.btnNebulizationend.callOnClick()
             }
         }
     }
@@ -72,12 +70,12 @@ class NebulizerFragment
     fun clearPreviousConstraints() {
         try {
             val constraintSet = ConstraintSet()
-            constraintSet.clone(mainViewPanelUtilities)
-            constraintSet.clear(focusLayoutUtilities.id, ConstraintSet.TOP)
-            constraintSet.clear(focusLayoutUtilities.id, ConstraintSet.BOTTOM)
-            constraintSet.clear(focusLayoutUtilities.id, ConstraintSet.LEFT)
-            constraintSet.clear(focusLayoutUtilities.id, ConstraintSet.RIGHT)
-            constraintSet.applyTo(mainViewPanelUtilities)
+            constraintSet.clone(binding.mainViewPanelUtilities)
+            constraintSet.clear(binding.focusLayoutUtilities.id, ConstraintSet.TOP)
+            constraintSet.clear(binding.focusLayoutUtilities.id, ConstraintSet.BOTTOM)
+            constraintSet.clear(binding.focusLayoutUtilities.id, ConstraintSet.LEFT)
+            constraintSet.clear(binding.focusLayoutUtilities.id, ConstraintSet.RIGHT)
+            constraintSet.applyTo(binding.mainViewPanelUtilities)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -85,45 +83,45 @@ class NebulizerFragment
 
     private fun changeConstraintsOfFocusLayout(view: View) {
         val constraintSet = ConstraintSet()
-        constraintSet.clone(mainViewPanelUtilities)
+        constraintSet.clone(binding.mainViewPanelUtilities)
         constraintSet.connect(
-            focusLayoutUtilities.id,
+            binding.focusLayoutUtilities.id,
             ConstraintSet.RIGHT,
             view.id,
             ConstraintSet.RIGHT,
             0
         )
         constraintSet.connect(
-            focusLayoutUtilities.id,
+            binding.focusLayoutUtilities.id,
             ConstraintSet.TOP,
             view.id,
             ConstraintSet.TOP,
             0
         )
         constraintSet.connect(
-            focusLayoutUtilities.id,
+            binding.focusLayoutUtilities.id,
             ConstraintSet.BOTTOM,
             view.id,
             ConstraintSet.BOTTOM,
             0
         )
         constraintSet.connect(
-            focusLayoutUtilities.id,
+            binding.focusLayoutUtilities.id,
             ConstraintSet.LEFT,
             view.id,
             ConstraintSet.LEFT,
             0
         )
-        constraintSet.applyTo(mainViewPanelUtilities)
+        constraintSet.applyTo(binding.mainViewPanelUtilities)
     }
 
     private fun getViewForFocus(highlightedIndex: Int): View? {
 
         return when (highlightedIndex) {
 
-            0 -> progress_nebuliser
+            0 -> binding.progressNebuliser.root
             1 -> {
-                if (btnNebulizationsttart.isVisible) btnNebulizationsttart else btnNebulizationend
+                if (binding.btnNebulizationsttart.isVisible) binding.btnNebulizationsttart else binding.btnNebulizationend
             }
 
             else -> null
@@ -139,7 +137,8 @@ class NebulizerFragment
         savedInstanceState: Bundle?
 
     ): View {
-        return inflater.inflate(R.layout.fragment_utilities, container, false)
+        binding = FragmentUtilitiesBinding.inflate(layoutInflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -149,16 +148,16 @@ class NebulizerFragment
         preferenceManager = PreferenceManager(requireContext())
         dashBoardViewModel?.isNebulizerActive?.observe(viewLifecycleOwner) {
             if (it == true) {
-                btnNebulizationsttart.visibility = View.GONE
-                btnNebulizationend.visibility = View.VISIBLE
+                binding.btnNebulizationsttart.visibility = View.GONE
+                binding.btnNebulizationend.visibility = View.VISIBLE
             } else {
-                btnNebulizationsttart.visibility = View.VISIBLE
-                btnNebulizationend.visibility = View.GONE
+                binding.btnNebulizationsttart.visibility = View.VISIBLE
+                binding.btnNebulizationend.visibility = View.GONE
             }
         }
         preferenceManager?.apply {
             Log.d("valueofprogress", "The value of the nebulizer" + readNebuliserTime().toString())
-            (progress_nebuliser?.param_progress_bar as? CircularProgressIndicator)?.apply {
+            (binding.progressNebuliser.paramProgressBar as? CircularProgressIndicator)?.apply {
                 this.setCurrentProgress(
                     getPercentage(
                         readNebuliserTime().toDouble(),
@@ -167,21 +166,18 @@ class NebulizerFragment
                     ).toDouble()
                 )
             }
-            progress_nebuliser.textView.setText("" + readNebuliserTime().toInt())
+            binding.progressNebuliser.textView.setText("" + readNebuliserTime().toInt())
         }
 
         // the progress bar id
-        progress_nebuliser.setOnClickListener {
+        binding.progressNebuliser.root.setOnClickListener {
 
-            it.let {
-                (it?.param_progress_bar as? CircularProgressIndicator)?.background =
-                    ContextCompat.getDrawable(
-                        requireContext(),
-                        R.drawable.progresscircle_with_selection_yellow
-                    )
-            }
+            binding.progressNebuliser.paramProgressBar.background =
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.progresscircle_with_selection_yellow
+                )
 
-            // ToastFactory.custom(activity,"The click is working fine")
             var encoder = EncoderValue(5f, 30f, 5f)
             preferenceManager?.readNebuliserTime()?.let { it1 ->
                 KnobParameterModel(
@@ -208,7 +204,7 @@ class NebulizerFragment
             }
         }
 
-        btnNebulizationsttart.setOnClickListener {
+        binding.btnNebulizationsttart.setOnClickListener {
             Log.i("NEBULISER_FLAG", VentilatorApp.isNebuliserActive.toString())
             val tmv = preferenceManager?.readNebuliserTime()
             if (VentilatorApp.isNebuliserActive) {
@@ -244,7 +240,7 @@ class NebulizerFragment
             }
         }
 
-        btnNebulizationend.setOnClickListener {
+        binding.btnNebulizationend.setOnClickListener {
             communicationService?.send(getString(R.string.cmd_vent_nebuliser) + "000")
         }
 
@@ -276,21 +272,20 @@ class NebulizerFragment
 
     override fun handleDialogClose() {
 
-        progress_nebuliser.let {
-            (it?.param_progress_bar as? CircularProgressIndicator)?.background =
-                ContextCompat.getDrawable(
-                    requireContext(),
-                    R.drawable.progresscircle
-                )
-        }
+        binding.progressNebuliser.paramProgressBar.background =
+            ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.progresscircle
+            )
+
 
         preferenceManager?.readNebuliserTime()?.apply {
-            progress_nebuliser.param_progress_bar.setCurrentProgress(
+            binding.progressNebuliser.paramProgressBar.setCurrentProgress(
                 getPercentage(
                     this.toDouble().toDouble(), 5.0, 30.0
                 ).toDouble()
             )
-            progress_nebuliser.textView.setText("" + this.toInt())
+            binding.progressNebuliser.textView.setText("" + this.toInt())
         }
 
         customProgressDialog?.takeIf { it.isVisible }?.dismiss()
@@ -298,24 +293,23 @@ class NebulizerFragment
 
     override fun onKnobPress(previousValue: Float, newValue: Float) {
 
-        progress_nebuliser.let {
-            (it?.param_progress_bar as? CircularProgressIndicator)?.background =
-                ContextCompat.getDrawable(
-                    requireContext(),
-                    R.drawable.progresscircle
-                )
-        }
+        binding.progressNebuliser.paramProgressBar.background =
+            ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.progresscircle
+            )
+
 
         preferenceManager.apply {
-            this?.setNebuliserTime(getValueFromPercentage(progress_nebuliser.param_progress_bar.progress.toFloat()))
+            this?.setNebuliserTime(getValueFromPercentage(binding.progressNebuliser.paramProgressBar.progress.toFloat()))
         }
 
-        progress_nebuliser.param_progress_bar.setCurrentProgress(
+        binding.progressNebuliser.paramProgressBar.setCurrentProgress(
             getPercentage(
                 newValue.toDouble().toDouble(), 5.0, 30.0
             ).toDouble()
         )
-        progress_nebuliser.textView.setText("" + newValue.toInt())
+        binding.progressNebuliser.textView.setText("" + newValue.toInt())
 
         // change here 13 feb
         customProgressDialog?.takeIf { it.isVisible }?.apply {
@@ -325,12 +319,16 @@ class NebulizerFragment
 
     override fun onLimitChange(previousValue: Float, newValue: Float) {
 
-        (progress_nebuliser?.param_progress_bar as? CircularProgressIndicator)?.apply {
-            this.setCurrentProgress(getPercentage(newValue.toDouble(), 5.0, 30.0).toDouble())
-        }
-        (progress_nebuliser?.textView as? TextView)?.apply {
-            this.text = newValue.toInt().toString()
-        }
+        binding.progressNebuliser.paramProgressBar.setCurrentProgress(
+            getPercentage(
+                newValue.toDouble(),
+                5.0,
+                30.0
+            ).toDouble()
+        )
+
+        binding.progressNebuliser.textView.text = newValue.toInt().toString()
+
     }
 
 }

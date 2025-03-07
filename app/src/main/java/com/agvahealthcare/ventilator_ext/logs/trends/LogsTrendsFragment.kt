@@ -3,17 +3,16 @@ import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.VentilatorApp
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardViewModel
+import com.agvahealthcare.ventilator_ext.databinding.FragmentLogsTableDemoBinding
 import com.agvahealthcare.ventilator_ext.logging.FileLogger
 import com.agvahealthcare.ventilator_ext.logs.trends.DataFromDataBaseAdapter
 import com.agvahealthcare.ventilator_ext.logs.trends.ParameterAndUnitsAdapter
-import kotlinx.android.synthetic.main.fragment_logs_table_demo.*
 
 class LogsTrendsFragment : Fragment(), View.OnClickListener {
     private var mParam1: String? = null
@@ -22,7 +21,7 @@ class LogsTrendsFragment : Fragment(), View.OnClickListener {
     private var dataFromDataBaseAdapter: DataFromDataBaseAdapter? = null
     private var dashBoardViewModel: DashBoardViewModel? = null
     private var timer: CountDownTimer? = null
-
+    private lateinit var binding : FragmentLogsTableDemoBinding
     private var startIndex = 0
     private var endIndex = 8
 
@@ -40,7 +39,8 @@ class LogsTrendsFragment : Fragment(), View.OnClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_logs_table_demo, container, false)
+        binding = FragmentLogsTableDemoBinding.inflate(layoutInflater,container,false)
+        return binding.root
     }
 
     companion object {
@@ -64,26 +64,26 @@ class LogsTrendsFragment : Fragment(), View.OnClickListener {
         dashBoardViewModel = ViewModelProvider(requireActivity())[DashBoardViewModel::class.java]
 
         openingTimer()
-        leftButton.setOnClickListener(this)
-        rightButton.setOnClickListener(this)
+        binding.leftButton.setOnClickListener(this)
+        binding.rightButton.setOnClickListener(this)
     }
 
     private fun setUpTrendAdapter() {
         dataFromDataBaseAdapter = DataFromDataBaseAdapter(requireContext(), list)
 
-        rvTwo.setHasFixedSize(true)
-        rvTwo.setItemViewCacheSize(10);
+        binding.rvTwo.setHasFixedSize(true)
+        binding.rvTwo.setItemViewCacheSize(10);
         linearLayoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        rvTwo.apply {
+        binding.rvTwo.apply {
             layoutManager = linearLayoutManager
             adapter = dataFromDataBaseAdapter
         }
     }
 
     private fun openingTimer() {
-        mainLayoutTrends.visibility = View.GONE
-        txtWaitTrends.visibility = View.VISIBLE
+        binding.mainLayoutTrends.visibility = View.GONE
+        binding.txtWaitTrends.visibility = View.VISIBLE
         timer = object : CountDownTimer(2000, 1000) {
             override fun onTick(milliSec: Long) {
 
@@ -93,26 +93,26 @@ class LogsTrendsFragment : Fragment(), View.OnClickListener {
 
                 VentilatorApp.isTrendsFirstTime = true
 
-                seekBar.setOnTouchListener { v, event -> true }
+                binding.seekBar.setOnTouchListener { v, event -> true }
 
                 setUpTrendAdapter()
 
                 parameterAndUnitsAdapter = ParameterAndUnitsAdapter()
 
-                rvParameterConstants.apply {
+                binding.rvParameterConstants.apply {
                     layoutManager = LinearLayoutManager(requireActivity())
                     adapter = parameterAndUnitsAdapter
                 }
 
-                mainLayoutTrends.visibility = View.VISIBLE
-                txtWaitTrends.visibility = View.GONE
+                binding.mainLayoutTrends.visibility = View.VISIBLE
+                binding.txtWaitTrends.visibility = View.GONE
                 setupDataDefault()
             }
         }.start()
     }
 
-    fun scrollForward() = rightButton.callOnClick()
-    fun scrollBack() = leftButton.callOnClick()
+    fun scrollForward() = binding.rightButton.callOnClick()
+    fun scrollBack() = binding.leftButton.callOnClick()
 
     override fun onPause() {
         super.onPause()

@@ -25,6 +25,8 @@ import com.agvahealthcare.ventilator_ext.control.etcuff.EtCuffFragment
 import com.agvahealthcare.ventilator_ext.control.patient.PatientFragment
 import com.agvahealthcare.ventilator_ext.control.smartfio2.SmartFio2
 import com.agvahealthcare.ventilator_ext.control.vtas.Vtas
+import com.agvahealthcare.ventilator_ext.databinding.FragmentContolDialogBinding
+import com.agvahealthcare.ventilator_ext.databinding.FragmentStandbycontrolDialogBinding
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.model.ControlParameterModel
 import com.agvahealthcare.ventilator_ext.standby.StandbyBackupFragment
@@ -37,32 +39,15 @@ import com.agvahealthcare.ventilator_ext.utility.replaceFragment
 
 import com.agvahealthcare.ventilator_ext.utility.setHeightWidthPercent
 
-import com.agvahealthcare.ventilator_ext.utility.utils.Configs
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_AND
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_MINUS
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_PLUS
 
 import com.github.angads25.toggle.interfaces.OnToggledListener
-import kotlinx.android.synthetic.main.content_button_layout.view.*
-import kotlinx.android.synthetic.main.fragment_contol_dialog.*
-import kotlinx.android.synthetic.main.fragment_standbycontrol_dialog.buttonStartVent
-import kotlinx.android.synthetic.main.fragment_standbycontrol_dialog.focusLayoutStandbyControls
-import kotlinx.android.synthetic.main.fragment_standbycontrol_dialog.imageViewCrossStandbyControls
-import kotlinx.android.synthetic.main.fragment_standbycontrol_dialog.includeButtonStandbyAdvanced
-import kotlinx.android.synthetic.main.fragment_standbycontrol_dialog.includeButtonStandbyBackup
-import kotlinx.android.synthetic.main.fragment_standbycontrol_dialog.includeButtonStandbyBasic
-import kotlinx.android.synthetic.main.fragment_standbycontrol_dialog.includeButtonStandbySmartFio2
-import kotlinx.android.synthetic.main.fragment_standbycontrol_dialog.includeButtonStandbyVTas
-import kotlinx.android.synthetic.main.fragment_standbycontrol_dialog.mainViewPanelStandbyControls
-
-
-//interface OnStartVentilationListener {
-//    fun onModeConfirmed()
-//    fun onSettingsConfirmed(parameters: List<ControlParameterModel>)
-//}
+import kotlinx.android.synthetic.main.progress_dialog_view.seekBarId
 
 class ControlDialogFragment : DialogFragment() {
-
+    private lateinit var binding:FragmentContolDialogBinding
     private var closeListener: OnDismissDialogListener? = null
     private var basicParameterClickListener: ControlParameterClickListener?=null
     private  var advancedFragment: StandbyControlSettingFragment?=null
@@ -190,7 +175,7 @@ class ControlDialogFragment : DialogFragment() {
 
                 getViewForFocus(false)?.let {
                     highlightAdapters(-1)
-                    changeConstraintsOfFocusLayout(it)
+                    changeConstraintsOfFocusLayout(it.second)
                 } ?: kotlin.run {
                     highlightAdapters(highlightedIndex)
                 }
@@ -205,7 +190,7 @@ class ControlDialogFragment : DialogFragment() {
 
                 getViewForFocus(true)?.let {
                     highlightAdapters(-1)
-                    changeConstraintsOfFocusLayout(it)
+                    changeConstraintsOfFocusLayout(it.second)
                 } ?: kotlin.run {
                     highlightAdapters(highlightedIndex)
                 }
@@ -214,9 +199,9 @@ class ControlDialogFragment : DialogFragment() {
             PREFIX_AND -> {
                 getViewForFocus(null)?.let {
                     if (highlightedIndex == sizeOfCurrentArray+1 || highlightedIndex == sizeOfCurrentArray+7){
-                        it.callOnClick()
+                        it.first.callOnClick()
                     }else{
-                        it.buttonView.callOnClick()
+                        it.first.callOnClick()
 
                         // reset highlight index to starting position after clicking on any fragments
                         highlightedIndex = -1
@@ -233,12 +218,12 @@ class ControlDialogFragment : DialogFragment() {
     private fun clearPreviousConstraints() {
         try {
             val constraintSet = ConstraintSet()
-            constraintSet.clone(mainViewPanelControls)
-            constraintSet.clear(focusLayoutControls.id, ConstraintSet.TOP)
-            constraintSet.clear(focusLayoutControls.id, ConstraintSet.BOTTOM)
-            constraintSet.clear(focusLayoutControls.id, ConstraintSet.LEFT)
-            constraintSet.clear(focusLayoutControls.id, ConstraintSet.RIGHT)
-            constraintSet.applyTo(mainViewPanelControls)
+            constraintSet.clone(binding.mainViewPanelControls)
+            constraintSet.clear(binding.focusLayoutControls.id, ConstraintSet.TOP)
+            constraintSet.clear(binding.focusLayoutControls.id, ConstraintSet.BOTTOM)
+            constraintSet.clear(binding.focusLayoutControls.id, ConstraintSet.LEFT)
+            constraintSet.clear(binding.focusLayoutControls.id, ConstraintSet.RIGHT)
+            constraintSet.applyTo(binding.mainViewPanelControls)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -246,39 +231,41 @@ class ControlDialogFragment : DialogFragment() {
 
     private fun changeConstraintsOfFocusLayout(view: View) {
         val constraintSet = ConstraintSet()
-        constraintSet.clone(mainViewPanelControls)
+        constraintSet.clone(binding.mainViewPanelControls)
         constraintSet.connect(
-            focusLayoutControls.id,
+            binding.focusLayoutControls.id,
             ConstraintSet.RIGHT,
             view.id,
             ConstraintSet.RIGHT,
             0
         )
         constraintSet.connect(
-            focusLayoutControls.id,
+            binding.focusLayoutControls.id,
             ConstraintSet.TOP,
             view.id,
             ConstraintSet.TOP,
             0
         )
         constraintSet.connect(
-            focusLayoutControls.id,
+            binding.focusLayoutControls.id,
             ConstraintSet.BOTTOM,
             view.id,
             ConstraintSet.BOTTOM,
             0
         )
         constraintSet.connect(
-            focusLayoutControls.id,
+            binding.focusLayoutControls.id,
             ConstraintSet.LEFT,
             view.id,
             ConstraintSet.LEFT,
             0
         )
-        constraintSet.applyTo(mainViewPanelControls)
+        constraintSet.applyTo(binding.mainViewPanelControls)
     }
 
-    private fun getViewForFocus(isMinus: Boolean?): View? {
+    private fun getViewForFocus(isMinus: Boolean?): Pair<View,View>? {
+
+        // NOTE : first value of pair is button view and second value of pair is root and is sometimes both are same
         
         return when (highlightedIndex) {
 
@@ -286,11 +273,18 @@ class ControlDialogFragment : DialogFragment() {
                 null
             }
 
-            sizeOfCurrentArray + 1 -> imageViewCrossControls
-            sizeOfCurrentArray + 2 -> includeButtonBasic
+            sizeOfCurrentArray + 1 -> {
+                val pair = Pair(binding.imageViewCrossControls,binding.imageViewCrossControls)
+                pair
+            }
+            sizeOfCurrentArray + 2 -> {
+                val pair = Pair(binding.includeButtonBasic.buttonView,binding.includeButtonBasic.root)
+                pair
+            }
             sizeOfCurrentArray + 3 -> {
-                if (includeButtonAdvance.isVisible) {
-                    includeButtonAdvance
+                if (binding.includeButtonAdvance.root.isVisible) {
+                    val pair = Pair(binding.includeButtonAdvance.buttonView,binding.includeButtonAdvance.root)
+                    pair
                 } else {
                     isMinus?.let {
                         if (isMinus) highlightedIndex-- else highlightedIndex++
@@ -300,8 +294,9 @@ class ControlDialogFragment : DialogFragment() {
             }
 
             sizeOfCurrentArray + 4 -> {
-                if (includeButtonApnea.isVisible) {
-                    includeButtonApnea
+                if (binding.includeButtonApnea.root.isVisible) {
+                    val pair = Pair(binding.includeButtonApnea.buttonView,binding.includeButtonApnea.root)
+                    pair
                 } else {
                     isMinus?.let {
                         if (isMinus) highlightedIndex-- else highlightedIndex++
@@ -311,8 +306,9 @@ class ControlDialogFragment : DialogFragment() {
             }
 
             sizeOfCurrentArray + 5 -> {
-                if (includeButtonsmartFiO2.isVisible) {
-                    includeButtonsmartFiO2
+                if (binding.includeButtonsmartFiO2.root.isVisible) {
+                    val pair = Pair(binding.includeButtonsmartFiO2.buttonView,binding.includeButtonsmartFiO2.root)
+                    pair
                 } else {
                     isMinus?.let {
                         if (isMinus) highlightedIndex-- else highlightedIndex++
@@ -322,8 +318,9 @@ class ControlDialogFragment : DialogFragment() {
             }
 
             sizeOfCurrentArray + 6 -> {
-                if (includeButtonVTas.isVisible) {
-                    includeButtonVTas
+                if (binding.includeButtonVTas.root.isVisible) {
+                    val pair = Pair(binding.includeButtonVTas.buttonView,binding.includeButtonVTas.root)
+                    pair
                 } else {
                     isMinus?.let {
                         if (isMinus) highlightedIndex-- else highlightedIndex++
@@ -332,7 +329,10 @@ class ControlDialogFragment : DialogFragment() {
                 }
             }
 
-            sizeOfCurrentArray + 7 -> includeButtonPatient
+            sizeOfCurrentArray + 7 -> {
+                val pair = Pair(binding.includeButtonPatient.buttonView,binding.includeButtonPatient.root)
+                pair
+            }
 
             else -> null
         }
@@ -370,7 +370,8 @@ class ControlDialogFragment : DialogFragment() {
 
     ): View
     {
-        return inflater.inflate(R.layout.fragment_contol_dialog, container, false)
+        binding = FragmentContolDialogBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -388,11 +389,11 @@ class ControlDialogFragment : DialogFragment() {
          
         setOnClickListener()
 
-        includeButtonAdvance.visibility = if(advancedControlParams?.isEmpty() == true) View.GONE else View.VISIBLE
-        includeButtonsmartFiO2.visibility = if (smartFio2ControlParams?.isEmpty() == true) View.GONE else View.VISIBLE
-        includeButtonVTas.visibility = if (vTasControlParams?.isEmpty() ==true ) View.GONE else View.VISIBLE
-        includeButtonEtCuff.visibility = if (etCuffControlParams?.isEmpty() ==true ) View.GONE else View.VISIBLE
-        includeButtonApnea.visibility = if (backupControlParams == null || backupControlParams?.isEmpty() == true) View.GONE else View.VISIBLE
+        binding.includeButtonAdvance.root.visibility = if(advancedControlParams?.isEmpty() == true) View.GONE else View.VISIBLE
+        binding.includeButtonsmartFiO2.root.visibility = if (smartFio2ControlParams?.isEmpty() == true) View.GONE else View.VISIBLE
+        binding.includeButtonVTas.root.visibility = if (vTasControlParams?.isEmpty() ==true ) View.GONE else View.VISIBLE
+        binding.includeButtonEtCuff.root.visibility = if (etCuffControlParams?.isEmpty() ==true ) View.GONE else View.VISIBLE
+        binding.includeButtonApnea.root.visibility = if (backupControlParams == null || backupControlParams?.isEmpty() == true) View.GONE else View.VISIBLE
         
     }
 
@@ -444,21 +445,21 @@ class ControlDialogFragment : DialogFragment() {
         }
 
         /*btn_update_settings.visibility = View.GONE*/
-        includeButtonPatient.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        includeButtonPatient.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-        includeButtonVTas.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        includeButtonVTas.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-        includeButtonEtCuff.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        includeButtonEtCuff.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-        includeButtonsmartFiO2.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        includeButtonsmartFiO2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-        includeButtonApnea.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        includeButtonApnea.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-        includeButtonAdvance.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        includeButtonAdvance.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+            binding.includeButtonPatient.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+            binding.includeButtonPatient.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+            binding.includeButtonVTas.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+            binding.includeButtonVTas.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+            binding.includeButtonEtCuff.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+            binding.includeButtonEtCuff.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+            binding.includeButtonsmartFiO2.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+            binding.includeButtonsmartFiO2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+            binding.includeButtonApnea.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+            binding.includeButtonApnea.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+            binding.includeButtonAdvance.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+            binding.includeButtonAdvance.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
-        includeButtonBasic.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        includeButtonBasic.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
+            binding.includeButtonBasic.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+            binding.includeButtonBasic.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
     }
 
     private fun setUpEtCuff() {
@@ -474,26 +475,22 @@ class ControlDialogFragment : DialogFragment() {
         }
 
         /*btn_update_settings.visibility = View.GONE*/
-        includeButtonPatient.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        includeButtonPatient.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-        includeButtonVTas.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        includeButtonVTas.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-        includeButtonEtCuff.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        includeButtonEtCuff.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-        includeButtonsmartFiO2.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        includeButtonsmartFiO2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-        includeButtonApnea.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        includeButtonApnea.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-        includeButtonAdvance.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        includeButtonAdvance.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-        includeButtonBasic.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        includeButtonBasic.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-
-        includeButtonEtCuff.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        includeButtonEtCuff.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
-
-         
-
+        binding.includeButtonPatient.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+        binding.includeButtonPatient.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonVTas.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+        binding.includeButtonVTas.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonEtCuff.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+        binding.includeButtonEtCuff.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonsmartFiO2.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+        binding.includeButtonsmartFiO2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonApnea.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+        binding.includeButtonApnea.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonAdvance.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+        binding.includeButtonAdvance.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonBasic.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+        binding.includeButtonBasic.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonEtCuff.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+        binding.includeButtonEtCuff.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
     }
 
 
@@ -517,46 +514,46 @@ class ControlDialogFragment : DialogFragment() {
                 }
             }
 
-            includeButtonPatient.buttonView.setTextColor(
+            binding.includeButtonPatient.buttonView.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
                     R.color.white
                 )
             )
-            includeButtonPatient.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+            binding.includeButtonPatient.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
 
-            includeButtonEtCuff.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-            includeButtonEtCuff.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+            binding.includeButtonEtCuff.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+            binding.includeButtonEtCuff.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
-            includeButtonApnea.buttonView.setTextColor(
+            binding.includeButtonApnea.buttonView.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
                     R.color.white
                 )
             )
-            includeButtonApnea.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
+            binding.includeButtonApnea.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
 
-            includeButtonBasic.buttonView.setTextColor(
+            binding.includeButtonBasic.buttonView.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
                     R.color.white
                 )
             )
-            includeButtonBasic.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+            binding.includeButtonBasic.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
-            includeButtonAdvance.buttonView.setTextColor(
+            binding.includeButtonAdvance.buttonView.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
                     R.color.white
                 )
             )
-            includeButtonAdvance.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+            binding.includeButtonAdvance.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
-            includeButtonVTas.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-            includeButtonVTas.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-            includeButtonsmartFiO2.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-            includeButtonsmartFiO2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+            binding.includeButtonVTas.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+            binding.includeButtonVTas.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+            binding.includeButtonsmartFiO2.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+            binding.includeButtonsmartFiO2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
              
         }
 
@@ -580,44 +577,44 @@ class ControlDialogFragment : DialogFragment() {
         }
 
 
-        includeButtonEtCuff.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        includeButtonEtCuff.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonEtCuff.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+        binding.includeButtonEtCuff.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
-        includeButtonPatient.buttonView.setTextColor(
+        binding.includeButtonPatient.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
-        includeButtonPatient.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonPatient.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
-        includeButtonApnea.buttonView.setTextColor(
+        binding.includeButtonApnea.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
-        includeButtonApnea.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonApnea.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
-        includeButtonAdvance.buttonView.setTextColor(
+        binding.includeButtonAdvance.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
-        includeButtonAdvance.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
-        includeButtonVTas.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        includeButtonVTas.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-        includeButtonsmartFiO2.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        includeButtonsmartFiO2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonAdvance.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
+        binding.includeButtonVTas.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+        binding.includeButtonVTas.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonsmartFiO2.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+        binding.includeButtonsmartFiO2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
-        includeButtonBasic.buttonView.setTextColor(
+        binding.includeButtonBasic.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
-        includeButtonBasic.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonBasic.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
          
     }
@@ -639,53 +636,50 @@ class ControlDialogFragment : DialogFragment() {
             }
         }
 
-        includeButtonEtCuff.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        includeButtonEtCuff.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonEtCuff.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+        binding.includeButtonEtCuff.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
-        includeButtonPatient.buttonView.setTextColor(
+        binding.includeButtonPatient.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
-        includeButtonPatient.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonPatient.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
-        includeButtonApnea.buttonView.setTextColor(
+        binding.includeButtonApnea.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
-        includeButtonApnea.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonApnea.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
-        includeButtonAdvance.buttonView.setTextColor(
+        binding.includeButtonAdvance.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
-        includeButtonAdvance.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonAdvance.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
-        includeButtonsmartFiO2.buttonView.setTextColor(
+        binding.includeButtonsmartFiO2.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
-        includeButtonsmartFiO2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
-        includeButtonVTas.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        includeButtonVTas.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonsmartFiO2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
+        binding.includeButtonVTas.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+        binding.includeButtonVTas.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
-        includeButtonBasic.buttonView.setTextColor(
+        binding.includeButtonBasic.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
-        includeButtonBasic.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-
-         
-
+        binding.includeButtonBasic.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
     }
 
     private fun setUpVtas() {
@@ -707,53 +701,50 @@ class ControlDialogFragment : DialogFragment() {
             }
         }
 
-        includeButtonEtCuff.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        includeButtonEtCuff.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonEtCuff.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+        binding.includeButtonEtCuff.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
-        includeButtonPatient.buttonView.setTextColor(
+        binding.includeButtonPatient.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
-        includeButtonPatient.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonPatient.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
-        includeButtonApnea.buttonView.setTextColor(
+        binding.includeButtonApnea.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
-        includeButtonApnea.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonApnea.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
-        includeButtonAdvance.buttonView.setTextColor(
+        binding.includeButtonAdvance.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
-        includeButtonAdvance.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonAdvance.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
-        includeButtonsmartFiO2.buttonView.setTextColor(
+        binding.includeButtonsmartFiO2.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
-        includeButtonsmartFiO2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-        includeButtonVTas.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        includeButtonVTas.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
+        binding.includeButtonsmartFiO2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonVTas.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+        binding.includeButtonVTas.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
 
-        includeButtonBasic.buttonView.setTextColor(
+        binding.includeButtonBasic.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
-        includeButtonBasic.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-
-         
-
+        binding.includeButtonBasic.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
     }
 
 
@@ -761,15 +752,15 @@ class ControlDialogFragment : DialogFragment() {
     // ClickListener on Buttons
     private fun setOnClickListener() {
 
-        includeButtonBasic.buttonView.text = getString(R.string.hint_basic)
-        includeButtonApnea.buttonView.text = getString(R.string.hint_apneasettings)
-        includeButtonAdvance.buttonView.text = getString(R.string.hint_advancedsettings)
-        includeButtonPatient.buttonView.text = getString(R.string.hint_patient)
-        includeButtonVTas.buttonView.text = getString(R.string.hint_vtas_btn)
-        includeButtonsmartFiO2.buttonView.text = getString(R.string.hint_smart_fio2_btn)
-        includeButtonEtCuff.buttonView.text = getString(R.string.hint_etcuff_btn)
+        binding.includeButtonBasic.buttonView.text = getString(R.string.hint_basic)
+        binding.includeButtonApnea.buttonView.text = getString(R.string.hint_apneasettings)
+        binding.includeButtonAdvance.buttonView.text = getString(R.string.hint_advancedsettings)
+        binding.includeButtonPatient.buttonView.text = getString(R.string.hint_patient)
+        binding.includeButtonVTas.buttonView.text = getString(R.string.hint_vtas_btn)
+        binding.includeButtonsmartFiO2.buttonView.text = getString(R.string.hint_smart_fio2_btn)
+        binding.includeButtonEtCuff.buttonView.text = getString(R.string.hint_etcuff_btn)
 
-        imageViewCrossControls.setOnClickListener {
+        binding.imageViewCrossControls.setOnClickListener {
 
             requireActivity().supportFragmentManager
                 .beginTransaction()
@@ -782,32 +773,31 @@ class ControlDialogFragment : DialogFragment() {
            /* closeListener?.handleDialogClose()
             dismiss()*/
         }
-        includeButtonBasic.buttonView.setOnClickListener {
+        binding.includeButtonBasic.buttonView.setOnClickListener {
             setUpBasic()
         }
-        includeButtonEtCuff.buttonView.setOnClickListener {
+        binding.includeButtonEtCuff.buttonView.setOnClickListener {
             setUpEtCuff()
         }
 
 
-        includeButtonApnea.buttonView.setOnClickListener {
+        binding.includeButtonApnea.buttonView.setOnClickListener {
             setUpBackup()
 
         }
-        includeButtonAdvance.buttonView.setOnClickListener {
+        binding.includeButtonAdvance.buttonView.setOnClickListener {
             setUpAdvanced()
         }
-        includeButtonsmartFiO2.buttonView.setOnClickListener{
+        binding.includeButtonsmartFiO2.buttonView.setOnClickListener{
             setUpFiO2()
         }
-        includeButtonVTas.buttonView.setOnClickListener{
+        binding.includeButtonVTas.buttonView.setOnClickListener{
             setUpVtas()
         }
 
-        includeButtonPatient.buttonView.setOnClickListener {
+        binding.includeButtonPatient.buttonView.setOnClickListener {
             setUpPatient()
         }
-
     }
 
     private fun setUpPatient() {
@@ -819,24 +809,24 @@ class ControlDialogFragment : DialogFragment() {
             replaceFragment(this,this::class.java.javaClass.simpleName, R.id.control_nav_container )
         }
 
-        includeButtonBasic.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-        includeButtonBasic.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+        binding.includeButtonBasic.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonBasic.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
 
-        includeButtonApnea.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        includeButtonApnea.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonApnea.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+        binding.includeButtonApnea.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
-        includeButtonEtCuff.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        includeButtonEtCuff.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonEtCuff.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+        binding.includeButtonEtCuff.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
-        includeButtonPatient.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
-        includeButtonPatient.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+        binding.includeButtonPatient.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
+        binding.includeButtonPatient.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
 
-        includeButtonAdvance.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        includeButtonAdvance.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-        includeButtonVTas.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        includeButtonVTas.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-        includeButtonsmartFiO2.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        includeButtonsmartFiO2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonAdvance.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+        binding.includeButtonAdvance.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonVTas.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+        binding.includeButtonVTas.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonsmartFiO2.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+        binding.includeButtonsmartFiO2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
          
     }
 

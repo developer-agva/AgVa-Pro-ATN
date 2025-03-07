@@ -179,13 +179,16 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
             startTimeoutWithDebounce()
 
             when (data) {
+
                 PREFIX_PLUS -> {
                     if (highlightedIndex < (sizeOfCurrentArray + 14)) highlightedIndex++
-                    else { highlightedIndex = 0 }
+                    else {
+                        highlightedIndex = 0
+                    }
 
                     getViewForFocus(false)?.let {
                         highlightAdapters(-1, data)
-                        changeConstraintsOfFocusLayout(it)
+                        changeConstraintsOfFocusLayout(it.second)
                     } ?: kotlin.run {
                         highlightAdapters(highlightedIndex, data)
                     }
@@ -193,11 +196,13 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
 
                 PREFIX_MINUS -> {
                     if (highlightedIndex > 0) highlightedIndex--
-                    else { highlightedIndex = (sizeOfCurrentArray + 14) }
+                    else {
+                        highlightedIndex = (sizeOfCurrentArray + 14)
+                    }
 
                     getViewForFocus(true)?.let {
                         highlightAdapters(-1, data)
-                        changeConstraintsOfFocusLayout(it)
+                        changeConstraintsOfFocusLayout(it.second)
                     } ?: kotlin.run {
                         highlightAdapters(highlightedIndex, data)
                     }
@@ -206,9 +211,9 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                 PREFIX_AND -> {
                     getViewForFocus(null)?.let {
                         if (highlightedIndex == sizeOfCurrentArray + 1) {
-                            it.callOnClick()
+                            it.first.callOnClick()
                         } else {
-                            it.callOnClick()
+                            it.first.callOnClick()
 
                             // reset highlight index to starting position after clicking on any fragments
                             highlightedIndex = -1
@@ -216,7 +221,6 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                     } ?: kotlin.run {
                         handleAdaptersClick(highlightedIndex)
                     }
-
                     clearPreviousConstraints()
                 }
             }
@@ -271,8 +275,9 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         constraintSet.applyTo(binding.mainViewPanelSystem)
     }
 
-    private fun getViewForFocus(isMinus: Boolean?): View? {
+    private fun getViewForFocus(isMinus: Boolean?): Pair<View, View>? {
 
+        // NOTE : first value of pair is button view and second value of pair is root and is sometimes both are same
         return when (highlightedIndex) {
 
             in 0..sizeOfCurrentArray -> {
@@ -284,17 +289,47 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                 } else null
             }
 
-            sizeOfCurrentArray + 1 -> binding.imageViewCrossSystem
-            sizeOfCurrentArray + 2 -> binding.includeButtonInfo.buttonView
-            sizeOfCurrentArray + 3 -> binding.includeButtonStartup.buttonView
-            sizeOfCurrentArray + 4 -> binding.includeButtonTestCalib.buttonView
-            sizeOfCurrentArray + 5 -> binding.includeButtonSettings.buttonView
-            sizeOfCurrentArray + 6 -> binding.includeButtonTube.buttonView
-            sizeOfCurrentArray + 7 -> binding.includeButtonService.buttonView
+            sizeOfCurrentArray + 1 -> {
+                val pair = Pair(binding.imageViewCrossSystem, binding.imageViewCrossSystem)
+                pair
+            }
+
+            sizeOfCurrentArray + 2 -> {
+                val pair = Pair(binding.includeButtonInfo.buttonView, binding.includeButtonInfo.root)
+                pair
+            }
+
+            sizeOfCurrentArray + 3 -> {
+                val pair =
+                    Pair(binding.includeButtonStartup.buttonView, binding.includeButtonStartup.root)
+                pair
+            }
+
+            sizeOfCurrentArray + 4 -> {
+                val pair =
+                    Pair(binding.includeButtonTestCalib.buttonView, binding.includeButtonTestCalib.root)
+                pair
+            }
+
+            sizeOfCurrentArray + 5 -> {
+                val pair =
+                    Pair(binding.includeButtonSettings.buttonView, binding.includeButtonSettings.root)
+                pair
+            }
+
+            sizeOfCurrentArray + 6 -> {
+                val pair = Pair(binding.includeButtonTube.buttonView, binding.includeButtonTube.root)
+                pair
+            }
+            sizeOfCurrentArray + 7 -> {
+                val pair = Pair(binding.includeButtonService.buttonView, binding.includeButtonService.root)
+                pair
+            }
 
             sizeOfCurrentArray + 8 -> {
-                if (binding.includeButtonDiagchk.contentButtonNormalLayout.isVisible) {
-                    binding.includeButtonDiagchk.buttonView
+                if (binding.includeButtonDiagchk.root.isVisible) {
+                    val pair = Pair(binding.includeButtonDiagchk.buttonView, binding.includeButtonDiagchk.root)
+                    pair
                 } else {
                     isMinus?.let {
                         if (isMinus) highlightedIndex-- else highlightedIndex++
@@ -304,8 +339,9 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
             }
 
             sizeOfCurrentArray + 9 -> {
-                if (binding.includeButtonO2Regulate.contentButtonNormalLayout.isVisible) {
-                    binding.includeButtonO2Regulate.buttonView
+                if (binding.includeButtonO2Regulate.root.isVisible) {
+                    val pair = Pair(binding.includeButtonO2Regulate.buttonView, binding.includeButtonO2Regulate.root)
+                    pair
                 } else {
                     isMinus?.let {
                         if (isMinus) highlightedIndex-- else highlightedIndex++
@@ -315,8 +351,9 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
             }
 
             sizeOfCurrentArray + 10 -> {
-                if (binding.includeButtonAdvancedCalibration.contentButtonNormalLayout.isVisible) {
-                    binding.includeButtonAdvancedCalibration.buttonView
+                if (binding.includeButtonAdvancedCalibration.root.isVisible) {
+                    val pair = Pair(binding.includeButtonAdvancedCalibration.buttonView, binding.includeButtonAdvancedCalibration.root)
+                    pair
                 } else {
                     isMinus?.let {
                         if (isMinus) highlightedIndex-- else highlightedIndex++
@@ -326,8 +363,9 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
             }
 
             sizeOfCurrentArray + 11 -> {
-                if (binding.includeButtondeviceUpdate.contentButtonNormalLayout.isVisible) {
-                    binding.includeButtondeviceUpdate.buttonView
+                if (binding.includeButtondeviceUpdate.root.isVisible) {
+                    val pair = Pair(binding.includeButtondeviceUpdate.buttonView, binding.includeButtondeviceUpdate.root)
+                    pair
                 } else {
                     isMinus?.let {
                         if (isMinus) highlightedIndex-- else highlightedIndex++
@@ -337,8 +375,9 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
             }
 
             sizeOfCurrentArray + 12 -> {
-                if (binding.includeButtonNetworkInfo.contentButtonNormalLayout.isVisible) {
-                    binding.includeButtonNetworkInfo.buttonView
+                if (binding.includeButtonNetworkInfo.root.isVisible) {
+                    val pair = Pair(binding.includeButtonNetworkInfo.buttonView, binding.includeButtonNetworkInfo.root)
+                    pair
                 } else {
                     isMinus?.let {
                         if (isMinus) highlightedIndex-- else highlightedIndex++
@@ -348,8 +387,9 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
             }
 
             sizeOfCurrentArray + 13 -> {
-                if (binding.includeButtonDebug.contentButtonNormalLayout.isVisible) {
-                    binding.includeButtonDebug.buttonView
+                if (binding.includeButtonDebug.root.isVisible) {
+                    val pair = Pair(binding.includeButtonDebug.buttonView, binding.includeButtonDebug.root)
+                    pair
                 } else {
                     isMinus?.let {
                         if (isMinus) highlightedIndex-- else highlightedIndex++
@@ -359,8 +399,9 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
             }
 
             sizeOfCurrentArray + 14 -> {
-                if (binding.includeButtonOTA.contentButtonNormalLayout.isVisible) {
-                    binding.includeButtonOTA.root
+                if (binding.includeButtonOTA.root.isVisible) {
+                    val pair = Pair(binding.includeButtonOTA.buttonView, binding.includeButtonOTA.root)
+                    pair
                 } else {
                     isMinus?.let {
                         if (isMinus) highlightViewWithFocus("-") else highlightViewWithFocus("+")
@@ -416,7 +457,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
 
         setUpNavigation()
 
-        binding.includeButtonService.contentButtonNormalLayout.visibility = View.VISIBLE
+        binding.includeButtonService.root.visibility = View.VISIBLE
 
         binding.includeButtonDebug.buttonView.setOnClickListener {
             setupDebugFragment()
@@ -461,25 +502,27 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         if (tag == "Diagnostic") {
             showDiagnosticFragment()
 
-            binding.includeButtonDiagchk.contentButtonNormalLayout.visibility = View.VISIBLE
-            binding.includeButtonO2Regulate.contentButtonNormalLayout.visibility = View.VISIBLE
-            binding.includeButtondeviceUpdate.contentButtonNormalLayout.visibility = View.VISIBLE
-            binding.includeButtonAdvancedCalibration.contentButtonNormalLayout.visibility = View.VISIBLE
-            binding.includeButtonNetworkInfo.contentButtonNormalLayout.visibility = View.GONE
-            binding.includeButtonDebug.contentButtonNormalLayout.visibility = View.GONE
-            binding.includeButtonWifi.contentButtonNormalLayout.visibility = View.GONE
-            binding.includeButtonOTA.contentButtonNormalLayout.visibility = View.GONE
+            binding.includeButtonDiagchk.root.visibility = View.VISIBLE
+            binding.includeButtonO2Regulate.root.visibility = View.VISIBLE
+            binding.includeButtondeviceUpdate.root.visibility = View.VISIBLE
+            binding.includeButtonAdvancedCalibration.root.visibility =
+                View.VISIBLE
+            binding.includeButtonNetworkInfo.root.visibility = View.GONE
+            binding.includeButtonDebug.root.visibility = View.GONE
+            binding.includeButtonWifi.root.visibility = View.GONE
+            binding.includeButtonOTA.root.visibility = View.GONE
             enableAllTabs(true)
         } else {
             setupDebugFragment()
-            binding.includeButtonDiagchk.contentButtonNormalLayout.visibility = View.GONE
-            binding.includeButtonO2Regulate.contentButtonNormalLayout.visibility = View.GONE
-            binding.includeButtondeviceUpdate.contentButtonNormalLayout.visibility = View.GONE
-            binding.includeButtonAdvancedCalibration.contentButtonNormalLayout.visibility = View.GONE
-            binding.includeButtonNetworkInfo.contentButtonNormalLayout.visibility = View.VISIBLE
-            binding.includeButtonDebug.contentButtonNormalLayout.visibility = View.VISIBLE
-            binding.includeButtonWifi.contentButtonNormalLayout.visibility = View.VISIBLE
-            binding.includeButtonOTA.contentButtonNormalLayout.visibility = View.VISIBLE
+            binding.includeButtonDiagchk.root.visibility = View.GONE
+            binding.includeButtonO2Regulate.root.visibility = View.GONE
+            binding.includeButtondeviceUpdate.root.visibility = View.GONE
+            binding.includeButtonAdvancedCalibration.root.visibility =
+                View.GONE
+            binding.includeButtonNetworkInfo.root.visibility = View.VISIBLE
+            binding.includeButtonDebug.root.visibility = View.VISIBLE
+            binding.includeButtonWifi.root.visibility = View.VISIBLE
+            binding.includeButtonOTA.root.visibility = View.VISIBLE
             enableAllTabs(true)
         }
     }
@@ -492,18 +535,19 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
 
         } else if (tag == "Diagnostic") {
             showDiagnosticFragment()
-            binding.includeButtonDiagchk.contentButtonNormalLayout.visibility = View.VISIBLE
-            binding.includeButtonO2Regulate.contentButtonNormalLayout.visibility = View.VISIBLE
-            binding.includeButtondeviceUpdate.contentButtonNormalLayout.visibility = View.VISIBLE
-            binding.includeButtonAdvancedCalibration.contentButtonNormalLayout.visibility = View.VISIBLE
+            binding.includeButtonDiagchk.root.visibility = View.VISIBLE
+            binding.includeButtonO2Regulate.root.visibility = View.VISIBLE
+            binding.includeButtondeviceUpdate.root.visibility = View.VISIBLE
+            binding.includeButtonAdvancedCalibration.root.visibility =
+                View.VISIBLE
             enableAllTabs(true)
 
         } else if (tag == "Debug") {
             setupDebugFragment()
-            binding.includeButtonNetworkInfo.contentButtonNormalLayout.visibility = View.VISIBLE
-            binding.includeButtonDebug.contentButtonNormalLayout.visibility = View.VISIBLE
-            binding.includeButtonWifi.contentButtonNormalLayout.visibility = View.VISIBLE
-            binding.includeButtonOTA.contentButtonNormalLayout.visibility = View.VISIBLE
+            binding.includeButtonNetworkInfo.root.visibility = View.VISIBLE
+            binding.includeButtonDebug.root.visibility = View.VISIBLE
+            binding.includeButtonWifi.root.visibility = View.VISIBLE
+            binding.includeButtonOTA.root.visibility = View.VISIBLE
             enableAllTabs(true)
 
         } else {
@@ -558,7 +602,8 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         binding.includeButtonOTA.buttonView.text = getString(R.string.hint_ota)
         binding.includeButtonDiagchk.buttonView.text = getString(R.string.hint_diagnos)
         binding.includeButtonO2Regulate.buttonView.text = getString(R.string.hint_reg_o2)
-        binding.includeButtonAdvancedCalibration.buttonView.text = getString(R.string.hint_advanced_calib)
+        binding.includeButtonAdvancedCalibration.buttonView.text =
+            getString(R.string.hint_advanced_calib)
         binding.includeButtonService.buttonView.text = getString(R.string.hint_service)
         binding.includeButtonStartup.buttonView.text = getString(R.string.startup)
         binding.includeButtondeviceUpdate.buttonView.text = getString(R.string.hint_update)
@@ -936,7 +981,12 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
 
         // added on current fragment
         view.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
-        (view as AppCompatButton).setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+        (view as AppCompatButton).setTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.white
+            )
+        )
     }
 
     override fun onStart() {
@@ -1019,19 +1069,21 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
 
     override fun doAction() {
         if (passWord == "8000") {
-            binding.includeButtonNetworkInfo.contentButtonNormalLayout.visibility = View.VISIBLE
-            binding.includeButtonDebug.contentButtonNormalLayout.visibility = View.VISIBLE
+            binding.includeButtonNetworkInfo.root.visibility = View.VISIBLE
+            binding.includeButtonDebug.root.visibility = View.VISIBLE
 
-            if (tag == "FromDashboard") binding.includeButtonOTA.contentButtonNormalLayout.visibility = View.GONE
+            if (tag == "FromDashboard") binding.includeButtonOTA.root.visibility =
+                View.GONE
             else {
-                binding.includeButtonWifi.contentButtonNormalLayout.visibility = View.VISIBLE
-                binding.includeButtonOTA.contentButtonNormalLayout.visibility = View.VISIBLE
+                binding.includeButtonWifi.root.visibility = View.VISIBLE
+                binding.includeButtonOTA.root.visibility = View.VISIBLE
             }
         } else {
-            binding.includeButtonDiagchk.contentButtonNormalLayout.visibility = View.VISIBLE
-            binding.includeButtonO2Regulate.contentButtonNormalLayout.visibility = View.VISIBLE
-            binding.includeButtondeviceUpdate.contentButtonNormalLayout.visibility = View.VISIBLE
-            binding.includeButtonAdvancedCalibration.contentButtonNormalLayout.visibility = View.VISIBLE
+            binding.includeButtonDiagchk.root.visibility = View.VISIBLE
+            binding.includeButtonO2Regulate.root.visibility = View.VISIBLE
+            binding.includeButtondeviceUpdate.root.visibility = View.VISIBLE
+            binding.includeButtonAdvancedCalibration.root.visibility =
+                View.VISIBLE
         }
     }
 

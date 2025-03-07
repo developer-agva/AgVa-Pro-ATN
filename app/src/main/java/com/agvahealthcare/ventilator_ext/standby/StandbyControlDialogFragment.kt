@@ -22,6 +22,8 @@ import com.agvahealthcare.ventilator_ext.control.etcuff.EtCuffFragment
 import com.agvahealthcare.ventilator_ext.control.smartfio2.SmartFio2
 import com.agvahealthcare.ventilator_ext.control.vtas.Vtas
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardActivity
+import com.agvahealthcare.ventilator_ext.databinding.FragmentModeDialogBinding
+import com.agvahealthcare.ventilator_ext.databinding.FragmentStandbycontrolDialogBinding
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.model.ControlParameterModel
 import com.agvahealthcare.ventilator_ext.utility.hideSystemUI
@@ -31,11 +33,9 @@ import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_AND
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_MINUS
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_PLUS
 import com.github.angads25.toggle.interfaces.OnToggledListener
-import kotlinx.android.synthetic.main.content_button_layout.view.*
-import kotlinx.android.synthetic.main.fragment_standbycontrol_dialog.*
 
 class StandbyControlDialogFragment : DialogFragment() {
-
+    private lateinit var binding : FragmentStandbycontrolDialogBinding
     private var mMainActivityViewModel: MainActivityViewModel? = null
 
     private var basicParameterClickListener: ControlParameterClickListener? = null
@@ -171,7 +171,7 @@ class StandbyControlDialogFragment : DialogFragment() {
 
                 getViewForFocus(false)?.let {
                     highlightAdapters(-1)
-                    changeConstraintsOfFocusLayout(it)
+                    changeConstraintsOfFocusLayout(it.second)
                 } ?: kotlin.run {
                     highlightAdapters(highlightedIndex)
                 }
@@ -186,7 +186,7 @@ class StandbyControlDialogFragment : DialogFragment() {
 
                 getViewForFocus(true)?.let {
                     highlightAdapters(-1)
-                    changeConstraintsOfFocusLayout(it)
+                    changeConstraintsOfFocusLayout(it.second)
                 } ?: kotlin.run {
                     highlightAdapters(highlightedIndex)
                 }
@@ -195,9 +195,9 @@ class StandbyControlDialogFragment : DialogFragment() {
             PREFIX_AND -> {
                 getViewForFocus(null)?.let {
                     if (highlightedIndex == sizeOfCurrentArray+1 || highlightedIndex == sizeOfCurrentArray+7){
-                        it.callOnClick()
+                        it.first.callOnClick()
                     }else{
-                        it.buttonView.callOnClick()
+                        it.first.callOnClick()
 
                         // reset highlight index to starting position after clicking on any fragments
                         highlightedIndex = -1
@@ -214,12 +214,12 @@ class StandbyControlDialogFragment : DialogFragment() {
     private fun clearPreviousConstraints() {
         try {
             val constraintSet = ConstraintSet()
-            constraintSet.clone(mainViewPanelStandbyControls)
-            constraintSet.clear(focusLayoutStandbyControls.id, ConstraintSet.TOP)
-            constraintSet.clear(focusLayoutStandbyControls.id, ConstraintSet.BOTTOM)
-            constraintSet.clear(focusLayoutStandbyControls.id, ConstraintSet.LEFT)
-            constraintSet.clear(focusLayoutStandbyControls.id, ConstraintSet.RIGHT)
-            constraintSet.applyTo(mainViewPanelStandbyControls)
+            constraintSet.clone(binding.mainViewPanelStandbyControls)
+            constraintSet.clear(binding.focusLayoutStandbyControls.id, ConstraintSet.TOP)
+            constraintSet.clear(binding.focusLayoutStandbyControls.id, ConstraintSet.BOTTOM)
+            constraintSet.clear(binding.focusLayoutStandbyControls.id, ConstraintSet.LEFT)
+            constraintSet.clear(binding.focusLayoutStandbyControls.id, ConstraintSet.RIGHT)
+            constraintSet.applyTo(binding.mainViewPanelStandbyControls)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -227,52 +227,59 @@ class StandbyControlDialogFragment : DialogFragment() {
 
     private fun changeConstraintsOfFocusLayout(view: View) {
         val constraintSet = ConstraintSet()
-        constraintSet.clone(mainViewPanelStandbyControls)
+        constraintSet.clone(binding.mainViewPanelStandbyControls)
         constraintSet.connect(
-            focusLayoutStandbyControls.id,
+            binding.focusLayoutStandbyControls.id,
             ConstraintSet.RIGHT,
             view.id,
             ConstraintSet.RIGHT,
             0
         )
         constraintSet.connect(
-            focusLayoutStandbyControls.id,
+            binding.focusLayoutStandbyControls.id,
             ConstraintSet.TOP,
             view.id,
             ConstraintSet.TOP,
             0
         )
         constraintSet.connect(
-            focusLayoutStandbyControls.id,
+            binding.focusLayoutStandbyControls.id,
             ConstraintSet.BOTTOM,
             view.id,
             ConstraintSet.BOTTOM,
             0
         )
         constraintSet.connect(
-            focusLayoutStandbyControls.id,
+            binding.focusLayoutStandbyControls.id,
             ConstraintSet.LEFT,
             view.id,
             ConstraintSet.LEFT,
             0
         )
-        constraintSet.applyTo(mainViewPanelStandbyControls)
+        constraintSet.applyTo(binding.mainViewPanelStandbyControls)
     }
 
-    private fun getViewForFocus(isMinus: Boolean?): View? {
+    private fun getViewForFocus(isMinus: Boolean?): Pair<View,View>? {
 
-
+        // NOTE : first value of pair is button view and second value of pair is root and is sometimes both are same
         return when (highlightedIndex) {
 
             in 0..sizeOfCurrentArray -> {
                 null
             }
 
-            sizeOfCurrentArray + 1 -> imageViewCrossStandbyControls
-            sizeOfCurrentArray + 2 -> includeButtonStandbyBasic
+            sizeOfCurrentArray + 1 -> {
+                val pair = Pair(binding.imageViewCrossStandbyControls,binding.imageViewCrossStandbyControls)
+                pair
+            }
+            sizeOfCurrentArray + 2 -> {
+                val pair = Pair(binding.includeButtonStandbyBasic.buttonView,binding.includeButtonStandbyBasic.root)
+                pair
+            }
             sizeOfCurrentArray + 3 -> {
-                if (includeButtonStandbyAdvanced.isVisible) {
-                    includeButtonStandbyAdvanced
+                if (binding.includeButtonStandbyAdvanced.root.isVisible) {
+                    val pair = Pair(binding.includeButtonStandbyAdvanced.buttonView,binding.includeButtonStandbyAdvanced.root)
+                    pair
                 } else {
                     isMinus?.let {
                         if (isMinus) highlightedIndex-- else highlightedIndex++
@@ -282,8 +289,9 @@ class StandbyControlDialogFragment : DialogFragment() {
             }
 
             sizeOfCurrentArray + 4 -> {
-                if (includeButtonStandbyBackup.isVisible) {
-                    includeButtonStandbyBackup
+                if (binding.includeButtonStandbyBackup.root.isVisible) {
+                    val pair = Pair(binding.includeButtonStandbyBackup.buttonView,binding.includeButtonStandbyBackup.root)
+                    pair
                 } else {
                     isMinus?.let {
                         if (isMinus) highlightedIndex-- else highlightedIndex++
@@ -293,8 +301,9 @@ class StandbyControlDialogFragment : DialogFragment() {
             }
 
             sizeOfCurrentArray + 5 -> {
-                if (includeButtonStandbySmartFio2.isVisible) {
-                    includeButtonStandbySmartFio2
+                if (binding.includeButtonStandbySmartFio2.root.isVisible) {
+                    val pair = Pair(binding.includeButtonStandbySmartFio2.buttonView,binding.includeButtonStandbySmartFio2.root)
+                    pair
                 } else {
                     isMinus?.let {
                         if (isMinus) highlightedIndex-- else highlightedIndex++
@@ -304,8 +313,9 @@ class StandbyControlDialogFragment : DialogFragment() {
             }
 
             sizeOfCurrentArray + 6 -> {
-                if (includeButtonStandbyVTas.isVisible) {
-                    includeButtonStandbyVTas
+                if (binding.includeButtonStandbyVTas.root.isVisible) {
+                    val pair = Pair(binding.includeButtonStandbyVTas.buttonView,binding.includeButtonStandbyVTas.root)
+                    pair
                 } else {
                     isMinus?.let {
                         if (isMinus) highlightedIndex-- else highlightedIndex++
@@ -314,7 +324,10 @@ class StandbyControlDialogFragment : DialogFragment() {
                 }
             }
 
-            sizeOfCurrentArray + 7 -> buttonStartVent
+            sizeOfCurrentArray + 7 -> {
+                val pair = Pair(binding.buttonStartVent,binding.buttonStartVent)
+                pair
+            }
 
             else -> null
         }
@@ -352,37 +365,37 @@ class StandbyControlDialogFragment : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        return inflater.inflate(R.layout.fragment_standbycontrol_dialog, container, false)
+        binding = FragmentStandbycontrolDialogBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setStyle(STYLE_NO_TITLE, R.style.CustomDialog)
-        Log.i("STANDBYBACKUPBUTTON", includeButtonStandbyBackup.visibility.toString())
 
         mMainActivityViewModel =
             ViewModelProvider(requireActivity())[MainActivityViewModel::class.java]
 
         prefManager = PreferenceManager(context)
-        includeButtonStandbyBackup.visibility =
+        binding.includeButtonStandbyBackup.root.visibility =
             if (backupControlParams?.isNotEmpty() == true) View.VISIBLE else View.GONE
-        includeButtonStandbyAdvanced.visibility =
+        binding.includeButtonStandbyAdvanced.root.visibility =
             if (advancedControlParams?.isNotEmpty() == true) View.VISIBLE else View.GONE
-        includeButtonStandbySmartFio2.visibility =
+        binding.includeButtonStandbySmartFio2.root.visibility =
             if (smartFio2Params?.isNotEmpty() == true) View.VISIBLE else View.GONE
-        includeButtonStandbyVTas.visibility =
+        binding.includeButtonStandbyVTas.root.visibility =
             if (vTasParams?.isNotEmpty() == true) View.VISIBLE else View.GONE
-        includeButtonStandbyEtCuff.visibility =
+        binding.includeButtonStandbyEtCuff.root.visibility =
             if (etCuffParams?.isNotEmpty() == true) View.VISIBLE else View.GONE
-        includeButtonStandbyBasic.buttonView.text = getString(R.string.hint_basic)
-        includeButtonStandbyBackup.buttonView.text = getString(R.string.hint_backupsettings)
-        includeButtonStandbyAdvanced.buttonView.text = getString(R.string.hint_advancedsettings)
-        includeButtonStandbySmartFio2.buttonView.text = getString(R.string.hint_smart_fio2_btn)
-        includeButtonStandbyVTas.buttonView.text = getString(R.string.hint_vtas_btn)
-        includeButtonStandbyEtCuff.buttonView.text = getString(R.string.hint_etcuff_btn)
+        binding.includeButtonStandbyBasic.buttonView.text = getString(R.string.hint_basic)
+        binding.includeButtonStandbyBackup.buttonView.text = getString(R.string.hint_backupsettings)
+        binding.includeButtonStandbyAdvanced.buttonView.text = getString(R.string.hint_advancedsettings)
+        binding.includeButtonStandbySmartFio2.buttonView.text = getString(R.string.hint_smart_fio2_btn)
+        binding.includeButtonStandbyVTas.buttonView.text = getString(R.string.hint_vtas_btn)
+        binding.includeButtonStandbyEtCuff.buttonView.text = getString(R.string.hint_etcuff_btn)
         setUpStandbyBasic()
         setOnClickListener()
-        modebutton.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+        binding.modebutton.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
         checkMode()
     }
 
@@ -414,71 +427,71 @@ class StandbyControlDialogFragment : DialogFragment() {
 
         when (modeCode) {
             Configs.MODE_VCV_CMV -> {
-                modebutton.text = getString(R.string.hint_vc_cmv)
+                binding.modebutton.text = getString(R.string.hint_vc_cmv)
             }
 
             Configs.MODE_VCV_ACV -> {
-                modebutton.text = getString(R.string.hint_vc_cv)
+                binding.modebutton.text = getString(R.string.hint_vc_cv)
             }
 
             Configs.MODE_VCV_SIMV -> {
-                modebutton.text = getString(R.string.hint_vc_simv)
+                binding.modebutton.text = getString(R.string.hint_vc_simv)
             }
 
             Configs.MODE_PC_CMV -> {
-                modebutton.text = getString(R.string.hint_pc_cmv)
+                binding.modebutton.text = getString(R.string.hint_pc_cmv)
             }
 
             Configs.MODE_PC_SIMV -> {
-                modebutton.text = getString(R.string.hint_pc_simv)
+                binding.modebutton.text = getString(R.string.hint_pc_simv)
             }
 
             Configs.MODE_PC_AC -> {
-                modebutton.text = getString(R.string.hint_spont)
+                binding.modebutton.text = getString(R.string.hint_spont)
             }
 
             Configs.MODE_PC_PSV -> {
-                modebutton.text = getString(R.string.hint_psv)
+                binding.modebutton.text = getString(R.string.hint_psv)
             }
 
             Configs.MODE_PC_PRVC -> {
-                modebutton.text = getString(R.string.hint_prvc)
+                binding.modebutton.text = getString(R.string.hint_prvc)
             }
 
             Configs.MODE_PC_ARPV -> {
-                modebutton.text = getString(R.string.hint_pc_aprv)
+                binding.modebutton.text = getString(R.string.hint_pc_aprv)
             }
 
             Configs.MODE_HFNC -> {
-                if (prefManager?.readCurrentUid() == Configs.PatientProfile.TYPE_NEONAT) modebutton.text =
-                    getString(R.string.NeoNatehfnc) else modebutton.text = getString(R.string.hfnc)
+                if (prefManager?.readCurrentUid() == Configs.PatientProfile.TYPE_NEONAT) binding.modebutton.text =
+                    getString(R.string.NeoNatehfnc) else binding.modebutton.text = getString(R.string.hfnc)
             }
 
             Configs.MODE_AUTO_VENTILATION -> {
-                modebutton.text = getString(R.string.hint_ai_vent)
+                binding.modebutton.text = getString(R.string.hint_ai_vent)
             }
 
             Configs.MODE_NIV_BPAP -> {
                 if (prefManager?.readCurrentUid() != Configs.PatientProfile.TYPE_NEONAT)
-                    modebutton.text = getString(R.string.hint_bpap)
-                else modebutton.text = getString(R.string.hint_nbpap)
+                    binding.modebutton.text = getString(R.string.hint_bpap)
+                else binding.modebutton.text = getString(R.string.hint_nbpap)
             }
 
             Configs.MODE_NC_IPPV -> {
                 if (prefManager?.readCurrentUid() != Configs.PatientProfile.TYPE_NEONAT)
-                    modebutton.text = getString(R.string.hint_nc_cpap)
-                else modebutton.text = getString(R.string.hint_nc_cpap)
+                    binding.modebutton.text = getString(R.string.hint_nc_cpap)
+                else binding.modebutton.text = getString(R.string.hint_nc_cpap)
             }
 
             Configs.MODE_NIV_CPAP -> {
                 if (prefManager?.readCurrentUid() != Configs.PatientProfile.TYPE_NEONAT)
-                    modebutton.text = getString(R.string.hint_cpap)
+                    binding.modebutton.text = getString(R.string.hint_cpap)
                 else
-                    modebutton.text = getString(R.string.hint_ncpap)
+                    binding.modebutton.text = getString(R.string.hint_ncpap)
             }
 
             Configs.MODE_NC_CPAP -> {
-                if (prefManager?.readCurrentUid() == Configs.PatientProfile.TYPE_NEONAT) modebutton.text =
+                if (prefManager?.readCurrentUid() == Configs.PatientProfile.TYPE_NEONAT) binding.modebutton.text =
                     getString(R.string.hint_ncpap)
 
             }
@@ -505,41 +518,31 @@ class StandbyControlDialogFragment : DialogFragment() {
 
         }
 
-        includeButtonStandbyAdvanced.buttonView.setTextColor(
+        binding.includeButtonStandbyAdvanced.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
-        includeButtonStandbyAdvanced.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-        includeButtonStandbyBackup.buttonView.setTextColor(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.white
-            )
-        )
-
-        includeButtonStandbyEtCuff.buttonView.setTextColor(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.white
-            )
-        )
-        includeButtonStandbyEtCuff.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-
-
-
-        includeButtonStandbySmartFio2.buttonView.setTextColor(
+        binding.includeButtonStandbyAdvanced.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonStandbyBackup.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
 
+        binding.includeButtonStandbyEtCuff.buttonView.setTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.white
+            )
+        )
+        binding.includeButtonStandbyEtCuff.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
-        includeButtonStandbySmartFio2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
-        includeButtonStandbyVTas.buttonView.setTextColor(
+
+        binding.includeButtonStandbySmartFio2.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
@@ -547,19 +550,29 @@ class StandbyControlDialogFragment : DialogFragment() {
         )
 
 
-        includeButtonStandbyVTas.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonStandbySmartFio2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
-
-
-        includeButtonStandbyBackup.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-
-        includeButtonStandbyBasic.buttonView.setTextColor(
+        binding.includeButtonStandbyVTas.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
-        includeButtonStandbyBasic.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
+
+
+        binding.includeButtonStandbyVTas.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+
+
+
+        binding.includeButtonStandbyBackup.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+
+        binding.includeButtonStandbyBasic.buttonView.setTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.white
+            )
+        )
+        binding.includeButtonStandbyBasic.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
     }
 
     private fun setUpAdvanced() {
@@ -580,49 +593,39 @@ class StandbyControlDialogFragment : DialogFragment() {
                 }
             }
         }
-        includeButtonStandbyBasic.buttonView.setTextColor(
+        binding.includeButtonStandbyBasic.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
 
-        includeButtonStandbyBasic.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-        includeButtonStandbyBackup.buttonView.setTextColor(
+        binding.includeButtonStandbyBasic.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonStandbyBackup.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
 
-        includeButtonStandbyEtCuff.buttonView.setTextColor(
+        binding.includeButtonStandbyEtCuff.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
-        includeButtonStandbyEtCuff.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonStandbyEtCuff.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
-        includeButtonStandbyBackup.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-        includeButtonStandbyAdvanced.buttonView.setTextColor(
+        binding.includeButtonStandbyBackup.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonStandbyAdvanced.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
-        includeButtonStandbyAdvanced.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
+        binding.includeButtonStandbyAdvanced.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
 
-        includeButtonStandbySmartFio2.buttonView.setTextColor(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.white
-            )
-        )
-
-
-        includeButtonStandbySmartFio2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-
-        includeButtonStandbyVTas.buttonView.setTextColor(
+        binding.includeButtonStandbySmartFio2.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
@@ -630,7 +633,17 @@ class StandbyControlDialogFragment : DialogFragment() {
         )
 
 
-        includeButtonStandbyVTas.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonStandbySmartFio2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+
+        binding.includeButtonStandbyVTas.buttonView.setTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.white
+            )
+        )
+
+
+        binding.includeButtonStandbyVTas.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
     }
 
     private fun setUpEtCuff() {
@@ -652,49 +665,39 @@ class StandbyControlDialogFragment : DialogFragment() {
             }
         }
 
-        includeButtonStandbyBasic.buttonView.setTextColor(
+        binding.includeButtonStandbyBasic.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
 
-        includeButtonStandbyBasic.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-        includeButtonStandbyBackup.buttonView.setTextColor(
+        binding.includeButtonStandbyBasic.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonStandbyBackup.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
 
-        includeButtonStandbyAdvanced.buttonView.setTextColor(
+        binding.includeButtonStandbyAdvanced.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
-        includeButtonStandbyAdvanced.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonStandbyAdvanced.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
-        includeButtonStandbyBackup.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-        includeButtonStandbyEtCuff.buttonView.setTextColor(
+        binding.includeButtonStandbyBackup.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonStandbyEtCuff.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
-        includeButtonStandbyEtCuff.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
+        binding.includeButtonStandbyEtCuff.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
 
-        includeButtonStandbySmartFio2.buttonView.setTextColor(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.white
-            )
-        )
-
-
-        includeButtonStandbySmartFio2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-
-        includeButtonStandbyVTas.buttonView.setTextColor(
+        binding.includeButtonStandbySmartFio2.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
@@ -702,7 +705,17 @@ class StandbyControlDialogFragment : DialogFragment() {
         )
 
 
-        includeButtonStandbyVTas.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonStandbySmartFio2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+
+        binding.includeButtonStandbyVTas.buttonView.setTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.white
+            )
+        )
+
+
+        binding.includeButtonStandbyVTas.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
     }
 
     private fun setUpBackup() {
@@ -727,40 +740,30 @@ class StandbyControlDialogFragment : DialogFragment() {
             }
 
             /*btn_update_settings.visibility = View.GONE*/
-            includeButtonStandbyBackup.buttonView.setTextColor(
+            binding.includeButtonStandbyBackup.buttonView.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
                     R.color.white
                 )
             )
-            includeButtonStandbyBackup.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
+            binding.includeButtonStandbyBackup.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
 
-            includeButtonStandbyEtCuff.buttonView.setTextColor(
+            binding.includeButtonStandbyEtCuff.buttonView.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
                     R.color.white
                 )
             )
-            includeButtonStandbyEtCuff.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-            includeButtonStandbyBasic.buttonView.setTextColor(
+            binding.includeButtonStandbyEtCuff.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+            binding.includeButtonStandbyBasic.buttonView.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
                     R.color.white
                 )
             )
-            includeButtonStandbyBasic.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+            binding.includeButtonStandbyBasic.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
-            includeButtonStandbySmartFio2.buttonView.setTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.white
-                )
-            )
-
-
-            includeButtonStandbySmartFio2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-
-            includeButtonStandbyVTas.buttonView.setTextColor(
+            binding.includeButtonStandbySmartFio2.buttonView.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
                     R.color.white
@@ -768,16 +771,26 @@ class StandbyControlDialogFragment : DialogFragment() {
             )
 
 
-            includeButtonStandbyVTas.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+            binding.includeButtonStandbySmartFio2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
-
-            includeButtonStandbyAdvanced.buttonView.setTextColor(
+            binding.includeButtonStandbyVTas.buttonView.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
                     R.color.white
                 )
             )
-            includeButtonStandbyAdvanced.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+
+
+            binding.includeButtonStandbyVTas.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+
+
+            binding.includeButtonStandbyAdvanced.buttonView.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.white
+                )
+            )
+            binding.includeButtonStandbyAdvanced.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
         }
     }
 
@@ -800,53 +813,53 @@ class StandbyControlDialogFragment : DialogFragment() {
             }
         }
 
-        includeButtonStandbyEtCuff.buttonView.setTextColor(
+        binding.includeButtonStandbyEtCuff.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
-        includeButtonStandbyEtCuff.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonStandbyEtCuff.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
 
-        includeButtonStandbyBackup.buttonView.setTextColor(
+        binding.includeButtonStandbyBackup.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
-        includeButtonStandbyBackup.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonStandbyBackup.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
-        includeButtonStandbyAdvanced.buttonView.setTextColor(
+        binding.includeButtonStandbyAdvanced.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
-        includeButtonStandbyAdvanced.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonStandbyAdvanced.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
-        includeButtonStandbySmartFio2.buttonView.setTextColor(
+        binding.includeButtonStandbySmartFio2.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
-        includeButtonStandbySmartFio2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
-        includeButtonStandbyVTas.buttonView.setTextColor(
+        binding.includeButtonStandbySmartFio2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
+        binding.includeButtonStandbyVTas.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
-        includeButtonStandbyVTas.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonStandbyVTas.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
-        includeButtonStandbyBasic.buttonView.setTextColor(
+        binding.includeButtonStandbyBasic.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
-        includeButtonStandbyBasic.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonStandbyBasic.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
     }
 
@@ -871,61 +884,61 @@ class StandbyControlDialogFragment : DialogFragment() {
             }
         }
 
-        includeButtonStandbyBackup.buttonView.setTextColor(
+        binding.includeButtonStandbyBackup.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
-        includeButtonStandbyBackup.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonStandbyBackup.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
-        includeButtonStandbyEtCuff.buttonView.setTextColor(
+        binding.includeButtonStandbyEtCuff.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
-        includeButtonStandbyEtCuff.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonStandbyEtCuff.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
-        includeButtonStandbyAdvanced.buttonView.setTextColor(
+        binding.includeButtonStandbyAdvanced.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
-        includeButtonStandbyAdvanced.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonStandbyAdvanced.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
-        includeButtonStandbySmartFio2.buttonView.setTextColor(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.white
-            )
-        )
-
-        includeButtonStandbySmartFio2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-        includeButtonStandbyVTas.buttonView.setTextColor(
+        binding.includeButtonStandbySmartFio2.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
 
-        includeButtonStandbyVTas.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
-
-        includeButtonStandbyBasic.buttonView.setTextColor(
+        binding.includeButtonStandbySmartFio2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonStandbyVTas.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.white
             )
         )
 
-        includeButtonStandbyBasic.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.includeButtonStandbyVTas.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
+
+        binding.includeButtonStandbyBasic.buttonView.setTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.white
+            )
+        )
+
+        binding.includeButtonStandbyBasic.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
     }
 
     private fun setOnClickListener() {
 
-        imageViewCrossStandbyControls.setOnClickListener {
+        binding.imageViewCrossStandbyControls.setOnClickListener {
             requireActivity().supportFragmentManager
                 .beginTransaction()
                 .remove(this)
@@ -933,19 +946,19 @@ class StandbyControlDialogFragment : DialogFragment() {
             closeListener?.handleDialogClose()
         }
 
-        includeButtonStandbyBasic.buttonView.setOnClickListener {
+        binding.includeButtonStandbyBasic.buttonView.setOnClickListener {
             setUpStandbyBasic()
         }
 
-        includeButtonStandbyBackup.buttonView.setOnClickListener {
+        binding.includeButtonStandbyBackup.buttonView.setOnClickListener {
             setUpBackup()
         }
 
-        includeButtonStandbyEtCuff.buttonView.setOnClickListener {
+        binding.includeButtonStandbyEtCuff.buttonView.setOnClickListener {
             setUpEtCuff()
         }
 
-        includeButtonStandbyAdvanced.buttonView.setOnClickListener {
+        binding.includeButtonStandbyAdvanced.buttonView.setOnClickListener {
             prefManager?.apply {
                 if (readCurrentUid() == Configs.PatientProfile.TYPE_NEONAT && readVGVStatus() == true) {
                     Log.i("additionOf", (readPEEP() + readPplat()).toString())
@@ -955,15 +968,15 @@ class StandbyControlDialogFragment : DialogFragment() {
             setUpAdvanced()
         }
 
-        includeButtonStandbySmartFio2.buttonView.setOnClickListener {
+        binding.includeButtonStandbySmartFio2.buttonView.setOnClickListener {
             setUpFiO2()
         }
 
-        includeButtonStandbyVTas.buttonView.setOnClickListener {
+        binding.includeButtonStandbyVTas.buttonView.setOnClickListener {
             setUpVtas()
         }
 
-        buttonStartVent.setOnClickListener {
+        binding.buttonStartVent.setOnClickListener {
             // send mode code to ventilator
             Log.i("new_ventilation", "buttonStartVent click in standby control dialog")
             onStartVentilationListener?.onStart()

@@ -8,16 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.dashboard.chart.*
-import com.agvahealthcare.ventilator_ext.dashboard.trio_graph.TrioFragmentGraph
+import com.agvahealthcare.ventilator_ext.databinding.FragmentDebugBinding
+import com.agvahealthcare.ventilator_ext.databinding.FragmentDefaultBinding
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.utility.*
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs
-import kotlinx.android.synthetic.main.fragment_default.*
-import kotlinx.android.synthetic.main.layout_dialog_calibration.*
 
 // Created by masoom on 02 Jan 2023
 class DefaultFragment : GraphLayoutFragment("DefaultFragment") {
-
+    private lateinit var binding: FragmentDefaultBinding
     private lateinit var pressureChartFragment: PressureChartFragment
     private lateinit var volumeChartFragment: VolumeChartFragment
     private lateinit var flowChartFragment: FlowChartFragment
@@ -41,13 +40,14 @@ class DefaultFragment : GraphLayoutFragment("DefaultFragment") {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_default, container, false)
+        binding = FragmentDefaultBinding.inflate(layoutInflater,container,false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         prefManager = PreferenceManager(context)
-        if(prefManager?.readCurrentUid() == Configs.PatientProfile.TYPE_NEONAT) tvHFNC.text = getString(R.string.NeoNatehfnc) else tvHFNC.text = getString(R.string.hfnc)
+        if(prefManager?.readCurrentUid() == Configs.PatientProfile.TYPE_NEONAT) binding.tvHFNC.text = getString(R.string.NeoNatehfnc) else binding.tvHFNC.text = getString(R.string.hfnc)
     }
 
     private fun initData() {

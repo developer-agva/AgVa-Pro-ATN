@@ -2,36 +2,30 @@ package com.agvahealthcare.ventilator_ext.system.network
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.agvahealthcare.ventilator_ext.MainActivityViewModel
-import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.SetupActivity
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardActivity
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardViewModel
+import com.agvahealthcare.ventilator_ext.databinding.FragmentNetworkBinding
 import com.agvahealthcare.ventilator_ext.logging.FileLogger
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.service.CommunicationService
 import com.agvahealthcare.ventilator_ext.utility.utils.AppUtils
-import kotlinx.android.synthetic.main.fragment_network.*
-import kotlinx.android.synthetic.main.fragment_service.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.File
-import java.io.FileOutputStream
-import java.io.OutputStream
 import java.util.*
 
 
-class NetworkFragment(private var communicationService: CommunicationService?) : Fragment(){
+class NetworkFragment(private var communicationService: CommunicationService?) : Fragment() {
 
+    private lateinit var binding: FragmentNetworkBinding
     var prefManager: PreferenceManager? = null
     var mainActivityViewModel: MainActivityViewModel? = null
     var dashBoardViewModel: DashBoardViewModel? = null
@@ -42,63 +36,62 @@ class NetworkFragment(private var communicationService: CommunicationService?) :
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val view =  inflater.inflate(R.layout.fragment_network, container, false)
-        if (view !is EditText) {
-            view.setOnTouchListener { _, _ ->
-                AppUtils.hideKeyBoard(requireContext(),etNewIPValue)
-                false
-            }
+        binding = FragmentNetworkBinding.inflate(layoutInflater, container, false)
+
+        binding.root.setOnClickListener {
+            AppUtils.hideKeyBoard(requireContext(), binding.etNewIPValue)
         }
 
-        return view
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         prefManager = PreferenceManager(requireContext())
-        mainActivityViewModel = ViewModelProvider(requireActivity())[MainActivityViewModel::class.java]
+        mainActivityViewModel =
+            ViewModelProvider(requireActivity())[MainActivityViewModel::class.java]
         dashBoardViewModel = ViewModelProvider(requireActivity())[DashBoardViewModel::class.java]
 
-        tvUpdatedTime.text = prefManager?.readLastSettingsTime()
-        tvCurrentIPValue.text = FileLogger.readBaseUrl()
+        binding.tvUpdatedTime.text = prefManager?.readLastSettingsTime()
+        binding.tvCurrentIPValue.text = FileLogger.readBaseUrl()
 
-        settingsData.layoutManager = GridLayoutManager(requireContext(),5)
+        binding.settingsData.layoutManager = GridLayoutManager(requireContext(), 5)
 
         var result = communicationService?.controlSettingsList
 
 
         try {
             (requireActivity() as DashBoardActivity)
-            btnClearHours.visibility = View.VISIBLE
-            tvClearOpHours.visibility = View.VISIBLE
-        }catch (e:Exception){
+            binding.btnClearHours.visibility = View.VISIBLE
+            binding.tvClearOpHours.visibility = View.VISIBLE
+        } catch (e: Exception) {
             e.printStackTrace()
         }
 
 
         result?.let {
-            if (it.size > 0){
-                tableAdapter = SettingsParamsAdapter(requireContext(), it,prefManager)
-                settingsData.adapter = tableAdapter
+            if (it.size > 0) {
+                tableAdapter = SettingsParamsAdapter(requireContext(), it, prefManager)
+                binding.settingsData.adapter = tableAdapter
             }
         }
 
-        btnAssignIP.setOnClickListener {
-            val ipAddress = "http://" + etNewIPValue.text.toString()
-            FileLogger.writeBaseUrl(requireContext(),ipAddress)
-            tvCurrentIPValue.text = FileLogger.readBaseUrl()
-            AppUtils.hideKeyBoard(requireContext(),etNewIPValue)
+        binding.btnAssignIP.setOnClickListener {
+            val ipAddress = "http://" + binding.etNewIPValue.text.toString()
+            FileLogger.writeBaseUrl(requireContext(), ipAddress)
+            binding.tvCurrentIPValue.text = FileLogger.readBaseUrl()
+            AppUtils.hideKeyBoard(requireContext(), binding.etNewIPValue)
         }
 
-        btnResetVenti.setOnClickListener {
+        binding.btnResetVenti.setOnClickListener {
             prefManager?.setVentiConfigSetupStatus(false)
-            Intent(requireActivity(),SetupActivity::class.java).also {
+            Intent(requireActivity(), SetupActivity::class.java).also {
                 startActivity(it)
                 requireActivity().finish()
             }
         }
 
-        btnClearHours.setOnClickListener {
+        binding.btnClearHours.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
                 FileLogger.writeServiceFile("0")
                 FileLogger.writeOPFile("0")
@@ -114,9 +107,9 @@ class NetworkFragment(private var communicationService: CommunicationService?) :
         }
     }
 
-    fun updateKnobRawData(data:String){
-        txtKnobValue.text = data
-        txtKnobDate.text = AppUtils.getCurrentTime()
+    fun updateKnobRawData(data: String) {
+        binding.txtKnobValue.text = data
+        binding.txtKnobDate.text = AppUtils.getCurrentTime()
     }
 
 }

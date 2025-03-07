@@ -30,13 +30,13 @@ import com.agvahealthcare.ventilator_ext.alarm.limit_one.KnobParameterModel
 import com.agvahealthcare.ventilator_ext.callback.OnDismissDialogListener
 import com.agvahealthcare.ventilator_ext.callback.OnKnobPressListener
 import com.agvahealthcare.ventilator_ext.callback.OnLimitChangeListener
+import com.agvahealthcare.ventilator_ext.databinding.FragmentO2RegulationBinding
+import com.agvahealthcare.ventilator_ext.databinding.FragmentWiFiBinding
 import com.agvahealthcare.ventilator_ext.service.CommunicationService
 import com.agvahealthcare.ventilator_ext.system.SystemDialogFragment
 import com.agvahealthcare.ventilator_ext.system.settings.SettingFragment
 import com.agvahealthcare.ventilator_ext.utility.KnobDialog
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs
-import kotlinx.android.synthetic.main.content_button_layout.view.*
-import kotlinx.android.synthetic.main.fragment_o2_regulation.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -46,6 +46,8 @@ import kotlinx.coroutines.launch
 class O2RegulationFragment(private var communicationService: CommunicationService?) : Fragment(),
     OnLimitChangeListener, OnKnobPressListener, OnDismissDialogListener,
     View.OnClickListener {
+
+    private lateinit var binding:FragmentO2RegulationBinding
     private var mO2RegulationCheckViewModel: O2RegulationCheckViewModel? = null
     var clickHold = false
     var clickCalibrate = false
@@ -71,7 +73,8 @@ class O2RegulationFragment(private var communicationService: CommunicationServic
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_o2_regulation, container, false)
+        binding = FragmentO2RegulationBinding.inflate(layoutInflater,container,false)
+        return binding.root
     }
 
     // logic knob highlight starts here
@@ -81,11 +84,11 @@ class O2RegulationFragment(private var communicationService: CommunicationServic
 
         when (highlightedIndex) {
 
-            0 -> includeButtonRelease.buttonView.callOnClick()
-            1 -> includeButtonCalibrate.buttonView.callOnClick()
-            2 -> includeButtonHold.buttonView.callOnClick()
-            3 -> includeButtonCheckPoint.buttonView.callOnClick()
-            4 -> includeButtonCheckPointStart.buttonView.callOnClick()
+            0 -> binding.includeButtonRelease.buttonView.callOnClick()
+            1 -> binding.includeButtonCalibrate.buttonView.callOnClick()
+            2 -> binding.includeButtonHold.buttonView.callOnClick()
+            3 -> binding.includeButtonCheckPoint.buttonView.callOnClick()
+            4 -> binding.includeButtonCheckPointStart.buttonView.callOnClick()
 
         }
     }
@@ -102,12 +105,12 @@ class O2RegulationFragment(private var communicationService: CommunicationServic
     fun clearPreviousConstraints() {
         try {
             val constraintSet = ConstraintSet()
-            constraintSet.clone(mainViewPanelO2)
-            constraintSet.clear(focusLayoutO2.id, ConstraintSet.TOP)
-            constraintSet.clear(focusLayoutO2.id, ConstraintSet.BOTTOM)
-            constraintSet.clear(focusLayoutO2.id, ConstraintSet.LEFT)
-            constraintSet.clear(focusLayoutO2.id, ConstraintSet.RIGHT)
-            constraintSet.applyTo(mainViewPanelO2)
+            constraintSet.clone(binding.mainViewPanelO2)
+            constraintSet.clear(binding.focusLayoutO2.id, ConstraintSet.TOP)
+            constraintSet.clear(binding.focusLayoutO2.id, ConstraintSet.BOTTOM)
+            constraintSet.clear(binding.focusLayoutO2.id, ConstraintSet.LEFT)
+            constraintSet.clear(binding.focusLayoutO2.id, ConstraintSet.RIGHT)
+            constraintSet.applyTo(binding.mainViewPanelO2)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -115,36 +118,36 @@ class O2RegulationFragment(private var communicationService: CommunicationServic
 
     private fun changeConstraintsOfFocusLayout(view: View) {
         val constraintSet = ConstraintSet()
-        constraintSet.clone(mainViewPanelO2)
+        constraintSet.clone(binding.mainViewPanelO2)
         constraintSet.connect(
-            focusLayoutO2.id,
+            binding.focusLayoutO2.id,
             ConstraintSet.RIGHT,
             view.id,
             ConstraintSet.RIGHT,
             0
         )
         constraintSet.connect(
-            focusLayoutO2.id,
+            binding.focusLayoutO2.id,
             ConstraintSet.TOP,
             view.id,
             ConstraintSet.TOP,
             0
         )
         constraintSet.connect(
-            focusLayoutO2.id,
+            binding.focusLayoutO2.id,
             ConstraintSet.BOTTOM,
             view.id,
             ConstraintSet.BOTTOM,
             0
         )
         constraintSet.connect(
-            focusLayoutO2.id,
+            binding.focusLayoutO2.id,
             ConstraintSet.LEFT,
             view.id,
             ConstraintSet.LEFT,
             0
         )
-        constraintSet.applyTo(mainViewPanelO2)
+        constraintSet.applyTo(binding.mainViewPanelO2)
     }
 
     //
@@ -154,11 +157,11 @@ class O2RegulationFragment(private var communicationService: CommunicationServic
 
             return when (highlightedIndex) {
 
-                0 -> includeButtonRelease
-                1 -> includeButtonCalibrate
-                2 -> includeButtonHold
-                3 -> includeButtonCheckPoint
-                4 -> includeButtonCheckPointStart
+                0 -> binding.includeButtonRelease.root
+                1 -> binding.includeButtonCalibrate.root
+                2 -> binding.includeButtonHold.root
+                3 -> binding.includeButtonCheckPoint.root
+                4 -> binding.includeButtonCheckPointStart.root
 
                 else -> null
             }
@@ -197,9 +200,9 @@ class O2RegulationFragment(private var communicationService: CommunicationServic
     }
 
     private fun startStateCheck() {
-        checkPointDefault = includeButtonCheckPoint.buttonView.text.toString()
-        includeButtonCheckPoint.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
-        includeButtonCheckPoint.buttonView.setTextColor(
+        checkPointDefault = binding.includeButtonCheckPoint.buttonView.text.toString()
+        binding.includeButtonCheckPoint.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
+        binding.includeButtonCheckPoint.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(), R.color.black
             )
@@ -209,7 +212,7 @@ class O2RegulationFragment(private var communicationService: CommunicationServic
 
     private fun startCalibration() {
 
-        userLimitForCalibrate = txtDelPressureHold.text.toString().toFloat()
+        userLimitForCalibrate = binding.txtDelPressureHold.text.toString().toFloat()
         isCalibrating = true
         onPlayAlarm(Configs.URI_BEEP)
         hideHoldLayout()
@@ -222,8 +225,8 @@ class O2RegulationFragment(private var communicationService: CommunicationServic
             val duty = it.split(",")[1]
 
             if (duty.toInt() > 0) {
-                includeButtonRelease.buttonView.setBackgroundResource(R.color.dolphin_grey)
-                includeButtonRelease.buttonView.setTextColor(
+                binding.includeButtonRelease.buttonView.setBackgroundResource(R.color.dolphin_grey)
+                binding.includeButtonRelease.buttonView.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.black
@@ -231,8 +234,8 @@ class O2RegulationFragment(private var communicationService: CommunicationServic
                 )
             }
 
-            txtO2PValue1.text = pressure
-            txtCheckpointValue.text = duty
+            binding.txtO2PValue1.text = pressure
+            binding.txtCheckpointValue.text = duty
 
             if (clickHold) {
                 Log.i(
@@ -242,10 +245,10 @@ class O2RegulationFragment(private var communicationService: CommunicationServic
                 if (holdCount <= 120) {
                     pressureAverage.add(userLimitForCalibrate - pressure.toFloat())
                     delPressure = pressureAverage.sum() / pressureAverage.size
-                    txtDelPressureHold.text = String.format("%.1f", delPressure)
+                    binding.txtDelPressureHold.text = String.format("%.1f", delPressure)
                     ++holdCount
                 } else {
-                    includeButtonHold.buttonView.callOnClick()
+                    binding.includeButtonHold.buttonView.callOnClick()
                 }
             } else if (clickCalibrate) {
                 if (pressure.toFloat() in (userLimitForCalibrate - 0.1f)..(userLimitForCalibrate + 0.1f)) exoPlayer?.setPlaybackSpeed(
@@ -304,18 +307,18 @@ class O2RegulationFragment(private var communicationService: CommunicationServic
 
 
     private fun defaultValueSetOnView() {
-        txtO2PValue1.text = "-"
-        txtO2DelPValue.text = "-"
+        binding.txtO2PValue1.text = "-"
+        binding.txtO2DelPValue.text = "-"
     }
 
     private fun setupView() {
-        includeButtonRelease.buttonView.text = "Release"
-        includeButtonCalibrate.buttonView.text = "Calibrate"
-        includeButtonHold.buttonView.text = "Hold"
-        includeButtonCheckPointStart.buttonView.text = "Start"
-        includeButtonCheckPoint.buttonView.text = checkPointDefault
-        includeButtonRelease.buttonView.setBackgroundResource(R.color.dolphin_grey)
-        includeButtonRelease.buttonView.setTextColor(
+        binding.includeButtonRelease.buttonView.text = "Release"
+        binding.includeButtonCalibrate.buttonView.text = "Calibrate"
+        binding.includeButtonHold.buttonView.text = "Hold"
+        binding.includeButtonCheckPointStart.buttonView.text = "Start"
+        binding.includeButtonCheckPoint.buttonView.text = checkPointDefault
+        binding.includeButtonRelease.buttonView.setBackgroundResource(R.color.dolphin_grey)
+        binding.includeButtonRelease.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.black
@@ -324,38 +327,38 @@ class O2RegulationFragment(private var communicationService: CommunicationServic
     }
 
     private fun showCalibrateScreen() {
-        holdLayout.visibility = View.VISIBLE
-        txtDelPressureHold.text = defaultLimit.toString()
-        txtTitle.text = "Limits for calibration"
+        binding.holdLayout.visibility = View.VISIBLE
+        binding.txtDelPressureHold.text = defaultLimit.toString()
+        binding.txtTitle.text = "Limits for calibration"
     }
 
     private fun hideHoldLayout() {
-        holdLayout.visibility = View.GONE
-        txtDelPressureHold.text = "-"
+        binding.holdLayout.visibility = View.GONE
+        binding.txtDelPressureHold.text = "-"
     }
 
     private fun showHoldScreen() {
-        holdLayout.visibility = View.VISIBLE
-        txtDelPressureHold.text = String.format("%.1f", delPressure)
-        txtTitle.text = "ΔPRESSURE"
+        binding.holdLayout.visibility = View.VISIBLE
+        binding.txtDelPressureHold.text = String.format("%.1f", delPressure)
+        binding.txtTitle.text = "ΔPRESSURE"
     }
 
     private fun setOnClickListener() {
-        includeButtonRelease.buttonView.setOnClickListener(this)
-        includeButtonCalibrate.buttonView.setOnClickListener(this)
-        includeButtonHold.buttonView.setOnClickListener(this)
-        includeButtonCheckPoint.buttonView.setOnClickListener(this)
-        includeButtonCheckPointStart.buttonView.setOnClickListener(this)
+        binding.includeButtonRelease.buttonView.setOnClickListener(this)
+        binding.includeButtonCalibrate.buttonView.setOnClickListener(this)
+        binding.includeButtonHold.buttonView.setOnClickListener(this)
+        binding.includeButtonCheckPoint.buttonView.setOnClickListener(this)
+        binding.includeButtonCheckPointStart.buttonView.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
         when (v) {
 
-            includeButtonCheckPoint.buttonView -> {
+            binding.includeButtonCheckPoint.buttonView -> {
                 clickStateCheck = true
 
-                includeButtonCheckPoint.buttonView.setBackgroundResource(R.color.racing_green)
-                includeButtonCheckPoint.buttonView.setTextColor(
+                binding.includeButtonCheckPoint.buttonView.setBackgroundResource(R.color.racing_green)
+                binding.includeButtonCheckPoint.buttonView.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.white
@@ -368,7 +371,7 @@ class O2RegulationFragment(private var communicationService: CommunicationServic
                     "CheckPoint",
                     "CheckPoint",
                     1,
-                    includeButtonCheckPoint.buttonView.text.toString().toFloat(),
+                    binding.includeButtonCheckPoint.buttonView.text.toString().toFloat(),
                     ""
                 ).also {
                     customProgressDialog = KnobDialog.newInstance(
@@ -387,10 +390,10 @@ class O2RegulationFragment(private var communicationService: CommunicationServic
                 }
             }
 
-            includeButtonCheckPointStart.buttonView -> {
+            binding.includeButtonCheckPointStart.buttonView -> {
 
-                includeButtonCheckPointStart.buttonView.setBackgroundResource(R.color.racing_green)
-                includeButtonCheckPointStart.buttonView.setTextColor(
+                binding.includeButtonCheckPointStart.buttonView.setBackgroundResource(R.color.racing_green)
+                binding.includeButtonCheckPointStart.buttonView.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.white
@@ -402,9 +405,9 @@ class O2RegulationFragment(private var communicationService: CommunicationServic
 
             }
 
-            includeButtonRelease.buttonView -> {
-                includeButtonRelease.buttonView.setBackgroundResource(R.color.racing_green)
-                includeButtonRelease.buttonView.setTextColor(
+            binding.includeButtonRelease.buttonView -> {
+                binding.includeButtonRelease.buttonView.setBackgroundResource(R.color.racing_green)
+                binding.includeButtonRelease.buttonView.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.white
@@ -415,8 +418,8 @@ class O2RegulationFragment(private var communicationService: CommunicationServic
                 }
 
                 Handler(Looper.getMainLooper()).postDelayed({
-                    includeButtonRelease.buttonView.setBackgroundResource(R.color.dolphin_grey)
-                    includeButtonRelease.buttonView.setTextColor(
+                    binding.includeButtonRelease.buttonView.setBackgroundResource(R.color.dolphin_grey)
+                    binding.includeButtonRelease.buttonView.setTextColor(
                         ContextCompat.getColor(
                             requireContext(),
                             R.color.black
@@ -426,11 +429,11 @@ class O2RegulationFragment(private var communicationService: CommunicationServic
             }
 
             //onClick Calibrate
-            includeButtonCalibrate.buttonView -> {
+            binding.includeButtonCalibrate.buttonView -> {
 
                 if (clickCalibrate) {
-                    includeButtonCalibrate.buttonView.setBackgroundResource(R.color.dolphin_grey)
-                    includeButtonCalibrate.buttonView.setTextColor(
+                    binding.includeButtonCalibrate.buttonView.setBackgroundResource(R.color.dolphin_grey)
+                    binding.includeButtonCalibrate.buttonView.setTextColor(
                         ContextCompat.getColor(
                             requireContext(),
                             R.color.black
@@ -444,10 +447,10 @@ class O2RegulationFragment(private var communicationService: CommunicationServic
 
                 } else {
 
-                    if (clickHold) includeButtonHold.buttonView.callOnClick()
+                    if (clickHold) binding.includeButtonHold.buttonView.callOnClick()
 
-                    includeButtonCalibrate.buttonView.setBackgroundResource(R.color.racing_green)
-                    includeButtonCalibrate.buttonView.setTextColor(
+                    binding.includeButtonCalibrate.buttonView.setBackgroundResource(R.color.racing_green)
+                    binding.includeButtonCalibrate.buttonView.setTextColor(
                         ContextCompat.getColor(
                             requireContext(),
                             R.color.white
@@ -483,12 +486,12 @@ class O2RegulationFragment(private var communicationService: CommunicationServic
                 }
             }
 
-            includeButtonHold.buttonView -> {
+            binding.includeButtonHold.buttonView -> {
 
                 if (clickHold) {
-                    txtO2DelPValue.text = String.format("%.1f", delPressure)
-                    includeButtonHold.buttonView.setBackgroundResource(R.color.dolphin_grey)
-                    includeButtonHold.buttonView.setTextColor(
+                    binding.txtO2DelPValue.text = String.format("%.1f", delPressure)
+                    binding.includeButtonHold.buttonView.setBackgroundResource(R.color.dolphin_grey)
+                    binding.includeButtonHold.buttonView.setTextColor(
                         ContextCompat.getColor(
                             requireContext(),
                             R.color.black
@@ -500,10 +503,10 @@ class O2RegulationFragment(private var communicationService: CommunicationServic
                     holdCount = 0
                 } else {
 
-                    if (clickCalibrate) includeButtonCalibrate.buttonView.callOnClick()
+                    if (clickCalibrate) binding.includeButtonCalibrate.buttonView.callOnClick()
 
-                    includeButtonHold.buttonView.setBackgroundResource(R.color.racing_green)
-                    includeButtonHold.buttonView.setTextColor(
+                    binding.includeButtonHold.buttonView.setBackgroundResource(R.color.racing_green)
+                    binding.includeButtonHold.buttonView.setTextColor(
                         ContextCompat.getColor(
                             requireContext(),
                             R.color.white
@@ -511,7 +514,7 @@ class O2RegulationFragment(private var communicationService: CommunicationServic
                     )
                     showHoldScreen()
                     clickHold = true
-                    txtO2DelPValue.text = "Calculating..."
+                    binding.txtO2DelPValue.text = "Calculating..."
                 }
             }
         }
@@ -533,10 +536,10 @@ class O2RegulationFragment(private var communicationService: CommunicationServic
         customProgressDialog?.takeIf { it.isVisible }?.dismiss()
         customProgressDialog = null
 
-        if (clickCalibrate) includeButtonCalibrate.buttonView.callOnClick()
+        if (clickCalibrate) binding.includeButtonCalibrate.buttonView.callOnClick()
         else if (clickStateCheck) {
-            includeButtonCheckPoint.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
-            includeButtonCheckPoint.buttonView.setTextColor(
+            binding.includeButtonCheckPoint.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
+            binding.includeButtonCheckPoint.buttonView.setTextColor(
                 ContextCompat.getColor(
                     requireContext(), R.color.black
                 )
@@ -549,9 +552,9 @@ class O2RegulationFragment(private var communicationService: CommunicationServic
     override fun onLimitChange(previousValue: Float, newValue: Float) {
 
         if (clickCalibrate) {
-            txtDelPressureHold.text = newValue.toString()
+            binding.txtDelPressureHold.text = newValue.toString()
         } else if (clickStateCheck) {
-            includeButtonCheckPoint.buttonView.text = newValue.toInt().toString()
+            binding.includeButtonCheckPoint.buttonView.text = newValue.toInt().toString()
         }
     }
 

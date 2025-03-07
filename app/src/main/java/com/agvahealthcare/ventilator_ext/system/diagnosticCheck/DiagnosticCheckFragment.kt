@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,26 +13,16 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.agvahealthcare.ventilator_ext.MainActivity
 import com.agvahealthcare.ventilator_ext.MainActivityViewModel
 import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.defaultOfExhaleValveRanges
 import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.defaultOfOxygenValveRanges
 import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.defaultOfTurbineRanges
+import com.agvahealthcare.ventilator_ext.databinding.FragmentDiagnosticCheckBinding
 import com.agvahealthcare.ventilator_ext.service.CommunicationService
 import com.agvahealthcare.ventilator_ext.system.SystemDialogFragment
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs
-import kotlinx.android.synthetic.main.activity_main.buttonPreopCheck
-import kotlinx.android.synthetic.main.content_button_layout.view.*
-import kotlinx.android.synthetic.main.content_button_layout_fix.view.textView
-import kotlinx.android.synthetic.main.fragment_advanced_calibration.includeButtonTurbine
-import kotlinx.android.synthetic.main.fragment_diagnostic_check.*
-import kotlinx.android.synthetic.main.fragment_diagnostic_check.txtWait
-import kotlinx.android.synthetic.main.fragment_test_calib.includeButtonExhaleValve
-import kotlinx.coroutines.*
-import java.io.BufferedReader
-import java.io.InputStreamReader
 
 enum class RangeType {
     OXYGEN_VALVE,
@@ -47,7 +36,7 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
 
     private lateinit var mMainActivityViewModel: MainActivityViewModel
     private lateinit var mDiagnosticCheckViewModel: DiagnosticCheckViewModel
-
+    private lateinit var binding: FragmentDiagnosticCheckBinding
     private var clickTurbine = false
     private var clickValve = false
     private var clickNebulizer = false
@@ -85,16 +74,16 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
 
         when (highlightedIndex) {
 
-            0 -> btnTurbineRanges.callOnClick()
-            1 -> btnExhaleValveRanges.callOnClick()
-            2 -> btnOxygenValveRanges.callOnClick()
-            3 -> includeButtonTurbine.buttonView.callOnClick()
-            4 -> includeButtonExhaleValve.buttonView.callOnClick()
-            5 -> includeButtonOxyValve.buttonView.callOnClick()
-            6 -> includeButtonPurge.buttonView.callOnClick()
-            7 -> includeButtonNebulizer.buttonView.callOnClick()
-            8 -> includeButtonRedLED.buttonView.callOnClick()
-            9 -> includeButtonAmberLED.buttonView.callOnClick()
+            0 -> binding.btnTurbineRanges.callOnClick()
+            1 -> binding.btnExhaleValveRanges.callOnClick()
+            2 -> binding.btnOxygenValveRanges.callOnClick()
+            3 -> binding.includeButtonTurbine.buttonView.callOnClick()
+            4 -> binding.includeButtonExhaleValve.buttonView.callOnClick()
+            5 -> binding.includeButtonOxyValve.buttonView.callOnClick()
+            6 -> binding.includeButtonPurge.buttonView.callOnClick()
+            7 -> binding.includeButtonNebulizer.buttonView.callOnClick()
+            8 -> binding.includeButtonRedLED.buttonView.callOnClick()
+            9 -> binding.includeButtonAmberLED.buttonView.callOnClick()
         }
     }
 
@@ -112,12 +101,12 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
     fun clearPreviousConstraints() {
         try {
             val constraintSet = ConstraintSet()
-            constraintSet.clone(mainViewPanelDiagnostic)
-            constraintSet.clear(focusLayoutDiagnostic.id, ConstraintSet.TOP)
-            constraintSet.clear(focusLayoutDiagnostic.id, ConstraintSet.BOTTOM)
-            constraintSet.clear(focusLayoutDiagnostic.id, ConstraintSet.LEFT)
-            constraintSet.clear(focusLayoutDiagnostic.id, ConstraintSet.RIGHT)
-            constraintSet.applyTo(mainViewPanelDiagnostic)
+            constraintSet.clone(binding.mainViewPanelDiagnostic)
+            constraintSet.clear(binding.focusLayoutDiagnostic.id, ConstraintSet.TOP)
+            constraintSet.clear(binding.focusLayoutDiagnostic.id, ConstraintSet.BOTTOM)
+            constraintSet.clear(binding.focusLayoutDiagnostic.id, ConstraintSet.LEFT)
+            constraintSet.clear(binding.focusLayoutDiagnostic.id, ConstraintSet.RIGHT)
+            constraintSet.applyTo(binding.mainViewPanelDiagnostic)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -126,36 +115,36 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
 
     private fun changeConstraintsOfFocusLayout(view: View) {
         val constraintSet = ConstraintSet()
-        constraintSet.clone(mainViewPanelDiagnostic)
+        constraintSet.clone(binding.mainViewPanelDiagnostic)
         constraintSet.connect(
-            focusLayoutDiagnostic.id,
+            binding.focusLayoutDiagnostic.id,
             ConstraintSet.RIGHT,
             view.id,
             ConstraintSet.RIGHT,
             0
         )
         constraintSet.connect(
-            focusLayoutDiagnostic.id,
+            binding.focusLayoutDiagnostic.id,
             ConstraintSet.TOP,
             view.id,
             ConstraintSet.TOP,
             0
         )
         constraintSet.connect(
-            focusLayoutDiagnostic.id,
+            binding.focusLayoutDiagnostic.id,
             ConstraintSet.BOTTOM,
             view.id,
             ConstraintSet.BOTTOM,
             0
         )
         constraintSet.connect(
-            focusLayoutDiagnostic.id,
+            binding.focusLayoutDiagnostic.id,
             ConstraintSet.LEFT,
             view.id,
             ConstraintSet.LEFT,
             0
         )
-        constraintSet.applyTo(mainViewPanelDiagnostic)
+        constraintSet.applyTo(binding.mainViewPanelDiagnostic)
     }
 
     private fun getViewForFocus(highlightedIndex: Int, data: String?): View? {
@@ -164,16 +153,16 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
 
             return when (highlightedIndex) {
 
-                0 -> btnTurbineRanges
-                1 -> btnExhaleValveRanges
-                2 -> btnOxygenValveRanges
-                3 -> includeButtonTurbine
-                4 -> includeButtonExhaleValve
-                5 -> includeButtonOxyValve
-                6 -> includeButtonPurge
-                7 -> includeButtonNebulizer
-                8 -> includeButtonRedLED
-                9 -> includeButtonAmberLED
+                0 -> binding.btnTurbineRanges
+                1 -> binding.btnExhaleValveRanges
+                2 -> binding.btnOxygenValveRanges
+                3 -> binding.includeButtonTurbine.root
+                4 -> binding.includeButtonExhaleValve.root
+                5 -> binding.includeButtonOxyValve.root
+                6 -> binding.includeButtonPurge.root
+                7 -> binding.includeButtonNebulizer.root
+                8 -> binding.includeButtonRedLED.root
+                9 -> binding.includeButtonAmberLED.root
 
                 else -> null
             }
@@ -186,7 +175,8 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_diagnostic_check, container, false)
+        binding = FragmentDiagnosticCheckBinding.inflate(layoutInflater,container,false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -200,13 +190,13 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
             send(getString(R.string.diagnostic_start_cmd))
         }
 
-        includeButtonTurbine.buttonView.text = "Turbine"
-        includeButtonExhaleValve.buttonView.text = "Exhale Valve"
-        includeButtonPurge.buttonView.text = "Purge"
-        includeButtonOxyValve.buttonView.text = "Oxy Valve"
-        includeButtonNebulizer.buttonView.text = "Nebulizer"
-        includeButtonRedLED.buttonView.text = "Red LED Bar"
-        includeButtonAmberLED.buttonView.text = "Amber LED Bar"
+        binding.includeButtonTurbine.buttonView.text = "Turbine"
+        binding.includeButtonExhaleValve.buttonView.text = "Exhale Valve"
+        binding.includeButtonPurge.buttonView.text = "Purge"
+        binding.includeButtonOxyValve.buttonView.text = "Oxy Valve"
+        binding.includeButtonNebulizer.buttonView.text = "Nebulizer"
+        binding.includeButtonRedLED.buttonView.text = "Red LED Bar"
+        binding.includeButtonAmberLED.buttonView.text = "Amber LED Bar"
 
         (requireActivity() as MainActivity).returnCommandsToSocket("Loading Diagnostic")
 
@@ -222,68 +212,68 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
             defaultOfExhaleValveRanges = ranges.split(",")[1]
             defaultOfOxygenValveRanges = ranges.split(",")[2]
 
-            textViewTurbineRangesValue.text = defaultOfTurbineRanges
-            textViewExhaleValveRangesValue.text = defaultOfExhaleValveRanges
-            textViewOxygenValveRangesValue.text = defaultOfOxygenValveRanges
+            binding.textViewTurbineRangesValue.text = defaultOfTurbineRanges
+            binding.textViewExhaleValveRangesValue.text = defaultOfExhaleValveRanges
+            binding.textViewOxygenValveRangesValue.text = defaultOfOxygenValveRanges
     }
 
     fun getCommandsFromLiveWindow(command: String) {
         when (command) {
 
             "Start Turbine" -> {
-                includeButtonTurbine.buttonView.callOnClick()
+                binding.includeButtonTurbine.buttonView.callOnClick()
             }
 
             "Stop Turbine" -> {
-                includeButtonTurbine.buttonView.callOnClick()
+                binding.includeButtonTurbine.buttonView.callOnClick()
             }
 
             "Start Oxygen" -> {
-                includeButtonOxyValve.buttonView.callOnClick()
+                binding.includeButtonOxyValve.buttonView.callOnClick()
             }
 
             "Stop Oxygen" -> {
-                includeButtonOxyValve.buttonView.callOnClick()
+                binding.includeButtonOxyValve.buttonView.callOnClick()
             }
 
             "Start Exhale" -> {
-                includeButtonExhaleValve.buttonView.callOnClick()
+                binding.includeButtonExhaleValve.buttonView.callOnClick()
             }
 
             "Stop Exhale" -> {
-                includeButtonExhaleValve.buttonView.callOnClick()
+                binding.includeButtonExhaleValve.buttonView.callOnClick()
             }
 
             "Start Nebulizer" -> {
-                includeButtonNebulizer.buttonView.callOnClick()
+                binding.includeButtonNebulizer.buttonView.callOnClick()
             }
 
             "Stop Nebulizer" -> {
-                includeButtonNebulizer.buttonView.callOnClick()
+                binding.includeButtonNebulizer.buttonView.callOnClick()
             }
 
             "Start Purge" -> {
-                includeButtonPurge.buttonView.callOnClick()
+                binding.includeButtonPurge.buttonView.callOnClick()
             }
 
             "Stop Purge" -> {
-                includeButtonPurge.buttonView.callOnClick()
+                binding.includeButtonPurge.buttonView.callOnClick()
             }
 
             "Start Red LED" -> {
-                includeButtonRedLED.buttonView.callOnClick()
+                binding.includeButtonRedLED.buttonView.callOnClick()
             }
 
             "Stop Red LED" -> {
-                includeButtonRedLED.buttonView.callOnClick()
+                binding.includeButtonRedLED.buttonView.callOnClick()
             }
 
             "Start Amber LED" -> {
-                includeButtonAmberLED.buttonView.callOnClick()
+                binding.includeButtonAmberLED.buttonView.callOnClick()
             }
 
             "Stop Amber LED" -> {
-                includeButtonAmberLED.buttonView.callOnClick()
+                binding.includeButtonAmberLED.buttonView.callOnClick()
             }
         }
     }
@@ -296,8 +286,8 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
             e.printStackTrace()
         }
 
-        mainViewPanelDiagnostic.visibility = View.GONE
-        txtWait.visibility = View.VISIBLE
+        binding.mainViewPanelDiagnostic.visibility = View.GONE
+        binding.txtWait.visibility = View.VISIBLE
         timer = object : CountDownTimer(8000, 1000) {
             override fun onTick(milliSec: Long) {}
 
@@ -309,8 +299,8 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
-                mainViewPanelDiagnostic.visibility = View.VISIBLE
-                txtWait.visibility = View.GONE
+                binding.mainViewPanelDiagnostic.visibility = View.VISIBLE
+                binding.txtWait.visibility = View.GONE
             }
         }.start()
     }
@@ -327,97 +317,97 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
 
         // first line
         mDiagnosticCheckViewModel.inspPressureRawData.observe(viewLifecycleOwner) {
-            txtInspPressueRawValue.text = it
+            binding.txtInspPressueRawValue.text = it
         }
 
         mDiagnosticCheckViewModel.expPressureRawData.observe(viewLifecycleOwner) {
-            txtExpPressueRawValue.text = it
+            binding.txtExpPressueRawValue.text = it
         }
 
         mDiagnosticCheckViewModel.oxyPressureRawData.observe(viewLifecycleOwner) {
-            txtOxyRawPressureValue.text = it
+            binding.txtOxyRawPressureValue.text = it
         }
 
         mDiagnosticCheckViewModel.inspPressureData.observe(viewLifecycleOwner) {
-            txtInspPressueValue.text = it
+            binding.txtInspPressueValue.text = it
         }
 
         mDiagnosticCheckViewModel.expPressureData.observe(viewLifecycleOwner) {
-            txtExpPressueValue.text = it
+            binding.txtExpPressueValue.text = it
         }
 
         mDiagnosticCheckViewModel.oxyPressureData.observe(viewLifecycleOwner) {
-            txtOxyPressureValue.text = it
+            binding.txtOxyPressureValue.text = it
         }
 
         mDiagnosticCheckViewModel.inspFlowVoltageData.observe(viewLifecycleOwner) {
-            txtInspFlowVoltageValue.text = it
+            binding.txtInspFlowVoltageValue.text = it
         }
 
         mDiagnosticCheckViewModel.inspFlowData.observe(viewLifecycleOwner) {
-            txtInspFlowValue.text = it
+            binding.txtInspFlowValue.text = it
         }
 
         mDiagnosticCheckViewModel.expDPRawData.observe(viewLifecycleOwner) {
-            txtExpDpRawValue.text = it
+            binding.txtExpDpRawValue.text = it
         }
 
         mDiagnosticCheckViewModel.expFlowData.observe(viewLifecycleOwner) {
-            txtExpFlowValue.text = it
+            binding.txtExpFlowValue.text = it
         }
 
 
         // mid line
         mDiagnosticCheckViewModel.batteryCurrentData.observe(viewLifecycleOwner) {
-            txtBatteryCurrentValue.text = it
+            binding.txtBatteryCurrentValue.text = it
         }
 
         mDiagnosticCheckViewModel.batteryVoltageData.observe(viewLifecycleOwner) {
-            txtBatteryVoltageValue.text = it
+            binding.txtBatteryVoltageValue.text = it
         }
 
         mDiagnosticCheckViewModel.batterySOCData.observe(viewLifecycleOwner) {
-            txtBatterySocValue.text = it
+            binding.txtBatterySocValue.text = it
         }
 
         mDiagnosticCheckViewModel.batteryRemainingTimeData.observe(viewLifecycleOwner) {
-            txtBatteryRemainingTimeValue.text = it
+            binding.txtBatteryRemainingTimeValue.text = it
         }
 
         mDiagnosticCheckViewModel.batteryStateData.observe(viewLifecycleOwner) {
-            txtBatteryStateValue.text = it
+            binding.txtBatteryStateValue.text = it
         }
 
         mDiagnosticCheckViewModel.powerConnectionData.observe(viewLifecycleOwner) {
-            txtPowerConnectionValue.text = it
+            binding.txtPowerConnectionValue.text = it
         }
 
 //        mDiagnosticCheckViewModel.mainSwitchData.observe(viewLifecycleOwner) {
 //            txtMainSwitchValue.text = it
 //        }
         mDiagnosticCheckViewModel.spo2StatusData.observe(viewLifecycleOwner) {
-            txtSpo2StatusValue.text = it
+            binding.txtSpo2StatusValue.text = it
         }
 
         mDiagnosticCheckViewModel.spo2Data.observe(viewLifecycleOwner) {
-            txtSpo2Value.text = it
+            binding.txtSpo2Value.text = it
         }
 
         mDiagnosticCheckViewModel.hrData.observe(viewLifecycleOwner) {
-            txtHRValue.text = it
+            binding.txtHRValue.text = it
         }
 
         // last line
         mDiagnosticCheckViewModel.o2SensorVoltageData.observe(viewLifecycleOwner) {
-            txtOxySensorVoltageValue.text = it
+            binding.txtOxySensorVoltageValue.text = it
         }
 
         mDiagnosticCheckViewModel.piTempData.observe(viewLifecycleOwner) {
-            txtPiTempValue.text = it
+            binding.txtPiTempValue.text = it
         }
 
         mDiagnosticCheckViewModel.piCpuLoadData.observe(viewLifecycleOwner) {
-            txtPiCpuLoadValue.text = it
+            binding.txtPiCpuLoadValue.text = it
         }
 
 //        mDiagnosticCheckViewModel.hardwareVersionData.observe(viewLifecycleOwner) {
@@ -426,62 +416,62 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
 
         // static line
         mDiagnosticCheckViewModel.knobPcbVersionData.observe(viewLifecycleOwner) {
-            txtKnobPCBVersionValue.text = it
+            binding.txtKnobPCBVersionValue.text = it
         }
 
         mDiagnosticCheckViewModel.knobPcbTypeData.observe(viewLifecycleOwner) {
-            txtKnobPcbTypeValue.text = it
+            binding.txtKnobPcbTypeValue.text = it
         }
 
         mDiagnosticCheckViewModel.screenCPUTempData.observe(viewLifecycleOwner) {
-            txtScreenCpuTempValue.text = it
+            binding.txtScreenCpuTempValue.text = it
         }
     }
 
     private fun setDefaultValueOnViews() {
 
         // first line
-        txtInspPressueRawValue.text = "-"
-        txtExpPressueRawValue.text = "-"
-        txtOxyRawPressureValue.text = "-"
-        txtInspPressueValue.text = "-"
-        txtExpPressueValue.text = "-"
-        txtOxyPressureValue.text = "-"
-        txtInspFlowValue.text = "-"
-        txtInspFlowVoltageValue.text = "-"
-        txtExpFlowValue.text = "-"
-        txtExpDpRawValue.text = "-"
+        binding.txtInspPressueRawValue.text = "-"
+        binding.txtExpPressueRawValue.text = "-"
+        binding.txtOxyRawPressureValue.text = "-"
+        binding.txtInspPressueValue.text = "-"
+        binding.txtExpPressueValue.text = "-"
+        binding.txtOxyPressureValue.text = "-"
+        binding.txtInspFlowValue.text = "-"
+        binding.txtInspFlowVoltageValue.text = "-"
+        binding.txtExpFlowValue.text = "-"
+        binding.txtExpDpRawValue.text = "-"
 
         // mid line
-        txtBatteryCurrentValue.text = "-"
-        txtBatteryVoltageValue.text = "-"
-        txtBatterySocValue.text = "-"
-        txtBatteryRemainingTimeValue.text = "-"
-        txtBatteryStateValue.text = "-"
-        txtPowerConnectionValue.text = "-"
+        binding.txtBatteryCurrentValue.text = "-"
+        binding.txtBatteryVoltageValue.text = "-"
+        binding.txtBatterySocValue.text = "-"
+        binding.txtBatteryRemainingTimeValue.text = "-"
+        binding.txtBatteryStateValue.text = "-"
+        binding.txtPowerConnectionValue.text = "-"
 //        txtMainSwitchValue.text = "-"
-        txtSpo2StatusValue.text = "-"
-        txtHRValue.text = "-"
-        txtSpo2Value.text = "-"
+        binding.txtSpo2StatusValue.text = "-"
+        binding.txtHRValue.text = "-"
+        binding.txtSpo2Value.text = "-"
 
         // last line
-        txtOxySensorVoltageValue.text = "-"
-        txtPiTempValue.text = "-"
-        txtPiCpuLoadValue.text = "-"
+        binding.txtOxySensorVoltageValue.text = "-"
+        binding.txtPiTempValue.text = "-"
+        binding.txtPiCpuLoadValue.text = "-"
 //        txtHardwareVersionValue.text = "-"
 
         // static line
-        txtKnobPcbTypeValue.text = "-"
-        txtKnobPCBVersionValue.text = "-"
-        txtScreenCpuTempValue.text = "-"
+        binding.txtKnobPcbTypeValue.text = "-"
+        binding.txtKnobPCBVersionValue.text = "-"
+        binding.txtScreenCpuTempValue.text = "-"
 
         defaultOfTurbineRanges = "0"
         defaultOfExhaleValveRanges = "0"
         defaultOfOxygenValveRanges = "0"
 
-        textViewExhaleValveRangesValue.text = defaultOfExhaleValveRanges
-        textViewTurbineRangesValue.text = defaultOfTurbineRanges
-        textViewOxygenValveRangesValue.text = defaultOfOxygenValveRanges
+        binding.textViewExhaleValveRangesValue.text = defaultOfExhaleValveRanges
+        binding.textViewTurbineRangesValue.text = defaultOfTurbineRanges
+        binding.textViewOxygenValveRangesValue.text = defaultOfOxygenValveRanges
 
         clickTurbine = false
         clickValve = false
@@ -491,21 +481,21 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
     }
 
     private fun highlightButtons(view: View, textView: TextView) {
-        btnTurbineRanges.setBackgroundResource(R.drawable.background_grey_border_white)
-        textViewTurbineRangesValue.setTextColor(
+        binding.btnTurbineRanges.setBackgroundResource(R.drawable.background_grey_border_white)
+        binding.textViewTurbineRangesValue.setTextColor(
             ContextCompat.getColor(
                 requireContext(), R.color.black
             )
         )
 
-        btnExhaleValveRanges.setBackgroundResource(R.drawable.background_grey_border_white)
-        textViewExhaleValveRangesValue.setTextColor(
+        binding.btnExhaleValveRanges.setBackgroundResource(R.drawable.background_grey_border_white)
+        binding.textViewExhaleValveRangesValue.setTextColor(
             ContextCompat.getColor(
                 requireContext(), R.color.black
             )
         )
-        btnOxygenValveRanges.setBackgroundResource(R.drawable.background_grey_border_white)
-        textViewOxygenValveRangesValue.setTextColor(
+        binding.btnOxygenValveRanges.setBackgroundResource(R.drawable.background_grey_border_white)
+        binding.textViewOxygenValveRangesValue.setTextColor(
             ContextCompat.getColor(
                 requireContext(), R.color.black
             )
@@ -522,39 +512,39 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
 
     private fun setOnClickListener() {
 
-        btnExhaleValveRanges.setOnClickListener {
+        binding.btnExhaleValveRanges.setOnClickListener {
 
             buttonState = RangeType.EXHALE_VALVE
-            highlightButtons(btnExhaleValveRanges, textViewExhaleValveRangesValue)
-            defaultOfExhaleValveRanges = textViewExhaleValveRangesValue.text.toString()
-            textViewTurbineRangesValue.text = defaultOfTurbineRanges
-            textViewOxygenValveRangesValue.text = defaultOfOxygenValveRanges
+            highlightButtons(binding.btnExhaleValveRanges, binding.textViewExhaleValveRangesValue)
+            defaultOfExhaleValveRanges = binding.textViewExhaleValveRangesValue.text.toString()
+            binding.textViewTurbineRangesValue.text = defaultOfTurbineRanges
+            binding.textViewOxygenValveRangesValue.text = defaultOfOxygenValveRanges
             (requireActivity() as MainActivity).sendRangesToSocket("$defaultOfTurbineRanges,$defaultOfExhaleValveRanges,$defaultOfOxygenValveRanges")
         }
 
-        btnOxygenValveRanges.setOnClickListener {
+        binding.btnOxygenValveRanges.setOnClickListener {
 
             buttonState = RangeType.OXYGEN_VALVE
-            highlightButtons(btnOxygenValveRanges, textViewOxygenValveRangesValue)
-            defaultOfOxygenValveRanges = textViewOxygenValveRangesValue.text.toString()
-            textViewTurbineRangesValue.text = defaultOfTurbineRanges
-            textViewExhaleValveRangesValue.text = defaultOfExhaleValveRanges
+            highlightButtons(binding.btnOxygenValveRanges, binding.textViewOxygenValveRangesValue)
+            defaultOfOxygenValveRanges = binding.textViewOxygenValveRangesValue.text.toString()
+            binding.textViewTurbineRangesValue.text = defaultOfTurbineRanges
+            binding.textViewExhaleValveRangesValue.text = defaultOfExhaleValveRanges
             (requireActivity() as MainActivity).sendRangesToSocket("$defaultOfTurbineRanges,$defaultOfExhaleValveRanges,$defaultOfOxygenValveRanges")
         }
 
-        btnTurbineRanges.setOnClickListener {
+        binding.btnTurbineRanges.setOnClickListener {
 
             buttonState = RangeType.TURBINE
-            highlightButtons(btnTurbineRanges, textViewTurbineRangesValue)
-            defaultOfTurbineRanges = textViewTurbineRangesValue.text.toString()
-            textViewOxygenValveRangesValue.text = defaultOfOxygenValveRanges
-            textViewExhaleValveRangesValue.text = defaultOfExhaleValveRanges
+            highlightButtons(binding.btnTurbineRanges, binding.textViewTurbineRangesValue)
+            defaultOfTurbineRanges = binding.textViewTurbineRangesValue.text.toString()
+            binding.textViewOxygenValveRangesValue.text = defaultOfOxygenValveRanges
+            binding.textViewExhaleValveRangesValue.text = defaultOfExhaleValveRanges
             (requireActivity() as MainActivity).sendRangesToSocket("$defaultOfTurbineRanges,$defaultOfExhaleValveRanges,$defaultOfOxygenValveRanges")
         }
 
-        includeButtonPurge.buttonView.setOnClickListener {
-            includeButtonPurge.buttonView.setBackgroundResource(R.color.racing_green)
-            includeButtonPurge.buttonView.setTextColor(
+        binding.includeButtonPurge.buttonView.setOnClickListener {
+            binding.includeButtonPurge.buttonView.setBackgroundResource(R.color.racing_green)
+            binding.includeButtonPurge.buttonView.setTextColor(
                 ContextCompat.getColor(
                     requireContext(), R.color.white
                 )
@@ -566,8 +556,8 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
             (requireActivity() as MainActivity).returnCommandsToSocket("Stop Purge")
 
             Handler(Looper.getMainLooper()).postDelayed({
-                includeButtonPurge.buttonView.setBackgroundResource(R.color.dolphin_grey)
-                includeButtonPurge.buttonView.setTextColor(
+                binding.includeButtonPurge.buttonView.setBackgroundResource(R.color.dolphin_grey)
+                binding.includeButtonPurge.buttonView.setTextColor(
                     ContextCompat.getColor(
                         requireContext(), R.color.black
                     )
@@ -576,9 +566,9 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
             }, 500)
         }
 
-        includeButtonRedLED.buttonView.setOnClickListener {
-            includeButtonRedLED.buttonView.setBackgroundResource(R.color.racing_green)
-            includeButtonRedLED.buttonView.setTextColor(
+        binding.includeButtonRedLED.buttonView.setOnClickListener {
+            binding.includeButtonRedLED.buttonView.setBackgroundResource(R.color.racing_green)
+            binding.includeButtonRedLED.buttonView.setTextColor(
                 ContextCompat.getColor(
                     requireContext(), R.color.white
                 )
@@ -590,8 +580,8 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
             (requireActivity() as MainActivity).returnCommandsToSocket("Stop Red LED")
 
             Handler(Looper.getMainLooper()).postDelayed({
-                includeButtonRedLED.buttonView.setBackgroundResource(R.color.dolphin_grey)
-                includeButtonRedLED.buttonView.setTextColor(
+                binding.includeButtonRedLED.buttonView.setBackgroundResource(R.color.dolphin_grey)
+                binding.includeButtonRedLED.buttonView.setTextColor(
                     ContextCompat.getColor(
                         requireContext(), R.color.black
                     )
@@ -600,9 +590,9 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
             }, 500)
         }
 
-        includeButtonAmberLED.buttonView.setOnClickListener {
-            includeButtonAmberLED.buttonView.setBackgroundResource(R.color.racing_green)
-            includeButtonAmberLED.buttonView.setTextColor(
+        binding.includeButtonAmberLED.buttonView.setOnClickListener {
+            binding.includeButtonAmberLED.buttonView.setBackgroundResource(R.color.racing_green)
+            binding.includeButtonAmberLED.buttonView.setTextColor(
                 ContextCompat.getColor(
                     requireContext(), R.color.white
                 )
@@ -614,8 +604,8 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
             (requireActivity() as MainActivity).returnCommandsToSocket("Stop Amber LED")
 
             Handler(Looper.getMainLooper()).postDelayed({
-                includeButtonAmberLED.buttonView.setBackgroundResource(R.color.dolphin_grey)
-                includeButtonAmberLED.buttonView.setTextColor(
+                binding.includeButtonAmberLED.buttonView.setBackgroundResource(R.color.dolphin_grey)
+                binding.includeButtonAmberLED.buttonView.setTextColor(
                     ContextCompat.getColor(
                         requireContext(), R.color.black
                     )
@@ -624,14 +614,14 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
             }, 500)
         }
 
-        includeButtonNebulizer.buttonView.setOnClickListener {
+        binding.includeButtonNebulizer.buttonView.setOnClickListener {
 
             if (clickNebulizer) {
                 communicationService?.takeIf { it.isPortsConnected }?.apply {
                     send(getString(R.string.valve_testing_dia)+"402")
                 }
-                includeButtonNebulizer.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
-                includeButtonNebulizer.buttonView.setTextColor(
+                binding.includeButtonNebulizer.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
+                binding.includeButtonNebulizer.buttonView.setTextColor(
                     ContextCompat.getColor(
                         requireContext(), R.color.black
                     )
@@ -640,8 +630,8 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
                 clickNebulizer = false
                 (requireActivity() as MainActivity).returnCommandsToSocket("Start Nebulizer")
             } else {
-                includeButtonNebulizer.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
-                includeButtonNebulizer.buttonView.setTextColor(
+                binding.includeButtonNebulizer.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
+                binding.includeButtonNebulizer.buttonView.setTextColor(
                     ContextCompat.getColor(
                         requireContext(), R.color.white
                     )
@@ -679,33 +669,33 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
 //            }, 500)
 //        }
 
-        includeButtonExhaleValve.buttonView.setOnClickListener {
+        binding.includeButtonExhaleValve.buttonView.setOnClickListener {
 
             if (clickValve) {
                 testValveTimer?.cancel()
                 communicationService?.takeIf { it.isPortsConnected }?.apply {
                     send(getString(R.string.valve_testing_dia) + "0")
                 }
-                includeButtonExhaleValve.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
-                includeButtonExhaleValve.buttonView.setTextColor(
+                binding.includeButtonExhaleValve.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
+                binding.includeButtonExhaleValve.buttonView.setTextColor(
                     ContextCompat.getColor(
                         requireContext(), R.color.black
                     )
                 )
-                includeButtonExhaleValve.buttonView.text = "Exhale Valve"
+                binding.includeButtonExhaleValve.buttonView.text = "Exhale Valve"
 
                 clickValve = false
                 (requireActivity() as MainActivity).returnCommandsToSocket("Start Exhale")
             } else {
-                includeButtonExhaleValve.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
-                includeButtonExhaleValve.buttonView.setTextColor(
+                binding.includeButtonExhaleValve.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
+                binding.includeButtonExhaleValve.buttonView.setTextColor(
                     ContextCompat.getColor(
                         requireContext(), R.color.white
                     )
                 )
 
                 setTestValveTimer()
-                var value = textViewExhaleValveRangesValue.text.toString()
+                var value = binding.textViewExhaleValveRangesValue.text.toString()
 
                 communicationService?.takeIf { it.isPortsConnected }?.apply {
                     send(getString(R.string.valve_testing_dia) + value.toInt())
@@ -716,33 +706,33 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
 
         }
 
-        includeButtonOxyValve.buttonView.setOnClickListener {
+        binding.includeButtonOxyValve.buttonView.setOnClickListener {
 
             if (clickOxyValve) {
                 testOxygenValveTimer?.cancel()
                 communicationService?.takeIf { it.isPortsConnected }?.apply {
                     send(getString(R.string.valve_testing_dia) + "200")
                 }
-                includeButtonOxyValve.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
-                includeButtonOxyValve.buttonView.setTextColor(
+                binding.includeButtonOxyValve.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
+                binding.includeButtonOxyValve.buttonView.setTextColor(
                     ContextCompat.getColor(
                         requireContext(), R.color.black
                     )
                 )
-                includeButtonOxyValve.buttonView.text = "Oxy Valve"
+                binding.includeButtonOxyValve.buttonView.text = "Oxy Valve"
 
                 clickOxyValve = false
                 (requireActivity() as MainActivity).returnCommandsToSocket("Start Oxygen")
             } else {
-                includeButtonOxyValve.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
-                includeButtonOxyValve.buttonView.setTextColor(
+                binding.includeButtonOxyValve.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
+                binding.includeButtonOxyValve.buttonView.setTextColor(
                     ContextCompat.getColor(
                         requireContext(), R.color.white
                     )
                 )
 
                 setTestOxygenValveTimer()
-                val value = textViewOxygenValveRangesValue.text.toString()
+                val value = binding.textViewOxygenValveRangesValue.text.toString()
 
                 communicationService?.takeIf { it.isPortsConnected }?.apply {
                     send(getString(R.string.valve_testing_dia) + (value.toInt() + 200))
@@ -753,7 +743,7 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
 
         }
 
-        includeButtonTurbine.buttonView.setOnClickListener {
+        binding.includeButtonTurbine.buttonView.setOnClickListener {
 
             if (clickTurbine) {
                 testTurbineTimer?.cancel()
@@ -761,26 +751,26 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
                     send(getString(R.string.turbine_testing_dia) + "0")
                 }
 
-                includeButtonTurbine.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
-                includeButtonTurbine.buttonView.setTextColor(
+                binding.includeButtonTurbine.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
+                binding.includeButtonTurbine.buttonView.setTextColor(
                     ContextCompat.getColor(
                         requireContext(), R.color.black
                     )
                 )
-                includeButtonTurbine.buttonView.text = "Turbine"
+                binding.includeButtonTurbine.buttonView.text = "Turbine"
                 clickTurbine = false
 
                 (requireActivity() as MainActivity).returnCommandsToSocket("Start Turbine")
 
             } else {
-                includeButtonTurbine.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
-                includeButtonTurbine.buttonView.setTextColor(
+                binding.includeButtonTurbine.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
+                binding.includeButtonTurbine.buttonView.setTextColor(
                     ContextCompat.getColor(
                         requireContext(), R.color.white
                     )
                 )
                 setTestTurbineTimer()
-                var value = textViewTurbineRangesValue.text.toString()
+                var value = binding.textViewTurbineRangesValue.text.toString()
 
                 if (value == "100") value = (("99".toInt()) * 10).toString()
                 else value = ((value.toInt()) * 10).toString()
@@ -808,20 +798,20 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
         when (buttonState) {
 
             RangeType.TURBINE -> {
-                val value = textViewTurbineRangesValue.text.toString()
-                if (value.toInt() + stepPWM <= maxPWM) textViewTurbineRangesValue.text =
+                val value = binding.textViewTurbineRangesValue.text.toString()
+                if (value.toInt() + stepPWM <= maxPWM) binding.textViewTurbineRangesValue.text =
                     "${value.toInt() + stepPWM}"
             }
 
             RangeType.EXHALE_VALVE -> {
-                val value = textViewExhaleValveRangesValue.text.toString()
-                if (value.toInt() + stepPWM <= maxPWM) textViewExhaleValveRangesValue.text =
+                val value = binding.textViewExhaleValveRangesValue.text.toString()
+                if (value.toInt() + stepPWM <= maxPWM) binding.textViewExhaleValveRangesValue.text =
                     "${value.toInt() + stepPWM}"
             }
 
             RangeType.OXYGEN_VALVE -> {
-                val value = textViewOxygenValveRangesValue.text.toString()
-                if (value.toInt() + stepPWM <= maxPWM) textViewOxygenValveRangesValue.text =
+                val value = binding.textViewOxygenValveRangesValue.text.toString()
+                if (value.toInt() + stepPWM <= maxPWM) binding.textViewOxygenValveRangesValue.text =
                     "${value.toInt() + stepPWM}"
             }
 
@@ -833,20 +823,20 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
         when (buttonState) {
 
             RangeType.TURBINE -> {
-                val value = textViewTurbineRangesValue.text.toString()
-                if (value.toInt() - stepPWM >= minPWM) textViewTurbineRangesValue.text =
+                val value = binding.textViewTurbineRangesValue.text.toString()
+                if (value.toInt() - stepPWM >= minPWM) binding.textViewTurbineRangesValue.text =
                     "${value.toInt() - stepPWM}"
             }
 
             RangeType.EXHALE_VALVE -> {
-                val value = textViewExhaleValveRangesValue.text.toString()
-                if (value.toInt() - stepPWM >= minPWM) textViewExhaleValveRangesValue.text =
+                val value = binding.textViewExhaleValveRangesValue.text.toString()
+                if (value.toInt() - stepPWM >= minPWM) binding.textViewExhaleValveRangesValue.text =
                     "${value.toInt() - stepPWM}"
             }
 
             RangeType.OXYGEN_VALVE -> {
-                val value = textViewOxygenValveRangesValue.text.toString()
-                if (value.toInt() - stepPWM >= minPWM) textViewOxygenValveRangesValue.text =
+                val value = binding.textViewOxygenValveRangesValue.text.toString()
+                if (value.toInt() - stepPWM >= minPWM) binding.textViewOxygenValveRangesValue.text =
                     "${value.toInt() - stepPWM}"
             }
 
@@ -858,9 +848,9 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
         when (buttonState) {
 
             RangeType.TURBINE -> {
-                defaultOfTurbineRanges = textViewTurbineRangesValue.text.toString()
-                btnTurbineRanges.setBackgroundResource(R.drawable.background_grey_border_white)
-                textViewTurbineRangesValue.setTextColor(
+                defaultOfTurbineRanges = binding.textViewTurbineRangesValue.text.toString()
+                binding.btnTurbineRanges.setBackgroundResource(R.drawable.background_grey_border_white)
+                binding.textViewTurbineRangesValue.setTextColor(
                     ContextCompat.getColor(
                         requireContext(), R.color.black
                     )
@@ -868,9 +858,9 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
             }
 
             RangeType.EXHALE_VALVE -> {
-                defaultOfExhaleValveRanges = textViewExhaleValveRangesValue.text.toString()
-                btnExhaleValveRanges.setBackgroundResource(R.drawable.background_grey_border_white)
-                textViewExhaleValveRangesValue.setTextColor(
+                defaultOfExhaleValveRanges = binding.textViewExhaleValveRangesValue.text.toString()
+                binding.btnExhaleValveRanges.setBackgroundResource(R.drawable.background_grey_border_white)
+                binding.textViewExhaleValveRangesValue.setTextColor(
                     ContextCompat.getColor(
                         requireContext(), R.color.black
                     )
@@ -878,9 +868,9 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
             }
 
             RangeType.OXYGEN_VALVE -> {
-                defaultOfOxygenValveRanges = textViewOxygenValveRangesValue.text.toString()
-                btnOxygenValveRanges.setBackgroundResource(R.drawable.background_grey_border_white)
-                textViewOxygenValveRangesValue.setTextColor(
+                defaultOfOxygenValveRanges = binding.textViewOxygenValveRangesValue.text.toString()
+                binding.btnOxygenValveRanges.setBackgroundResource(R.drawable.background_grey_border_white)
+                binding.textViewOxygenValveRangesValue.setTextColor(
                     ContextCompat.getColor(
                         requireContext(), R.color.black
                     )
@@ -897,7 +887,7 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
     private fun setTestTurbineTimer() {
         testTurbineTimer = object : CountDownTimer(120000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
-                includeButtonTurbine.buttonView.text = "${(millisUntilFinished / 1000)} sec"
+                binding.includeButtonTurbine.buttonView.text = "${(millisUntilFinished / 1000)} sec"
 
             }
 
@@ -905,13 +895,13 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
                 communicationService?.takeIf { it.isPortsConnected }?.apply {
                     send(getString(R.string.turbine_testing_dia) + "0")
                 }
-                includeButtonTurbine.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
-                includeButtonTurbine.buttonView.setTextColor(
+                binding.includeButtonTurbine.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
+                binding.includeButtonTurbine.buttonView.setTextColor(
                     ContextCompat.getColor(
                         requireContext(), R.color.black
                     )
                 )
-                includeButtonTurbine.buttonView.text = "Turbine"
+                binding.includeButtonTurbine.buttonView.text = "Turbine"
             }
         }.start()
     }
@@ -919,20 +909,20 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
     private fun setTestOxygenValveTimer() {
         testOxygenValveTimer = object : CountDownTimer(120000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
-                includeButtonOxyValve.buttonView.text = "${(millisUntilFinished / 1000)} sec"
+                binding.includeButtonOxyValve.buttonView.text = "${(millisUntilFinished / 1000)} sec"
             }
 
             override fun onFinish() {
                 communicationService?.takeIf { it.isPortsConnected }?.apply {
                     send(getString(R.string.valve_testing_dia) + "200")
                 }
-                includeButtonOxyValve.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
-                includeButtonOxyValve.buttonView.setTextColor(
+                binding.includeButtonOxyValve.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
+                binding.includeButtonOxyValve.buttonView.setTextColor(
                     ContextCompat.getColor(
                         requireContext(), R.color.black
                     )
                 )
-                includeButtonOxyValve.buttonView.text = "Oxy Valve"
+                binding.includeButtonOxyValve.buttonView.text = "Oxy Valve"
             }
         }.start()
     }
@@ -940,7 +930,7 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
     private fun setTestValveTimer() {
         testValveTimer = object : CountDownTimer(120000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
-                includeButtonExhaleValve.buttonView.text = "${(millisUntilFinished / 1000)} sec"
+                binding.includeButtonExhaleValve.buttonView.text = "${(millisUntilFinished / 1000)} sec"
 
             }
 
@@ -948,13 +938,13 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
                 communicationService?.takeIf { it.isPortsConnected }?.apply {
                     send(getString(R.string.valve_testing_dia) + "0")
                 }
-                includeButtonExhaleValve.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
-                includeButtonExhaleValve.buttonView.setTextColor(
+                binding.includeButtonExhaleValve.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
+                binding.includeButtonExhaleValve.buttonView.setTextColor(
                     ContextCompat.getColor(
                         requireContext(), R.color.black
                     )
                 )
-                includeButtonExhaleValve.buttonView.text = "Exhale Valve"
+                binding.includeButtonExhaleValve.buttonView.text = "Exhale Valve"
             }
         }.start()
     }

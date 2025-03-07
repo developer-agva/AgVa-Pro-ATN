@@ -16,11 +16,8 @@ import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.VentilatorApp
 import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.downloadId
 import com.agvahealthcare.ventilator_ext.api.ServerLogger
-import kotlinx.android.synthetic.main.fragment_o_t_a.btnCancelDownload
-import kotlinx.android.synthetic.main.fragment_o_t_a.otaRecyclerView
-import kotlinx.android.synthetic.main.fragment_o_t_a.pbDownload
-import kotlinx.android.synthetic.main.fragment_o_t_a.txtDownloadingStatus
-import kotlinx.android.synthetic.main.fragment_o_t_a.txtNoDataOTA
+import com.agvahealthcare.ventilator_ext.databinding.FragmentDebugBinding
+import com.agvahealthcare.ventilator_ext.databinding.FragmentOTABinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
@@ -33,7 +30,7 @@ interface OtaClickListener {
 }
 
 class OTAFragment : Fragment(), OtaClickListener {
-
+    private lateinit var binding:FragmentOTABinding
     private var downloadController: DownloadController? = null
     private var downloadScope = CoroutineScope(Dispatchers.IO)
     private var showListScope = CoroutineScope(Dispatchers.IO)
@@ -42,7 +39,8 @@ class OTAFragment : Fragment(), OtaClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_o_t_a, container, false)
+        binding = FragmentOTABinding.inflate(layoutInflater,container,false)
+        return binding.root
     }
 
 
@@ -51,7 +49,7 @@ class OTAFragment : Fragment(), OtaClickListener {
         super.onViewCreated(view, savedInstanceState)
 
         setupAdapter()
-        btnCancelDownload.setOnClickListener {
+        binding.btnCancelDownload.setOnClickListener {
             downloadController?.removeDownload()
         }
     }
@@ -64,17 +62,17 @@ class OTAFragment : Fragment(), OtaClickListener {
                 withContext(Dispatchers.Main) {
                     Log.i("values_check_download","$downloadId")
                     if (downloadId != 0L) {
-                        txtDownloadingStatus.visibility = View.VISIBLE
-                        btnCancelDownload.visibility = View.VISIBLE
-                        pbDownload.visibility = View.VISIBLE
-                        otaRecyclerView.visibility = View.INVISIBLE
-                        pbDownload.progress = VentilatorApp.currentDownloadProgress
-                        txtDownloadingStatus.text = "${VentilatorApp.currentDownloadProgress}%"
+                        binding.txtDownloadingStatus.visibility = View.VISIBLE
+                        binding.btnCancelDownload.visibility = View.VISIBLE
+                        binding.pbDownload.visibility = View.VISIBLE
+                        binding.otaRecyclerView.visibility = View.INVISIBLE
+                        binding.pbDownload.progress = VentilatorApp.currentDownloadProgress
+                        binding.txtDownloadingStatus.text = "${VentilatorApp.currentDownloadProgress}%"
                     } else {
-                        txtDownloadingStatus.visibility = View.GONE
-                        btnCancelDownload.visibility = View.GONE
-                        pbDownload.visibility = View.GONE
-                        otaRecyclerView.visibility = View.VISIBLE
+                        binding.txtDownloadingStatus.visibility = View.GONE
+                        binding.btnCancelDownload.visibility = View.GONE
+                        binding.pbDownload.visibility = View.GONE
+                        binding.otaRecyclerView.visibility = View.VISIBLE
                         VentilatorApp.currentDownloadProgress = 0
                     }
                 }
@@ -87,21 +85,21 @@ class OTAFragment : Fragment(), OtaClickListener {
         showListScope.launch {
             ServerLogger.getAppHistory()?.let {
                 withContext(Dispatchers.Main) {
-                    txtNoDataOTA.visibility = View.GONE
-                    txtDownloadingStatus.visibility = View.GONE
-                    btnCancelDownload.visibility = View.GONE
-                    pbDownload.visibility = View.GONE
-                    otaRecyclerView.visibility = View.VISIBLE
-                    otaRecyclerView.adapter = OtaAdapter(it, this@OTAFragment)
+                    binding.txtNoDataOTA.visibility = View.GONE
+                    binding.txtDownloadingStatus.visibility = View.GONE
+                    binding.btnCancelDownload.visibility = View.GONE
+                    binding.pbDownload.visibility = View.GONE
+                    binding.otaRecyclerView.visibility = View.VISIBLE
+                    binding.otaRecyclerView.adapter = OtaAdapter(it, this@OTAFragment)
                     showDownloadProgress()
                 }
             } ?: run {
                 withContext(Dispatchers.Main) {
-                    txtNoDataOTA.visibility = View.VISIBLE
-                    txtDownloadingStatus.visibility = View.GONE
-                    btnCancelDownload.visibility = View.GONE
-                    pbDownload.visibility = View.GONE
-                    otaRecyclerView.visibility = View.INVISIBLE
+                    binding.txtNoDataOTA.visibility = View.VISIBLE
+                    binding.txtDownloadingStatus.visibility = View.GONE
+                    binding.btnCancelDownload.visibility = View.GONE
+                    binding.pbDownload.visibility = View.GONE
+                    binding.otaRecyclerView.visibility = View.INVISIBLE
                 }
             }
         }.start()

@@ -6,17 +6,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.agvahealthcare.ventilator_ext.R
+import com.agvahealthcare.ventilator_ext.databinding.FragmentDeviceupdateBinding
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.service.CommunicationService
 import com.agvahealthcare.ventilator_ext.utility.DialogBoxFactory
-import com.agvahealthcare.ventilator_ext.utility.utils.Configs
-import kotlinx.android.synthetic.main.content_button_layout.view.*
-import kotlinx.android.synthetic.main.fragment_deviceupdate.*
 
 
 class DeviceUpdateFragment(private var communicationService: CommunicationService?) : Fragment(){
@@ -24,13 +18,14 @@ class DeviceUpdateFragment(private var communicationService: CommunicationServic
     companion object {
         const val TAG = "DeviceUpdateFragment"
     }
-
+    private lateinit var binding: FragmentDeviceupdateBinding
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        return inflater.inflate(R.layout.fragment_deviceupdate, container, false)
+        binding = FragmentDeviceupdateBinding.inflate(layoutInflater,container,false)
+        return binding.root
     }
 
     private var prefManager: PreferenceManager? = null
@@ -46,9 +41,9 @@ class DeviceUpdateFragment(private var communicationService: CommunicationServic
 
     @SuppressLint("SetTextI18n")
     private fun setUpView() {
-        includeButtonDownload.buttonView.text = "DOWNLOAD"
-        includeButtonUpdate.buttonView.text = "UPDATE"
-        includeButtonRestore.buttonView.text = "RESTORE"
+        binding.includeButtonDownload.buttonView.text = "DOWNLOAD"
+        binding.includeButtonUpdate.buttonView.text = "UPDATE"
+        binding.includeButtonRestore.buttonView.text = "RESTORE"
 
         updateSensorCalibrationStatus()
 
@@ -57,7 +52,7 @@ class DeviceUpdateFragment(private var communicationService: CommunicationServic
 
     private fun setUpOnClickListener() {
         if (tag == "FromDashboard") {
-            includeButtonDownload.buttonView.setOnClickListener {
+            binding.includeButtonDownload.buttonView.setOnClickListener {
                 DialogBoxFactory.dismissDialogs()
                 DialogBoxFactory.showNeonateSensorDialog(
                     requireContext(),
@@ -65,14 +60,14 @@ class DeviceUpdateFragment(private var communicationService: CommunicationServic
                 )
 
             }
-            includeButtonUpdate.buttonView.setOnClickListener {
+            binding.includeButtonUpdate.buttonView.setOnClickListener {
                 DialogBoxFactory.dismissDialogs()
                 DialogBoxFactory.showNeonateSensorDialog(
                     requireContext(),
                     "Switch to standby for update process"
                 )
             }
-            includeButtonRestore.buttonView.setOnClickListener {
+            binding.includeButtonRestore.buttonView.setOnClickListener {
                 DialogBoxFactory.dismissDialogs()
                 DialogBoxFactory.showNeonateSensorDialog(
                     requireContext(),
@@ -80,15 +75,15 @@ class DeviceUpdateFragment(private var communicationService: CommunicationServic
                 )
             }
         } else {
-            includeButtonDownload.buttonView.setOnClickListener {
+            binding.includeButtonDownload.buttonView.setOnClickListener {
                 sendUpdateCommandToVentilator("DN")
             }
 
-            includeButtonUpdate.buttonView.setOnClickListener {
+            binding.includeButtonUpdate.buttonView.setOnClickListener {
                 sendUpdateCommandToVentilator("IN")
             }
 
-            includeButtonRestore.buttonView.setOnClickListener {
+            binding.includeButtonRestore.buttonView.setOnClickListener {
                 sendUpdateCommandToVentilator("RST")
             }
         }
@@ -96,30 +91,30 @@ class DeviceUpdateFragment(private var communicationService: CommunicationServic
 
     fun showInfo(text:String) {
 
-        txtProgress.text = text
-        secondPanel.visibility = View.VISIBLE
-        mainPanel.visibility = View.GONE
+        binding.txtProgress.text = text
+        binding.secondPanel.visibility = View.VISIBLE
+        binding.mainPanel.visibility = View.GONE
     }
 
     fun updateSensorCalibrationStatus() {
-        mainPanel.visibility = View.VISIBLE
-        secondPanel.visibility = View.GONE
+        binding.mainPanel.visibility = View.VISIBLE
+        binding.secondPanel.visibility = View.GONE
 
-        linearLayoutDownloadPanel.visibility = View.VISIBLE
-        linearLayoutUpdatePanel.visibility = View.GONE
-        linearLayoutRestorePanel.visibility = View.GONE
+        binding.linearLayoutDownloadPanel.visibility = View.VISIBLE
+        binding.linearLayoutUpdatePanel.visibility = View.GONE
+        binding.linearLayoutRestorePanel.visibility = View.GONE
 
         prefManager?.apply {
-            if (downloadStatus) linearLayoutUpdatePanel.visibility = View.VISIBLE else linearLayoutUpdatePanel.visibility = View.GONE
-            if (updateStatus) linearLayoutRestorePanel.visibility = View.VISIBLE else linearLayoutRestorePanel.visibility = View.GONE
+            if (downloadStatus) binding.linearLayoutUpdatePanel.visibility = View.VISIBLE else binding.linearLayoutUpdatePanel.visibility = View.GONE
+            if (updateStatus) binding.linearLayoutRestorePanel.visibility = View.VISIBLE else binding.linearLayoutRestorePanel.visibility = View.GONE
 
-            tvDownloadTag.text = downloadType
-            tvUpdateTag.text = updateType
-            tvRestoreTag.text = restoreType
+            binding.tvDownloadTag.text = downloadType
+            binding.tvUpdateTag.text = updateType
+            binding.tvRestoreTag.text = restoreType
 
-            tvDownloadTime.text = downloadTime
-            tvUpdateTime.text = updateTime
-            tvRestoreTime.text = restoreTime
+            binding.tvDownloadTime.text = downloadTime
+            binding.tvUpdateTime.text = updateTime
+            binding.tvRestoreTime.text = restoreTime
         }
     }
 

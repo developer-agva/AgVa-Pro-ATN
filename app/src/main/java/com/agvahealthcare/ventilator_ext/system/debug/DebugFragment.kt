@@ -5,31 +5,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.agvahealthcare.ventilator_ext.MainActivity
 import com.agvahealthcare.ventilator_ext.R
-import com.agvahealthcare.ventilator_ext.api.model.Log
+import com.agvahealthcare.ventilator_ext.databinding.FragmentDebugBinding
 import com.agvahealthcare.ventilator_ext.logging.FileLogger
-import kotlinx.android.synthetic.main.content_button_layout.view.buttonView
-import kotlinx.android.synthetic.main.fragment_advanced_calibration.includeButtonTurbine
-import kotlinx.android.synthetic.main.fragment_debug.buttonDevelopersEvents
-import kotlinx.android.synthetic.main.fragment_debug.buttonHid
-import kotlinx.android.synthetic.main.fragment_debug.buttonPermissions
-import kotlinx.android.synthetic.main.fragment_debug.buttonToReboot
-import kotlinx.android.synthetic.main.fragment_debug.buttonVenti
-import kotlinx.android.synthetic.main.fragment_debug.debugLayout
-import kotlinx.android.synthetic.main.fragment_debug.debugRecyclerView
-import kotlinx.android.synthetic.main.fragment_diagnostic_check.includeButtonAmberLED
-import kotlinx.android.synthetic.main.fragment_diagnostic_check.includeButtonNebulizer
-import kotlinx.android.synthetic.main.fragment_diagnostic_check.includeButtonOxyValve
-import kotlinx.android.synthetic.main.fragment_diagnostic_check.includeButtonPurge
-import kotlinx.android.synthetic.main.fragment_diagnostic_check.includeButtonRedLED
-import kotlinx.android.synthetic.main.fragment_test_calib.includeButtonExhaleValve
 
 class DebugFragment : Fragment() {
 
+    private lateinit var binding: FragmentDebugBinding
     private var debugViewModel: DebugViewModel? = null
     private var debugAdapter: DebugAdapter? = null
     private var isVenti: Boolean? = true
@@ -39,7 +24,8 @@ class DebugFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_debug, container, false)
+        binding = FragmentDebugBinding.inflate(layoutInflater,container,false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -62,7 +48,7 @@ class DebugFragment : Fragment() {
     }
 
     private fun setupView(){
-        buttonVenti.callOnClick()
+        binding.buttonVenti.callOnClick()
     }
 
     override fun onPause() {
@@ -116,37 +102,37 @@ class DebugFragment : Fragment() {
 
     private fun setupAdapter() {
         debugAdapter = DebugAdapter(ArrayList())
-        debugRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        debugRecyclerView.adapter = debugAdapter
+        binding.debugRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.debugRecyclerView.adapter = debugAdapter
     }
     
     fun getCommandsFromLiveWindow(command: String) {
         when (command) {
 
             "Start Knob Data" ->{
-                buttonHid.callOnClick()
+                binding.buttonHid.callOnClick()
             }
 
             "Start Venti Data" ->{
-                buttonVenti.callOnClick()
+                binding.buttonVenti.callOnClick()
             }
         }
     }
 
     private fun highlightAndNormaliseButtons(view: View){
-        buttonVenti.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-        buttonHid.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-        buttonDevelopersEvents.setBackgroundResource(R.drawable.background_primary_btn_rounded)
-        buttonPermissions.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.buttonVenti.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.buttonHid.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.buttonDevelopersEvents.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+        binding.buttonPermissions.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
         view.setBackgroundResource(R.drawable.background_green_border)
     }
 
     private fun setOnClickListeners() {
 
-        buttonVenti.setOnClickListener { it ->
+        binding.buttonVenti.setOnClickListener { it ->
             isVenti = true
-            debugLayout.visibility = View.VISIBLE
+            binding.debugLayout.visibility = View.VISIBLE
             highlightAndNormaliseButtons(it)
 
             debugViewModel?.ventiLiveData?.value?.let { it1 ->
@@ -160,18 +146,18 @@ class DebugFragment : Fragment() {
             }
         }
 
-        buttonToReboot.setOnClickListener {
+        binding.buttonToReboot.setOnClickListener {
             Runtime.getRuntime().exec("reboot")
         }
 
-        buttonPermissions.setOnClickListener {
-            debugLayout.visibility = View.GONE
+        binding.buttonPermissions.setOnClickListener {
+            binding.debugLayout.visibility = View.GONE
             highlightAndNormaliseButtons(it)
         }
 
-        buttonHid.setOnClickListener {
+        binding.buttonHid.setOnClickListener {
             isVenti = false
-            debugLayout.visibility = View.VISIBLE
+            binding.debugLayout.visibility = View.VISIBLE
             highlightAndNormaliseButtons(it)
 
             debugViewModel?.hidLiveData?.value?.let { it1 ->
@@ -186,9 +172,9 @@ class DebugFragment : Fragment() {
 
         }
 
-        buttonDevelopersEvents.setOnClickListener {
+        binding.buttonDevelopersEvents.setOnClickListener {
             isVenti = null
-            debugLayout.visibility = View.VISIBLE
+            binding.debugLayout.visibility = View.VISIBLE
             highlightAndNormaliseButtons(it)
 
             val data = FileLogger.readEventFileDevelopers("eventForDevelopers")

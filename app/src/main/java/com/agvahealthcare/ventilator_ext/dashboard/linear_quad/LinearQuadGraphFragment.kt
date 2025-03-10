@@ -49,7 +49,6 @@ class LinearQuadGraphFragment : GraphLayoutFragment("LinearQuadGraphFragment") {
         super.onViewCreated(view, savedInstanceState)
 
         mDashBoardViewModel = ViewModelProvider(requireActivity())[DashBoardViewModel::class.java]
-
         VentilatorApp.testingDashBoardViewModel = mDashBoardViewModel
 
         // RM scichart
@@ -76,18 +75,15 @@ class LinearQuadGraphFragment : GraphLayoutFragment("LinearQuadGraphFragment") {
         VentilatorApp.xTestingVolume =  IntArray(FIFOCAPACITY_CUSTOM_SIZE){i->0}
         VentilatorApp.xTestingPressure =  IntArray(FIFOCAPACITY_CUSTOM_SIZE){i->0}
         VentilatorApp.xTestingEtCo2 = IntArray(FIFOCAPACITY_CUSTOM_SIZE){i->0}
-
         super.onPause()
     }
 
     fun setDataGobally(xMaxRange: Double) {
-        Log.i("valuesea", "2")
         volumeChartFragment.addTextOnMaxRange(xMaxRange)
         pressureChartFragment.addTextOnMaxRange(xMaxRange)
         flowChartFragment.addTextOnMaxRange(xMaxRange)
         etco2ChartFragment.addTextOnMaxRange(xMaxRange)
     }
-
 
     private fun initData() {
         initTrioGraph1()
@@ -95,7 +91,6 @@ class LinearQuadGraphFragment : GraphLayoutFragment("LinearQuadGraphFragment") {
         initTrioGraph3()
         initTrioGraph4()
     }
-
 
     private fun initTrioGraph2() {
         pressureChartFragment = PressureChartFragment.newInstance(

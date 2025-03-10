@@ -709,7 +709,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         makeAllFragmentsNull()
         sizeOfCurrentArray = 4
         if (settingFragment == null)
-            settingFragment = SettingFragment.newInstance(onLoudnessAdjustmentListener)
+            settingFragment = SettingFragment.newInstance(onLoudnessAdjustmentListener,tag!!)
         settingFragment?.apply {
             replaceFragment(
                 this,

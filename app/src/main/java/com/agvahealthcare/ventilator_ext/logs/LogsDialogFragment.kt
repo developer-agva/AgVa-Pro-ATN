@@ -56,6 +56,11 @@ class LogsDialogFragment : DialogFragment() {
 
     private var logsType: LogsType? = null
 
+    fun updateTrendData(){
+        trendsOtherFragment?.takeIf { it.isVisible }?.apply {
+            setupDataDefault()
+        }
+    }
     enum class LogsType {
         TRENDS,
         EVENTS,

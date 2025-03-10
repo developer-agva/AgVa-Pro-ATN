@@ -4,12 +4,16 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Environment
 import android.util.Log
+import com.agvahealthcare.ventilator_ext.VentilatorApp
 import com.agvahealthcare.ventilator_ext.logging.FileLogger.Companion.PATH_FOLDER_DEVELOPERS
+import com.agvahealthcare.ventilator_ext.utility.VENTILATOR_DATA
 import com.agvahealthcare.ventilator_ext.utility.utils.AppUtils
+import com.agvahealthcare.ventilator_ext.utility.utils.Configs
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.time.Duration
 
 /*
  * Created by MOHIT MALHOTRA
@@ -285,7 +289,7 @@ abstract class FileLogger {
                         } else {
 
                             // create temp file
-                            val tempFile = File(path, "temp_trend")
+                            val tempFile = File(path, "temp_$fileName")
                             for (i in fileData.indices) {
                                 if (i != 0) {
                                     if (tempFile.exists()) {
@@ -319,6 +323,74 @@ abstract class FileLogger {
                     Log.i("asdaqe213", e.message.toString())
                 }
 
+            }
+            return isSuccess
+        }
+
+        fun writeTrendLungsDynamicsFile(
+            ctx: Context,
+            fileName: String,
+            data: String,
+        ): Boolean {
+            var isSuccess = false
+
+            val path = File(
+                Environment.getExternalStorageDirectory(),
+                AppUtils.PATH_FOLDER_AGVA + File.separator + "lungs_dynamics"
+            )
+            val isPathAccessible = path.exists() || path.mkdirs()
+
+            if (isPathAccessible) {
+
+                val file = File(path, fileName)
+
+                try {
+                    if (file.exists()) {
+
+                        val fileData = file.readLines()
+
+                        if (fileData.size <= 2000) {
+                            isSuccess = true
+                            val fileOutPutStream = FileOutputStream(file, true)
+                            fileOutPutStream.write(data.toByteArray())
+                            fileOutPutStream.close()
+
+                        } else {
+
+                            // create temp file
+                            val tempFile = File(path, "temp_trend_lung_dynamics")
+                            for (i in fileData.indices) {
+                                if (i != 0) {
+                                    if (tempFile.exists()) {
+                                        val fileOutPutStream = FileOutputStream(tempFile, true)
+                                        fileOutPutStream.write(fileData[i].toByteArray())
+                                        fileOutPutStream.close()
+                                    } else {
+                                        if (tempFile.createNewFile()) {
+                                            val fileOutPutStream = FileOutputStream(tempFile)
+                                            fileOutPutStream.write(fileData[i].toByteArray())
+                                            fileOutPutStream.close()
+                                        }
+                                    }
+                                }
+                            }
+                            file.delete()
+                            tempFile.renameTo(file)
+                            writeTrendGraphFile(ctx, fileName, data)
+                        }
+
+                    } else {
+                        if (file.createNewFile()) {
+                            isSuccess = true
+                            val fileOutPutStream = FileOutputStream(file)
+                            fileOutPutStream.write(data.toByteArray())
+                            fileOutPutStream.close()
+                        }
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    Log.i("asdaqe213", e.message.toString())
+                }
             }
             return isSuccess
         }
@@ -528,6 +600,74 @@ abstract class FileLogger {
             return isSuccess
         }
 
+        fun readTrendFileAsPerParamAndDuration(fileName: String,paramIndex: Int, duration: Int): String {
+
+            var durationCount = 0
+            when(fileName){
+                "trend_five_min" -> durationCount = 12
+                "trend_two_min" -> durationCount = 30
+                "trend_ten_min" -> durationCount = 6
+            }
+
+            val validDurationCount = duration * durationCount
+
+            var filePath = File(
+                Environment.getExternalStorageDirectory(),
+                AppUtils.PATH_FOLDER_AGVA + File.separator + "trend"
+            )
+            filePath = File(filePath, fileName)
+            try {
+
+                if (filePath.exists()) {
+
+                    var data = ""
+                    val fileData = filePath.readText().split("|") as ArrayList<String>
+                    fileData.removeAt(fileData.size - 1)
+                    fileData.reverse()
+                    // get data as per duration
+                    if (fileData.size < validDurationCount) {
+                        for (i in 0 until fileData.size) {
+                            data += if (i != fileData.size - 1) fileData[i].split(",")[0].split(" ")[1] + "~" + fileData[i].split(",")[paramIndex] + "|"
+                            else fileData[i].split(",")[0].split(" ")[1] + "~" + fileData[i].split(",")[paramIndex]
+                        }
+                    } else {
+                        for (i in 0 until validDurationCount) {
+                            data += if (i != validDurationCount - 1) fileData[i].split(",")[0].split(" ")[1] + "~" + fileData[i].split(",")[paramIndex] + "|"
+                            else fileData[i].split(",")[0].split(" ")[1] + "~" + fileData[i].split(",")[paramIndex]
+                        }
+                    }
+
+                    return data
+                }
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            return dataNotFound
+        }
+
+        fun readLungsDynamicsFile(paramIndex: Int): String {
+
+            var filePath = File(
+                Environment.getExternalStorageDirectory(),
+                AppUtils.PATH_FOLDER_AGVA + File.separator + "lungs_dynamics"
+            )
+            filePath = File(filePath, "trend_lung_dynamics")
+
+            try {
+                if (filePath.exists()) {
+                    val fileData = filePath.readText().split("|") as ArrayList<String>
+                    fileData.removeAt(fileData.size - 1)
+                    fileData.reverse()
+
+                    return fileData[0].split(",")[paramIndex]
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            return dataNotFound
+        }
+
         //reading of file
         fun readTrendFile(fileName: String, startIndex: Int, endIndex: Int): String {
 
@@ -574,53 +714,6 @@ abstract class FileLogger {
             return dataNotFound
         }
 
-        //reading of file
-        fun readTrendFileLastData(): String {
-
-            val startIndex = 0
-            val endIndex = 5
-            var filePath = File(
-                Environment.getExternalStorageDirectory(),
-                AppUtils.PATH_FOLDER_AGVA + File.separator + "trend"
-            )
-            filePath = File(filePath, "trends")
-            try {
-
-                if (filePath.exists()) {
-
-                    var data = ""
-                    val fileData = filePath.readText().split("|") as ArrayList<String>
-                    fileData.removeAt(fileData.size - 1)
-                    fileData.reverse()
-
-                    if (startIndex >= 0) {
-                        if (endIndex <= fileData.size) {
-                            for (i in startIndex until endIndex) {
-                                data += fileData[i] + "|"
-                            }
-                        } else {
-                            // for first 5 items
-                            if (startIndex == 0) {
-                                for (i in fileData.indices) {
-                                    data += fileData[i] + "|"
-                                }
-                            }
-                            // for last item
-                            else data = dataNotFound
-                        }
-                    }
-                    // since data not added
-                    else data = dataNotFound
-
-                    return data
-                }
-
-            } catch (e: Exception) {
-                e.printStackTrace()
-                Log.i("dataClear", e.message.toString())
-            }
-            return dataNotFound
-        }
 
         //reading of file
         fun readEventFile(fileName: String, startIndex: Int, endIndex: Int): String {
@@ -629,7 +722,7 @@ abstract class FileLogger {
                 Environment.getExternalStorageDirectory(),
                 AppUtils.PATH_FOLDER_AGVA + File.separator + "event"
             )
-            Log.i("value_check_events","$startIndex , $endIndex")
+            Log.i("value_check_events", "$startIndex , $endIndex")
             filePath = File(filePath, fileName)
             try {
 
@@ -658,8 +751,7 @@ abstract class FileLogger {
                                 for (i in startIndex until fileData.size) {
                                     data += fileData[i] + "|"
                                 }
-                            }
-                            else data = dataNotFound
+                            } else data = dataNotFound
                         }
                     }
                     // since data not added
@@ -668,8 +760,7 @@ abstract class FileLogger {
                     return data
                 }
 
-            }
-            catch (e: Exception) {
+            } catch (e: Exception) {
                 e.printStackTrace()
                 Log.i("dataClear", e.message.toString())
             }
@@ -732,8 +823,7 @@ abstract class FileLogger {
                                 for (i in startIndex until fileData.size) {
                                     data += fileData[i] + "|"
                                 }
-                            }
-                            else data = dataNotFound
+                            } else data = dataNotFound
                         }
                     }
                     // since data not added
@@ -742,8 +832,7 @@ abstract class FileLogger {
                     return data
                 }
 
-            }
-            catch (e: Exception) {
+            } catch (e: Exception) {
                 e.printStackTrace()
                 Log.i("dataClear", e.message.toString())
             }
@@ -940,7 +1029,7 @@ abstract class FileLogger {
                 Log.i("dataClearAlarm", e.message.toString())
             }
 
-          return "http://3.25.213.83:8000"
+            return "http://3.25.213.83:8000"
         }
 
         //writing of file

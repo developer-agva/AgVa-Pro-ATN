@@ -375,7 +375,7 @@ public class PreferenceManager {
     private static final String PREF_UPDATE_STATUS = "pref_update_status";
     private static final String PREF_UPDATE_TIME = "pref_update_time";
     private static final String PREF_UPDATE_TYPE = "pref_update_type";
-
+    private static final String PREF_TREND_DURATION = "pref_trend_duration";
 
     private Context context;
     private SharedPreferences sp;
@@ -388,7 +388,13 @@ public class PreferenceManager {
     }
 
     // start for ota side embedded
+    public void setTrendDuration(String val) {
+        updateData(PREF_TREND_DURATION, val);
+    }
 
+    public String readTrendDuration() {
+        return sp.getString(PREF_TREND_DURATION, "5 Min");
+    }
     // status ota
     public void setDownloadStatus(Boolean value) {
         updateLimitState(PREF_DOWNLOAD_STATUS, value);

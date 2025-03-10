@@ -21,7 +21,6 @@ class TrioFragmentGraph : GraphLayoutFragment("TrioGraphFragment") {
 
     var mDashBoardViewModel: DashBoardViewModel? = null
 
-
     companion object {
         const val TAG = "TrioGraphFragment"
         private const val KEY_GRAPH_DATA = "KEY_GRAPH_DATA"

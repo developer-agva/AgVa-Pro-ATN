@@ -5,7 +5,8 @@
     android:id="@+id/mainViewPanelSettings"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_grey">
+    android:background="@color/light_grey"
+    tools:ignore="MissingDefaultResource">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/focusLayoutSettings"
@@ -105,7 +106,7 @@
         android:layout_height="0dp"
         android:layout_margin="@dimen/_5sdp"
         android:background="@drawable/background_grey_border_white"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/includeButtonLoudness"
@@ -175,6 +176,80 @@
                 app:layout_constraintTop_toBottomOf="@id/toggle_knob"
                 app:on="false" />
 
+            <!--            <TextView-->
+            <!--                android:id="@+id/useTrendParam"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:text="Select Trend Paramters"-->
+            <!--                android:theme="@style/subheading_text_style"-->
+            <!--                app:layout_constraintBottom_toBottomOf="@+id/trendParamLayout"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toTopOf="@id/trendParamLayout" />-->
+
+            <!--            <androidx.constraintlayout.widget.ConstraintLayout-->
+            <!--                android:id="@+id/trendParamLayout"-->
+            <!--                android:layout_width="@dimen/_50sdp"-->
+            <!--                android:layout_height="@dimen/_14sdp"-->
+            <!--                android:layout_marginStart="@dimen/_8sdp"-->
+            <!--                android:layout_marginTop="@dimen/_10sdp"-->
+            <!--                android:background="@drawable/background_offwhite_border_none"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintTop_toBottomOf="@id/toggle_iE_tile" />-->
+
+            <!--            <TextView-->
+            <!--                android:id="@+id/trendParamText"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:fontFamily="@font/arial_regular"-->
+            <!--                android:textColor="@color/black"-->
+            <!--                android:textSize="@dimen/_5sdp"-->
+            <!--                app:layout_constraintBottom_toBottomOf="@id/trendParamLayout"-->
+            <!--                app:layout_constraintEnd_toEndOf="@id/trendParamLayout"-->
+            <!--                app:layout_constraintStart_toStartOf="@id/trendParamLayout"-->
+            <!--                app:layout_constraintTop_toTopOf="@id/trendParamLayout"-->
+            <!--                android:text="Parameters" />-->
+
+            <TextView
+                android:id="@+id/useTrendDuration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select Log Trends Duration"
+                android:theme="@style/subheading_text_style"
+                app:layout_constraintBottom_toBottomOf="@+id/trendDurationLayout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/trendDurationLayout" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/trendDurationLayout"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_14sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/background_offwhite_border_none"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/toggle_iE_tile" />
+
+            <TextView
+                android:id="@+id/trendDurationText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/arial_regular"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_6sdp"
+                app:layout_constraintBottom_toBottomOf="@id/trendDurationLayout"
+                app:layout_constraintEnd_toEndOf="@id/trendDurationLayout"
+                app:layout_constraintStart_toStartOf="@id/trendDurationLayout"
+                app:layout_constraintTop_toTopOf="@id/trendDurationLayout"
+                android:text="2 Min" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/trendsRecyclerView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@id/trendDurationLayout"
+                app:layout_constraintEnd_toEndOf="@id/trendDurationLayout"
+                app:layout_constraintTop_toBottomOf="@id/trendDurationLayout"
+                tools:ignore="MissingConstraints" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

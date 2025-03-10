@@ -17,15 +17,80 @@ interface onDropDownSelectionListener {
     fun onItemSelect(text: String,colorInt: Int )
 }
 
+interface onTrendDropDownSelectionListener {
+    fun onTrendItemSelect(text: String)
+}
+
 data class CommonItemData(
     var colorInt : Int,
     var text: String
 )
 
+class CommonTrendConfigsAdapter(private var dataList: ArrayList<String>, private var onClick : onTrendDropDownSelectionListener, private var isTrendParam:Boolean) : RecyclerView.Adapter<CommonTrendConfigsAdapter.CommonTrendConfigsViewHolder>() {
+
+    var selectedIndex = -1
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommonTrendConfigsViewHolder {
+        return if (isTrendParam){
+            val itemView = LayoutInflater.from(parent.context).inflate(R.layout.setup_select_layout, parent, false)
+            CommonTrendConfigsViewHolder(itemView,isTrendParam)
+        }else{
+            val itemView = LayoutInflater.from(parent.context).inflate(R.layout.setup_select_layout, parent, false)
+            CommonTrendConfigsViewHolder(itemView,isTrendParam)
+        }
+    }
+
+    override fun onBindViewHolder(holder: CommonTrendConfigsViewHolder, position: Int) {
+        val data = dataList[position]
+
+        if (selectedIndex == position) holder.itemLayout?.setBackgroundResource(R.drawable.background_grey_border_yellow)
+        else holder.itemLayout?.setBackgroundResource(R.color.dark_grey)
+
+        holder.itemLayout?.setOnClickListener {
+            onClick.onTrendItemSelect("")
+        }
+    }
+
+    override fun getItemCount(): Int {
+        return dataList.size
+    }
+
+    fun forwardIndex(){
+        if (selectedIndex+1 < dataList.size) selectedIndex++
+        else selectedIndex = 0
+        notifyDataSetChanged()
+    }
+
+    fun backwardIndex(){
+        if (selectedIndex > 0) selectedIndex--
+        else selectedIndex = dataList.size-1
+        notifyDataSetChanged()
+    }
+
+    fun clickOnSelectedIndex(){
+        if (selectedIndex != -1) onClick.onTrendItemSelect("")
+    }
+
+    class CommonTrendConfigsViewHolder (view: View,private var isTrendParam: Boolean) : RecyclerView.ViewHolder(view){
+
+        var itemLayout: ConstraintLayout? = null
+        var txtDropDownItem: TextView? = null
+        var cbLayout: ConstraintLayout? = null
+        init {
+
+            itemLayout = view.findViewById(R.id.itemLayout)
+            txtDropDownItem = view.findViewById(R.id.txtColorText)
+            cbLayout = view.findViewById(R.id.cbLayout)
+        }
+
+    }
+}
+
+
 class CommonDropDownAdapter(private var context: Context,private var dataList: ArrayList<CommonItemData>, private var onClick : onDropDownSelectionListener) : RecyclerView.Adapter<CommonDropDownAdapter.CommonDropDownViewHolder>() {
 
 
-    private var selectedIndex = -1
+    var selectedIndex = -1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommonDropDownViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.color_select_layout, parent, false)

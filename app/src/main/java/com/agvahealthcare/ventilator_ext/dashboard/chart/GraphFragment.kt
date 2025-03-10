@@ -9,6 +9,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.agvahealthcare.ventilator_ext.VentilatorApp
 import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.currentXValue
 import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.currentYValue
+import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.dynCompTimeList
+import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.fio2TimeList
+import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.prTimeList
+import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.spo2TimeList
+import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.spontRRTimeList
+import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.spontVTTimeList
 import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.testingDashBoardViewModel
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardViewModel
 import com.scichart.charting.model.RenderableSeriesCollection
@@ -31,13 +37,20 @@ enum class GraphType {
     EtCo2,
     PRESSURE_VOLUME,
     FLOW_PRESSURE,
-    FLOW_VOLUME
+    FLOW_VOLUME,
+    SPO2_CHART,
+    FIO2_CHART,
+    PR_CHART,
+    DYNAMIC_COMP_CHART,
+    SPONT_RR_CHART,
+    SPONT_VT_CHART
 }
 
 enum class parentType{
     DivideTrioFragmentGraph,
     QuadFragmentGraph,
     TrioFragmentGraph,
+    QuadTrendsFragment,
     DivideQuadFragmentGraph,
     DuoFragmentGraph,
     LoopsFragmentGraph,
@@ -63,13 +76,39 @@ open class GraphFragment() : Fragment() {
 
                 when(type){
                     GraphType.PRESSURE -> {
-                        text = "Pressure: ${seriesInfo.formattedYValue}"
+                        text = "Pressure: ${seriesInfo.formattedXValue}"
                     }
+
                     GraphType.VOLUME -> {
                         text = "Volume: ${seriesInfo.formattedYValue}"
                     }
+
                     GraphType.FLOW -> {
                         text = "Flow: ${seriesInfo.formattedYValue}"
+                    }
+
+                    GraphType.SPO2_CHART -> {
+                        text = "Time : ${spo2TimeList[seriesInfo.formattedXValue.toString().toInt()]},Value : ${seriesInfo.formattedYValue})"
+                    }
+
+                    GraphType.PR_CHART -> {
+                        text = "Time : ${prTimeList[seriesInfo.formattedXValue.toString().toInt()]},Value : ${seriesInfo.formattedYValue})"
+                    }
+
+                    GraphType.FIO2_CHART -> {
+                        text = "Time : ${fio2TimeList[seriesInfo.formattedXValue.toString().toInt()]},Value : ${seriesInfo.formattedYValue})"
+                    }
+
+                    GraphType.DYNAMIC_COMP_CHART -> {
+                        text = "Time : ${dynCompTimeList[seriesInfo.formattedXValue.toString().toInt()]},Value : ${seriesInfo.formattedYValue})"
+                    }
+
+                    GraphType.SPONT_RR_CHART -> {
+                        text = "Time : ${spontRRTimeList[seriesInfo.formattedXValue.toString().toInt()]},Value : ${seriesInfo.formattedYValue})"
+                    }
+
+                    GraphType.SPONT_VT_CHART -> {
+                        text = "Time : ${spontVTTimeList[seriesInfo.formattedXValue.toString().toInt()]},Value : ${seriesInfo.formattedYValue})"
                     }
                     else -> {
                         text = "Testing: ${seriesInfo.formattedYValue}"

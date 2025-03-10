@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLineDynamicsFirst"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.333" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLineDynamicsSecond"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.67" />
+
+    <TextView
+        android:id="@+id/txtComplianceModuleLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/arial_bold"
+        android:text="Loading..."
+        android:textColor="@color/white"
+        android:textSize="@dimen/_9sdp"
+        android:translationZ="@dimen/_5sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/txtChartDynamicsFirst"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="0.6"
+        android:elevation="8dp"
+        android:padding="@dimen/_3sdp"
+        android:text=""
+        android:textColor="#CCFFFFFF"
+        android:textSize="@dimen/_6sdp"
+        android:theme="@style/subheading_text_style"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="@id/trendFirstDynamicsChart"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.scichart.charting.visuals.SciChartSurface
+        android:id="@+id/trendFirstDynamicsChart"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/_2sdp"
+        app:layout_constraintBottom_toTopOf="@id/guideLineDynamicsFirst"
+        app:layout_constraintTop_toBottomOf="@id/txtChartDynamicsFirst" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/txtChartDynamicsSecond"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="0.6"
+        android:elevation="8dp"
+        android:padding="@dimen/_3sdp"
+        android:text=""
+        android:textColor="#CCFFFFFF"
+        android:textSize="@dimen/_6sdp"
+        android:theme="@style/subheading_text_style"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="@id/trendSecondDynamicsChart"
+        app:layout_constraintTop_toBottomOf="@id/guideLineDynamicsFirst" />
+
+    <com.scichart.charting.visuals.SciChartSurface
+        android:id="@+id/trendSecondDynamicsChart"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/_2sdp"
+        app:layout_constraintBottom_toBottomOf="@id/guideLineDynamicsSecond"
+        app:layout_constraintTop_toBottomOf="@id/txtChartDynamicsSecond" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/txtChartDynamicsThird"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="0.6"
+        android:elevation="8dp"
+        android:padding="@dimen/_3sdp"
+        android:text=""
+        android:textColor="#CCFFFFFF"
+        android:textSize="@dimen/_6sdp"
+        android:theme="@style/subheading_text_style"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="@id/trendSecondDynamicsChart"
+        app:layout_constraintTop_toBottomOf="@id/guideLineDynamicsSecond" />
+
+    <com.scichart.charting.visuals.SciChartSurface
+        android:id="@+id/trendThirdDynamicsChart"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/_2sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtChartDynamicsThird" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

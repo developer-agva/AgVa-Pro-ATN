@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mainViewPanelGraphics"
-    android:background="@color/light_grey">
+    android:background="@color/light_grey"
+    tools:ignore="MissingDefaultResource">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/focusLayoutGraphics"
@@ -39,52 +40,6 @@
         app:layout_constraintGuide_percent="0.95"
         android:id="@+id/MonitoringVertical2"/>
 
-
-    <androidx.constraintlayout.widget.Guideline
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.15"
-        android:id="@+id/MonitoringVertical3"/>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.85"
-        android:id="@+id/MonitoringVertical4"/>
-
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/layoutPanelTrio"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/_3sdp"
-        app:layout_constraintTop_toBottomOf="@id/imageViewCrossGraphics"
-        app:layout_constraintBottom_toTopOf="@id/layoutPanelDivideQuad"
-        app:layout_constraintStart_toStartOf="@id/MonitoringVertical3"
-        app:layout_constraintEnd_toStartOf="@id/layoutPanelDuo"
-        android:orientation="vertical">
-
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imageViewTrio"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_trio_graph" />
-
-        <include
-            android:id="@+id/includeButtonLayout4"
-            layout="@layout/content_button_layout"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/_3sdp"
-            android:layout_marginBottom="@dimen/_2sdp" />
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
-
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/layoutPanelDuo"
         android:layout_width="0dp"
@@ -92,8 +47,8 @@
         android:layout_marginHorizontal="@dimen/_3sdp"
         app:layout_constraintTop_toTopOf="@id/layoutPanelTrio"
         app:layout_constraintBottom_toBottomOf="@id/layoutPanelTrio"
-        app:layout_constraintEnd_toEndOf="@id/MonitoringVertical4"
-        app:layout_constraintStart_toEndOf="@id/layoutPanelTrio"
+        app:layout_constraintEnd_toStartOf="@id/layoutPanelQuadTrends"
+        app:layout_constraintStart_toEndOf="@id/MonitoringVertical1"
         android:orientation="vertical">
 
 
@@ -105,7 +60,7 @@
             android:src="@drawable/ic_duo_graph" />
 
         <include
-            android:id="@+id/includeButtonLayout3"
+            android:id="@+id/includeButtonLayout0"
             layout="@layout/content_button_layout"
             android:layout_width="@dimen/_40sdp"
             android:layout_height="wrap_content"
@@ -113,8 +68,66 @@
             android:layout_marginTop="@dimen/_3sdp"
             android:layout_marginBottom="@dimen/_2sdp" />
 
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/layoutPanelQuadTrends"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_3sdp"
+        app:layout_constraintTop_toTopOf="@id/layoutPanelTrio"
+        app:layout_constraintBottom_toBottomOf="@id/layoutPanelTrio"
+        app:layout_constraintEnd_toStartOf="@id/layoutPanelTrio"
+        app:layout_constraintStart_toEndOf="@id/layoutPanelDuo"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageViewQuadTrends"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_trends_graph" />
+
+        <include
+            android:id="@+id/includeButtonLayout1"
+            layout="@layout/content_button_layout"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:layout_marginBottom="@dimen/_2sdp" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/layoutPanelTrio"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_3sdp"
+        app:layout_constraintTop_toBottomOf="@id/imageViewCrossGraphics"
+        app:layout_constraintBottom_toTopOf="@id/layoutPanelDivideQuad"
+        app:layout_constraintStart_toEndOf="@id/layoutPanelQuadTrends"
+        app:layout_constraintEnd_toEndOf="@id/MonitoringVertical2"
+        android:orientation="vertical">
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageViewTrio"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_trio_graph" />
+
+        <include
+            android:id="@+id/includeButtonLayout2"
+            layout="@layout/content_button_layout"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:layout_marginBottom="@dimen/_2sdp" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/layoutPanelDivideQuad"
@@ -135,7 +148,7 @@
             android:src="@drawable/ic_quad_division_graph" />
 
         <include
-            android:id="@+id/includeButtonLayout2"
+            android:id="@+id/includeButtonLayout3"
             layout="@layout/content_button_layout"
             android:layout_width="@dimen/_40sdp"
             android:layout_height="wrap_content"
@@ -166,7 +179,7 @@
             android:src="@drawable/ic_trio_division_graph" />
 
         <include
-            android:id="@+id/includeButtonLayout5"
+            android:id="@+id/includeButtonLayout4"
             layout="@layout/content_button_layout"
             android:layout_width="@dimen/_40sdp"
             android:layout_height="wrap_content"
@@ -197,7 +210,7 @@
             android:src="@drawable/ic_graph_divide_pent" />
 
         <include
-            android:id="@+id/includeButtonLayout6"
+            android:id="@+id/includeButtonLayout5"
             layout="@layout/content_button_layout"
             android:layout_width="@dimen/_40sdp"
             android:layout_height="wrap_content"

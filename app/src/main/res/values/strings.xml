@@ -72,12 +72,12 @@
 
     <!--Graphics Dialog UI Design-->
 
-    <string name="hint_layout_1">Layout </string>
-    <string name="hint_layout_2">Layout 1</string>
-    <string name="hint_layout_3">Layout 2</string>
-    <string name="hint_layout_4">Default</string>
-    <string name="hint_layout_5">Layout 4</string>
-    <string name="hint_layout_6">Layout 5</string>
+    <string name="hint_layout_default">Default</string>
+    <string name="hint_layout_1">Layout 1</string>
+    <string name="hint_layout_2">Layout 2</string>
+    <string name="hint_layout_3">Layout 3</string>
+    <string name="hint_layout_4">Layout 4</string>
+    <string name="hint_layout_5">Layout 5</string>
 
     <string name="hint_layout_loops">Loops</string>
 

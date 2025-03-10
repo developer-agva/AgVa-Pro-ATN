@@ -22,44 +22,47 @@ import com.agvahealthcare.ventilator_ext.callback.OnDismissDialogListener
 import com.agvahealthcare.ventilator_ext.callback.OnKnobPressListener
 import com.agvahealthcare.ventilator_ext.callback.OnLimitChangeListener
 import com.agvahealthcare.ventilator_ext.callback.OnLoudnessAdjustmentListener
+import com.agvahealthcare.ventilator_ext.dashboard.DashBoardActivity
 import com.agvahealthcare.ventilator_ext.databinding.FragmentSettingsBinding
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.system.SystemDialogFragment
 import com.agvahealthcare.ventilator_ext.utility.*
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs
-import com.github.angads25.toggle.interfaces.OnToggledListener
-import com.github.angads25.toggle.model.ToggleableView
 import com.github.angads25.toggle.widget.LabeledSwitch
 import com.scichart.drawing.utility.ColorUtil
 
 
 class SettingFragment : Fragment(), OnKnobPressListener, onDropDownSelectionListener,
     OnDismissDialogListener,
-    OnLimitChangeListener,
-    OnToggledListener {
+    OnLimitChangeListener {
+
     private lateinit var binding: FragmentSettingsBinding
     var customProgressDialog: KnobDialog? = null
     private var prefManager: PreferenceManager? = null
     var onLoudnessAdjustmentListener: OnLoudnessAdjustmentListener? = null
     var isViewClicked: Boolean = false
     private var mAdapter: CommonDropDownAdapter? = null
+    private var mTrendAdapter: CommonSetupAdapter? = null
     private var commonList = ArrayList<CommonItemData>()
+    private var trendParamList = arrayListOf("2 Min", "5 Min", "10 Min")
     var clickedTile: Configs.GraphType_Change? = null
-
+    var clickedTrendTile = false
+    var tagId = ""
 
     companion object {
         const val TAG = "SettingFragment"
         fun newInstance(
             onLoudnessAdjustmentListener: OnLoudnessAdjustmentListener?,
+            tag: String,
         ): SettingFragment {
             val args = Bundle()
             val fragment = SettingFragment()
             fragment.arguments = args
+            fragment.tagId = tag
             fragment.onLoudnessAdjustmentListener = onLoudnessAdjustmentListener
             return fragment
         }
     }
-
 
     // logic knob highlight starts here
 
@@ -192,7 +195,6 @@ class SettingFragment : Fragment(), OnKnobPressListener, onDropDownSelectionList
         data?.let {
 
             return when (highlightedIndex) {
-
                 0 -> binding.includeButtonLoudness.root
                 1 -> binding.includeButtonChange.root
                 2 -> binding.includeColorChange.root
@@ -217,10 +219,20 @@ class SettingFragment : Fragment(), OnKnobPressListener, onDropDownSelectionList
         }
     }
 
+    private fun setupTrendDropDownAdapter(recyclerView: RecyclerView) {
+        mTrendAdapter = CommonSetupAdapter(trendParamList, this@SettingFragment)
+        recyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = mTrendAdapter
+        }
+    }
+
     override fun onItemSelect(text: String, colorInt: Int) {
 
         binding.colorRecyclerView.visibility = View.GONE
         mAdapter = null
+        binding.trendsRecyclerView.visibility = View.GONE
+        mTrendAdapter = null
 
         when (clickedTile) {
 
@@ -241,9 +253,19 @@ class SettingFragment : Fragment(), OnKnobPressListener, onDropDownSelectionList
                 binding.flowText.text = text
                 prefManager?.setCurrentGraphColor("FLOW", colorInt)
             }
+
+            else -> {}
+        }
+
+        if (clickedTrendTile) {
+            prefManager?.setTrendDuration(text)
+            binding.trendDurationText.text = prefManager?.readTrendDuration()
+
+            if (tagId == "FromDashboard") (requireActivity() as DashBoardActivity).changeTrendsDurationListener()
         }
 
         clickedTile = null
+        clickedTrendTile = false
     }
 
     override fun onCreateView(
@@ -254,6 +276,7 @@ class SettingFragment : Fragment(), OnKnobPressListener, onDropDownSelectionList
         binding = FragmentSettingsBinding.inflate(layoutInflater, container, false)
         binding.root.setOnClickListener {
             binding.colorRecyclerView.visibility = View.GONE
+            binding.trendsRecyclerView.visibility = View.GONE
         }
         return binding.root
     }
@@ -278,6 +301,8 @@ class SettingFragment : Fragment(), OnKnobPressListener, onDropDownSelectionList
         setDataViaPreference()
         setUpLoudness()
         setOnClickListener()
+
+
     }
 
     private fun setDataViaPreference() {
@@ -300,11 +325,6 @@ class SettingFragment : Fragment(), OnKnobPressListener, onDropDownSelectionList
                 commonList.filter { it.colorInt == readCurrentGraphColor("VOLUME") }[0].text
             binding.flowText.text =
                 commonList.filter { it.colorInt == readCurrentGraphColor("FLOW") }[0].text
-
-//            toggle_pressure.isOn = readPressureFilledStatus()
-//            toggle_volume.isOn = readVolumeilledStatus()
-//            toggle_flow.isOn = readflowFilledStatus()
-
         }
     }
 
@@ -316,7 +336,7 @@ class SettingFragment : Fragment(), OnKnobPressListener, onDropDownSelectionList
         binding.includeButtonTest.buttonView.text = getString(R.string.hint_test)
         binding.includeButtonChange.buttonView.text = getString(R.string.hint_change)
         binding.includeColorChange.buttonView.text = "Graph Color"
-
+        binding.trendDurationText.text = prefManager?.readTrendDuration()
 
         binding.includeButtonTest.buttonView.setBackgroundResource(R.drawable.background_dark_grey)
         binding.includeButtonAutomatic.buttonView.setBackgroundResource(R.drawable.background_dark_grey)
@@ -329,7 +349,7 @@ class SettingFragment : Fragment(), OnKnobPressListener, onDropDownSelectionList
 
             clickedTile = Configs.GraphType_Change.TYPE_PRESSURE
             binding.colorRecyclerView.visibility = View.VISIBLE
-            changeConstraintsOfLayout(it)
+            changeConstraintsOfLayout(binding.colorRecyclerView, it, binding.layoutPanelColorChange)
             setupDropDownAdapter(binding.colorRecyclerView)
         }
 
@@ -344,7 +364,7 @@ class SettingFragment : Fragment(), OnKnobPressListener, onDropDownSelectionList
         binding.volumeLayout.setOnClickListener {
             clickedTile = Configs.GraphType_Change.TYPE_VOLUME
             binding.colorRecyclerView.visibility = View.VISIBLE
-            changeConstraintsOfLayout(it)
+            changeConstraintsOfLayout(binding.colorRecyclerView, it, binding.layoutPanelColorChange)
             setupDropDownAdapter(binding.colorRecyclerView)
         }
 
@@ -356,14 +376,19 @@ class SettingFragment : Fragment(), OnKnobPressListener, onDropDownSelectionList
 //            }
 //        }
 
-
         binding.flowLayout.setOnClickListener {
             clickedTile = Configs.GraphType_Change.TYPE_FLOW
             binding.colorRecyclerView.visibility = View.VISIBLE
-            changeConstraintsOfLayout(it)
+            changeConstraintsOfLayout(binding.colorRecyclerView, it, binding.layoutPanelColorChange)
             setupDropDownAdapter(binding.colorRecyclerView)
         }
 
+
+        binding.trendDurationLayout.setOnClickListener {
+            clickedTrendTile = true
+            binding.trendsRecyclerView.visibility = View.VISIBLE
+            setupTrendDropDownAdapter(binding.trendsRecyclerView)
+        }
 
 //        toggle_flow.setOnToggledListener { toggleableView, isOn ->
 //            if(isOn){
@@ -377,6 +402,7 @@ class SettingFragment : Fragment(), OnKnobPressListener, onDropDownSelectionList
         binding.includeButtonLoudness.buttonView.setOnClickListener {
             setUpLoudness()
         }
+
 
         binding.toggleKnob.setOnToggledListener { _, isOn ->
             if (prefManager?.readKnobStatus() == false) {
@@ -406,13 +432,10 @@ class SettingFragment : Fragment(), OnKnobPressListener, onDropDownSelectionList
 
         binding.progressBarLoudness.paramProgressBar.setOnClickListener {
 
-            it.let {
-                binding.progressBarLoudness.paramProgressBar.background =
-                    ContextCompat.getDrawable(
-                        requireContext(),
-                        R.drawable.progresscircle_with_selection_yellow
-                    )
-            }
+            it?.background = ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.progresscircle_with_selection_yellow
+            )
 
             val encoder = EncoderValue(VOLUME_MIN_VALUE.toFloat(), VOLUME_MAX_VALUE.toFloat(), 2.0f)
             prefManager?.readVolume()?.let { it1 ->
@@ -459,19 +482,14 @@ class SettingFragment : Fragment(), OnKnobPressListener, onDropDownSelectionList
         binding.toggleIETile.isOn = prefManager?.readIETileStatus() ?: false
     }
 
-
     private fun startTimer() {
 
         object : CountDownTimer(5000, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-
-            }
-
+            override fun onTick(millisUntilFinished: Long) {}
             override fun onFinish() {
                 isViewClicked = false
             }
         }.start()
-
 
     }
 
@@ -484,12 +502,11 @@ class SettingFragment : Fragment(), OnKnobPressListener, onDropDownSelectionList
         binding.includeButtonTest.buttonView.setPadding(50, 0, 50, 0)
         binding.includeButtonAutomatic.buttonView.setPadding(35, 0, 35, 0)
         binding.includeButtonApply.buttonView.setPadding(55, 10, 55, 10)
-
     }
 
     private fun setUpChange() {
 
-        (parentFragment as SystemDialogFragment).sizeOfCurrentArray = 3
+        (parentFragment as SystemDialogFragment).sizeOfCurrentArray = 4
 
         binding.includeButtonLoudness.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
         binding.includeColorChange.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
@@ -498,7 +515,6 @@ class SettingFragment : Fragment(), OnKnobPressListener, onDropDownSelectionList
         binding.layoutPanelLoudness.visibility = View.GONE
         binding.layoutPanelTubeComp.visibility = View.VISIBLE
         binding.layoutPanelColorChange.visibility = View.GONE
-
 
         setPaddingData()
     }
@@ -513,7 +529,6 @@ class SettingFragment : Fragment(), OnKnobPressListener, onDropDownSelectionList
 
         binding.layoutPanelLoudness.visibility = View.GONE
         binding.layoutPanelTubeComp.visibility = View.GONE
-
         binding.layoutPanelColorChange.visibility = View.VISIBLE
 
         setPaddingData()
@@ -526,7 +541,6 @@ class SettingFragment : Fragment(), OnKnobPressListener, onDropDownSelectionList
         binding.includeButtonChange.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
         binding.includeColorChange.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
-
         binding.layoutPanelLoudness.visibility = View.VISIBLE
         binding.layoutPanelTubeComp.visibility = View.GONE
         binding.layoutPanelColorChange.visibility = View.GONE
@@ -534,9 +548,7 @@ class SettingFragment : Fragment(), OnKnobPressListener, onDropDownSelectionList
         setPaddingData()
     }
 
-
     fun updateKnobSetting(data: String) {
-
         if (clickedTile != null) {
             when (data) {
                 Configs.PREFIX_PLUS -> mAdapter?.forwardIndex()
@@ -566,18 +578,13 @@ class SettingFragment : Fragment(), OnKnobPressListener, onDropDownSelectionList
                     R.drawable.progresscircle
                 )
 
-        } else {
         }
-
         // change here 13 feb
         customProgressDialog?.takeIf { it.isVisible }?.apply {
             this.dismiss()
-
         }
         customProgressDialog = null
-
     }
-
 
     override fun handleDialogClose() {
 
@@ -600,46 +607,33 @@ class SettingFragment : Fragment(), OnKnobPressListener, onDropDownSelectionList
         customProgressDialog = null
     }
 
-
     override fun onLimitChange(previousValue: Float, newValue: Float) {
         if (binding.layoutPanelLoudness.isVisible) {
             view.let {
-                (binding.progressBarLoudness.paramProgressBar as? CircularProgressIndicator)?.apply {
-                    this.setCurrentProgress(newValue.toInt().toDouble())
-                }
-
-                (binding.progressBarLoudness.textView as? TextView)?.apply {
-                    this.text = newValue.toInt().toString()
-                }
+                binding.progressBarLoudness.paramProgressBar.setCurrentProgress(
+                    newValue.toInt().toDouble()
+                )
+                binding.progressBarLoudness.textView.text = newValue.toInt().toString()
             }
-        } else {
-
-        }
-
-
-    }
-
-    override fun onSwitched(toggleableView: ToggleableView?, isOn: Boolean) {
-        if (isOn) {
-
-        } else { //progressBarTubeComp?.isEnabled = false
-
-
         }
     }
 
-    private fun changeConstraintsOfLayout(view: View) {
+    private fun changeConstraintsOfLayout(
+        recyclerView: RecyclerView,
+        view: View,
+        mainLayout: ConstraintLayout
+    ) {
         val constraintSet = ConstraintSet()
-        constraintSet.clone(binding.layoutPanelColorChange)
+        constraintSet.clone(mainLayout)
         constraintSet.connect(
-            binding.colorRecyclerView.id,
+            recyclerView.id,
             ConstraintSet.RIGHT,
             view.id,
             ConstraintSet.RIGHT,
             0
         )
         constraintSet.connect(
-            binding.colorRecyclerView.id,
+            recyclerView.id,
             ConstraintSet.TOP,
             view.id,
             ConstraintSet.BOTTOM,
@@ -647,12 +641,12 @@ class SettingFragment : Fragment(), OnKnobPressListener, onDropDownSelectionList
         )
 
         constraintSet.connect(
-            binding.colorRecyclerView.id,
+            recyclerView.id,
             ConstraintSet.LEFT,
             view.id,
             ConstraintSet.LEFT,
             0
         )
-        constraintSet.applyTo(binding.layoutPanelColorChange)
+        constraintSet.applyTo(mainLayout)
     }
 }

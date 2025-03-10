@@ -44,7 +44,9 @@ class DashBoardViewModel(application: Application) : AndroidViewModel(applicatio
 
     val isTouchGraph = MutableLiveData<Boolean>()
 
-
+    val vtiValue = MutableLiveData<Float>()
+    val vtApneaValue = MutableLiveData<Float>()
+    val pipValue = MutableLiveData<Float>()
     private val alarmBuffer = arrayListOf<AlarmModel>()
     private val evemntBuffer = arrayListOf<EventViewModel>()
     private val EVENT_BUFFER_THRESHOLD = 50

@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:ignore="MissingDefaultResource">
 
     <TextView
         android:id="@+id/txtWaitTrends"
@@ -22,23 +24,208 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvParameterConstants"
-            android:layout_width="@dimen/_90sdp"
-            android:layout_height="0dp"
-            android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@id/seekBarLayout"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvTwo"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/staticLayoutTrends"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_param"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="#4E4E4E"
+                android:paddingHorizontal="@dimen/_1sdp"
+                android:paddingVertical="@dimen/_2sdp"
+                android:text="Parameter"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/_6sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tv_unit"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_unit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="#4E4E4E"
+                android:paddingHorizontal="@dimen/_1sdp"
+                android:paddingVertical="@dimen/_2sdp"
+                android:text="Unit"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/_6sdp"
+                app:layout_constraintStart_toEndOf="@id/tv_param"
+                app:layout_constraintEnd_toStartOf="@id/tv_time_1"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_time_1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="#4E4E4E"
+                android:paddingHorizontal="@dimen/_1sdp"
+                android:paddingVertical="@dimen/_2sdp"
+                android:text=""
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/_6sdp"
+                android:visibility="invisible"
+                app:layout_constraintStart_toEndOf="@id/tv_unit"
+                app:layout_constraintEnd_toStartOf="@id/tv_time_2"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_time_2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="#4E4E4E"
+                android:paddingHorizontal="@dimen/_1sdp"
+                android:paddingVertical="@dimen/_2sdp"
+                android:text=""
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:visibility="invisible"
+                android:textSize="@dimen/_6sdp"
+                app:layout_constraintStart_toEndOf="@id/tv_time_1"
+                app:layout_constraintEnd_toStartOf="@id/tv_time_3"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_time_3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="#4E4E4E"
+                android:paddingHorizontal="@dimen/_1sdp"
+                android:paddingVertical="@dimen/_2sdp"
+                android:text=""
+                android:textAlignment="center"
+                android:visibility="invisible"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/_6sdp"
+                app:layout_constraintStart_toEndOf="@id/tv_time_2"
+                app:layout_constraintEnd_toStartOf="@id/tv_time_4"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_time_4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="#4E4E4E"
+                android:paddingHorizontal="@dimen/_1sdp"
+                android:paddingVertical="@dimen/_2sdp"
+                android:text=""
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:visibility="invisible"
+                android:textSize="@dimen/_6sdp"
+                app:layout_constraintStart_toEndOf="@id/tv_time_3"
+                app:layout_constraintEnd_toStartOf="@id/tv_time_5"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_time_5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="#4E4E4E"
+                android:paddingHorizontal="@dimen/_1sdp"
+                android:paddingVertical="@dimen/_2sdp"
+                android:text=""
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:visibility="invisible"
+                android:textSize="@dimen/_6sdp"
+                app:layout_constraintStart_toEndOf="@id/tv_time_4"
+                app:layout_constraintEnd_toStartOf="@id/tv_time_6"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_time_6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="#4E4E4E"
+                android:paddingHorizontal="@dimen/_1sdp"
+                android:paddingVertical="@dimen/_2sdp"
+                android:text=""
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:visibility="invisible"
+                android:textSize="@dimen/_6sdp"
+                app:layout_constraintStart_toEndOf="@id/tv_time_5"
+                app:layout_constraintEnd_toStartOf="@id/tv_time_7"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_time_7"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="#4E4E4E"
+                android:paddingHorizontal="@dimen/_1sdp"
+                android:paddingVertical="@dimen/_2sdp"
+                android:text=""
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:visibility="invisible"
+                android:textSize="@dimen/_6sdp"
+                app:layout_constraintStart_toEndOf="@id/tv_time_6"
+                app:layout_constraintEnd_toStartOf="@id/tv_time_8"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_time_8"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="#4E4E4E"
+                android:paddingHorizontal="@dimen/_1sdp"
+                android:paddingVertical="@dimen/_2sdp"
+                android:text=""
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:visibility="invisible"
+                android:textSize="@dimen/_6sdp"
+                app:layout_constraintStart_toEndOf="@id/tv_time_7"
+                app:layout_constraintEnd_toStartOf="@id/tv_time_9"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_time_9"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="#4E4E4E"
+                android:paddingHorizontal="@dimen/_1sdp"
+                android:paddingVertical="@dimen/_2sdp"
+                android:text=""
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:visibility="invisible"
+                android:textSize="@dimen/_6sdp"
+                app:layout_constraintStart_toEndOf="@id/tv_time_8"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <ScrollView
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="@id/rvParameterConstants"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/rvParameterConstants"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/staticLayoutTrends">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvTwo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </ScrollView>
 
         <LinearLayout
             android:id="@+id/seekBarLayout"

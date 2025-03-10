@@ -34,7 +34,23 @@ import java.util.UUID;
 
 public interface Configs {
     // for testing purpose
+    String trendFiveMin = "trend_five_min";
+    String trendTwoMin = "trend_two_min";
+    String trendTenMin = "trend_ten_min";
+    public static String getTrendsFileName(PreferenceManager preferenceManager) {
 
+        switch (preferenceManager.readTrendDuration()) {
+
+            case "5 Min":
+                return trendFiveMin;
+            case "2 Min":
+                return trendTwoMin;
+            case "10 Min":
+                return trendTenMin;
+        }
+
+        return trendFiveMin;
+    }
     enum Direction {
         UP,
         DOWN

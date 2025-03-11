@@ -59,7 +59,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import java.io.InputStream
 import java.io.OutputStream
-import java.lang.Thread.setDefaultUncaughtExceptionHandler
 import java.util.concurrent.TimeUnit
 
 
@@ -577,10 +576,7 @@ class SplashActivity : AppCompatActivity(), SimpleCallbackListener,
                             }
                         }
                     }
-
                 }
-
-
             }
         }
     }

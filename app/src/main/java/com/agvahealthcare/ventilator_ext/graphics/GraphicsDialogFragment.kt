@@ -210,6 +210,7 @@ class GraphicsDialogFragment(
                 R.color.white
             )
         )
+
         binding.includeButtonLayout1.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
         binding.includeButtonLayout1.buttonView.setTextColor(
             ContextCompat.getColor(

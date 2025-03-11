@@ -3171,10 +3171,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         normaliseButtons()
         disablePresence()
 
-        val deviceId =
-            Settings.Secure.getString(this@MainActivity.contentResolver, Settings.Secure.ANDROID_ID)
-        val input =
-            "https://wa.me/7330405060?text=Hi, i need support for this ventilator id - +${deviceId}"
+        val deviceId = Settings.Secure.getString(this@MainActivity.contentResolver, Settings.Secure.ANDROID_ID)
+        val input = "https://wa.me/7330405060?text=Hi, i need support for this ventilator id - +${deviceId}"
 
         val qrCodeBitmap = qrCode(input)
         binding.qrCodeStandby.setImageBitmap(qrCodeBitmap)
@@ -4092,11 +4090,9 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 setTextColor(ContextCompat.getColor(this@MainActivity, R.color.black))
                 setPaddingOnButtons()
             }
-
         }
         setPaddingOnButtons()
     }
-
 
     private fun setDataMale() {
         binding.includeMale.imageViewMale.setImageResource(R.drawable.ic_male_select)

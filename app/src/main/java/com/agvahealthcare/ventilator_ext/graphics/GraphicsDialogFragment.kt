@@ -137,9 +137,9 @@ class GraphicsDialogFragment(
 
         return when (highlightedIndex) {
             1 -> Pair(binding.imageViewCrossGraphics,binding.imageViewCrossGraphics)
-            2 -> Pair(binding.layoutPanelTrio,binding.layoutPanelTrio)
-            3 -> Pair(binding.layoutPanelDuo,binding.layoutPanelDuo)
-            4 -> Pair(binding.layoutPanelQuadTrends,binding.layoutPanelQuadTrends)
+            2 -> Pair(binding.layoutPanelDuo,binding.layoutPanelDuo)
+            3 -> Pair(binding.layoutPanelQuadTrends,binding.layoutPanelQuadTrends)
+            4 -> Pair(binding.layoutPanelTrio,binding.layoutPanelTrio)
             5 -> Pair(binding.layoutPanelDivideQuad,binding.layoutPanelDivideQuad)
             6 -> Pair(binding.layoutPanelDivideTrio,binding.layoutPanelDivideTrio)
             7 -> Pair(binding.layoutPanelDividePent,binding.layoutPanelDividePent)

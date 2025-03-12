@@ -103,9 +103,6 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
     private static final int ARDUINO_VENDOR_ID_HID = 1003;
     private static final int DEFAULT_BAUD_RATE_HID = 9600;
 
-//    private static final int ARDUINO_VENDOR_ID_HID = 6790;
-//    private static final int DEFAULT_BAUD_RATE_HID = 115200;
-
     private UsbManager usbManager;
     private UsbSerialPort usbVentilatorPort;
     private UsbSerialPort usbWriteVentilatorPort;
@@ -215,7 +212,6 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
                             // +1 for ACK code number (Don't remove -1 +1 this is for understanding)
                             try {
                                 int ackStartIndex = buffData.indexOf(Configs.PREFIX_ACK);
-
                                 // Check if ackStartIndex is valid (-1 means the prefix was not found)
                                 if (ackStartIndex != -1) {
                                     int ackTerminalIndex = buffData.indexOf(Configs.SUFFIX_ACK, ackStartIndex);
@@ -847,11 +843,11 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
         Log.i("USB_CHECK", "usb service onStartCommand Called");
         preferenceManager.setServiceStatus(true);
 
-        Notification notification = new NotificationCompat.Builder(this)
-                .setContentTitle("AgVa Service")
-                .setContentText("Services Started")
-                .build();
-        startForeground(1, notification);
+//        Notification notification = new NotificationCompat.Builder(this)
+//                .setContentTitle("AgVa Service")
+//                .setContentText("Services Started")
+//                .build();
+//        startForeground(1, notification);
 
         Log.i("USB_SERVICE_STATUS", "Started service onStartCommand");
         return START_STICKY;

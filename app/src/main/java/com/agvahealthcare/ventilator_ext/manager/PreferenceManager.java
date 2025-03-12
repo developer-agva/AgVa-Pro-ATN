@@ -614,7 +614,6 @@ public class PreferenceManager {
         return sp.getBoolean(PREF_VENTI_CONFIG_STATUS, true);
     }
 
-
     //==============Venti configurations END===================
 
     //================= Log StartEnd DateTime ==============

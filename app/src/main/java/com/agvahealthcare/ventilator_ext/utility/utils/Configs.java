@@ -1377,9 +1377,7 @@ public interface Configs {
                 minTargetSpo2 = Integer.valueOf(ctx.getResources().getString(R.string.min_target_spo2));
                 targetVolumeStep = Integer.valueOf("10");
 
-
                 maxTargetSpo2 = Integer.valueOf(ctx.getResources().getString(R.string.max_target_spo2));
-
                 minHrLimit = Integer.valueOf(ctx.getResources().getString(R.string.min_hr_limit));
                 maxHrLimit = Integer.valueOf(ctx.getResources().getString(R.string.max_hr_limit));
                 maxPplat = Integer.valueOf(ctx.getResources().getString(R.string.max_pplat_ped));

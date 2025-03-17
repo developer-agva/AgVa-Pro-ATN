@@ -60,6 +60,7 @@ class VentilatorApp : Application() {
         var isTrendsFirstTime = false
         var apneaActive:Boolean = false
         var isEtCo2Available:Boolean = false
+        var dischargeDate:String? = null
 
         var isSocketConnected:Boolean = false
         var flowPeakValuePositive : Float? = null

@@ -14,6 +14,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.callback.*
+import com.agvahealthcare.ventilator_ext.hl7comm.HL7CommunicationFragment
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.service.CommunicationService
 import com.agvahealthcare.ventilator_ext.system.advanced.AdvancedCalibrationFragment
@@ -81,6 +82,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
     private var testCalibrationFragment: TestCalibrationFragment? = null
     private var advancedCalibrationFragment: AdvancedCalibrationFragment? = null
     private var startupCheckFragment: StartupCheckFragment? = null
+    private var hL7CommunicationFragment:HL7CommunicationFragment? = null
     private var networkFragment: NetworkFragment? = null
     private var tubeDiaFragment: TubeDiaFragment? = null
     private var debugFragment: DebugFragment? = null
@@ -159,6 +161,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         debugFragment = null
         otaFragment = null
         wifiFragment = null
+        hL7CommunicationFragment = null
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -577,6 +580,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         includeButtondeviceUpdate.buttonView.text = getString(R.string.hint_update)
         includeButtonNetworkInfo.buttonView.text = getString(R.string.network_info)
         includeButtonWifi.buttonView.text = getString(R.string.wifi)
+        includeButtonTransfer.buttonView.text = getString(R.string.hl7Transfer)
 
         imageViewCrossSystem.setOnClickListener {
 
@@ -626,6 +630,9 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         }
         includeButtonWifi.buttonView.setOnClickListener {
             showWifiFragment()
+        }
+        includeButtonTransfer.buttonView.setOnClickListener {
+            showhl7CommunicationFragment()
         }
     }
 
@@ -842,6 +849,17 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         }
 
         highlightButton(includeButtonWifi)
+    }
+
+    private fun showhl7CommunicationFragment(){
+        makeAllFragmentsNull()
+        sizeOfCurrentArray = 0
+        if(hL7CommunicationFragment == null)
+            hL7CommunicationFragment = HL7CommunicationFragment()
+
+        hL7CommunicationFragment?.apply {
+            replaceFragment(this,TAG,R.id.system_nav_container)
+        }
     }
 
     // handling fragments selections

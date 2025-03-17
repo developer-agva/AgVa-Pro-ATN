@@ -245,6 +245,7 @@ public class PreferenceManager {
     private static final String PREF_VOLUME = "pref_volume";
     private static final String PREF_TUBE_DIA = "pref_tube_Dia";
     private static final String PREF_NEBULISER = "pref_nebuliser";
+    private static final String PREF_DISCHARGE_DATE = "pref_discharge_date";
     private static final String PREF_TUBE_RESISTANCE = "pref_tubeResistance";
     private static final String PREF_TUBE_COMPLIANCE = "pref_tubeCompliance";
     private static final String PREF_STARTUP_COUNT = "pref_startCount";
@@ -1191,6 +1192,18 @@ public class PreferenceManager {
 
     public void setNebuliserTime(Float val) {
         updateData(PREF_NEBULISER, val);
+    }
+
+    public String readDischargeDateTime(){
+            return sp.getString(readCurrentUid() + "." + PREF_DISCHARGE_DATE,"-") ;
+
+    }
+
+    public void setDischargeDateTime(){
+        String dischargeDate = AppUtils.getCurrentDateTime();
+        updateData(PREF_DISCHARGE_DATE,dischargeDate);
+
+
     }
 
     public Gender readGender() {

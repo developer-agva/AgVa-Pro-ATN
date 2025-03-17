@@ -79,6 +79,15 @@
         app:layout_constraintEnd_toEndOf="@id/imageViewCrossSystem"
         app:layout_constraintTop_toBottomOf="@id/includeButtonTube"
         android:visibility="visible" />
+    <include
+        android:id="@+id/includeButtonTransfer"
+        layout="@layout/content_button_layout"
+        android:layout_width="127dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="@id/imageViewCrossSystem"
+        app:layout_constraintTop_toBottomOf="@id/includeButtonService"
+        android:visibility="visible" />
 
     <include
         android:id="@+id/includeButtonDiagchk"

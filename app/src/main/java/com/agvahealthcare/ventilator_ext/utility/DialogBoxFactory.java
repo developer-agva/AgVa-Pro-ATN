@@ -41,6 +41,7 @@ import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.cardview.widget.CardView;
 
 import com.agvahealthcare.ventilator_ext.R;
+import com.agvahealthcare.ventilator_ext.VentilatorApp;
 import com.agvahealthcare.ventilator_ext.api.model.serviceDataModel.Data;
 import com.agvahealthcare.ventilator_ext.callback.OnModeChangeListener;
 import com.agvahealthcare.ventilator_ext.callback.OtpVerifyListener;
@@ -53,6 +54,7 @@ import com.agvahealthcare.ventilator_ext.model.VentMode;
 import com.agvahealthcare.ventilator_ext.system.o2Regulation.O2RegulationCheckViewModel;
 import com.agvahealthcare.ventilator_ext.utility.callback.OnIssueCloseListener;
 import com.agvahealthcare.ventilator_ext.utility.callback.SingleValueCallbackListener;
+import com.agvahealthcare.ventilator_ext.utility.utils.AppUtils;
 import com.agvahealthcare.ventilator_ext.utility.utils.GenericKeyEvent;
 import com.agvahealthcare.ventilator_ext.utility.utils.GenericTextWatcher;
 import com.google.android.material.textfield.TextInputLayout;
@@ -1234,7 +1236,7 @@ public class DialogBoxFactory {
         View view = LayoutInflater.from(ctx).inflate(R.layout.layout_dialog_vent_status, null, false);
 
         Button btnStandby = view.findViewById(R.id.btnStandby);
-        Button btnCancel = view.findViewById(R.id.btnCancel);
+        Button btnDischarge = view.findViewById(R.id.btnDischarge);
 
         TextView dialogMessage = view.findViewById(R.id.etCmd);
         dialogMessage.setText(msg);
@@ -1247,7 +1249,11 @@ public class DialogBoxFactory {
 
         });
 
-        btnCancel.setOnClickListener(v -> dialog.cancel());
+        btnDischarge.setOnClickListener(v -> {
+//            VentilatorApp.Companion.setDischargeDate(AppUtils.getCurrentDateTime());
+            if(onclickStandby != null) onclickStandby.doAction();
+            dialog.cancel();
+        });
 
         setShutDownDialogView(dialog, true);
 

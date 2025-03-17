@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".hl7comm.HL7CommunicationFragment">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelneTopFirst"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintGuide_percent="0.08"
+        android:orientation="horizontal"
+        />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelneLeftStart"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintGuide_percent="0.04"
+        android:orientation="vertical"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelneLeftmid1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintGuide_percent="0.25"
+        android:orientation="vertical"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelneLeftmid2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintGuide_percent="0.36"
+        android:orientation="vertical"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelneLeftmid3"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintGuide_percent="0.54"
+        android:orientation="vertical"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelneLeftmid4"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintGuide_percent="0.65"
+        android:orientation="vertical"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelneLeftmid5"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintGuide_percent="0.90"
+        android:orientation="vertical"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelneRightEnd"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintGuide_percent="0.96"
+        android:orientation="vertical"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelneBottomEnd"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintGuide_percent="0.92"
+        android:orientation="horizontal"
+        />
+
+    <LinearLayout
+        android:id="@+id/titletopBar"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/guidelneTopFirst"
+        android:background="@color/preCalib_amber"
+        >
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Data exchange window"
+            android:textAllCaps="true"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:textSize="@dimen/_6sdp"/>
+
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/ptTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Patient Information"
+        app:layout_constraintTop_toBottomOf="@id/guidelneTopFirst"
+        app:layout_constraintStart_toStartOf="@id/guidelneLeftStart"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:textStyle="bold"
+        android:textSize="@dimen/_6sdp"
+        app:layout_constraintEnd_toEndOf="@id/guidelneRightEnd"/>
+
+    <View
+        android:id="@+id/topSeparator"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_1sdp"
+        android:background="@color/uhid_grey"
+        app:layout_constraintStart_toStartOf="@id/guidelneLeftStart"
+        app:layout_constraintEnd_toEndOf="@id/guidelneRightEnd"
+        app:layout_constraintTop_toBottomOf="@+id/ptTitle"/>
+
+    <TextView
+        android:id="@+id/ptUhid"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Patient UHID"
+        app:layout_constraintTop_toBottomOf="@id/topSeparator"
+        app:layout_constraintStart_toStartOf="@id/guidelneLeftStart"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:textStyle="bold"
+        android:textSize="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="@id/guidelneRightEnd"/>
+
+    <EditText
+        android:id="@+id/etptUHID"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Enter Patient UHID"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_5sdp"
+        android:background="@drawable/custom_edit_text_background"
+        android:inputType="text"
+        android:maxLength="50"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:maxLines="1"
+        app:layout_constraintStart_toStartOf="@id/guidelneLeftStart"
+        app:layout_constraintEnd_toEndOf="@id/guidelneLeftmid1"
+        app:layout_constraintTop_toBottomOf="@id/ptUhid"
+        />
+
+    <TextView
+        android:id="@+id/ptName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Patient Name"
+        app:layout_constraintTop_toBottomOf="@id/etptUHID"
+        app:layout_constraintStart_toStartOf="@id/guidelneLeftStart"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:textStyle="bold"
+        android:textSize="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="@id/guidelneRightEnd"/>
+
+    <EditText
+        android:id="@+id/etptName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Enter Patient Name"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_5sdp"
+        android:background="@drawable/custom_edit_text_background"
+        android:inputType="text"
+        android:maxLength="50"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:maxLines="1"
+        app:layout_constraintStart_toStartOf="@id/guidelneLeftStart"
+        app:layout_constraintEnd_toEndOf="@id/guidelneLeftmid1"
+        app:layout_constraintTop_toBottomOf="@id/ptName"
+        />
+
+    <TextView
+        android:id="@+id/ptDob"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Patient DOB"
+        app:layout_constraintTop_toBottomOf="@id/etptName"
+        app:layout_constraintStart_toStartOf="@id/guidelneLeftStart"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:textStyle="bold"
+        android:textSize="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="@id/guidelneRightEnd"/>
+
+    <EditText
+        android:id="@+id/etptDOB"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Enter patient DOB"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_5sdp"
+        android:background="@drawable/custom_edit_text_background"
+        android:inputType="none"
+        android:focusable="false"
+        android:clickable="true"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:maxLines="1"
+        android:gravity="center_vertical"
+        app:layout_constraintStart_toStartOf="@id/guidelneLeftStart"
+        app:layout_constraintEnd_toEndOf="@id/guidelneLeftmid1"
+        app:layout_constraintTop_toBottomOf="@id/ptDob"/>
+
+
+
+
+    <TextView
+        android:id="@+id/ptEmergencyContact"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Emergency Contact"
+        app:layout_constraintTop_toBottomOf="@id/etptDOB"
+        app:layout_constraintStart_toStartOf="@id/guidelneLeftStart"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:textStyle="bold"
+        android:textSize="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="@id/guidelneRightEnd"/>
+    <EditText
+        android:id="@+id/etptEmContact"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Enter emergency contact"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_5sdp"
+        android:background="@drawable/custom_edit_text_background"
+        android:inputType="text"
+        android:maxLength="50"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:maxLines="1"
+        app:layout_constraintStart_toStartOf="@id/guidelneLeftStart"
+        app:layout_constraintEnd_toEndOf="@id/guidelneLeftmid1"
+        app:layout_constraintTop_toBottomOf="@id/ptEmergencyContact"
+        />
+    <TextView
+        android:id="@+id/ptGender"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Gender"
+        app:layout_constraintTop_toBottomOf="@id/etptEmContact"
+        app:layout_constraintStart_toStartOf="@id/guidelneLeftStart"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:textStyle="bold"
+        android:textSize="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="@id/guidelneRightEnd"/>
+    <TextView
+        android:id="@+id/ptGenderValue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="MALE"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/ptGender"
+        app:layout_constraintStart_toStartOf="@id/guidelneLeftStart"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:textStyle="bold"
+        android:padding="@dimen/_2sdp"
+        android:textSize="@dimen/_5sdp"
+        android:background="@drawable/background_darkgrey_border_white"
+        app:layout_constraintEnd_toEndOf="@id/guidelneLeftmid1"/>
+
+    <TextView
+        android:id="@+id/ptDiagnosis"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Diagnosis Info"
+        app:layout_constraintTop_toBottomOf="@id/ptGenderValue"
+        app:layout_constraintStart_toStartOf="@id/guidelneLeftStart"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:textStyle="bold"
+        android:textSize="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="@id/guidelneRightEnd"/>
+
+
+    <EditText
+        android:id="@+id/etptDiagnosisValue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Enter patient diagnosis"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_5sdp"
+        android:background="@drawable/custom_edit_text_background"
+        android:inputType="text"
+        android:maxLength="50"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:maxLines="1"
+        app:layout_constraintStart_toStartOf="@id/guidelneLeftStart"
+        app:layout_constraintEnd_toEndOf="@id/guidelneLeftmid1"
+        app:layout_constraintTop_toBottomOf="@id/ptDiagnosis"
+        />
+
+
+    <!-- Admission & Discharge Details Starts Below -->
+
+
+    <TextView
+        android:id="@+id/ptAdmission"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Patient Admission Date"
+        app:layout_constraintTop_toBottomOf="@id/topSeparator"
+        app:layout_constraintStart_toStartOf="@id/guidelneLeftmid2"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:textStyle="bold"
+        android:textSize="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="@id/guidelneLeftmid3"/>
+    <TextView
+        android:id="@+id/ptAdmissionDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="02/Feb/2025"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/ptAdmission"
+        app:layout_constraintStart_toStartOf="@id/guidelneLeftmid2"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:textStyle="bold"
+        android:padding="@dimen/_2sdp"
+        android:textSize="@dimen/_5sdp"
+        android:background="@drawable/background_darkgrey_border_white"
+        app:layout_constraintEnd_toEndOf="@id/guidelneLeftmid3"/>
+
+
+    <TextView
+        android:id="@+id/ptDischarge"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Patient Discharge Date"
+        app:layout_constraintTop_toBottomOf="@id/ptAdmissionDate"
+        app:layout_constraintStart_toStartOf="@id/guidelneLeftmid2"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:textStyle="bold"
+        android:textSize="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="@id/guidelneLeftmid3"/>
+
+    <TextView
+        android:id="@+id/ptdischargeDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="10/Feb/2025"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/ptDischarge"
+        app:layout_constraintStart_toStartOf="@id/guidelneLeftmid2"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:textStyle="bold"
+        android:padding="@dimen/_2sdp"
+        android:textSize="@dimen/_5sdp"
+        android:background="@drawable/background_darkgrey_border_white"
+        app:layout_constraintEnd_toEndOf="@id/guidelneLeftmid3"/>
+
+    <TextView
+        android:id="@+id/tvHL7CommTypetitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="HL7 version selection"
+        app:layout_constraintTop_toBottomOf="@id/topSeparator"
+        app:layout_constraintStart_toStartOf="@id/guidelneLeftmid4"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:textStyle="bold"
+        android:textSize="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="@id/guidelneRightEnd"/>
+
+    <Spinner
+        android:id="@+id/spHL7CommValue"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="@dimen/_4sdp"
+        app:layout_constraintStart_toStartOf="@id/guidelneLeftmid4"
+        app:layout_constraintEnd_toEndOf="@id/guidelneLeftmid5"
+        app:layout_constraintBottom_toTopOf="@id/guidelineBelowSpinnner"
+        app:layout_constraintTop_toBottomOf="@id/tvHL7CommTypetitle"
+        android:background="@drawable/border_spinner"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineBelowSpinnner"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.26"/>
+
+    <TextView
+        android:id="@+id/tvtransferTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Initiate Process "
+        app:layout_constraintTop_toBottomOf="@id/guidelineBelowSpinnner"
+        app:layout_constraintStart_toStartOf="@id/guidelneLeftmid4"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:textStyle="bold"
+        android:textSize="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="@id/guidelneRightEnd"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/preCalib_amber"
+        android:text="Send data"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:textAllCaps="true"
+        android:textSize="@dimen/_5sdp"
+        app:layout_constraintStart_toStartOf="@id/guidelneLeftmid4"
+        app:layout_constraintEnd_toEndOf="@id/guidelneLeftmid5"
+        app:layout_constraintTop_toBottomOf="@id/tvtransferTitle"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

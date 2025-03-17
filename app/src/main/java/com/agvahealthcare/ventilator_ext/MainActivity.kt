@@ -2579,16 +2579,16 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 advancedControlParameterList?.filter {
                     it.ventKey == LBL_TEXP
                 }?.apply {
-                    this[0].reading = 90.0f.toInt().toString()
-                    prefManager?.setTexp(90.0f)
+                    this[0].reading = 75.0f.toInt().toString()
+                    prefManager?.setTexp(75.0f)
                 }
             } else {
                 advancedControlParameterList?.filter {
                     it.ventKey == LBL_TEXP
                 }?.apply {
                     if (this.size != 0) {
-                        this[0].reading = 50.0f.toInt().toString()
-                        prefManager?.setTexp(50.0f)
+                        this[0].reading = 75.0f.toInt().toString()
+                        prefManager?.setTexp(75.0f)
                     }
                 }
             }
@@ -2598,16 +2598,16 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 advancedControlParameterList?.filter {
                     it.ventKey == LBL_TEXP
                 }?.apply {
-                    this[0].reading = 90.0f.toInt().toString()
-                    prefManager?.setTexp(90.0f)
+                    this[0].reading = 50.0f.toInt().toString()
+                    prefManager?.setTexp(50.0f)
                 }
             } else {
                 advancedControlParameterList?.filter {
                     it.ventKey == LBL_TEXP
                 }?.apply {
                     if (this.size != 0) {
-                        this[0].reading = 25.0f.toInt().toString()
-                        prefManager?.setTexp(25.0f)
+                        this[0].reading = 50.0f.toInt().toString()
+                        prefManager?.setTexp(50.0f)
                     }
                 }
             }
@@ -5371,7 +5371,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     )
                     else updateParameter(
                         LBL_TEXP,
-                        90.0f.toInt().toString()
+                        75.0f.toInt().toString()
                     )
                 } else {
                     if (isKnobPressedForControlTile) updateParameter(
@@ -5380,7 +5380,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     )
                     else updateParameter(
                         LBL_TEXP,
-                        50.0f.toInt().toString()
+                        75.0f.toInt().toString()
                     )
                 }
             }else{
@@ -5392,7 +5392,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     )
                     else updateParameter(
                         LBL_TEXP,
-                        90.0f.toInt().toString()
+                        50.0f.toInt().toString()
                     )
                 } else {
                     if (isKnobPressedForControlTile) updateParameter(
@@ -5401,7 +5401,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     )
                     else updateParameter(
                         LBL_TEXP,
-                        25.0f.toInt().toString()
+                        50.0f.toInt().toString()
                     )
                 }
             }
@@ -5453,6 +5453,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 //            }
 //        }
     }
+
     private fun highlightButton(btn: AppCompatButton) {
         normaliseButtons()
         btn.apply {

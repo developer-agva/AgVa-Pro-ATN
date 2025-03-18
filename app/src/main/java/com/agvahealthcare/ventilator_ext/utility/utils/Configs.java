@@ -1408,7 +1408,7 @@ public interface Configs {
                 maxFlow = Integer.parseInt(ctx.getResources().getString(R.string.max_flow_ped));
                 minFiO2Dev = Integer.parseInt(ctx.getResources().getString(R.string.min_fio2_dev));
                 maxFiO2Dev = Integer.parseInt(ctx.getResources().getString(R.string.max_fio2_dev));
-                minTexp = Integer.parseInt(ctx.getResources().getString(R.string.min_texp));
+                minTexp =  VentilatorApp.Companion.getSelectedOptions() == SELECTED_OPTIONS.NON_INVASIVE_NAME ?  Integer.parseInt(ctx.getResources().getString(R.string.min_texp_non_inv)) : Integer.parseInt(ctx.getResources().getString(R.string.min_texp));
                 maxTexp = Integer.parseInt(ctx.getResources().getString(R.string.max_texp));
                 minVti = Integer.valueOf(ctx.getResources().getString(R.string.min_vti_ped));
                 maxVti = Integer.valueOf(ctx.getResources().getString(R.string.max_vti_ped));
@@ -1498,7 +1498,7 @@ public interface Configs {
                 maxFlow = Integer.parseInt(ctx.getResources().getString(R.string.max_flow));
                 minFiO2Dev = Integer.parseInt(ctx.getResources().getString(R.string.min_fio2_dev));
                 maxFiO2Dev = Integer.parseInt(ctx.getResources().getString(R.string.max_fio2_dev));
-                minTexp = Integer.parseInt(ctx.getResources().getString(R.string.min_texp));
+                minTexp =  VentilatorApp.Companion.getSelectedOptions() == SELECTED_OPTIONS.NON_INVASIVE_NAME ?  Integer.parseInt(ctx.getResources().getString(R.string.min_texp_non_inv)) : Integer.parseInt(ctx.getResources().getString(R.string.min_texp));
                 maxTexp = Integer.parseInt(ctx.getResources().getString(R.string.max_texp));
                 minVti = Integer.valueOf(ctx.getResources().getString(R.string.min_vti));
                 maxVti = Integer.valueOf(ctx.getResources().getString(R.string.max_vti));

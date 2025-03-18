@@ -15,6 +15,7 @@ import androidx.fragment.app.DialogFragment
 import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.callback.*
 import com.agvahealthcare.ventilator_ext.databinding.FragmentSystemDialogBinding
+import com.agvahealthcare.ventilator_ext.hl7comm.HL7CommunicationFragment
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.service.CommunicationService
 import com.agvahealthcare.ventilator_ext.system.advanced.AdvancedCalibrationFragment
@@ -80,6 +81,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
     private var infoFragment: InfoFragment? = null
     private var testCalibrationFragment: TestCalibrationFragment? = null
     private var advancedCalibrationFragment: AdvancedCalibrationFragment? = null
+    private var hL7CommunicationFragment : HL7CommunicationFragment? = null
     private var startupCheckFragment: StartupCheckFragment? = null
     private var networkFragment: NetworkFragment? = null
     private var tubeDiaFragment: TubeDiaFragment? = null
@@ -158,6 +160,18 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         debugFragment = null
         otaFragment = null
         wifiFragment = null
+        hL7CommunicationFragment = null
+    }
+
+    private fun showhl7CommunicationFragment(){
+        makeAllFragmentsNull()
+        sizeOfCurrentArray = 0
+        if(hL7CommunicationFragment == null)
+            hL7CommunicationFragment = HL7CommunicationFragment()
+
+        hL7CommunicationFragment?.apply {
+            replaceFragment(this,TAG,R.id.system_nav_container)
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -609,6 +623,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         binding.includeButtondeviceUpdate.buttonView.text = getString(R.string.hint_update)
         binding.includeButtonNetworkInfo.buttonView.text = getString(R.string.network_info)
         binding.includeButtonWifi.buttonView.text = getString(R.string.wifi)
+        binding.includeButtonTransfer.buttonView.text = getString(R.string.discharge)
 
         binding.imageViewCrossSystem.setOnClickListener {
             closeFragment()
@@ -660,6 +675,9 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
 
         binding.includeButtonWifi.buttonView.setOnClickListener {
             showWifiFragment()
+        }
+        binding.includeButtonTransfer.buttonView.setOnClickListener {
+            showhl7CommunicationFragment()
         }
     }
 

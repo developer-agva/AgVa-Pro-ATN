@@ -45,8 +45,9 @@ class HL7CommunicationFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_h_l7_communication, container, false)
 
+        hL7CommunicationBinding = FragmentHL7CommunicationBinding.inflate(layoutInflater,container,false)
+        return hL7CommunicationBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

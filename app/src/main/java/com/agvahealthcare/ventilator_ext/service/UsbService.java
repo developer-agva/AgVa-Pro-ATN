@@ -88,7 +88,7 @@ class CustomProber {
     }
 }
 
-public class UsbService extends CommunicationService implements SerialInputOutputManager.Listener, SerialInputOutputHIDManager.Listener {
+public class UsbService extends CommunicationService implements SerialInputOutputManager.Listener {
 
     private static final String CHANNEL_ID = "ventilatorApp";
     //For the Main PCB 9025 is the Vendor ID
@@ -100,25 +100,28 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
     private static final int READ_DELAY = 11;
 
     //For the Knob 1003 is the Vendor ID
-    private static final int ARDUINO_VENDOR_ID_HID = 1003;
-    private static final int DEFAULT_BAUD_RATE_HID = 9600;
+//    private static final int ARDUINO_VENDOR_ID_HID = 1003;
+//    private static final int DEFAULT_BAUD_RATE_HID = 9600;
+
+//    private static final int ARDUINO_VENDOR_ID_HID = 6790;
+//    private static final int DEFAULT_BAUD_RATE_HID = 115200;
 
     private UsbManager usbManager;
     private UsbSerialPort usbVentilatorPort;
     private UsbSerialPort usbWriteVentilatorPort;
-    private UsbSerialPort usbHIDPort;
+//    private UsbSerialPort usbHIDPort;
 
     private final StringBuffer dataBufferVentilator = new StringBuffer();
-    private final StringBuffer dataBufferHID = new StringBuffer();
+    //    private final StringBuffer dataBufferHID = new StringBuffer();
     private Thread bufferReadingThreadVentilator;
     private Thread bufferReadingThreadVentilatorConnection;
-    private Thread bufferReadingThreadHID;
+    //    private Thread bufferReadingThreadHID;
     private Thread bufferReadingThreadHIDConnection;
     private PreferenceManager preferenceManager;
 
 
     private SerialInputOutputManager ioManager;
-    private SerialInputOutputHIDManager ioManagerHID;
+//    private SerialInputOutputHIDManager ioManagerHID;
 
 
 
@@ -132,13 +135,6 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
     public void onNewData(byte[] data) {
 //        Log.i("USB_CHECK", "venti raw data coming");
         readBytesDataVentilator(new String(data));
-    }
-
-    //Callback for the HID to control the data for write and read operations
-    @Override
-    public void onNewHIDData(byte[] data) {
-        Log.i("USB_CHECK", "hid raw data coming");
-        readBytesDataHID(new String((data)));
     }
 
 //    @Override
@@ -157,19 +153,14 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
 //            case "qvIBAwk=":
 //                readBytesDataHID("-");
 //                break;
-////            default:
-////                readBytesDataHID(new String(data));
+    ////            default:
+    ////                readBytesDataHID(new String(data));
 //        }
 //    }
 
     @Override
     public void onRunError(Exception e) {
         Log.i("USB_CHECK", "venti raw data error");
-    }
-
-    @Override
-    public void onRunErrorHID(Exception e) {
-        Log.i("USB_CHECK", "hid raw data error");
     }
 
     //Runnable implementation for the continuous data flow
@@ -206,12 +197,103 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
                     VentilatorApp.Companion.setVentiData(dataBufferVentilator + " : " + AppUtils.getCurrentTime());
                     Log.i("READ_CHECK_VENTI", dataBufferVentilator.toString());
                     try {
+                        if (buffData.contains("X")) {
+                            int prefixPlusStartIndex = buffData.indexOf("X");
+                            int prefixPlusTerminalIndex = buffData.indexOf("X") + Configs.KNOB_LENGTH;
+                            String xValue = buffData.substring(prefixPlusStartIndex, prefixPlusTerminalIndex);
+                            broadcastKnobResponse(xValue);
+                            dataBufferVentilator.delete(prefixPlusStartIndex, prefixPlusTerminalIndex + 1);
+                        }
 
+                        if (buffData.contains(Configs.PREFIX_PLUS)) {
+                            int prefixPlusStartIndex = buffData.indexOf(Configs.PREFIX_PLUS);
+                            int prefixPlusTerminalIndex = buffData.indexOf(Configs.PREFIX_PLUS) + Configs.KNOB_LENGTH;
+                            String plusValue = buffData.substring(prefixPlusStartIndex, prefixPlusTerminalIndex);
+                            broadcastKnobResponse(plusValue);
+                            dataBufferVentilator.delete(prefixPlusStartIndex, prefixPlusTerminalIndex + 1);
+
+                        } else if (buffData.contains(Configs.PREFIX_MINUS)) {
+                            int prefixMinusStartIndex = buffData.indexOf(Configs.PREFIX_MINUS);
+                            int prefixMinusTerminalIndex = buffData.indexOf(Configs.PREFIX_MINUS) + Configs.KNOB_LENGTH;
+                            String minusValue = buffData.substring(prefixMinusStartIndex, prefixMinusTerminalIndex);
+                            broadcastKnobResponse(minusValue);
+                            dataBufferVentilator.delete(prefixMinusStartIndex, prefixMinusTerminalIndex + 1);
+
+                        } else if (buffData.contains(Configs.PREFIX_AND)) {
+                            int prefixAndStartIndex = buffData.indexOf(Configs.PREFIX_AND);
+                            int prefixAndTerminalIndex = buffData.indexOf(Configs.PREFIX_AND) + Configs.KNOB_LENGTH;
+                            String andValue = buffData.substring(prefixAndStartIndex, prefixAndTerminalIndex);
+
+                            broadcastKnobResponse(andValue);
+                            dataBufferVentilator.delete(prefixAndStartIndex, prefixAndTerminalIndex + 1);
+
+                        } else if (buffData.contains(Configs.QB_ALARM_MUTE_UNMUTE)) {
+                            int muteOptionStartIndex = buffData.indexOf(Configs.QB_ALARM_MUTE_UNMUTE);
+
+                            broadcastAlarmMuteUmuteResponse(buffData.substring(muteOptionStartIndex, muteOptionStartIndex + Configs.QB_ALARM_MUTE_UNMUTE.length()));
+                            dataBufferVentilator.delete(muteOptionStartIndex, muteOptionStartIndex + Configs.QB_ALARM_MUTE_UNMUTE.length());
+
+                        } else if (buffData.contains(Configs.QB_NEBULISER)) {
+                            int nubliserStartIndex = buffData.indexOf(Configs.QB_NEBULISER);
+                            broadcastNebuliserResponse();
+                            dataBufferVentilator.delete(nubliserStartIndex, nubliserStartIndex + Configs.QB_NEBULISER.length());
+
+                        } else if (buffData.contains(Configs.QB_OXYGEN)) {
+                            int oxygenStartIndex = buffData.indexOf(Configs.QB_OXYGEN);
+
+                            broadcastOxygenResponse(buffData.substring(oxygenStartIndex, oxygenStartIndex + Configs.QB_OXYGEN.length()));
+                            dataBufferVentilator.delete(oxygenStartIndex, oxygenStartIndex + Configs.QB_OXYGEN.length());
+
+                        } else if (buffData.contains(Configs.QB_INSPIRATORY_HOLD)) {
+                            int inspiratoryStartIndex = buffData.indexOf(Configs.QB_INSPIRATORY_HOLD);
+
+                            broadcastInspiratoryHoldResponse();
+                            dataBufferVentilator.delete(inspiratoryStartIndex, inspiratoryStartIndex + Configs.QB_INSPIRATORY_HOLD.length());
+
+                        } else if (buffData.contains(Configs.QB_EXPIRATORY_HOLD)) {
+                            int expiratoryStartIndex = buffData.indexOf(Configs.QB_EXPIRATORY_HOLD);
+
+                            broadcastExpiratoryHoldResponse();
+                            dataBufferVentilator.delete(expiratoryStartIndex, expiratoryStartIndex + Configs.QB_EXPIRATORY_HOLD.length());
+
+                        } else if (buffData.contains(Configs.QB_MANUAL_BREATH)) {
+                            int manualStartIndex = buffData.indexOf(Configs.QB_MANUAL_BREATH);
+
+                            broadcastManualBreathResponse();
+                            dataBufferVentilator.delete(manualStartIndex, manualStartIndex + Configs.QB_MANUAL_BREATH.length());
+
+                        } else if (buffData.contains(Configs.QB_HOME)) {
+                            int homeStartIndex = buffData.indexOf(Configs.QB_HOME);
+
+                            broadcastHomeResponse();
+                            dataBufferVentilator.delete(homeStartIndex, homeStartIndex + Configs.QB_HOME.length());
+
+                        } else if (buffData.contains(Configs.QB_LOCK)) {
+                            int lockStartIndex = buffData.indexOf(Configs.QB_LOCK);
+
+                            broadcastLockResponse();
+                            dataBufferVentilator.delete(lockStartIndex, lockStartIndex + Configs.QB_LOCK.length());
+
+                        }
+                        else if (buffData.contains(Configs.QB_POWER_SWITCH)) {
+                            int switchStopIndex = buffData.indexOf(Configs.QB_POWER_SWITCH);
+
+                            broadcastPowerSwitchOffResponse();
+                            dataBufferVentilator.delete(switchStopIndex, switchStopIndex + Configs.QB_POWER_SWITCH.length());
+
+                        }
+                        else if (buffData.contains(Configs.QB_POWER_ON)) {
+                            int switchStartIndex = buffData.indexOf(Configs.QB_POWER_ON);
+
+                            broadcastPowerSwitchOnResponse();
+                            dataBufferVentilator.delete(switchStartIndex, switchStartIndex + Configs.QB_POWER_ON.length());
+                        }
                         // To separated the ACKNOWLEDGEMENTS
                         if (buffData.contains(Configs.PREFIX_ACK)) {
                             // +1 for ACK code number (Don't remove -1 +1 this is for understanding)
                             try {
                                 int ackStartIndex = buffData.indexOf(Configs.PREFIX_ACK);
+
                                 // Check if ackStartIndex is valid (-1 means the prefix was not found)
                                 if (ackStartIndex != -1) {
                                     int ackTerminalIndex = buffData.indexOf(Configs.SUFFIX_ACK, ackStartIndex);
@@ -637,144 +719,6 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
         }
     }
 
-    private class ReadingRunnableHID implements Runnable {
-        @Override
-        public void run() {
-            Log.i("USB_CHECK", "hid reading thread started");
-            while (true) {
-                if (dataBufferHID.length() > 0) {
-                    // garbage value
-                    if (dataBufferHID.length() > 5) {
-                        dataBufferHID.delete(0, dataBufferHID.length());
-                    }
-
-                    String buffData2 = dataBufferHID.toString();
-                    VentilatorApp.Companion.setHidData(dataBufferHID.toString() + " : " + AppUtils.getCurrentTime());
-                    Log.i("READ_CHECK_HID", "Reading thread started  " + " " + buffData2);
-
-                    try {
-
-                        if (buffData2.contains("X")) {
-                            int prefixPlusStartIndex = buffData2.indexOf("X");
-                            int prefixPlusTerminalIndex = buffData2.indexOf("X") + Configs.KNOB_LENGTH;
-                            String xValue = buffData2.substring(prefixPlusStartIndex, prefixPlusTerminalIndex);
-                            broadcastKnobResponse(xValue);
-                            dataBufferHID.delete(prefixPlusStartIndex, prefixPlusTerminalIndex + 1);
-                        }
-
-                        if (buffData2.contains(Configs.PREFIX_PLUS)) {
-                            int prefixPlusStartIndex = buffData2.indexOf(Configs.PREFIX_PLUS);
-                            int prefixPlusTerminalIndex = buffData2.indexOf(Configs.PREFIX_PLUS) + Configs.KNOB_LENGTH;
-                            String plusValue = buffData2.substring(prefixPlusStartIndex, prefixPlusTerminalIndex);
-                            //  Log.i("READ THREAD CHECK plus", "Index shortage "+motorLifeLevel);
-                            // buffData2="";
-                            broadcastKnobResponse(plusValue);
-                            dataBufferHID.delete(prefixPlusStartIndex, prefixPlusTerminalIndex + 1);
-
-                        } else if (buffData2.contains(Configs.PREFIX_MINUS)) {
-                            int prefixMinusStartIndex = buffData2.indexOf(Configs.PREFIX_MINUS);
-                            int prefixMinusTerminalIndex = buffData2.indexOf(Configs.PREFIX_MINUS) + Configs.KNOB_LENGTH;
-                            String minusValue = buffData2.substring(prefixMinusStartIndex, prefixMinusTerminalIndex);
-                            //  Log.i("READ THREAD CHECK minus", "Index shortage "+motorLifeLevel);
-                            // buffData2="";
-                            broadcastKnobResponse(minusValue);
-                            dataBufferHID.delete(prefixMinusStartIndex, prefixMinusTerminalIndex + 1);
-
-                        } else if (buffData2.contains(Configs.PREFIX_AND)) {
-                            int prefixAndStartIndex = buffData2.indexOf(Configs.PREFIX_AND);
-                            int prefixAndTerminalIndex = buffData2.indexOf(Configs.PREFIX_AND) + Configs.KNOB_LENGTH;
-                            String andValue = buffData2.substring(prefixAndStartIndex, prefixAndTerminalIndex);
-
-
-                            // Log.i("READ THREAD CHECK push", "Index shortage "+motorLifeLevel);
-                            // buffData2="";
-                            broadcastKnobResponse(andValue);
-                            dataBufferHID.delete(prefixAndStartIndex, prefixAndTerminalIndex + 1);
-
-                        } else if (buffData2.contains(Configs.QB_ALARM_MUTE_UNMUTE)) {
-                            // Log.i("READ THREAD CHECK push", "Index shortage "+buffData2);
-                            int muteOptionStartIndex = buffData2.indexOf(Configs.QB_ALARM_MUTE_UNMUTE);
-
-                            broadcastAlarmMuteUmuteResponse(buffData2.substring(muteOptionStartIndex, muteOptionStartIndex + Configs.QB_ALARM_MUTE_UNMUTE.length()));
-                            dataBufferHID.delete(muteOptionStartIndex, muteOptionStartIndex + Configs.QB_ALARM_MUTE_UNMUTE.length());
-
-                        } else if (buffData2.contains(Configs.QB_NEBULISER)) {
-                            //Log.i("READ THREAD CHECK push", "Index shortage "+buffData2);
-                            int nubliserStartIndex = buffData2.indexOf(Configs.QB_NEBULISER);
-
-                            //Log.i("READ THREAD CHECK push", "Index shortage "+motorLifeLevel);
-                            // buffData2="";
-                            broadcastNebuliserResponse();
-                            dataBufferHID.delete(nubliserStartIndex, nubliserStartIndex + Configs.QB_NEBULISER.length());
-
-                        } else if (buffData2.contains(Configs.QB_OXYGEN)) {
-                            //  Log.i("READ THREAD CHECK push", "Index shortage "+buffData2);
-                            int oxygenStartIndex = buffData2.indexOf(Configs.QB_OXYGEN);
-
-                            broadcastOxygenResponse(buffData2.substring(oxygenStartIndex, oxygenStartIndex + Configs.QB_OXYGEN.length()));
-                            dataBufferHID.delete(oxygenStartIndex, oxygenStartIndex + Configs.QB_OXYGEN.length());
-
-                        } else if (buffData2.contains(Configs.QB_INSPIRATORY_HOLD)) {
-                            //   Log.i("READ THREAD CHECK push", "Index shortage "+buffData2);
-                            int inspiratoryStartIndex = buffData2.indexOf(Configs.QB_INSPIRATORY_HOLD);
-
-                            // Log.i("READ THREAD CHECK push", "Index shortage "+motorLifeLevel);
-                            // buffData2="";
-                            broadcastInspiratoryHoldResponse();
-                            dataBufferHID.delete(inspiratoryStartIndex, inspiratoryStartIndex + Configs.QB_INSPIRATORY_HOLD.length());
-
-                        } else if (buffData2.contains(Configs.QB_EXPIRATORY_HOLD)) {
-                            // Log.i("READ THREAD CHECK push", "Index shortage "+buffData2);
-                            int expiratoryStartIndex = buffData2.indexOf(Configs.QB_EXPIRATORY_HOLD);
-
-                            broadcastExpiratoryHoldResponse();
-                            dataBufferHID.delete(expiratoryStartIndex, expiratoryStartIndex + Configs.QB_EXPIRATORY_HOLD.length());
-
-                        } else if (buffData2.contains(Configs.QB_MANUAL_BREATH)) {
-                            //  Log.i("READ THREAD CHECK push", "Index shortage "+buffData2);
-                            int manualStartIndex = buffData2.indexOf(Configs.QB_MANUAL_BREATH);
-
-                            broadcastManualBreathResponse();
-                            dataBufferHID.delete(manualStartIndex, manualStartIndex + Configs.QB_MANUAL_BREATH.length());
-
-                        } else if (buffData2.contains(Configs.QB_HOME)) {
-                            // Log.i("READ THREAD CHECK push", "Index shortage "+buffData2);
-                            int homeStartIndex = buffData2.indexOf(Configs.QB_HOME);
-
-                            broadcastHomeResponse();
-                            dataBufferHID.delete(homeStartIndex, homeStartIndex + Configs.QB_HOME.length());
-
-                        } else if (buffData2.contains(Configs.QB_LOCK)) {
-                            int lockStartIndex = buffData2.indexOf(Configs.QB_LOCK);
-
-                            broadcastLockResponse();
-                            dataBufferHID.delete(lockStartIndex, lockStartIndex + Configs.QB_LOCK.length());
-
-                        } else if (buffData2.contains(Configs.QB_POWER_SWITCH)) {
-                            // Log.i("READ THREAD CHECK push", "Index shortage "+buffData2);
-                            int switchStopIndex = buffData2.indexOf(Configs.QB_POWER_SWITCH);
-
-                            broadcastPowerSwitchOffResponse();
-                            dataBufferHID.delete(switchStopIndex, switchStopIndex + Configs.QB_POWER_SWITCH.length());
-
-                        } else if (buffData2.contains(Configs.QB_POWER_ON)) {
-                            int switchStartIndex = buffData2.indexOf(Configs.QB_POWER_ON);
-
-                            broadcastPowerSwitchOnResponse();
-                            dataBufferHID.delete(switchStartIndex, switchStartIndex + Configs.QB_POWER_ON.length());
-                        } else {
-                        }
-
-                        // To separated the ACKNOWLEDGEMENTS
-                    } catch (StringIndexOutOfBoundsException e) {
-                        Log.i("READ_CHECK_HID", "Index shortage");
-                        e.printStackTrace();
-                    }
-
-                }
-            }
-        }
-    }
 
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
 
@@ -796,7 +740,7 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
                     Log.i("USB_CHECK", "hid permission broadcast started");
                     if (intent.getExtras().getBoolean(UsbManager.EXTRA_PERMISSION_GRANTED)) {
                         Log.i("USB_CHECK", "hid permission broadcast started and get permission");
-                        openConnectionToReadHID(true);
+//                        openConnectionToReadHID(true);
                     }
                     break;
 
@@ -819,7 +763,7 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
     private IntentFilter getIntentFilter() {
         IntentFilter filter = new IntentFilter();
         filter.addAction(IntentFactory.ACTION_USB_PERMISSION_VENTILATOR);
-        filter.addAction(IntentFactory.ACTION_USB_PERMISSION_HID);
+//        filter.addAction(IntentFactory.ACTION_USB_PERMISSION_HID);
         filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
         filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
         return filter;
@@ -842,17 +786,9 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
 
         Log.i("USB_CHECK", "usb service onStartCommand Called");
         preferenceManager.setServiceStatus(true);
-
-//        Notification notification = new NotificationCompat.Builder(this)
-//                .setContentTitle("AgVa Service")
-//                .setContentText("Services Started")
-//                .build();
-//        startForeground(1, notification);
-
         Log.i("USB_SERVICE_STATUS", "Started service onStartCommand");
         return START_STICKY;
     }
-
 
     @Override
     public void onDestroy() {
@@ -866,7 +802,6 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
         }
 
         dataBufferVentilator.delete(0, dataBufferVentilator.length());
-        dataBufferHID.delete(0, dataBufferHID.length());
         preferenceManager.setServiceStatus(false);
 //        usbVentilator = null;// NEW SHARED PREFERENCE STATUS
 //        usbHID = null;
@@ -887,9 +822,9 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
 
     @Override
     public boolean isHIDConnected() {
-        for (Map.Entry<String, UsbDevice> entry : usbManager.getDeviceList().entrySet()) {
-            if (entry.getValue().getVendorId() == ARDUINO_VENDOR_ID_HID) return true;
-        }
+//        for (Map.Entry<String, UsbDevice> entry : usbManager.getDeviceList().entrySet()) {
+//            if (entry.getValue().getVendorId() == ARDUINO_VENDOR_ID_HID) return true;
+//        }
         return false;
     }
 
@@ -1144,25 +1079,24 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
         Log.i("USB_CHECK", "usb services startReading called");
         if (usbManager != null) {
             openConnectionToReadVentilator(null);
-            openConnectionToReadHID(null);
         }
 
         // starting watch dog surveillance
         new Handler().postDelayed(this::startWatchDog, 500);
 
         Log.i("S_THREAD_CHECK", "START Ventilator Thread = " + bufferReadingThreadVentilator + " | isAlive = " + bufferReadingThreadVentilator);
-        Log.i("S_THREAD_CHECK", "START HID Thread = " + bufferReadingThreadHID + " | isAlive = " + bufferReadingThreadHID);
+//        Log.i("S_THREAD_CHECK", "START HID Thread = " + bufferReadingThreadHID + " | isAlive = " + bufferReadingThreadHID);
 
         // start monitoring buffer and read data concurrently
         if (bufferReadingThreadVentilator == null) bufferReadingThreadVentilator = new Thread(new ReadingRunnableVentilator());
         if (!bufferReadingThreadVentilator.isAlive()) bufferReadingThreadVentilator.start();
 
-        if (bufferReadingThreadHID == null)
-            bufferReadingThreadHID = new Thread(new ReadingRunnableHID());
-        if (!bufferReadingThreadHID.isAlive()) bufferReadingThreadHID.start();
+//        if (bufferReadingThreadHID == null)
+//            bufferReadingThreadHID = new Thread(new ReadingRunnableHID());
+//        if (!bufferReadingThreadHID.isAlive()) bufferReadingThreadHID.start();
 
         Log.i("S_THREAD_CHECK", "START Ventilator Thread = " + bufferReadingThreadVentilator + " | isAlive = " + bufferReadingThreadVentilator);
-        Log.i("S_THREAD_CHECK", "START HID Thread = " + bufferReadingThreadHID + " | isAlive = " + bufferReadingThreadHID);
+//        Log.i("S_THREAD_CHECK", "START HID Thread = " + bufferReadingThreadHID + " | isAlive = " + bufferReadingThreadHID);
 
     }
 
@@ -1172,7 +1106,7 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
         Log.i("USB_CHECK", "usb services stopReading called");
 
         Log.i("S_THREAD_CHECK", "STOP Ventilator Thread = " + bufferReadingThreadVentilator + " | isAlive = " + bufferReadingThreadVentilator);
-        Log.i("S_THREAD_CHECK", "STOP HID Thread = " + bufferReadingThreadHID + " | isAlive = " + bufferReadingThreadHID);
+//        Log.i("S_THREAD_CHECK", "STOP HID Thread = " + bufferReadingThreadHID + " | isAlive = " + bufferReadingThreadHID);
 
         if (bufferReadingThreadVentilator != null) {
             if (bufferReadingThreadVentilator.isAlive() && !bufferReadingThreadVentilator.isInterrupted()) {
@@ -1180,26 +1114,26 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
             }
         }
 
-        if (bufferReadingThreadHID != null) {
-            if (bufferReadingThreadHID.isAlive() && !bufferReadingThreadHID.isInterrupted()) {
-                bufferReadingThreadHID.interrupt();
-            }
-        }
+//        if (bufferReadingThreadHID != null) {
+//            if (bufferReadingThreadHID.isAlive() && !bufferReadingThreadHID.isInterrupted()) {
+//                bufferReadingThreadHID.interrupt();
+//            }
+//        }
     }
 
     @Override
     public void sendDatatoKnob(String data) {
-        Log.i("WRITE_CHECK_KNOB", "DATA : " + data);
-        if (usbHIDPort != null) {
-            try {
-                usbHIDPort.write(data.getBytes(), 0);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Log.i("WRITE_CHECK_KNOB", "DATA : " + data);
-        } else {
-            Log.i("USB_SERVICE_STOPPED", "USB SERVICE IS STOPPED");
-        }
+//        Log.i("WRITE_CHECK_KNOB", "DATA : " + data);
+//        if (usbHIDPort != null) {
+//            try {
+//                usbHIDPort.write(data.getBytes(), 0);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            Log.i("WRITE_CHECK_KNOB", "DATA : " + data);
+//        } else {
+//            Log.i("USB_SERVICE_STOPPED", "USB SERVICE IS STOPPED");
+//        }
     }
 
     //to send data
@@ -1301,7 +1235,8 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
 
     @Override
     public void checkConnection() {
-        if (usbHIDPort != null || isHIDConnected()) {}
+
+//        if (usbHIDPort != null || isHIDConnected()) {}
     }
 
     @Override
@@ -1424,16 +1359,16 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
 
     public void closeConnection() throws IOException {
 
-        Log.i("USB_CHECK", "close connection method called with hid port: " + usbHIDPort + " venti original port : " + usbVentilatorPort + " venti temp port : " + usbWriteVentilatorPort);
+//        Log.i("USB_CHECK", "close connection method called with hid port: " + usbHIDPort + " venti original port : " + usbVentilatorPort + " venti temp port : " + usbWriteVentilatorPort);
         if (usbVentilatorPort != null) {
             usbVentilatorPort.close();
             usbVentilatorPort = null;
             usbWriteVentilatorPort = null;
         }
-        if (usbHIDPort != null) {
-            usbHIDPort.close();
-            usbHIDPort = null;
-        }
+//        if (usbHIDPort != null) {
+//            usbHIDPort.close();
+//            usbHIDPort = null;
+//        }
     }
 
 
@@ -1457,7 +1392,7 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
         UsbDeviceConnection usbConnection = usbManager.openDevice(driver.getDevice());
         if (usbConnection == null && permissionGranted == null && !usbManager.hasPermission(driver.getDevice())) {
             Intent intent = new Intent(IntentFactory.ACTION_USB_PERMISSION_VENTILATOR);
-            PendingIntent usbPermissionIntent = PendingIntent.getBroadcast(UsbService.this, 0, intent, 0);
+            PendingIntent usbPermissionIntent = PendingIntent.getBroadcast(UsbService.this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
             usbManager.requestPermission(driver.getDevice(), usbPermissionIntent);
             return;
         }
@@ -1485,41 +1420,41 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
     }
 
     public void openConnectionToReadHID(Boolean permissionGranted) {
-        Log.i("USB_CHECK", "hid open connection method called with : " + usbHIDPort + " & " + permissionGranted);
-        UsbDevice device = null;
-        for (UsbDevice v : usbManager.getDeviceList().values()) {
-            if (v.getVendorId() == ARDUINO_VENDOR_ID_HID)
-                device = v;
-        }
-        if (device == null) {
-            return;
-        }
-        UsbSerialDriver driver = UsbSerialProber.getDefaultProber().probeDevice(device);
-        if (driver == null) {
-            driver = CustomProber.getCustomProber().probeDevice(device);
-        }
-        if (driver == null) {
-            return;
-        }
-        usbHIDPort = driver.getPorts().get(0);
-        UsbDeviceConnection usbConnection = usbManager.openDevice(driver.getDevice());
-        if (usbConnection == null && permissionGranted == null && !usbManager.hasPermission(driver.getDevice())) {
-            Intent intent = new Intent(IntentFactory.ACTION_USB_PERMISSION_HID);
-            PendingIntent usbPermissionIntent = PendingIntent.getBroadcast(UsbService.this, 0, intent, 0);
-            usbManager.requestPermission(driver.getDevice(), usbPermissionIntent);
-            return;
-        }
-
-        try {
-            usbHIDPort.open(usbConnection);
-            usbHIDPort.setParameters(DEFAULT_BAUD_RATE_HID, usbHIDPort.DATABITS_8, usbHIDPort.STOPBITS_1, usbHIDPort.PARITY_NONE);
-            ioManagerHID = new SerialInputOutputHIDManager(usbHIDPort, this);
-            ioManagerHID.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        broadcastUsbCommunicationData(isVentilatorConnected(), isHIDConnected());
+//        Log.i("USB_CHECK", "hid open connection method called with : " + usbHIDPort + " & " + permissionGranted);
+//        UsbDevice device = null;
+//        for (UsbDevice v : usbManager.getDeviceList().values()) {
+//            if (v.getVendorId() == ARDUINO_VENDOR_ID_HID)
+//                device = v;
+//        }
+//        if (device == null) {
+//            return;
+//        }
+//        UsbSerialDriver driver = UsbSerialProber.getDefaultProber().probeDevice(device);
+//        if (driver == null) {
+//            driver = CustomProber.getCustomProber().probeDevice(device);
+//        }
+//        if (driver == null) {
+//            return;
+//        }
+//        usbHIDPort = driver.getPorts().get(0);
+//        UsbDeviceConnection usbConnection = usbManager.openDevice(driver.getDevice());
+//        if (usbConnection == null && permissionGranted == null && !usbManager.hasPermission(driver.getDevice())) {
+//            Intent intent = new Intent(IntentFactory.ACTION_USB_PERMISSION_HID);
+//            PendingIntent usbPermissionIntent = PendingIntent.getBroadcast(UsbService.this, 0, intent, 0);
+//            usbManager.requestPermission(driver.getDevice(), usbPermissionIntent);
+//            return;
+//        }
+//
+//        try {
+//            usbHIDPort.open(usbConnection);
+//            usbHIDPort.setParameters(DEFAULT_BAUD_RATE_HID, usbHIDPort.DATABITS_8, usbHIDPort.STOPBITS_1, usbHIDPort.PARITY_NONE);
+//            ioManagerHID = new SerialInputOutputHIDManager(usbHIDPort, this);
+//            ioManagerHID.start();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        broadcastUsbCommunicationData(isVentilatorConnected(), isHIDConnected());
     }
 
     private void readBytesDataVentilator(String receivedData) {
@@ -1534,9 +1469,9 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
     private void readBytesDataHID(String receivedData) {
 //        Log.i("USB_CHECK", "read bytes hid method called with buffer : " + dataBufferHID + " & new data : " + receivedData);
         // appending to the data buffer
-        if (receivedData.trim().length() > 0) {
-            dataBufferHID.append(receivedData);
-        }
+//        if (receivedData.trim().length() > 0) {
+//            dataBufferHID.append(receivedData);
+//        }
     }
 
 //    // created by masoom on 04 jan 2023

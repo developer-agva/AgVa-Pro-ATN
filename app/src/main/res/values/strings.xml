@@ -143,6 +143,7 @@
     <string name="hint_service">Service</string>
     <string name="startup">Startup</string>
     <string name="wifi">WiFi</string>
+    <string name="discharge">Discharge</string>
 
     <string name="hint_info_1">Info 1</string>
     <string name="hint_info_2">Info 2</string>

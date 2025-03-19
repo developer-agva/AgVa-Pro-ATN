@@ -16,25 +16,20 @@ import com.agvahealthcare.ventilator_ext.databinding.FragmentHL7CommunicationBin
 import com.agvahealthcare.ventilator_ext.manager.DataStoreManager
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.utility.ToastFactory
+import com.agvahealthcare.ventilator_ext.utility.utils.Configs.Gender
 import java.net.Socket
 
 
 class HL7CommunicationFragment : Fragment() {
 
-    private lateinit var hL7CommunicationBinding: FragmentHL7CommunicationBinding
-
-    private lateinit var dataStoreManager: DataStoreManager
+    private lateinit var binding: FragmentHL7CommunicationBinding
     private var preferenceManager: PreferenceManager? = null
-
-    private val versionList = listOf("version 2", "version 3")
-    private val uhidList = listOf("abc123","add1231","asas1242","NAD1221","ffn3232","thfdg434")
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-         preferenceManager = PreferenceManager(requireContext())
+        preferenceManager = PreferenceManager(requireContext())
 
         val hl7Message = createHL7Message()
         sendHL7Message(hl7Message)
@@ -46,112 +41,65 @@ class HL7CommunicationFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        hL7CommunicationBinding = FragmentHL7CommunicationBinding.inflate(layoutInflater,container,false)
-        return hL7CommunicationBinding.root
+        binding = FragmentHL7CommunicationBinding.inflate(layoutInflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        setUpAdapters()
         initData()
         setupOnClickListener()
-
-
     }
 
+    private fun initData() {
 
-
-    private fun initData(){
-        hL7CommunicationBinding.ptGenderValue.text = preferenceManager?.readGender().toString()
-
+        preferenceManager?.apply {
+            binding.etGender.setText(if (readGender() == Gender.TYPE_MALE) "Male" else "Female")
+            binding.etUhid.setText(readUHID())
+            binding.etDoctorName.setText(readDoctorName())
+            binding.etFirstName.setText(readFirstName())
+            binding.etLastName.setText(readLastName())
+            binding.etDischargeDate.setText(readDischargeDate())
+            binding.etAdmitDate.setText(readAdmitDate())
+            binding.etDOB.setText(readDOB())
+            binding.etEmergencyContact.setText(readContactNumber())
+        }
     }
 
-    private fun setupOnClickListener(){
-        hL7CommunicationBinding.etptDOB.addTextChangedListener(object : TextWatcher {
-            private var isEditing = false
+    private fun setupOnClickListener() {
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+        binding.btnDischargeNow.setOnClickListener {
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (isEditing) return
-                isEditing = true
-
-                var cleanText = s.toString().replace("/", "") // Remove existing slashes
-                val length = cleanText.length
-
-                val formattedText = when {
-                    length >= 4 -> "${cleanText.substring(0, 2)}/${cleanText.substring(2, 4)}/${cleanText.substring(4)}"
-                    length >= 2 -> "${cleanText.substring(0, 2)}/${cleanText.substring(2)}"
-                    else -> cleanText
-                }
-
-                hL7CommunicationBinding.etptDOB.setText(formattedText)
-                hL7CommunicationBinding.etptDOB.setSelection(formattedText.length) // Move cursor to the end
-
-                isEditing = false
+            preferenceManager?.apply {
+                setDoctorName(binding.etDoctorName.text.toString())
+                setFirstName(binding.etFirstName.text.toString())
+                setLastName(binding.etLastName.text.toString())
+                setEmergencyContact(binding.etEmergencyContact.text.toString())
+                setDOB(binding.etDOB.text.toString())
             }
 
-            override fun afterTextChanged(s: Editable?) {}
-        })
-
-        hL7CommunicationBinding.btnSendData.setOnClickListener {
-
-            ToastFactory.custom(requireContext(),"Clicked")
+            ToastFactory.custom(requireContext(), "Clicked")
             val hl7Message = createHL7Message()
             sendHL7Message(hl7Message)
         }
 
     }
 
-    private fun setUpAdapters(){
-        val versionListadapter = ArrayAdapter(requireContext(),android.R.layout.simple_spinner_item,versionList)
-        versionListadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
-        val uhidAdapter = ArrayAdapter(requireContext(),android.R.layout.simple_spinner_item,uhidList)
-        uhidAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
-
-        hL7CommunicationBinding.spUHID.adapter = uhidAdapter
-
-        hL7CommunicationBinding.spUHID.onItemSelectedListener = object :AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-
-            }
-        }
-
-
-        hL7CommunicationBinding.spHL7CommValue.adapter = versionListadapter
-
-        hL7CommunicationBinding.spHL7CommValue.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-
-
-            }
-        }
-    }
 
     private fun createHL7Message(): String {
         return try {
             // Constructing a basic HL7 message
-            val patientId = hL7CommunicationBinding.spUHID.selectedItem.toString()
-            val patientLastName = hL7CommunicationBinding.etptName.text.toString()
-            val patientFirstName = hL7CommunicationBinding.etptName.text.toString()
-            val dateOfBirth = hL7CommunicationBinding.etptDOB.text.toString() // Format: YYYYMMDD
+            val patientId = binding.etUhid.text.toString()
+            val patientLastName = binding.etLastName.text.toString()
+            val patientFirstName = binding.etFirstName.text.toString()
+            val dateOfBirth = binding.etDOB.text.toString() // Format: YYYYMMDD
             val gender = preferenceManager?.readGender()
 
             // HL7 message format (ADT A01 Example)
-            val hl7Message = "MSH|^~\\&|HOSPITAL|DEPT|HFIR|HL7COMM|202503110930||ADT^A01|MSG1234|P|2.3\r" +
-                    "PID|||$patientId||$patientLastName^$patientFirstName||$dateOfBirth|$gender\r"
+            val hl7Message =
+                "MSH|^~\\&|HOSPITAL|DEPT|HFIR|HL7COMM|202503110930||ADT^A01|MSG1234|P|2.3\r" +
+                        "PID|||$patientId||$patientLastName^$patientFirstName||$dateOfBirth|$gender\r"
             Log.d("HL7Message", hl7Message)
             hl7Message
         } catch (e: Exception) {
@@ -159,7 +107,6 @@ class HL7CommunicationFragment : Fragment() {
             ""
         }
     }
-
 
 
     private fun sendHL7Message(hl7Message: String) {

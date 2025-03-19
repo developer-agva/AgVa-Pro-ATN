@@ -68,6 +68,13 @@ import java.util.Set;
 
 public class PreferenceManager {
 
+    // HL7 Communication System
+    private static final String PREF_DOB = "PREF_DOB";
+    private static final String PREF_FIRST_NAME = "PREF_FIRST_NAME";
+    private static final String PREF_LAST_NAME = "PREF_LAST_NAME";
+    private static final String PREF_CONTACT = "PREF_CONTACT";
+    private static final String PREF_DOCTOR_NAME = "PREF_DOCTOR_NAME";
+
     // venti configurations
     private static final String PREF_PRESSURE_SENSOR_ONE = "PREF_PRESSURE_SENSOR_ONE";
     private static final String PREF_PRESSURE_SENSOR_TWO = "PREF_PRESSURE_SENSOR_TWO";
@@ -84,9 +91,6 @@ public class PreferenceManager {
     private static final String PREF_NEB_TYPE = "PREF_NEB_TYPE";
     private static final String PREF_OXY_CONCENTRATOR = "PREF_OXY_CONCENTRATOR";
     private static final String PREF_VENTI_CONFIG_STATUS = "PREF_VENTI_CONFIG_STATUS";
-
-
-
 
     private static final String PREF_AUTO_FLOW = "pref_auto_flow";
     private static final String PREF_ACTIVITY_TRACK = "pref_activity_track";
@@ -385,6 +389,63 @@ public class PreferenceManager {
         this.context = context;
         this.sp = context.getSharedPreferences(CONFIGURATION_SHARED_PREFERENCES, Context.MODE_PRIVATE);
         this.gson = new Gson();
+    }
+
+    // hl7 communication window
+    public void setAdmitDate(String val) {
+        updateData(readUHID(), val);
+    }
+
+    public String readAdmitDate() {
+        return sp.getString(readUHID(), "");
+    }
+
+    public void setDischargeDate(String val) {
+        updateData(readUHID(), val);
+    }
+
+    public String readDischargeDate() {
+        return sp.getString(readUHID(), "");
+    }
+
+    public void setContactNumber(String val) {
+        updateData(PREF_CONTACT, val);
+    }
+
+    public String readContactNumber() {
+        return sp.getString(PREF_CONTACT, "");
+    }
+
+    public void setDOB(String val) {
+        updateData(PREF_DOB, val);
+    }
+
+    public String readDOB() {
+        return sp.getString(PREF_DOB, "");
+    }
+
+    public void setFirstName(String val) {
+        updateData(PREF_FIRST_NAME, val);
+    }
+
+    public String readFirstName() {
+        return sp.getString(PREF_FIRST_NAME, "");
+    }
+
+    public void setLastName(String val) {
+        updateData(PREF_LAST_NAME, val);
+    }
+
+    public String readLastName() {
+        return sp.getString(PREF_LAST_NAME, "");
+    }
+
+    public void setDoctorName(String val) {
+        updateData(PREF_DOCTOR_NAME, val);
+    }
+
+    public String readDoctorName() {
+        return sp.getString(PREF_DOCTOR_NAME, "");
     }
 
     // start for ota side embedded

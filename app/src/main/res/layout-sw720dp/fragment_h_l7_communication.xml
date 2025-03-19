@@ -19,14 +19,14 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.04" />
+        app:layout_constraintGuide_percent="0.05" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelneLeftmid1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.25" />
+        app:layout_constraintGuide_percent="0.31" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelneLeftmid2"
@@ -40,35 +40,22 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.54" />
+        app:layout_constraintGuide_percent="0.64" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelneLeftmid4"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.65" />
+        app:layout_constraintGuide_percent="0.69" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelneLeftmid5"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.90" />
+        app:layout_constraintGuide_percent="0.95" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelneRightEnd"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.96" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelneBottomEnd"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.92" />
 
     <LinearLayout
         android:id="@+id/titletopBar"
@@ -96,7 +83,7 @@
 
 
     <TextView
-        android:id="@+id/ptUhid"
+        android:id="@+id/txtUhid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_4sdp"
@@ -107,284 +94,256 @@
         app:layout_constraintStart_toStartOf="@id/guidelneLeftStart"
         app:layout_constraintTop_toBottomOf="@id/titletopBar" />
 
-    <Spinner
-        android:id="@+id/spUHID"
+    <EditText
+        android:id="@+id/etUhid"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_marginTop="@dimen/_4sdp"
-        android:background="@drawable/border_spinner"
-        android:spinnerMode="dropdown"
-        app:layout_constraintEnd_toEndOf="@id/guidelneLeftmid1"
-        app:layout_constraintStart_toStartOf="@id/guidelneLeftStart"
-        app:layout_constraintTop_toBottomOf="@id/ptUhid" />
+        android:layout_marginTop="@dimen/_5sdp"
+        android:background="@drawable/custom_edit_text_background"
+        android:hint="Enter Patient UHID"
+        android:inputType="textCapCharacters"
+        android:maxLength="10"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_5sdp"
+        android:fontFamily="@font/avenir_next_lt_pro_regular"
+        app:layout_constraintEnd_toStartOf="@id/guidelneLeftmid1"
+        app:layout_constraintStart_toEndOf="@id/guidelneLeftStart"
+        app:layout_constraintTop_toBottomOf="@id/txtUhid" />
 
     <TextView
-        android:id="@+id/ptName"
+        android:id="@+id/txtFirstName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_5sdp"
         android:text="Patient First Name"
         android:textColor="@color/black"
         android:textSize="@dimen/_6sdp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@id/guidelneLeftStart"
-        app:layout_constraintTop_toBottomOf="@id/spUHID" />
+        app:layout_constraintStart_toEndOf="@id/guidelneLeftmid2"
+        app:layout_constraintTop_toTopOf="@id/txtUhid" />
 
     <EditText
-        android:id="@+id/etptName"
+        android:id="@+id/etFirstName"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_4sdp"
+        android:layout_height="50dp"
         android:background="@drawable/custom_edit_text_background"
         android:hint="Enter Patient First Name"
         android:inputType="text"
         android:maxLength="50"
         android:maxLines="1"
         android:textColor="@color/black"
-        android:textSize="@dimen/_4sdp"
-        app:layout_constraintEnd_toEndOf="@id/guidelneLeftmid1"
-        app:layout_constraintStart_toStartOf="@id/guidelneLeftStart"
-        app:layout_constraintTop_toBottomOf="@id/ptName" />
+        android:textSize="@dimen/_5sdp"
+        android:fontFamily="@font/avenir_next_lt_pro_regular"
+        app:layout_constraintEnd_toStartOf="@id/guidelneLeftmid3"
+        app:layout_constraintStart_toEndOf="@id/guidelneLeftmid2"
+        app:layout_constraintTop_toTopOf="@id/etUhid" />
 
     <TextView
-        android:id="@+id/ptDob"
-        android:layout_width="0dp"
+        android:id="@+id/txtLastName"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Patient DOB"
+        android:text="Patient First Name"
         android:textColor="@color/black"
-        android:textSize="@dimen/_5sdp"
+        android:textSize="@dimen/_6sdp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@id/guidelneRightEnd"
         app:layout_constraintStart_toEndOf="@id/guidelneLeftmid4"
-        app:layout_constraintTop_toTopOf="@id/ptDiagnosis" />
+        app:layout_constraintTop_toTopOf="@id/txtUhid" />
 
     <EditText
-        android:id="@+id/etptDOB"
+        android:id="@+id/etLastName"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_marginTop="@dimen/_4sdp"
         android:background="@drawable/custom_edit_text_background"
-        android:clickable="true"
-        android:digits="0123456789/"
-        android:focusable="true"
-        android:gravity="center_vertical"
-        android:hint="Enter patient DOB"
-        android:inputType="datetime"
+        android:hint="Enter Patient Last Name"
+        android:inputType="text"
+        android:maxLength="50"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_5sdp"
+        android:fontFamily="@font/avenir_next_lt_pro_regular"
+        app:layout_constraintEnd_toStartOf="@id/guidelneLeftmid5"
+        app:layout_constraintStart_toEndOf="@id/guidelneLeftmid4"
+        app:layout_constraintTop_toTopOf="@id/etUhid" />
+
+
+    <TextView
+        android:id="@+id/txtDOB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:text="Patient DOB"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_6sdp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/guidelneLeftStart"
+        app:layout_constraintTop_toBottomOf="@id/etUhid" />
+
+    <EditText
+        android:id="@+id/etDOB"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:background="@drawable/custom_edit_text_background"
+        android:hint="YYYY/MM/DD"
+        android:inputType="date"
         android:maxLength="10"
         android:maxLines="1"
         android:textColor="@color/black"
-        android:textSize="@dimen/_4sdp"
-        app:layout_constraintEnd_toEndOf="@id/guidelneLeftmid1"
-        app:layout_constraintStart_toStartOf="@id/guidelneLeftStart"
-        app:layout_constraintTop_toBottomOf="@id/ptDob" />
-
+        android:textSize="@dimen/_5sdp"
+        android:fontFamily="@font/avenir_next_lt_pro_regular"
+        app:layout_constraintEnd_toStartOf="@id/guidelneLeftmid1"
+        app:layout_constraintStart_toStartOf="@id/etUhid"
+        app:layout_constraintTop_toBottomOf="@id/txtDOB" />
 
     <TextView
-        android:id="@+id/ptEmergencyContact"
+        android:id="@+id/txtGender"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Emergency Contact"
+        android:text="Patient Gender"
         android:textColor="@color/black"
         android:textSize="@dimen/_6sdp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@id/guidelneLeftmid2"
-        app:layout_constraintTop_toTopOf="@id/ptUhid" />
+        app:layout_constraintStart_toEndOf="@id/guidelneLeftmid2"
+        app:layout_constraintTop_toTopOf="@id/txtDOB" />
 
     <EditText
-        android:id="@+id/etptEmContact"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@drawable/custom_edit_text_background"
-        android:hint="Enter emergency contact"
-        android:inputType="text"
-        android:maxLength="50"
-        android:maxLines="1"
-        android:textColorHint="@color/black"
-        android:textColor="@color/black"
-        android:textSize="@dimen/_4sdp"
-        app:layout_constraintEnd_toEndOf="@id/guidelneLeftmid3"
-        app:layout_constraintStart_toStartOf="@id/guidelneLeftmid2"
-        app:layout_constraintTop_toTopOf="@id/spUHID"
-        app:layout_constraintBottom_toBottomOf="@id/spUHID"/>
-
-    <TextView
-        android:id="@+id/ptGender"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_4sdp"
-        android:text="Gender"
-        android:textColor="@color/black"
-        android:textSize="@dimen/_5sdp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@id/guidelneRightEnd"
-        app:layout_constraintStart_toStartOf="@id/guidelneLeftStart"
-        app:layout_constraintTop_toBottomOf="@id/etptDOB" />
-
-    <TextView
-        android:id="@+id/ptGenderValue"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_4sdp"
-        android:background="@drawable/background_darkgrey_border_white"
-        android:padding="@dimen/_2sdp"
-        android:text="MALE"
-        android:textColor="@color/white"
-        android:textSize="@dimen/_5sdp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@id/guidelneLeftmid1"
-        app:layout_constraintStart_toStartOf="@id/guidelneLeftStart"
-        app:layout_constraintTop_toBottomOf="@id/ptGender" />
-
-    <TextView
-        android:id="@+id/ptDiagnosis"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:text="Diagnosis Info"
-        android:textColor="@color/black"
-        android:textSize="@dimen/_6sdp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@id/guidelneLeftmid2"
-        app:layout_constraintTop_toBottomOf="@id/etptEmContact" />
-
-
-    <EditText
-        android:id="@+id/etptDiagnosisValue"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@drawable/custom_edit_text_background"
-        android:hint="Enter patient diagnosis"
-        android:inputType="text"
-        android:maxLength="50"
-        android:maxLines="1"
-        android:textColor="@color/black"
-        android:textSize="@dimen/_4sdp"
-        app:layout_constraintEnd_toEndOf="@id/guidelneLeftmid3"
-        app:layout_constraintStart_toStartOf="@id/guidelneLeftmid2"
-        app:layout_constraintBottom_toBottomOf="@id/etptDOB"
-        app:layout_constraintTop_toTopOf="@id/etptDOB" />
-
-
-
-
-    <!-- Admission & Discharge Details Starts Below -->
-
-
-
-    <TextView
-        android:id="@+id/ptAdmission"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_4sdp"
-        android:text="Patient Admission Date"
-        android:textColor="@color/black"
-        android:textSize="@dimen/_5sdp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@id/guidelneLeftmid3"
-        app:layout_constraintStart_toStartOf="@id/guidelneLeftmid2"
-        app:layout_constraintTop_toBottomOf="@id/etptDiagnosisValue" />
-
-    <TextView
-        android:id="@+id/ptAdmissionDate"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_4sdp"
-        android:background="@drawable/background_darkgrey_border_white"
-        android:padding="@dimen/_2sdp"
-        android:text="02/Feb/2025"
-        android:textColor="@color/white"
-        android:textSize="@dimen/_5sdp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@id/guidelneLeftmid3"
-        app:layout_constraintStart_toStartOf="@id/guidelneLeftmid2"
-        app:layout_constraintTop_toBottomOf="@id/ptAdmission" />
-
-
-    <TextView
-        android:id="@+id/ptDischarge"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_4sdp"
-        android:text="Patient Discharge Date"
-        android:textColor="@color/black"
-        android:textSize="@dimen/_5sdp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@id/guidelneLeftmid3"
-        app:layout_constraintStart_toStartOf="@id/guidelneLeftmid2"
-        app:layout_constraintTop_toBottomOf="@id/ptAdmissionDate" />
-
-    <TextView
-        android:id="@+id/ptdischargeDate"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_4sdp"
-        android:background="@drawable/background_darkgrey_border_white"
-        android:padding="@dimen/_2sdp"
-        android:text="10/Feb/2025"
-        android:textColor="@color/white"
-        android:textSize="@dimen/_5sdp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@id/guidelneLeftmid3"
-        app:layout_constraintStart_toStartOf="@id/guidelneLeftmid2"
-        app:layout_constraintTop_toBottomOf="@id/ptDischarge" />
-
-    <TextView
-        android:id="@+id/tvHL7CommTypetitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="HL7 version selection"
-        android:textColor="@color/black"
-        android:textSize="@dimen/_6sdp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@id/guidelneLeftmid4"
-        app:layout_constraintTop_toTopOf="@id/ptUhid" />
-
-    <Spinner
-        android:id="@+id/spHL7CommValue"
+        android:id="@+id/etGender"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:background="@drawable/border_spinner"
-        app:layout_constraintBottom_toBottomOf="@id/etptEmContact"
-        app:layout_constraintEnd_toEndOf="@id/guidelneLeftmid5"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@id/guidelneLeftmid4"
-        app:layout_constraintTop_toTopOf="@id/etptEmContact"
-        app:layout_constraintVertical_bias="0.55" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineBelowSpinnner"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintGuide_percent="0.26"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/tvtransferTitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_4sdp"
-        android:text="Initiate Process "
+        android:background="@drawable/custom_edit_text_background"
+        android:hint="Enter Patient Gender"
+        android:inputType="text"
+        android:maxLength="15"
+        android:maxLines="1"
         android:textColor="@color/black"
         android:textSize="@dimen/_5sdp"
+        android:fontFamily="@font/avenir_next_lt_pro_regular"
+        app:layout_constraintEnd_toStartOf="@id/guidelneLeftmid3"
+        app:layout_constraintStart_toEndOf="@id/guidelneLeftmid2"
+        app:layout_constraintTop_toTopOf="@id/etDOB" />
+
+    <TextView
+        android:id="@+id/txtEmergencyContact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Patient Emergency Contact No"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_6sdp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@id/guidelneRightEnd"
-        app:layout_constraintStart_toStartOf="@id/guidelneLeftmid4"
-        app:layout_constraintTop_toBottomOf="@id/guidelineBelowSpinnner" />
+        app:layout_constraintStart_toEndOf="@id/guidelneLeftmid4"
+        app:layout_constraintTop_toTopOf="@id/txtDOB" />
+
+    <EditText
+        android:id="@+id/etEmergencyContact"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:background="@drawable/custom_edit_text_background"
+        android:hint="0000000000"
+        android:inputType="number"
+        android:maxLength="10"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_5sdp"
+        android:fontFamily="@font/avenir_next_lt_pro_regular"
+        app:layout_constraintEnd_toStartOf="@id/guidelneLeftmid5"
+        app:layout_constraintStart_toEndOf="@id/guidelneLeftmid4"
+        app:layout_constraintTop_toTopOf="@id/etDOB" />
+
+    <TextView
+        android:id="@+id/txtAdmitDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:text="Patient Admission Date"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_6sdp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/guidelneLeftStart"
+        app:layout_constraintTop_toBottomOf="@id/etDOB" />
+
+    <EditText
+        android:id="@+id/etAdmitDate"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:background="@drawable/custom_edit_text_background"
+        android:hint="YYYY/MM/DD"
+        android:inputType="date"
+        android:maxLength="10"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_5sdp"
+        android:fontFamily="@font/avenir_next_lt_pro_regular"
+        app:layout_constraintEnd_toStartOf="@id/guidelneLeftmid1"
+        app:layout_constraintStart_toStartOf="@id/etUhid"
+        app:layout_constraintTop_toBottomOf="@id/txtAdmitDate" />
+
+    <TextView
+        android:id="@+id/txtDischargeDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Patient Discharge Date"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_6sdp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/guidelneLeftmid2"
+        app:layout_constraintTop_toTopOf="@id/txtAdmitDate" />
+
+    <EditText
+        android:id="@+id/etDischargeDate"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:background="@drawable/custom_edit_text_background"
+        android:hint="YYYY/MM/DD"
+        android:inputType="date"
+        android:maxLength="10"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_5sdp"
+        android:fontFamily="@font/avenir_next_lt_pro_regular"
+        app:layout_constraintEnd_toStartOf="@id/guidelneLeftmid3"
+        app:layout_constraintStart_toEndOf="@id/guidelneLeftmid2"
+        app:layout_constraintTop_toTopOf="@id/etAdmitDate" />
+
+    <TextView
+        android:id="@+id/txtDoctorInCharge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Doctor Name"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_6sdp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/guidelneLeftmid4"
+        app:layout_constraintTop_toTopOf="@id/txtAdmitDate" />
+
+    <EditText
+        android:id="@+id/etDoctorName"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:background="@drawable/custom_edit_text_background"
+        android:hint="Enter Doctor Name"
+        android:inputType="text"
+        android:maxLength="50"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_5sdp"
+        android:fontFamily="@font/avenir_next_lt_pro_regular"
+        app:layout_constraintEnd_toStartOf="@id/guidelneLeftmid5"
+        app:layout_constraintStart_toEndOf="@id/guidelneLeftmid4"
+        app:layout_constraintTop_toTopOf="@id/etAdmitDate" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnSendData"
+        android:id="@+id/btnDischargeNow"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_height="50dp"
+        android:layout_marginTop="@dimen/_15sdp"
         android:background="@color/preCalib_amber"
         android:text="Discharge Now"
         android:textAllCaps="true"
         android:textSize="@dimen/_5sdp"
         android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="@id/guidelneLeftmid5"
-        app:layout_constraintStart_toStartOf="@id/guidelneLeftmid4"
-        app:layout_constraintTop_toBottomOf="@id/tvtransferTitle" />
+        app:layout_constraintEnd_toEndOf="@id/guidelneLeftmid4"
+        app:layout_constraintStart_toEndOf="@id/guidelneLeftmid1"
+        app:layout_constraintTop_toBottomOf="@id/etAdmitDate" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

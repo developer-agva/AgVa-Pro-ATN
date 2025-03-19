@@ -69,6 +69,9 @@ import java.util.Set;
 public class PreferenceManager {
 
     // HL7 Communication System
+    private static final String PREF_ADMIT_DATE = "PREF_ADMIT_DATE";
+    private static final String PREF_DISCHARGE_DATE = "PREF_DISCHARGE_DATE";
+    private static final String PREF_GENDER = "PREF_GENDER";
     private static final String PREF_DOB = "PREF_DOB";
     private static final String PREF_FIRST_NAME = "PREF_FIRST_NAME";
     private static final String PREF_LAST_NAME = "PREF_LAST_NAME";
@@ -218,7 +221,6 @@ public class PreferenceManager {
     private static final String PREF_PED_BODY_HEIGHT = "pref_Ped_body_height";
 
     private static final String PREF_IS_LOGGED_IN = "pref_login";
-    private static final String PREF_GENDER = "pref_gender";
 
     private static final String PREF_CURRENT_GRAPH_COLOR = "pref_current_graph_color";
 
@@ -392,60 +394,71 @@ public class PreferenceManager {
     }
 
     // hl7 communication window
-    public void setAdmitDate(String val) {
-        updateData(readUHID(), val);
+    public Gender readPatientGender(String key) {
+        try {
+            return Gender.valueOf(sp.getString(key + PREF_GENDER, TYPE_MALE.toString()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return TYPE_MALE;
+        }
     }
 
-    public String readAdmitDate() {
-        return sp.getString(readUHID(), "");
+    public void setPatientGender(Gender gender) {
+        updateData(readUHID() + PREF_GENDER, gender.toString());
+    }
+
+    public void setAdmitDate(String val) {
+        updateData(readUHID() + PREF_ADMIT_DATE, val);
+    }
+    public String readAdmitDate(String key) {
+        return sp.getString(key + PREF_ADMIT_DATE, "");
     }
 
     public void setDischargeDate(String val) {
-        updateData(readUHID(), val);
+        updateData(readUHID() + PREF_DISCHARGE_DATE, val);
     }
-
-    public String readDischargeDate() {
-        return sp.getString(readUHID(), "");
+    public String readDischargeDate(String key) {
+        return sp.getString(key + PREF_DISCHARGE_DATE, "");
     }
 
     public void setContactNumber(String val) {
-        updateData(PREF_CONTACT, val);
+        updateData(readUHID() + PREF_CONTACT, val);
     }
 
-    public String readContactNumber() {
-        return sp.getString(PREF_CONTACT, "");
+    public String readContactNumber(String key) {
+        return sp.getString(key + PREF_CONTACT, "");
     }
 
     public void setDOB(String val) {
-        updateData(PREF_DOB, val);
+        updateData(readUHID() + PREF_DOB, val);
     }
 
-    public String readDOB() {
-        return sp.getString(PREF_DOB, "");
+    public String readDOB(String key) {
+        return sp.getString(key + PREF_DOB, "");
     }
 
     public void setFirstName(String val) {
-        updateData(PREF_FIRST_NAME, val);
+        updateData(readUHID() + PREF_FIRST_NAME, val);
     }
 
-    public String readFirstName() {
-        return sp.getString(PREF_FIRST_NAME, "");
+    public String readFirstName(String key) {
+        return sp.getString(key + PREF_FIRST_NAME, "");
     }
 
     public void setLastName(String val) {
-        updateData(PREF_LAST_NAME, val);
+        updateData(readUHID() + PREF_LAST_NAME, val);
     }
 
-    public String readLastName() {
-        return sp.getString(PREF_LAST_NAME, "");
+    public String readLastName(String key) {
+        return sp.getString(key + PREF_LAST_NAME, "");
     }
 
     public void setDoctorName(String val) {
-        updateData(PREF_DOCTOR_NAME, val);
+        updateData(readUHID() + PREF_DOCTOR_NAME, val);
     }
 
-    public String readDoctorName() {
-        return sp.getString(PREF_DOCTOR_NAME, "");
+    public String readDoctorName(String key) {
+        return sp.getString(key + PREF_DOCTOR_NAME, "");
     }
 
     // start for ota side embedded
@@ -2643,13 +2656,6 @@ public class PreferenceManager {
         return sp.getInt(PREF_GRAPH_POINTS, GRAPH_POINTS_MAX);
     }
 
-    public void setEmergencyContact(String contact) {
-        updateData(PREF_EMERGENCY_CONTACT, contact);
-    }
-
-    public String readEmergencyContact() {
-        return sp.getString(PREF_EMERGENCY_CONTACT, null);
-    }
 
     public void setStandbyStatus(boolean isStandby) {
         updateData(PREF_STANDBY_STATUS, isStandby);
@@ -3004,6 +3010,7 @@ public class PreferenceManager {
         setCurrentUid(profile);
         setIsLoggedIn(true);
         setGender(gender);
+        setPatientGender(gender);
         setBodyHeight(height);
         setAge(age);
         setBodyWeight(weight);

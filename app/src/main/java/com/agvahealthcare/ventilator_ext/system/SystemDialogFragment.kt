@@ -163,15 +163,16 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         hL7CommunicationFragment = null
     }
 
-    private fun showhl7CommunicationFragment(){
+    private fun showhl7CommunicationFragment(tagHL7: String){
         makeAllFragmentsNull()
         sizeOfCurrentArray = 0
         if(hL7CommunicationFragment == null)
             hL7CommunicationFragment = HL7CommunicationFragment()
 
         hL7CommunicationFragment?.apply {
-            replaceFragment(this,TAG,R.id.system_nav_container)
+            replaceFragment(this,tagHL7,R.id.system_nav_container)
         }
+        highlightButton(binding.includeButtonTransfer.buttonView)
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -195,7 +196,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
             when (data) {
 
                 PREFIX_PLUS -> {
-                    if (highlightedIndex < (sizeOfCurrentArray + 14)) highlightedIndex++
+                    if (highlightedIndex < (sizeOfCurrentArray + 15)) highlightedIndex++
                     else {
                         highlightedIndex = 0
                     }
@@ -211,7 +212,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                 PREFIX_MINUS -> {
                     if (highlightedIndex > 0) highlightedIndex--
                     else {
-                        highlightedIndex = (sizeOfCurrentArray + 14)
+                        highlightedIndex = (sizeOfCurrentArray + 15)
                     }
 
                     getViewForFocus(true)?.let {
@@ -563,12 +564,16 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
             binding.includeButtonWifi.root.visibility = View.VISIBLE
             binding.includeButtonOTA.root.visibility = View.VISIBLE
             enableAllTabs(true)
+        }
 
-        } else {
+        else if (tag == "Discharge"){
+            showhl7CommunicationFragment("Discharge")
+            enableAllTabs(true)
+        }
+        else {
             if (arguments?.getString("CALIBRATE_CIRCUIT") == "TouchHere") setupTubeFragment()
             else showInfoFragment(communicationService)
             enableAllTabs(true)
-
         }
         setupClickListener()
     }
@@ -677,7 +682,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
             showWifiFragment()
         }
         binding.includeButtonTransfer.buttonView.setOnClickListener {
-            showhl7CommunicationFragment()
+            showhl7CommunicationFragment("Discharge")
         }
     }
 
@@ -896,6 +901,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
     private fun highlightButton(view: View) {
 
         // adding bg colors
+        binding.includeButtonTransfer.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
         binding.includeButtonInfo.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
         binding.includeButtonTestCalib.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
         binding.includeButtonStartup.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
@@ -912,6 +918,12 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         binding.includeButtonWifi.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
 
         // adding text colors
+        binding.includeButtonTransfer.buttonView.setTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.black
+            )
+        )
         binding.includeButtonInfo.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),

@@ -1587,10 +1587,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     setApneaSettingsStatus(readApneaSettingsStatusTemp())
                 }
 
-                Log.i(
-                    "backup_value",
-                    "${prefManager?.readApneaSettingsStatusTemp()}  ,1,  ${prefManager?.readIRVStatusTemp()}"
-                )
                 if (isExistingVentilation == true) {
 
                     if (tempPrefMapForExistingVentilationInteger.isNotEmpty() && tempPrefMapForExistingVentilationFloat.isNotEmpty()) {
@@ -1600,6 +1596,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     }
                     sendConfigurationToVentilatorWithWatchDog()
                 } else {
+
+                    prefManager?.setAdmitDate(AppUtils.getCurrentDateTime())
                     // set selected options into preference
                     when (VentilatorApp.selectedOptions) {
                         SELECTED_OPTIONS.PRONGS_NAME -> {
@@ -4103,6 +4101,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         binding.includeFemale.buttonFemale.setBackgroundResource(R.drawable.background_medium_grey)
         binding.includeFemale.buttonFemale.setTextColor(ContextCompat.getColor(this, R.color.black))
         prefManager?.setGender(Gender.TYPE_MALE)
+        prefManager?.setPatientGender(Gender.TYPE_MALE)
         gender = Gender.TYPE_MALE
     }
 
@@ -4114,6 +4113,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         binding.includeFemale.buttonFemale.setBackgroundResource(R.drawable.background_green_border)
         binding.includeFemale.buttonFemale.setTextColor(ContextCompat.getColor(this, R.color.white))
         prefManager?.setGender(Gender.TYPE_FEMALE)
+        prefManager?.setPatientGender(Gender.TYPE_FEMALE)
         gender = Gender.TYPE_FEMALE
     }
 

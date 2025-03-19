@@ -47,6 +47,7 @@ import com.agvahealthcare.ventilator_ext.callback.OtpVerifyListener;
 import com.agvahealthcare.ventilator_ext.callback.PasswordCallbackListener;
 import com.agvahealthcare.ventilator_ext.callback.SimpleCallbackListener;
 import com.agvahealthcare.ventilator_ext.callback.UserInteractionAwareCallback;
+import com.agvahealthcare.ventilator_ext.dashboard.DischargeListener;
 import com.agvahealthcare.ventilator_ext.manager.DataStoreManager;
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager;
 import com.agvahealthcare.ventilator_ext.model.VentMode;
@@ -1229,12 +1230,12 @@ public class DialogBoxFactory {
         return dialog;
     }
 
-    public static AlertDialog showVentilationStatusDialog(String msg, Context ctx, SimpleCallbackListener onclickStandby) {
+    public static AlertDialog showVentilationStatusDialog(String msg, Context ctx, DischargeListener onDischarge,SimpleCallbackListener onclickStandby) {
 
         View view = LayoutInflater.from(ctx).inflate(R.layout.layout_dialog_vent_status, null, false);
 
         Button btnStandby = view.findViewById(R.id.btnStandby);
-        Button btnCancel = view.findViewById(R.id.btnCancel);
+        Button btnDischarge = view.findViewById(R.id.btnDischarge);
 
         TextView dialogMessage = view.findViewById(R.id.etCmd);
         dialogMessage.setText(msg);
@@ -1247,7 +1248,10 @@ public class DialogBoxFactory {
 
         });
 
-        btnCancel.setOnClickListener(v -> dialog.cancel());
+        btnDischarge.setOnClickListener(v -> {
+            if (onDischarge != null) onDischarge.onDischarge();
+            dialog.cancel();
+        });
 
         setShutDownDialogView(dialog, true);
 

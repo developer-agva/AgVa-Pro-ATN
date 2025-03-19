@@ -16,15 +16,15 @@ import com.agvahealthcare.ventilator_ext.databinding.FragmentHL7CommunicationBin
 import com.agvahealthcare.ventilator_ext.manager.DataStoreManager
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.utility.ToastFactory
+import com.agvahealthcare.ventilator_ext.utility.utils.AppUtils
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.Gender
 import java.net.Socket
 
 
-class HL7CommunicationFragment : Fragment() {
+class HL7CommunicationFragment() : Fragment() {
 
     private lateinit var binding: FragmentHL7CommunicationBinding
     private var preferenceManager: PreferenceManager? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,14 +33,12 @@ class HL7CommunicationFragment : Fragment() {
 
         val hl7Message = createHL7Message()
         sendHL7Message(hl7Message)
-
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         binding = FragmentHL7CommunicationBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
@@ -48,22 +46,20 @@ class HL7CommunicationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initData()
+        updateViewViaPreferences(preferenceManager!!.readUHID())
         setupOnClickListener()
     }
 
-    private fun initData() {
-
+    private fun updateViewViaPreferences(uhid:String) {
         preferenceManager?.apply {
-            binding.etGender.setText(if (readGender() == Gender.TYPE_MALE) "Male" else "Female")
-            binding.etUhid.setText(readUHID())
-            binding.etDoctorName.setText(readDoctorName())
-            binding.etFirstName.setText(readFirstName())
-            binding.etLastName.setText(readLastName())
-            binding.etDischargeDate.setText(readDischargeDate())
-            binding.etAdmitDate.setText(readAdmitDate())
-            binding.etDOB.setText(readDOB())
-            binding.etEmergencyContact.setText(readContactNumber())
+            binding.etFirstName.setText(readFirstName(uhid))
+            binding.etLastName.setText(readLastName(uhid))
+            binding.etDOB.setText(readDOB(uhid))
+            binding.etGender.setText(if (readPatientGender(uhid) == Gender.TYPE_MALE) "MALE" else "FEMALE")
+            binding.etEmergencyContact.setText(readContactNumber(uhid))
+            binding.etAdmitDate.setText(readAdmitDate(uhid))
+            binding.etDischargeDate.setText(readDischargeDate(uhid))
+            binding.etDoctorName.setText(readDoctorName(uhid))
         }
     }
 
@@ -72,18 +68,19 @@ class HL7CommunicationFragment : Fragment() {
         binding.btnDischargeNow.setOnClickListener {
 
             preferenceManager?.apply {
-                setDoctorName(binding.etDoctorName.text.toString())
+                setUHID(binding.etUhid.text.toString())
                 setFirstName(binding.etFirstName.text.toString())
                 setLastName(binding.etLastName.text.toString())
-                setEmergencyContact(binding.etEmergencyContact.text.toString())
                 setDOB(binding.etDOB.text.toString())
+                setContactNumber(binding.etEmergencyContact.text.toString())
+                setAdmitDate(binding.etAdmitDate.text.toString())
+                setDischargeDate(AppUtils.getCurrentDateTime())
+                setDoctorName(binding.etDoctorName.text.toString())
             }
 
-            ToastFactory.custom(requireContext(), "Clicked")
             val hl7Message = createHL7Message()
             sendHL7Message(hl7Message)
         }
-
     }
 
 
@@ -94,7 +91,7 @@ class HL7CommunicationFragment : Fragment() {
             val patientLastName = binding.etLastName.text.toString()
             val patientFirstName = binding.etFirstName.text.toString()
             val dateOfBirth = binding.etDOB.text.toString() // Format: YYYYMMDD
-            val gender = preferenceManager?.readGender()
+            val gender = preferenceManager?.readPatientGender("UHID")
 
             // HL7 message format (ADT A01 Example)
             val hl7Message =

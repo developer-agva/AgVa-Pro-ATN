@@ -16,5 +16,4 @@ class AlarmViewModel(application: Application) : AndroidViewModel(application) {
             FileLogger.writeAlarmFile(getApplication(), "alarm", alarmDataString)
         }
     }
-
 }

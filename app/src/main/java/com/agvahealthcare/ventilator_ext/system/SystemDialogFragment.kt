@@ -163,16 +163,16 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         hL7CommunicationFragment = null
     }
 
-    private fun showhl7CommunicationFragment(tagHL7: String){
+    private fun showhl7CommunicationFragment(){
         makeAllFragmentsNull()
         sizeOfCurrentArray = 0
         if(hL7CommunicationFragment == null)
             hL7CommunicationFragment = HL7CommunicationFragment()
 
         hL7CommunicationFragment?.apply {
-            replaceFragment(this,tagHL7,R.id.system_nav_container)
+            replaceFragment(this, TAG,R.id.system_nav_container)
         }
-        highlightButton(binding.includeButtonTransfer.buttonView)
+        highlightButton(binding.includeButtonHL7.buttonView)
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -336,12 +336,25 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                 val pair = Pair(binding.includeButtonTube.buttonView, binding.includeButtonTube.root)
                 pair
             }
+
             sizeOfCurrentArray + 7 -> {
                 val pair = Pair(binding.includeButtonService.buttonView, binding.includeButtonService.root)
                 pair
             }
 
             sizeOfCurrentArray + 8 -> {
+                if (binding.includeButtonHL7.root.isVisible) {
+                    val pair = Pair(binding.includeButtonHL7.buttonView, binding.includeButtonHL7.root)
+                    pair
+                } else {
+                    isMinus?.let {
+                        if (isMinus) highlightedIndex-- else highlightedIndex++
+                        getViewForFocus(isMinus)
+                    }
+                }
+            }
+
+            sizeOfCurrentArray + 9 -> {
                 if (binding.includeButtonDiagchk.root.isVisible) {
                     val pair = Pair(binding.includeButtonDiagchk.buttonView, binding.includeButtonDiagchk.root)
                     pair
@@ -353,7 +366,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                 }
             }
 
-            sizeOfCurrentArray + 9 -> {
+            sizeOfCurrentArray + 10 -> {
                 if (binding.includeButtonO2Regulate.root.isVisible) {
                     val pair = Pair(binding.includeButtonO2Regulate.buttonView, binding.includeButtonO2Regulate.root)
                     pair
@@ -365,7 +378,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                 }
             }
 
-            sizeOfCurrentArray + 10 -> {
+            sizeOfCurrentArray + 11 -> {
                 if (binding.includeButtonAdvancedCalibration.root.isVisible) {
                     val pair = Pair(binding.includeButtonAdvancedCalibration.buttonView, binding.includeButtonAdvancedCalibration.root)
                     pair
@@ -377,7 +390,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                 }
             }
 
-            sizeOfCurrentArray + 11 -> {
+            sizeOfCurrentArray + 12 -> {
                 if (binding.includeButtondeviceUpdate.root.isVisible) {
                     val pair = Pair(binding.includeButtondeviceUpdate.buttonView, binding.includeButtondeviceUpdate.root)
                     pair
@@ -389,7 +402,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                 }
             }
 
-            sizeOfCurrentArray + 12 -> {
+            sizeOfCurrentArray + 13 -> {
                 if (binding.includeButtonNetworkInfo.root.isVisible) {
                     val pair = Pair(binding.includeButtonNetworkInfo.buttonView, binding.includeButtonNetworkInfo.root)
                     pair
@@ -401,7 +414,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                 }
             }
 
-            sizeOfCurrentArray + 13 -> {
+            sizeOfCurrentArray + 14 -> {
                 if (binding.includeButtonDebug.root.isVisible) {
                     val pair = Pair(binding.includeButtonDebug.buttonView, binding.includeButtonDebug.root)
                     pair
@@ -413,7 +426,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                 }
             }
 
-            sizeOfCurrentArray + 14 -> {
+            sizeOfCurrentArray + 15 -> {
                 if (binding.includeButtonOTA.root.isVisible) {
                     val pair = Pair(binding.includeButtonOTA.buttonView, binding.includeButtonOTA.root)
                     pair
@@ -474,14 +487,8 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
 
         binding.includeButtonService.root.visibility = View.VISIBLE
 
-        binding.includeButtonDebug.buttonView.setOnClickListener {
-            setupDebugFragment()
-        }
-
-        binding.includeButtonOTA.buttonView.setOnClickListener {
-            setupOtaFragment()
-        }
-
+        binding.includeButtonDebug.buttonView.setOnClickListener { setupDebugFragment() }
+        binding.includeButtonOTA.buttonView.setOnClickListener { setupOtaFragment() }
         binding.includeButtonStartup.buttonView.setOnLongClickListener {
             passWord = "8000"
             DialogBoxFactory.dismissDialogs()
@@ -544,6 +551,8 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
 
     private fun setUpNavigation() {
 
+        if (tag == "FromDashboard") binding.includeButtonHL7.root.visibility = View.GONE
+
         if (tag == "FromSplash") {
             showServiceFragment()
             enableAllTabs(false)
@@ -563,11 +572,6 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
             binding.includeButtonDebug.root.visibility = View.VISIBLE
             binding.includeButtonWifi.root.visibility = View.VISIBLE
             binding.includeButtonOTA.root.visibility = View.VISIBLE
-            enableAllTabs(true)
-        }
-
-        else if (tag == "Discharge"){
-            showhl7CommunicationFragment("Discharge")
             enableAllTabs(true)
         }
         else {
@@ -628,7 +632,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         binding.includeButtondeviceUpdate.buttonView.text = getString(R.string.hint_update)
         binding.includeButtonNetworkInfo.buttonView.text = getString(R.string.network_info)
         binding.includeButtonWifi.buttonView.text = getString(R.string.wifi)
-        binding.includeButtonTransfer.buttonView.text = getString(R.string.discharge)
+        binding.includeButtonHL7.buttonView.text = getString(R.string.hl7)
 
         binding.imageViewCrossSystem.setOnClickListener {
             closeFragment()
@@ -681,8 +685,8 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         binding.includeButtonWifi.buttonView.setOnClickListener {
             showWifiFragment()
         }
-        binding.includeButtonTransfer.buttonView.setOnClickListener {
-            showhl7CommunicationFragment("Discharge")
+        binding.includeButtonHL7.buttonView.setOnClickListener {
+            showhl7CommunicationFragment()
         }
     }
 
@@ -901,7 +905,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
     private fun highlightButton(view: View) {
 
         // adding bg colors
-        binding.includeButtonTransfer.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
+        binding.includeButtonHL7.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
         binding.includeButtonInfo.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
         binding.includeButtonTestCalib.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
         binding.includeButtonStartup.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
@@ -918,7 +922,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         binding.includeButtonWifi.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
 
         // adding text colors
-        binding.includeButtonTransfer.buttonView.setTextColor(
+        binding.includeButtonHL7.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.black

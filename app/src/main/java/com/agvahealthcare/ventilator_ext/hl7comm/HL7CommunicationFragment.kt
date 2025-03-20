@@ -65,7 +65,7 @@ class HL7CommunicationFragment() : Fragment() {
 
     private fun setupOnClickListener() {
 
-        binding.btnDischargeNow.setOnClickListener {
+        binding.btnSendHl7Command.setOnClickListener {
 
             preferenceManager?.apply {
                 setUHID(binding.etUhid.text.toString())
@@ -83,7 +83,6 @@ class HL7CommunicationFragment() : Fragment() {
         }
     }
 
-
     private fun createHL7Message(): String {
         return try {
             // Constructing a basic HL7 message
@@ -94,17 +93,12 @@ class HL7CommunicationFragment() : Fragment() {
             val gender = preferenceManager?.readPatientGender("UHID")
 
             // HL7 message format (ADT A01 Example)
-            val hl7Message =
-                "MSH|^~\\&|HOSPITAL|DEPT|HFIR|HL7COMM|202503110930||ADT^A01|MSG1234|P|2.3\r" +
-                        "PID|||$patientId||$patientLastName^$patientFirstName||$dateOfBirth|$gender\r"
-            Log.d("HL7Message", hl7Message)
-            hl7Message
+            "MSH|^~\\&|HOSPITAL|DEPT|HFIR|HL7COMM|202503110930||ADT^A01|MSG1234|P|2.3\rPID|||$patientId||$patientLastName^$patientFirstName||$dateOfBirth|$gender\r"
         } catch (e: Exception) {
             e.printStackTrace()
             ""
         }
     }
-
 
     private fun sendHL7Message(hl7Message: String) {
         Thread {

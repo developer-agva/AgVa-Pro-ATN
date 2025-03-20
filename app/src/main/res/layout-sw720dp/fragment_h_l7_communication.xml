@@ -71,7 +71,7 @@
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Patient Discharge Window"
+            android:text="HL7 Communication Window"
             android:textAllCaps="true"
             android:textColor="@color/black"
             android:textSize="@dimen/_7sdp"
@@ -356,12 +356,12 @@
         app:layout_constraintTop_toTopOf="@id/etAdmitDate" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnDischargeNow"
+        android:id="@+id/btnSendHl7Command"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginTop="@dimen/_15sdp"
         android:background="@color/preCalib_amber"
-        android:text="Discharge"
+        android:text="Send HL7 Command"
         android:textAllCaps="true"
         android:textSize="@dimen/_6sdp"
         android:fontFamily="@font/avenir_next_lt_pro_bold"

@@ -714,6 +714,37 @@ abstract class FileLogger {
             return dataNotFound
         }
 
+        //reading of file
+        fun readUhidFile(fileName: String): String {
+
+            var filePath = File(
+                Environment.getExternalStorageDirectory(),
+                AppUtils.PATH_FOLDER_AGVA + File.separator + "event"
+            )
+            filePath = File(filePath, fileName)
+            try {
+
+                if (filePath.exists()) {
+
+                    var data = ""
+                    val fileData = filePath.readText().split("|") as ArrayList<String>
+                    fileData.removeAt(fileData.size - 1)
+                    fileData.reverse()
+
+                    for (i in 0 until fileData.size){
+                        if (i == fileData.size-1) data += fileData[i].split(",")[2]
+                        else  data += fileData[i].split(",")[2] + "|"
+                    }
+
+                    return if (data == "") dataNotFound else data
+                }
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Log.i("dataClear", e.message.toString())
+            }
+            return dataNotFound
+        }
 
         //reading of file
         fun readEventFile(fileName: String, startIndex: Int, endIndex: Int): String {

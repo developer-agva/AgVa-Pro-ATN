@@ -71,15 +71,15 @@
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/arial_bold"
             android:text="HL7 Communication Window"
             android:textAllCaps="true"
             android:textColor="@color/black"
             android:textSize="@dimen/_7sdp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:fontFamily="@font/arial_bold" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -90,39 +90,82 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_7sdp"
         android:text="UHID"
+        android:textAllCaps="true"
         android:textColor="@color/black"
         android:textSize="@dimen/_6sdp"
         android:textStyle="bold"
-        android:textAllCaps="true"
         app:layout_constraintStart_toStartOf="@id/guidelneLeftStart"
         app:layout_constraintTop_toBottomOf="@id/titletopBar" />
 
-    <EditText
-        android:id="@+id/etUhid"
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/uhidRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_70sdp"
+        android:visibility="gone"
+        android:translationZ="@dimen/_3sdp"
+        tools:listitem="@layout/setup_select_layout"
+        app:layout_constraintStart_toStartOf="@id/uhidLayout"
+        app:layout_constraintEnd_toEndOf="@id/uhidLayout"
+        app:layout_constraintTop_toBottomOf="@id/uhidLayout"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/uhidLayout"
         android:layout_width="0dp"
         android:layout_height="45dp"
         android:layout_marginTop="@dimen/_4sdp"
         android:background="@drawable/custom_edit_text_background"
-        android:hint="Enter UHID"
-        android:inputType="textCapCharacters"
-        android:maxLength="10"
-        android:textColorHint="@color/black"
-        android:maxLines="1"
-        android:textColor="@color/black"
-        android:textSize="@dimen/_6sdp"
-        android:fontFamily="@font/avenir_next_lt_pro_medium"
         app:layout_constraintEnd_toStartOf="@id/guidelneLeftmid1"
         app:layout_constraintStart_toEndOf="@id/guidelneLeftStart"
-        app:layout_constraintTop_toBottomOf="@id/txtUhid" />
+        app:layout_constraintTop_toBottomOf="@id/txtUhid">
+
+        <EditText
+            android:id="@+id/etUhid"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:hint="Enter UHID"
+            android:inputType="textNoSuggestions|textCapCharacters"
+            android:lines="1"
+            android:maxLength="10"
+            android:maxLines="1"
+            android:imeOptions="actionDone"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_6sdp"
+            android:fontFamily="@font/avenir_next_lt_pro_medium"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/innerGuideline"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/innerGuideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.85" />
+
+        <ImageView
+            android:id="@+id/ivUhid"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_arrow_drop_down"
+            app:layout_constraintStart_toEndOf="@id/innerGuideline"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <TextView
         android:id="@+id/txtFirstName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="First Name"
+        android:textAllCaps="true"
         android:textColor="@color/black"
         android:textSize="@dimen/_6sdp"
-        android:textAllCaps="true"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/guidelneLeftmid2"
         app:layout_constraintTop_toTopOf="@id/txtUhid" />
@@ -132,26 +175,26 @@
         android:layout_width="0dp"
         android:layout_height="45dp"
         android:background="@drawable/custom_edit_text_background"
+        android:fontFamily="@font/avenir_next_lt_pro_medium"
         android:hint="Enter First Name"
         android:inputType="text"
         android:maxLength="50"
-        android:textColorHint="@color/black"
         android:maxLines="1"
         android:textColor="@color/black"
+        android:textColorHint="@color/black"
         android:textSize="@dimen/_6sdp"
-        android:fontFamily="@font/avenir_next_lt_pro_medium"
         app:layout_constraintEnd_toStartOf="@id/guidelneLeftmid3"
         app:layout_constraintStart_toEndOf="@id/guidelneLeftmid2"
-        app:layout_constraintTop_toTopOf="@id/etUhid" />
+        app:layout_constraintTop_toTopOf="@id/uhidLayout" />
 
     <TextView
         android:id="@+id/txtLastName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Last Name"
+        android:textAllCaps="true"
         android:textColor="@color/black"
         android:textSize="@dimen/_6sdp"
-        android:textAllCaps="true"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/guidelneLeftmid4"
         app:layout_constraintTop_toTopOf="@id/txtUhid" />
@@ -161,17 +204,17 @@
         android:layout_width="0dp"
         android:layout_height="45dp"
         android:background="@drawable/custom_edit_text_background"
+        android:fontFamily="@font/avenir_next_lt_pro_medium"
         android:hint="Enter Last Name"
         android:inputType="text"
         android:maxLength="50"
-        android:textColorHint="@color/black"
         android:maxLines="1"
         android:textColor="@color/black"
+        android:textColorHint="@color/black"
         android:textSize="@dimen/_6sdp"
-        android:fontFamily="@font/avenir_next_lt_pro_medium"
         app:layout_constraintEnd_toStartOf="@id/guidelneLeftmid5"
         app:layout_constraintStart_toEndOf="@id/guidelneLeftmid4"
-        app:layout_constraintTop_toTopOf="@id/etUhid" />
+        app:layout_constraintTop_toTopOf="@id/uhidLayout" />
 
 
     <TextView
@@ -180,12 +223,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
         android:text="Date Of Birth"
+        android:textAllCaps="true"
         android:textColor="@color/black"
         android:textSize="@dimen/_6sdp"
-        android:textAllCaps="true"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@id/guidelneLeftStart"
-        app:layout_constraintTop_toBottomOf="@id/etUhid" />
+        app:layout_constraintTop_toBottomOf="@id/uhidLayout" />
 
     <EditText
         android:id="@+id/etDOB"
@@ -193,16 +236,16 @@
         android:layout_height="45dp"
         android:layout_marginTop="@dimen/_4sdp"
         android:background="@drawable/custom_edit_text_background"
+        android:fontFamily="@font/avenir_next_lt_pro_medium"
         android:hint="YYYY/MM/DD"
         android:inputType="date"
         android:maxLength="10"
         android:maxLines="1"
-        android:textColorHint="@color/black"
         android:textColor="@color/black"
+        android:textColorHint="@color/black"
         android:textSize="@dimen/_6sdp"
-        android:fontFamily="@font/avenir_next_lt_pro_medium"
         app:layout_constraintEnd_toStartOf="@id/guidelneLeftmid1"
-        app:layout_constraintStart_toStartOf="@id/etUhid"
+        app:layout_constraintStart_toStartOf="@id/uhidLayout"
         app:layout_constraintTop_toBottomOf="@id/txtDOB" />
 
     <TextView
@@ -210,9 +253,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Gender"
+        android:textAllCaps="true"
         android:textColor="@color/black"
         android:textSize="@dimen/_6sdp"
-        android:textAllCaps="true"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/guidelneLeftmid2"
         app:layout_constraintTop_toTopOf="@id/txtDOB" />
@@ -222,15 +265,15 @@
         android:layout_width="0dp"
         android:layout_height="45dp"
         android:background="@drawable/custom_edit_text_background"
+        android:enabled="false"
+        android:fontFamily="@font/avenir_next_lt_pro_medium"
         android:hint="Enter Gender"
         android:inputType="none"
-        android:enabled="false"
         android:maxLength="15"
         android:maxLines="1"
-        android:textColorHint="@color/black"
         android:textColor="@color/black"
+        android:textColorHint="@color/black"
         android:textSize="@dimen/_6sdp"
-        android:fontFamily="@font/avenir_next_lt_pro_medium"
         app:layout_constraintEnd_toStartOf="@id/guidelneLeftmid3"
         app:layout_constraintStart_toEndOf="@id/guidelneLeftmid2"
         app:layout_constraintTop_toTopOf="@id/etDOB" />
@@ -240,9 +283,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Contact No"
+        android:textAllCaps="true"
         android:textColor="@color/black"
         android:textSize="@dimen/_6sdp"
-        android:textAllCaps="true"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/guidelneLeftmid4"
         app:layout_constraintTop_toTopOf="@id/txtDOB" />
@@ -252,14 +295,14 @@
         android:layout_width="0dp"
         android:layout_height="45dp"
         android:background="@drawable/custom_edit_text_background"
+        android:fontFamily="@font/avenir_next_lt_pro_medium"
         android:hint="0000000000"
         android:inputType="number"
         android:maxLength="10"
-        android:textColorHint="@color/black"
         android:maxLines="1"
         android:textColor="@color/black"
+        android:textColorHint="@color/black"
         android:textSize="@dimen/_6sdp"
-        android:fontFamily="@font/avenir_next_lt_pro_medium"
         app:layout_constraintEnd_toStartOf="@id/guidelneLeftmid5"
         app:layout_constraintStart_toEndOf="@id/guidelneLeftmid4"
         app:layout_constraintTop_toTopOf="@id/etDOB" />
@@ -270,9 +313,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
         android:text="Admit Date"
+        android:textAllCaps="true"
         android:textColor="@color/black"
         android:textSize="@dimen/_6sdp"
-        android:textAllCaps="true"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@id/guidelneLeftStart"
         app:layout_constraintTop_toBottomOf="@id/etDOB" />
@@ -283,17 +326,17 @@
         android:layout_height="45dp"
         android:layout_marginTop="@dimen/_4sdp"
         android:background="@drawable/custom_edit_text_background"
+        android:enabled="false"
+        android:fontFamily="@font/avenir_next_lt_pro_medium"
         android:hint="YYYY/MM/DD"
         android:inputType="none"
-        android:enabled="false"
         android:maxLength="10"
-        android:textColorHint="@color/black"
         android:maxLines="1"
         android:textColor="@color/black"
+        android:textColorHint="@color/black"
         android:textSize="@dimen/_6sdp"
-        android:fontFamily="@font/avenir_next_lt_pro_medium"
         app:layout_constraintEnd_toStartOf="@id/guidelneLeftmid1"
-        app:layout_constraintStart_toStartOf="@id/etUhid"
+        app:layout_constraintStart_toStartOf="@id/uhidLayout"
         app:layout_constraintTop_toBottomOf="@id/txtAdmitDate" />
 
     <TextView
@@ -301,9 +344,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Discharge Date"
+        android:textAllCaps="true"
         android:textColor="@color/black"
         android:textSize="@dimen/_6sdp"
-        android:textAllCaps="true"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/guidelneLeftmid2"
         app:layout_constraintTop_toTopOf="@id/txtAdmitDate" />
@@ -313,15 +356,15 @@
         android:layout_width="0dp"
         android:layout_height="45dp"
         android:background="@drawable/custom_edit_text_background"
+        android:enabled="false"
+        android:fontFamily="@font/avenir_next_lt_pro_medium"
         android:hint="YYYY/MM/DD"
         android:inputType="none"
-        android:enabled="false"
         android:maxLength="10"
-        android:textColorHint="@color/black"
         android:maxLines="1"
         android:textColor="@color/black"
+        android:textColorHint="@color/black"
         android:textSize="@dimen/_6sdp"
-        android:fontFamily="@font/avenir_next_lt_pro_medium"
         app:layout_constraintEnd_toStartOf="@id/guidelneLeftmid3"
         app:layout_constraintStart_toEndOf="@id/guidelneLeftmid2"
         app:layout_constraintTop_toTopOf="@id/etAdmitDate" />
@@ -331,9 +374,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Doctor Name"
+        android:textAllCaps="true"
         android:textColor="@color/black"
         android:textSize="@dimen/_6sdp"
-        android:textAllCaps="true"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/guidelneLeftmid4"
         app:layout_constraintTop_toTopOf="@id/txtAdmitDate" />
@@ -343,14 +386,14 @@
         android:layout_width="0dp"
         android:layout_height="45dp"
         android:background="@drawable/custom_edit_text_background"
+        android:fontFamily="@font/avenir_next_lt_pro_medium"
         android:hint="Enter Doctor Name"
         android:inputType="text"
         android:maxLength="50"
-        android:textColorHint="@color/black"
         android:maxLines="1"
         android:textColor="@color/black"
+        android:textColorHint="@color/black"
         android:textSize="@dimen/_6sdp"
-        android:fontFamily="@font/avenir_next_lt_pro_medium"
         app:layout_constraintEnd_toStartOf="@id/guidelneLeftmid5"
         app:layout_constraintStart_toEndOf="@id/guidelneLeftmid4"
         app:layout_constraintTop_toTopOf="@id/etAdmitDate" />
@@ -361,11 +404,11 @@
         android:layout_height="50dp"
         android:layout_marginTop="@dimen/_15sdp"
         android:background="@color/preCalib_amber"
+        android:fontFamily="@font/avenir_next_lt_pro_bold"
         android:text="Send HL7 Command"
         android:textAllCaps="true"
-        android:textSize="@dimen/_6sdp"
-        android:fontFamily="@font/avenir_next_lt_pro_bold"
         android:textColor="@color/black"
+        android:textSize="@dimen/_6sdp"
         app:layout_constraintEnd_toEndOf="@id/guidelneLeftmid3"
         app:layout_constraintStart_toEndOf="@id/guidelneLeftmid2"
         app:layout_constraintTop_toBottomOf="@id/etAdmitDate" />

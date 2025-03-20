@@ -1,31 +1,38 @@
 package com.agvahealthcare.ventilator_ext.hl7comm
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
+import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Toast
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.databinding.FragmentHL7CommunicationBinding
-import com.agvahealthcare.ventilator_ext.manager.DataStoreManager
+import com.agvahealthcare.ventilator_ext.logging.FileLogger
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
+import com.agvahealthcare.ventilator_ext.system.settings.CommonSetupAdapter
+import com.agvahealthcare.ventilator_ext.system.settings.onDropDownSelectionListener
+import com.agvahealthcare.ventilator_ext.utility.FIRST_FILTER_NAME
 import com.agvahealthcare.ventilator_ext.utility.ToastFactory
 import com.agvahealthcare.ventilator_ext.utility.utils.AppUtils
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.Gender
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.net.Socket
 
 
-class HL7CommunicationFragment() : Fragment() {
+class HL7CommunicationFragment() : Fragment(), onDropDownSelectionListener {
 
     private lateinit var binding: FragmentHL7CommunicationBinding
     private var preferenceManager: PreferenceManager? = null
-
+    private var mAdapter: CommonSetupAdapter? = null
+    private var clickUhidLayout = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -35,22 +42,49 @@ class HL7CommunicationFragment() : Fragment() {
         sendHL7Message(hl7Message)
     }
 
+    override fun onItemSelect(text: String, colorInt: Int) {
+
+        binding.uhidRecyclerView.visibility = View.GONE
+        mAdapter = null
+
+        if (clickUhidLayout) {
+            updateViewViaPreferences(text)
+            binding.etUhid.setText(text)
+        }
+        clickUhidLayout = false
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHL7CommunicationBinding.inflate(layoutInflater, container, false)
+        binding.root.setOnClickListener {
+            binding.uhidRecyclerView.visibility = View.GONE
+        }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.etUhid.setText(preferenceManager?.readUHID())
         updateViewViaPreferences(preferenceManager!!.readUHID())
         setupOnClickListener()
+
+        binding.etUhid.setOnEditorActionListener(object : TextView.OnEditorActionListener {
+            override fun onEditorAction(p0: TextView?, p1: Int, p2: KeyEvent?): Boolean {
+                if (p1 == EditorInfo.IME_ACTION_DONE) {
+                    updateViewViaPreferences(binding.etUhid.text.toString())
+                    AppUtils.hideKeyBoard(requireContext(), binding.etUhid)
+                    return true
+                }
+                return false
+            }
+        })
     }
 
-    private fun updateViewViaPreferences(uhid:String) {
+    private fun updateViewViaPreferences(uhid: String) {
         preferenceManager?.apply {
             binding.etFirstName.setText(readFirstName(uhid))
             binding.etLastName.setText(readLastName(uhid))
@@ -63,21 +97,54 @@ class HL7CommunicationFragment() : Fragment() {
         }
     }
 
+    private fun setupUhidLayout(uhidList: ArrayList<String>) {
+        mAdapter = CommonSetupAdapter(uhidList, this)
+        binding.uhidRecyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = mAdapter
+        }
+    }
+
+
     private fun setupOnClickListener() {
+
+        binding.ivUhid.setOnClickListener {
+            clickUhidLayout = true
+            binding.uhidRecyclerView.visibility = View.VISIBLE
+
+            CoroutineScope(Dispatchers.IO).launch {
+                val data = FileLogger.readUhidFile("event")
+                if (data != FileLogger.dataNotFound) {
+                    val list = (data.split("|") as ArrayList<String>).toSet()
+                    Log.d("dataUhid", list.size.toString())
+
+                    withContext(Dispatchers.Main) {
+                        setupUhidLayout(list.toList() as ArrayList<String>)
+                    }
+                }
+            }
+        }
 
         binding.btnSendHl7Command.setOnClickListener {
 
             preferenceManager?.apply {
-                setUHID(binding.etUhid.text.toString())
-                setFirstName(binding.etFirstName.text.toString())
-                setLastName(binding.etLastName.text.toString())
-                setDOB(binding.etDOB.text.toString())
-                setContactNumber(binding.etEmergencyContact.text.toString())
-                setAdmitDate(binding.etAdmitDate.text.toString())
-                setDischargeDate(AppUtils.getCurrentDateTime())
-                setDoctorName(binding.etDoctorName.text.toString())
+                if (readUHID() == FIRST_FILTER_NAME) setUHID(binding.etUhid.text.toString())
+                setFirstName(binding.etUhid.text.toString(), binding.etFirstName.text.toString())
+                setLastName(binding.etUhid.text.toString(), binding.etLastName.text.toString())
+                setDOB(binding.etUhid.text.toString(), binding.etDOB.text.toString())
+                setContactNumber(
+                    binding.etUhid.text.toString(),
+                    binding.etEmergencyContact.text.toString()
+                )
+                setAdmitDate(binding.etUhid.text.toString(), binding.etAdmitDate.text.toString())
+                setDischargeDate(binding.etUhid.text.toString(), AppUtils.getCurrentDateTime())
+                setDoctorName(binding.etUhid.text.toString(), binding.etDoctorName.text.toString())
+                setPatientGender(
+                    binding.etUhid.text.toString(),
+                    if (binding.etGender.text.toString() == "MALE") Gender.TYPE_MALE else Gender.TYPE_FEMALE
+                )
             }
-
+            ToastFactory.custom(requireContext(), "Requesting HL7..")
             val hl7Message = createHL7Message()
             sendHL7Message(hl7Message)
         }

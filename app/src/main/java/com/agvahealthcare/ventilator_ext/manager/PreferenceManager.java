@@ -403,58 +403,58 @@ public class PreferenceManager {
         }
     }
 
-    public void setPatientGender(Gender gender) {
-        updateData(readUHID() + PREF_GENDER, gender.toString());
+    public void setPatientGender(String key,Gender gender) {
+        updateData(key + PREF_GENDER, gender.toString());
     }
 
-    public void setAdmitDate(String val) {
-        updateData(readUHID() + PREF_ADMIT_DATE, val);
+    public void setAdmitDate(String key,String val) {
+        updateData(key + PREF_ADMIT_DATE, val);
     }
     public String readAdmitDate(String key) {
         return sp.getString(key + PREF_ADMIT_DATE, "");
     }
 
-    public void setDischargeDate(String val) {
-        updateData(readUHID() + PREF_DISCHARGE_DATE, val);
+    public void setDischargeDate(String key,String val) {
+        updateData(key + PREF_DISCHARGE_DATE, val);
     }
     public String readDischargeDate(String key) {
         return sp.getString(key + PREF_DISCHARGE_DATE, "");
     }
 
-    public void setContactNumber(String val) {
-        updateData(readUHID() + PREF_CONTACT, val);
+    public void setContactNumber(String key,String val) {
+        updateData(key + PREF_CONTACT, val);
     }
 
     public String readContactNumber(String key) {
         return sp.getString(key + PREF_CONTACT, "");
     }
 
-    public void setDOB(String val) {
-        updateData(readUHID() + PREF_DOB, val);
+    public void setDOB(String key,String val) {
+        updateData(key + PREF_DOB, val);
     }
 
     public String readDOB(String key) {
         return sp.getString(key + PREF_DOB, "");
     }
 
-    public void setFirstName(String val) {
-        updateData(readUHID() + PREF_FIRST_NAME, val);
+    public void setFirstName(String key,String val) {
+        updateData(key + PREF_FIRST_NAME, val);
     }
 
     public String readFirstName(String key) {
         return sp.getString(key + PREF_FIRST_NAME, "");
     }
 
-    public void setLastName(String val) {
-        updateData(readUHID() + PREF_LAST_NAME, val);
+    public void setLastName(String key,String val) {
+        updateData(key + PREF_LAST_NAME, val);
     }
 
     public String readLastName(String key) {
         return sp.getString(key + PREF_LAST_NAME, "");
     }
 
-    public void setDoctorName(String val) {
-        updateData(readUHID() + PREF_DOCTOR_NAME, val);
+    public void setDoctorName(String key,String val) {
+        updateData(key + PREF_DOCTOR_NAME, val);
     }
 
     public String readDoctorName(String key) {
@@ -3010,7 +3010,7 @@ public class PreferenceManager {
         setCurrentUid(profile);
         setIsLoggedIn(true);
         setGender(gender);
-        setPatientGender(gender);
+        setPatientGender(readUHID(),gender);
         setBodyHeight(height);
         setAge(age);
         setBodyWeight(weight);

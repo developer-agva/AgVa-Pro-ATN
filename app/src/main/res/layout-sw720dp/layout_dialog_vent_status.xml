@@ -75,10 +75,10 @@
                     android:orientation="horizontal">
 
                     <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btnCancel"
+                        android:id="@+id/btnDischarge"
                         android:layout_columnWeight="1"
                         android:background="@drawable/style_bordered_btn_white"
-                        android:text="Cancel"
+                        android:text="Discharge"
                         android:textColor="@android:color/white" />
 
                     <androidx.appcompat.widget.AppCompatButton

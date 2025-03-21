@@ -385,14 +385,12 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         mEventViewModel.addEventForDevelopers(eventDataModel)
     }
 
-
     private val fragmentDismissListener = object : OnDismissDialogListener {
         override fun handleDialogClose() {
             //normaliseButtons()
             binding.progressIndicator?.visibility = View.INVISIBLE
             normaliseButtons()
             disablePresence()
-
         }
     }
 
@@ -416,7 +414,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
     private val onBodyParamsKnobPressListener = object : OnKnobPressListener {
         override fun onKnobPress(previousValue: Float, newValue: Float) {
-
 
             when (currentButtonID) {
 
@@ -447,7 +444,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     }
                 }
 
-
                 binding.includeProgressAge.paramProgressBar -> {
 
                     currentButtonID = binding.includeProgressAge.paramProgressBar
@@ -473,7 +469,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     prefManager?.setBodyHeight(newValue.toDouble().toFloat())
                     height = newValue
                     normalizeProgressBars()
-
                 }
             }
 
@@ -481,15 +476,12 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 this.dismiss()
             }
             progressDialog = null
-
         }
     }
 
     private val onBodyParamsLimitChangeListener = fun(view: View): OnLimitChangeListener {
         return object : OnLimitChangeListener {
             override fun onLimitChange(previousValue: Float, newValue: Float) {
-
-                Log.i("dataHandling123", view.toString())
 
                 when (currentButtonID) {
 
@@ -547,15 +539,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             initBodyParamsViaPreferences()
         }
     }
-
-    /*
-     * This provides intent filter for the Gatt Data Receiver
-     */
-
-//    private fun updateServiceLayout(image:Int, color: Int){
-//        serviceLayout.setBackgroundResource(color)
-//        serviceIcon.setImageResource(image)
-//    }
 
     private fun getIntentFilter(): IntentFilter {
         val intentFilter = IntentFilter()

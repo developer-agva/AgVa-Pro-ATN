@@ -173,7 +173,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
             settingFragment?.updateKnobSetting(data)
         } else if (settingFragment?.clickedTile != null) {
             settingFragment?.updateKnobSetting(data)
-        } else {
+         } else {
 
             clearPreviousConstraints()
             startTimeoutWithDebounce()

@@ -387,6 +387,13 @@ public class PreferenceManager {
         this.gson = new Gson();
     }
 
+
+    public void setDischargeTime(String key,String val){
+        updateData(key,val);
+    }
+
+    public String readDischargeTime(String key){ return sp.getString(key,""); }
+
     // start for ota side embedded
     public void setTrendDuration(String val) {
         updateData(PREF_TREND_DURATION, val);

@@ -29,8 +29,6 @@ class HL7CommunicationFragment : Fragment() {
     private val versionList = listOf("version 2", "version 3")
     private val uhidList = listOf("abc123","add1231","asas1242","NAD1221","ffn3232","thfdg434")
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -115,27 +113,15 @@ class HL7CommunicationFragment : Fragment() {
         hL7CommunicationBinding.spUHID.adapter = uhidAdapter
 
         hL7CommunicationBinding.spUHID.onItemSelectedListener = object :AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-
-            }
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {}
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
-
 
         hL7CommunicationBinding.spHL7CommValue.adapter = versionListadapter
 
         hL7CommunicationBinding.spHL7CommValue.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-
-
-            }
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {}
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
     }
 
@@ -158,8 +144,6 @@ class HL7CommunicationFragment : Fragment() {
             ""
         }
     }
-
-
 
     private fun sendHL7Message(hl7Message: String) {
         Thread {

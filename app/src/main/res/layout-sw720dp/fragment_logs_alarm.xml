@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingDefaultResource">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/tvNote"
@@ -12,8 +13,8 @@
         android:visibility="gone"
         android:layout_marginStart="@dimen/_5sdp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/btnLayout"
-        app:layout_constraintBottom_toBottomOf="@+id/btnLayout"
+        app:layout_constraintTop_toTopOf="@+id/uhidLayout"
+        app:layout_constraintBottom_toBottomOf="@+id/uhidLayout"
         android:orientation="horizontal">
         <TextView
             android:id="@+id/tvheading"
@@ -25,59 +26,39 @@
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/btnLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/_15sdp"
-        android:layout_gravity="right"
-        android:background="@drawable/outline_background_spinner"
-        android:layout_marginTop="@dimen/_5sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:orientation="horizontal">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/uhidLayout"
+        android:layout_width="@dimen/_70sdp"
+        android:layout_height="@dimen/_15sdp"
+        android:background="@drawable/custom_edit_text_background"
+        android:layout_marginTop="@dimen/_3sdp"
+        app:layout_constraintEnd_toEndOf="@id/recyclerViewAlarm"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:id="@+id/txtUhid"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/_10sdp"
-            android:text="UHID"
-            android:layout_marginBottom="@dimen/_2sdp"
-            android:layout_gravity="center"
-            android:gravity="center"/>
-
-        <Spinner
-            android:id="@+id/spinnerAlarm"
-            android:layout_marginLeft="15dp"
-            android:textSize="@dimen/_4sdp"
-            android:layout_width="@dimen/_60sdp"
-            android:theme="@style/MatchSpinnerTheme"
-            android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/_2sdp"
-            android:dropDownWidth="@dimen/_60sdp"
-            android:spinnerMode="dropdown"
-            android:popupBackground="@drawable/outline_background_white_spinner"
-            tools:listitem="@layout/dropdownlist_spinner"
-            android:overlapAnchor="false"
-            android:layout_height="35dp"
+            android:layout_height="wrap_content"
+            android:text="UHID : "
             android:textColor="@color/black"
-            android:hint="Select UHID" />
-    </androidx.appcompat.widget.LinearLayoutCompat>
+            android:fontFamily="@font/avenir_next_lt_pro_medium"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_emptyAlarm"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_30sdp"
-        android:text="There are no alarms generated yet."
-        android:gravity="center"
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/uhidRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_70sdp"
         android:visibility="gone"
-        android:textColor="@color/black"
-        android:textSize="@dimen/_5sdp"
-        android:padding="@dimen/_2sdp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="@dimen/_5sdp"
-        app:layout_constraintTop_toBottomOf="@+id/btnLayout"
-        app:layout_constraintBottom_toTopOf="@id/recyclerViewAlarm"/>
+        android:translationZ="@dimen/_3sdp"
+        tools:listitem="@layout/setup_select_layout"
+        app:layout_constraintStart_toStartOf="@id/uhidLayout"
+        app:layout_constraintEnd_toEndOf="@id/uhidLayout"
+        app:layout_constraintTop_toBottomOf="@id/uhidLayout"/>
+
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="0dp"
@@ -89,7 +70,7 @@
         android:visibility="visible"
         app:layout_constraintEnd_toStartOf="@id/seekbarLayout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_emptyAlarm"
+        app:layout_constraintTop_toBottomOf="@id/uhidLayout"
         android:weightSum="1">
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -201,7 +182,7 @@
         android:visibility="invisible"
         app:layout_constraintStart_toEndOf="@id/recyclerViewAlarm"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/recyclerViewAlarm"
+        app:layout_constraintTop_toTopOf="@id/staticLayoutAlarm"
         app:layout_constraintBottom_toBottomOf="parent"
         android:orientation="vertical">
 

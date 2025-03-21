@@ -18,12 +18,19 @@ import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.uhidDataListEve
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardViewModel
 import com.agvahealthcare.ventilator_ext.databinding.FragmentEventsBinding
 import com.agvahealthcare.ventilator_ext.logging.FileLogger
+import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
+import com.agvahealthcare.ventilator_ext.system.settings.CommonSetupAdapter
+import com.agvahealthcare.ventilator_ext.system.settings.onDropDownSelectionListener
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 
 
-class EventsFragment : Fragment(), View.OnClickListener {
+class EventsFragment : Fragment(), View.OnClickListener, onDropDownSelectionListener {
 
-    private lateinit var binding : FragmentEventsBinding
+    private lateinit var binding: FragmentEventsBinding
     private lateinit var mEventViewModel: EventViewModel
     private var dataList = ArrayList<String>()
     private var dashBoardViewModel: DashBoardViewModel? = null
@@ -32,51 +39,44 @@ class EventsFragment : Fragment(), View.OnClickListener {
     private var uhid = ""
     private var startIndex = 0
     private var endIndex = 9
+    private var uhidAdapter: CommonSetupAdapter? = null
+    private var clickUhidLayout = false
+    private var defaultUhid = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentEventsBinding.inflate(layoutInflater,container,false)
+        binding = FragmentEventsBinding.inflate(layoutInflater, container, false)
         mEventViewModel = ViewModelProvider(this).get(EventViewModel::class.java)
         dashBoardViewModel =
             ViewModelProvider(requireActivity()).get(DashBoardViewModel::class.java)
-
+        binding.root.setOnClickListener {
+            binding.uhidRecyclerView.visibility = View.GONE
+        }
         return binding.root
     }
 
-    private fun setupSpinnerAdapter(){
+    override fun onItemSelect(text: String, colorInt: Int) {
 
-        if (uhidDataListEvent.size == 0) binding.btnLayout.visibility = View.GONE
-        else binding.btnLayout.visibility = View.VISIBLE
+        binding.uhidRecyclerView.visibility = View.GONE
+        mAdapter = null
 
-        val eventScrollAdapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_spinner_item,
-            VentilatorApp.uhidDataListEvent
-        )
-
-        binding.spinnerEvent.apply {
-            adapter = eventScrollAdapter
-            this.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    uhid = uhidDataListEvent[position]
-                    setupDataDefault(uhid)
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-
-                }
-            }
+        if (clickUhidLayout) {
+            defaultUhid = text
+            setupDataDefault(defaultUhid)
         }
+        clickUhidLayout = false
     }
 
+    private fun setupUhidLayout(uhidList: ArrayList<String>) {
+        uhidAdapter = CommonSetupAdapter(uhidList, this)
+        binding.uhidRecyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = uhidAdapter
+        }
+    }
 
     override fun onResume() {
         super.onResume()
@@ -96,9 +96,24 @@ class EventsFragment : Fragment(), View.OnClickListener {
         Log.i("eventTesting", "event")
         binding.topButton.setOnClickListener(this)
         binding.bottomButton.setOnClickListener(this)
+        defaultUhid = PreferenceManager(requireContext()).readUHID()
+        setupDataDefault(defaultUhid)
 
-        setupSpinnerAdapter()
-        setupDataDefault("")
+        binding.uhidLayout.setOnClickListener {
+            clickUhidLayout = true
+            binding.uhidRecyclerView.visibility = View.VISIBLE
+
+            CoroutineScope(Dispatchers.IO).launch {
+                val data = FileLogger.readUhidFile("event")
+                if (data != FileLogger.dataNotFound) {
+                    val list = (data.split("|") as ArrayList<String>).toSet()
+
+                    withContext(Dispatchers.Main) {
+                        setupUhidLayout(list.toList() as ArrayList<String>)
+                    }
+                }
+            }
+        }
     }
 
     override fun onClick(view: View) {
@@ -109,18 +124,18 @@ class EventsFragment : Fragment(), View.OnClickListener {
         when (view.id) {
 
             R.id.topButton -> {
-                Log.i("value_check_events","top")
+                Log.i("value_check_events", "top")
                 mAdapter?.apply {
                     mLayoutManager.apply {
                         val firstVisibleItemIndex = findFirstVisibleItemPosition()
                         if (getSelection() == firstVisibleItemIndex) {
                             startIndex -= 9
                             endIndex -= 9
-                            val data = FileLogger.readEventFile("event",startIndex,endIndex)
-                            if (data != "Data Not Found"){
+                            val data = FileLogger.readEventFile("event",defaultUhid, startIndex, endIndex)
+                            if (data != "Data Not Found") {
                                 val listData = data.split("|") as ArrayList<String>
-                                mAdapter?.updateDataList(listData,true)
-                            }else {
+                                mAdapter?.updateDataList(listData, true)
+                            } else {
                                 startIndex = tempStartIndex
                                 endIndex = tempEndIndex
                             }
@@ -136,7 +151,7 @@ class EventsFragment : Fragment(), View.OnClickListener {
                     mLayoutManager.apply {
                         val lastVisibleItemIndex = findLastCompletelyVisibleItemPosition()
 
-                        Log.i("value_check_events","${getSelection()} - $lastVisibleItemIndex")
+                        Log.i("value_check_events", "${getSelection()} - $lastVisibleItemIndex")
 
 
                         if (getSelection() != dataList.size - 1) {
@@ -144,12 +159,11 @@ class EventsFragment : Fragment(), View.OnClickListener {
                             if (getSelection() == lastVisibleItemIndex) {
                                 startIndex += 9
                                 endIndex += 9
-                                val data = FileLogger.readEventFile("event",startIndex,endIndex)
-                                if (data != "Data Not Found"){
+                                val data = FileLogger.readEventFile("event",defaultUhid, startIndex, endIndex)
+                                if (data != "Data Not Found") {
                                     val listData = data.split("|") as ArrayList<String>
-                                    mAdapter?.updateDataList(listData,false)
-                                }
-                                else {
+                                    mAdapter?.updateDataList(listData, false)
+                                } else {
                                     startIndex = tempStartIndex
                                     endIndex = tempEndIndex
                                 }
@@ -163,11 +177,16 @@ class EventsFragment : Fragment(), View.OnClickListener {
     }
 
     private fun setupDataDefault(uhid: String) {
+        binding.txtUhid.text = "UHID : $uhid"
+        CoroutineScope(Dispatchers.IO).launch {
+            val data = FileLogger.readEventFile("event", uhid, startIndex, endIndex)
+            if (data != "Data Not Found") {
 
-        val data = FileLogger.readEventFile("event",startIndex,endIndex)
-        if (data != "Data Not Found"){
-            dataList = data.split("|") as ArrayList<String>
-            setDataForEvents()
+                withContext(Dispatchers.Main) {
+                    dataList = data.split("|") as ArrayList<String>
+                    setDataForEvents()
+                }
+            }
         }
     }
 

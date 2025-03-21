@@ -2651,7 +2651,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
     private fun sendNeoSensorCheckCommand() {
         communicationService?.takeIf { it.isPortsConnected }?.apply {
-            Log.i("checkhere", " I WAS HERE" + isPortsConnected.toString())
             send(resources.getString(R.string.cmd_neo_sensor_check))
         }
     }
@@ -3109,10 +3108,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         sendDiagnosticDataToSocket()
         VentilatorApp.isNebuliserActive = true
         mMainActivityViewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
-        mDiagnosticCheckViewModel =
-            ViewModelProvider(this)[DiagnosticCheckViewModel::class.java]
-        mO2RegulationCheckViewModel =
-            ViewModelProvider(this)[O2RegulationCheckViewModel::class.java]
+        mDiagnosticCheckViewModel = ViewModelProvider(this)[DiagnosticCheckViewModel::class.java]
+        mO2RegulationCheckViewModel = ViewModelProvider(this)[O2RegulationCheckViewModel::class.java]
 
         mMainActivityViewModel.setBAtteryConnectedFlag(false)
 

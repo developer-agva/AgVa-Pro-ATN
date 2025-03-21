@@ -18,19 +18,27 @@ import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.uhidDataListAla
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardViewModel
 import com.agvahealthcare.ventilator_ext.databinding.FragmentLogsAlarmBinding
 import com.agvahealthcare.ventilator_ext.logging.FileLogger
+import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
+import com.agvahealthcare.ventilator_ext.system.settings.CommonSetupAdapter
+import com.agvahealthcare.ventilator_ext.system.settings.onDropDownSelectionListener
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
-class AlarmFragment : Fragment(), View.OnClickListener {
+class AlarmFragment : Fragment(), View.OnClickListener, onDropDownSelectionListener {
     private lateinit var mAlarmViewModel: AlarmViewModel
     private lateinit var buttonLayout: LinearLayoutCompat
     private var dashBoardViewModel: DashBoardViewModel? = null
     private var mAdapter: AlarmAdapter? = null
     lateinit var mLayoutManager: LinearLayoutManager
-    private lateinit var spinnerAlarm: Spinner
     private var dataList = ArrayList<String>()
-    private var uhid = ""
     private var startIndex = 0
-    private var endIndex = 9
+    private var endIndex = 11
+    private var uhidAdapter: CommonSetupAdapter? = null
+    private var clickUhidLayout = false
+    private var defaultUhid = ""
     private lateinit var binding : FragmentLogsAlarmBinding
 
     override fun onCreateView(
@@ -39,6 +47,9 @@ class AlarmFragment : Fragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentLogsAlarmBinding.inflate(layoutInflater,container,false)
+        binding.root.setOnClickListener {
+            binding.uhidRecyclerView.visibility = View.GONE
+        }
         return binding.root
     }
 
@@ -52,41 +63,35 @@ class AlarmFragment : Fragment(), View.OnClickListener {
         dashBoardViewModel?.updateIsAlarmsFragmentVisible(true)
     }
 
-    private fun setupAdapter(){
+    override fun onItemSelect(text: String, colorInt: Int) {
 
-        if (VentilatorApp.uhidDataListAlarm.size == 0) buttonLayout.visibility = View.GONE
-        else buttonLayout.visibility = View.VISIBLE
+        binding.uhidRecyclerView.visibility = View.GONE
+        mAdapter = null
 
-        val alarmScrollAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, VentilatorApp.uhidDataListAlarm)
-        spinnerAlarm.apply {
-            adapter = alarmScrollAdapter
-            this.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    uhid = uhidDataListAlarm[position]
-                    setupDataDefault(uhid)
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-                }
-            }
+        if (clickUhidLayout) {
+            defaultUhid = text
+            setupDataDefault(defaultUhid)
         }
+        clickUhidLayout = false
     }
 
 
-    private fun setupDataDefault(uhid: String) {
+    private fun setupUhidLayout(uhidList: java.util.ArrayList<String>) {
+        uhidAdapter = CommonSetupAdapter(uhidList, this)
+        binding.uhidRecyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = uhidAdapter
+        }
+    }
 
-        val data = FileLogger.readAlarmFile("alarm",startIndex,endIndex)
+    private fun setupDataDefault(uhid: String) {
+        binding.txtUhid.text = "UHID : $uhid"
+        val data = FileLogger.readAlarmFile("alarm",uhid,startIndex,endIndex)
         if (data != "Data Not Found"){
             dataList = data.split("|") as ArrayList<String>
             setUpAlarmsData()
         }
     }
-
 
 
     override fun onClick(view: View) {
@@ -102,9 +107,9 @@ class AlarmFragment : Fragment(), View.OnClickListener {
                     mLayoutManager.apply {
                         val firstVisibleItemIndex = findFirstVisibleItemPosition()
                         if (getSelection() == firstVisibleItemIndex) {
-                            startIndex -= 9
-                            endIndex -= 9
-                            val data = FileLogger.readAlarmFile("alarm",startIndex,endIndex)
+                            startIndex -= 11
+                            endIndex -= 11
+                            val data = FileLogger.readAlarmFile("alarm",defaultUhid,startIndex,endIndex)
                             if (data != "Data Not Found"){
                                 val listData = data.split("|") as java.util.ArrayList<String>
                                 mAdapter?.updateDataList(listData,true)
@@ -126,9 +131,9 @@ class AlarmFragment : Fragment(), View.OnClickListener {
 
                         if (getSelection() != dataList.size - 1) {
                             if (getSelection() == lastVisibleItemIndex) {
-                                startIndex += 9
-                                endIndex += 9
-                                val data = FileLogger.readAlarmFile("alarm",startIndex,endIndex)
+                                startIndex += 11
+                                endIndex += 11
+                                val data = FileLogger.readAlarmFile("alarm",defaultUhid,startIndex,endIndex)
                                 if (data != "Data Not Found"){
                                     val listData = data.split("|") as java.util.ArrayList<String>
                                     mAdapter?.updateDataList(listData,false)
@@ -152,17 +157,28 @@ class AlarmFragment : Fragment(), View.OnClickListener {
 
         mAlarmViewModel = ViewModelProvider(this).get(AlarmViewModel::class.java)
         dashBoardViewModel = ViewModelProvider(requireActivity()).get(DashBoardViewModel::class.java)
-        spinnerAlarm = view.findViewById<Spinner>(R.id.spinnerAlarm)
-        buttonLayout = view.findViewById(R.id.btnLayout)
 
         binding.topButtonAlarm.setOnClickListener(this)
         binding.bottomButtonAlarm.setOnClickListener(this)
+        defaultUhid = PreferenceManager(requireContext()).readUHID()
+        setupDataDefault(defaultUhid)
 
-        setupAdapter()
-        setupDataDefault("")
+        binding.uhidLayout.setOnClickListener {
+            clickUhidLayout = true
+            binding.uhidRecyclerView.visibility = View.VISIBLE
+
+            CoroutineScope(Dispatchers.IO).launch {
+                val data = FileLogger.readUhidFile("event")
+                if (data != FileLogger.dataNotFound) {
+                    val list = (data.split("|") as java.util.ArrayList<String>).toSet()
+
+                    withContext(Dispatchers.Main) {
+                        setupUhidLayout(list.toList() as java.util.ArrayList<String>)
+                    }
+                }
+            }
+        }
     }
-
-
 
     private fun setUpAlarmsData() {
         mAdapter = AlarmAdapter(dataList)

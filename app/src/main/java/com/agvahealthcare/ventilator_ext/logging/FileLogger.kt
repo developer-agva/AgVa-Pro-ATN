@@ -747,7 +747,7 @@ abstract class FileLogger {
         }
 
         //reading of file
-        fun readEventFile(fileName: String, startIndex: Int, endIndex: Int): String {
+        fun readEventFile(fileName: String,uhid:String, startIndex: Int, endIndex: Int): String {
 
             var filePath = File(
                 Environment.getExternalStorageDirectory(),
@@ -760,9 +760,17 @@ abstract class FileLogger {
                 if (filePath.exists()) {
 
                     var data = ""
-                    val fileData = filePath.readText().split("|") as ArrayList<String>
+                    var fileData = filePath.readText().split("|") as ArrayList<String>
                     fileData.removeAt(fileData.size - 1)
+                    // adding filter as per UHID
+                    fileData = (fileData.filter { s ->
+                        Log.i("Log.ia",s)
+                        s.split(",")[2] == uhid
+
+                    }) as ArrayList<String>
+
                     fileData.reverse()
+
                     Log.i("value_check_events", fileData.size.toString())
 
                     if (startIndex >= 0) {
@@ -820,7 +828,7 @@ abstract class FileLogger {
         }
 
         //reading of alarm file
-        fun readAlarmFile(fileName: String, startIndex: Int, endIndex: Int): String {
+        fun readAlarmFile(fileName: String,uhid: String, startIndex: Int, endIndex: Int): String {
 
             var filePath = File(
                 Environment.getExternalStorageDirectory(),
@@ -832,9 +840,17 @@ abstract class FileLogger {
                 if (filePath.exists()) {
 
                     var data = ""
-                    val fileData = filePath.readText().split("|") as ArrayList<String>
+                    var fileData = filePath.readText().split("|") as ArrayList<String>
                     fileData.removeAt(fileData.size - 1)
+                    // adding filter as per UHID
+                    fileData = (fileData.filter { s ->
+                        Log.i("Log.ia",s)
+                        s.split(",")[3] == uhid
+
+                    }) as ArrayList<String>
+
                     fileData.reverse()
+
                     Log.i("value_check_events", fileData.size.toString())
 
                     if (startIndex >= 0) {

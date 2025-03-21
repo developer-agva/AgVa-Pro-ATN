@@ -20,44 +20,20 @@ class LogsTrendsFragment : Fragment(), View.OnClickListener {
     private var mParam2: String? = null
     private var dataFromDataBaseAdapter: DataFromDataBaseAdapter? = null
     private var dashBoardViewModel: DashBoardViewModel? = null
+    private lateinit var binding: FragmentLogsTableDemoBinding
+    private lateinit var preferenceManager: PreferenceManager
+    private lateinit var linearLayoutManager: LinearLayoutManager
     private var timer: CountDownTimer? = null
-    private lateinit var binding : FragmentLogsTableDemoBinding
-
+    private var list = ArrayList<String>()
     private var startIndex = 0
     private var endIndex = 9
-    private lateinit var preferenceManager: PreferenceManager
-
-    private var list = ArrayList<String>()
-    private lateinit var linearLayoutManager: LinearLayoutManager
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        if (arguments != null) {
-            mParam1 = requireArguments().getString(ARG_PARAM1)
-            mParam2 = requireArguments().getString(ARG_PARAM2)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentLogsTableDemoBinding.inflate(layoutInflater,container,false)
         return binding.root
-    }
-
-    companion object {
-
-        private const val ARG_PARAM1 = "param1"
-        private const val ARG_PARAM2 = "param2"
-
-        fun newInstance(param1: String?, param2: String?): LogsTrendsFragment {
-            val fragment = LogsTrendsFragment()
-            val args = Bundle()
-            args.putString(ARG_PARAM1, param1)
-            args.putString(ARG_PARAM2, param2)
-            fragment.arguments = args
-            return fragment
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -71,18 +47,15 @@ class LogsTrendsFragment : Fragment(), View.OnClickListener {
     }
 
     private fun setUpTrendAdapter() {
-        val paramList =
-            "Parameter,Mode,PIP,PEEP,Mean Airway,Vti,Vte,MVe,MVi,FiO₂,RR,I:E,Tinsp,Texp,Average Leak,Spo2,PR,Dyn Comp.,Spont VT,Spont RR"
-        val unitList =
-            "Unit,Mode Type,cmH₂O,cmH₂O,cmH₂O,mL,mL,litre,litre,%,BPM,Ratio,sec,sec,%,%,BPM,mL/cmH₂O,mL,BPM"
+        val paramList = "Parameter,Mode,PIP,PEEP,Mean Airway,Vti,Vte,MVe,MVi,FiO₂,RR,I:E,Tinsp,Texp,Average Leak,Spo2,PR,Dyn Comp.,Spont VT,Spont RR"
+        val unitList = "Unit,Mode Type,cmH₂O,cmH₂O,cmH₂O,mL,mL,litre,litre,%,BPM,Ratio,sec,sec,%,%,BPM,mL/cmH₂O,mL,BPM"
         list.add(paramList)
         list.add(unitList)
         dataFromDataBaseAdapter = DataFromDataBaseAdapter(list)
 
         binding.rvTwo.setHasFixedSize(true)
         binding.rvTwo.setItemViewCacheSize(10);
-        linearLayoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.rvTwo.apply {
             layoutManager = linearLayoutManager
             adapter = dataFromDataBaseAdapter
@@ -93,16 +66,10 @@ class LogsTrendsFragment : Fragment(), View.OnClickListener {
         binding.mainLayoutTrends.visibility = View.GONE
         binding.txtWaitTrends.visibility = View.VISIBLE
         timer = object : CountDownTimer(2000, 1000) {
-            override fun onTick(milliSec: Long) {
-
-            }
+            override fun onTick(milliSec: Long) {}
 
             override fun onFinish() {
-
                 VentilatorApp.isTrendsFirstTime = true
-
-                binding.seekBar.setOnTouchListener { v, event -> true }
-
                 setUpTrendAdapter()
                 binding.mainLayoutTrends.visibility = View.VISIBLE
                 binding.txtWaitTrends.visibility = View.GONE
@@ -112,7 +79,6 @@ class LogsTrendsFragment : Fragment(), View.OnClickListener {
     }
 
     private fun updateTimeOnView(dataList: ArrayList<String>) {
-
         for (i in 0 until dataList.size - 1) {
 
             when (i) {
@@ -238,6 +204,4 @@ class LogsTrendsFragment : Fragment(), View.OnClickListener {
         super.onDestroy()
         timer?.cancel()
     }
-
-
 }

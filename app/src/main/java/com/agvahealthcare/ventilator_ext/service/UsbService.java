@@ -810,6 +810,11 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
     }
 
     @Override
+    void mymetodu() {
+
+    }
+
+    @Override
     public boolean isVentilatorConnected() {
 
 

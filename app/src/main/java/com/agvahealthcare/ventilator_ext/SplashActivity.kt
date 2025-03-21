@@ -190,7 +190,7 @@ class SplashActivity : AppCompatActivity(), SimpleCallbackListener,
 
         return intentFilter
     }
-
+ 
     @SuppressLint("ResourceAsColor")
     private fun createAlertBox(destination: String,msg:String) {
         Log.i("testing_ota", "alertbox hit")

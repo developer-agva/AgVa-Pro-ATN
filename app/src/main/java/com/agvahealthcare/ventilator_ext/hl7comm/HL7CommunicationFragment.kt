@@ -85,7 +85,25 @@ class HL7CommunicationFragment() : Fragment(), onDropDownSelectionListener {
     }
 
     private fun updateViewViaPreferences(uhid: String) {
+
         preferenceManager?.apply {
+
+            if (readDischargeDate(uhid) == "" && readAdmitDate(uhid) == "")
+            {
+                val data = FileLogger.readHL7File(uhid)
+                if (data != FileLogger.dataNotFound){
+                    setUHID(data.split(",")[0])
+                    setFirstName(uhid,data.split(",")[1])
+                    setLastName(uhid,data.split(",")[2])
+                    setDOB(uhid,data.split(",")[3])
+                    setContactNumber(uhid,data.split(",")[4])
+                    setAdmitDate(uhid,data.split(",")[5])
+                    setDischargeDate(uhid,data.split(",")[6])
+                    setDoctorName(uhid,data.split(",")[7])
+                    setPatientGender(uhid,if(data.split(",")[8] == "Male") Gender.TYPE_MALE else Gender.TYPE_FEMALE)
+                }
+            }
+
             binding.etFirstName.setText(readFirstName(uhid))
             binding.etLastName.setText(readLastName(uhid))
             binding.etDOB.setText(readDOB(uhid))
@@ -144,6 +162,24 @@ class HL7CommunicationFragment() : Fragment(), onDropDownSelectionListener {
                     if (binding.etGender.text.toString() == "MALE") Gender.TYPE_MALE else Gender.TYPE_FEMALE
                 )
             }
+
+            CoroutineScope(Dispatchers.Main).launch {
+                preferenceManager?.apply {
+                    val data =
+                        "${readUHID()},${readFirstName(readUHID())},${readLastName(readUHID())},${
+                            readDOB(readUHID())
+                        },${readContactNumber(readUHID())},${readAdmitDate(readUHID())},${
+                            readDischargeDate(
+                                readUHID()
+                            )
+                        },${readDoctorName(readUHID())},${readPatientGender(readUHID())}|"
+
+                    withContext(Dispatchers.IO){
+                        FileLogger.writeHL7Fragment(requireContext(),data)
+                    }
+                }
+            }
+
             ToastFactory.custom(requireContext(), "Requesting HL7..")
             val hl7Message = createHL7Message()
             sendHL7Message(hl7Message)

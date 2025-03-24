@@ -19,7 +19,7 @@ data class TrendDBModel(
     var pr: Float = 0f,
     var dynamicCompliance: Float = 0f,
     var spontRR: Float = 0f,
-    var spontVT: Float = 0f,
+    var spontVT: Float = 0f
 
     )
 data class TrendLungsDynamicsModel(

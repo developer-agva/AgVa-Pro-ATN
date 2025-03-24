@@ -395,6 +395,106 @@ abstract class FileLogger {
             return isSuccess
         }
 
+        fun writeHL7Fragment(
+            ctx: Context,
+            data: String,
+        ): Boolean {
+            var isSuccess = false
+
+            val path = File(
+                Environment.getExternalStorageDirectory(),
+                AppUtils.PATH_FOLDER_AGVA + File.separator + "hl7"
+            )
+            val isPathAccessible = path.exists() || path.mkdirs()
+
+            if (isPathAccessible) {
+
+                val file = File(path, "HL7")
+
+                try {
+                    if (file.exists()) {
+
+                        val fileData = file.readLines()
+
+                        if (fileData.size <= 500) {
+                            isSuccess = true
+                            val fileOutPutStream = FileOutputStream(file, true)
+                            fileOutPutStream.write(data.toByteArray())
+                            fileOutPutStream.close()
+                        } else {
+
+                            // create temp file
+                            val tempFile = File(path, "temp_hl7")
+                            for (i in fileData.indices) {
+                                if (i != 0) {
+                                    if (tempFile.exists()) {
+                                        val fileOutPutStream = FileOutputStream(tempFile, true)
+                                        fileOutPutStream.write(fileData[i].toByteArray())
+                                        fileOutPutStream.close()
+                                    } else {
+                                        if (tempFile.createNewFile()) {
+                                            val fileOutPutStream = FileOutputStream(tempFile)
+                                            fileOutPutStream.write(fileData[i].toByteArray())
+                                            fileOutPutStream.close()
+                                        }
+                                    }
+                                }
+                            }
+                            file.delete()
+                            tempFile.renameTo(file)
+                            writeTrendGraphFile(ctx, "HL7", data)
+                        }
+
+                    } else {
+                        if (file.createNewFile()) {
+                            isSuccess = true
+                            val fileOutPutStream = FileOutputStream(file)
+                            fileOutPutStream.write(data.toByteArray())
+                            fileOutPutStream.close()
+                        }
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    Log.i("asdaqe213", e.message.toString())
+                }
+
+            }
+            return isSuccess
+        }
+
+        //reading of file
+        fun readHL7File(uhid:String) : String {
+
+            var filePath = File(
+                Environment.getExternalStorageDirectory(),
+                AppUtils.PATH_FOLDER_AGVA + File.separator + "hl7"
+            )
+            filePath = File(filePath, "HL7")
+            try {
+
+                if (filePath.exists()) {
+
+                    var data = ""
+                    val fileData = filePath.readText().split("|") as ArrayList<String>
+                    fileData.removeAt(fileData.size - 1)
+                    fileData.reverse()
+
+                    for(i in 0 until fileData.size){
+                        data += if (fileData[i].split(",")[0] == uhid) fileData[i] else dataNotFound
+                    }
+
+                    Log.i("value_check_hl7", fileData.size.toString() + " - " + data)
+
+                    return data
+                }
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Log.i("value_check_hl7", e.message.toString())
+            }
+            return dataNotFound
+        }
+
         fun writeEventFile(
             ctx: Context,
             fileName: String,
@@ -669,7 +769,7 @@ abstract class FileLogger {
         }
 
         //reading of file
-        fun readTrendFile(fileName: String, startIndex: Int, endIndex: Int): String {
+        fun readTrendFile(fileName: String,uhid: String, startIndex: Int, endIndex: Int): String {
 
             var filePath = File(
                 Environment.getExternalStorageDirectory(),
@@ -680,10 +780,20 @@ abstract class FileLogger {
 
                 if (filePath.exists()) {
 
+
                     var data = ""
-                    val fileData = filePath.readText().split("|") as ArrayList<String>
+                    var fileData = filePath.readText().split("|") as ArrayList<String>
                     fileData.removeAt(fileData.size - 1)
+                    // adding filter as per UHID
+                    fileData = (fileData.filter { s ->
+                        Log.i("Log.ia",s)
+                        s.split(",")[20] == uhid
+
+                    }) as ArrayList<String>
+
                     fileData.reverse()
+
+                    Log.i("value_check_events", fileData.size.toString())
 
                     if (startIndex >= 0) {
                         if (endIndex <= fileData.size) {

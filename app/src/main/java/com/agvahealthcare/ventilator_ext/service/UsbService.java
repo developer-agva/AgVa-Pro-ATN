@@ -806,18 +806,10 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
 //        usbVentilator = null;// NEW SHARED PREFERENCE STATUS
 //        usbHID = null;
         super.onDestroy();
-
-    }
-
-    @Override
-    void mymetodu() {
-
     }
 
     @Override
     public boolean isVentilatorConnected() {
-
-
         for (Map.Entry<String, UsbDevice> entry : usbManager.getDeviceList().entrySet()) {
             Log.i("CHECK_MANAGER", String.valueOf(entry.getValue().getVendorId()));
             if (entry.getValue().getVendorId() == ARDUINO_VENDOR_ID_VENTILATOR) return true;
@@ -858,7 +850,6 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
             sendBroadcast(i);
         } catch (NumberFormatException e) {
             e.printStackTrace();
-            // ServerLogger.Companion.e(UsbService.this, e);
         }
     }
 
@@ -871,23 +862,18 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
             i.putExtra("dutycycle", dutycycle);
             sendBroadcast(i);
         } catch (Exception e) {
-            Log.w("Calibration_error", "Unable to parse some values of calibration error response");
             e.printStackTrace();
         }
     }
 
     @Override
     protected void broadcastHeatSensorStatus(ArrayList<String> values) {
-        Log.w("HEATSENSE_CHECK", values.toString());
         try {
             Intent i = new Intent(IntentFactory.ACTION_HEATSENSE_STATUS_AVAILABLE);
             i.putIntegerArrayListExtra(VENTILATOR_HEATSENSE_DATA, new ArrayList<Integer>(values.stream().map(Integer::valueOf).collect(Collectors.toList())));
             sendBroadcast(i);
         } catch (Exception e) {
-            Log.w("HEATSENSE_CHECK", "Unable to parse some values");
-
             e.printStackTrace();
-            // ServerLogger.Companion.e(UsbService.this, e);
         }
     }
 
@@ -908,7 +894,6 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
         } catch (NumberFormatException e) {
             dataBufferVentilator.delete(0, dataBufferVentilator.length());
             e.printStackTrace();
-            //  ServerLogger.Companion.e(UsbService.this, e);
         }
     }
 

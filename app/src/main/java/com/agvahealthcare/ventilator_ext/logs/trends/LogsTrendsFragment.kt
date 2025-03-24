@@ -13,11 +13,15 @@ import com.agvahealthcare.ventilator_ext.databinding.FragmentLogsTableDemoBindin
 import com.agvahealthcare.ventilator_ext.logging.FileLogger
 import com.agvahealthcare.ventilator_ext.logs.trends.DataFromDataBaseAdapter
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
+import com.agvahealthcare.ventilator_ext.system.settings.CommonSetupAdapter
+import com.agvahealthcare.ventilator_ext.system.settings.onDropDownSelectionListener
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class LogsTrendsFragment : Fragment(), View.OnClickListener {
-    private var mParam1: String? = null
-    private var mParam2: String? = null
+class LogsTrendsFragment : Fragment(), View.OnClickListener, onDropDownSelectionListener {
     private var dataFromDataBaseAdapter: DataFromDataBaseAdapter? = null
     private var dashBoardViewModel: DashBoardViewModel? = null
     private lateinit var binding: FragmentLogsTableDemoBinding
@@ -27,14 +31,41 @@ class LogsTrendsFragment : Fragment(), View.OnClickListener {
     private var list = ArrayList<String>()
     private var startIndex = 0
     private var endIndex = 9
+    private var uhidAdapter: CommonSetupAdapter? = null
+    private var clickUhidLayout = false
+    private var defaultUhid = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentLogsTableDemoBinding.inflate(layoutInflater,container,false)
+        binding.root.setOnClickListener {
+            binding.uhidRecyclerView.visibility = View.GONE
+        }
         return binding.root
     }
+
+    override fun onItemSelect(text: String, colorInt: Int) {
+
+        binding.uhidRecyclerView.visibility = View.GONE
+        uhidAdapter = null
+
+        if (clickUhidLayout) {
+            defaultUhid = text
+            setupDataDefault()
+        }
+        clickUhidLayout = false
+    }
+
+    private fun setupUhidLayout(uhidList: java.util.ArrayList<String>) {
+        uhidAdapter = CommonSetupAdapter(uhidList, this)
+        binding.uhidRecyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = uhidAdapter
+        }
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -44,6 +75,22 @@ class LogsTrendsFragment : Fragment(), View.OnClickListener {
         openingTimer()
         binding.leftButton.setOnClickListener(this)
         binding.rightButton.setOnClickListener(this)
+
+        binding.uhidLayout.setOnClickListener {
+            clickUhidLayout = true
+            binding.uhidRecyclerView.visibility = View.VISIBLE
+
+            CoroutineScope(Dispatchers.IO).launch {
+                val data = FileLogger.readUhidFile("event")
+                if (data != FileLogger.dataNotFound) {
+                    val list = (data.split("|") as java.util.ArrayList<String>).toSet()
+
+                    withContext(Dispatchers.Main) {
+                        setupUhidLayout(list.toList() as java.util.ArrayList<String>)
+                    }
+                }
+            }
+        }
     }
 
     private fun setUpTrendAdapter() {
@@ -73,6 +120,7 @@ class LogsTrendsFragment : Fragment(), View.OnClickListener {
                 setUpTrendAdapter()
                 binding.mainLayoutTrends.visibility = View.VISIBLE
                 binding.txtWaitTrends.visibility = View.GONE
+                defaultUhid = PreferenceManager(requireContext()).readUHID()
                 setupDataDefault()
             }
         }.start()
@@ -146,9 +194,10 @@ class LogsTrendsFragment : Fragment(), View.OnClickListener {
     }
 
     fun setupDataDefault() {
-
+        binding.txtUhid.text = "UHID : $defaultUhid"
         val data = FileLogger.readTrendFile(
             Configs.getTrendsFileName(preferenceManager),
+            defaultUhid,
             startIndex,
             endIndex
         )
@@ -167,6 +216,7 @@ class LogsTrendsFragment : Fragment(), View.OnClickListener {
             R.id.rightButton -> {
                 val data = FileLogger.readTrendFile(
                     Configs.getTrendsFileName(preferenceManager),
+                    defaultUhid,
                     ++startIndex,
                     ++endIndex
                 )
@@ -184,6 +234,7 @@ class LogsTrendsFragment : Fragment(), View.OnClickListener {
             R.id.leftButton -> {
                 val data = FileLogger.readTrendFile(
                     Configs.getTrendsFileName(preferenceManager),
+                    defaultUhid,
                     --startIndex,
                     --endIndex
                 )

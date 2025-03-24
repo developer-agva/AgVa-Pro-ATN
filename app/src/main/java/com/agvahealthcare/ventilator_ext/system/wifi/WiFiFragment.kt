@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class WiFiFragment : Fragment() {
+class   WiFiFragment : Fragment() {
 
     private var showConnectionStatusThread = CoroutineScope(Dispatchers.IO)
     private var wifiSSID = "agva_venti"

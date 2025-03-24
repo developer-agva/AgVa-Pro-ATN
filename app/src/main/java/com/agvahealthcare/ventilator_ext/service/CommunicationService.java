@@ -100,6 +100,8 @@ public abstract class CommunicationService extends Service {
      */
     abstract protected void broadcastRawData(String data);
 
+
+
     /*
      * Broadcast Ventilator functional data signal throughout app receivers
      */

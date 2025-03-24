@@ -1072,9 +1072,11 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                                     Log.i("KNOB_DATADASH", DialogBoxFactory.dialogView.toString())
                                 } else if (progressDialog?.isVisible == true) {
                                     progressDialog?.updateWithTimeoutDebounce(data)
-                                } else if (systemDialogFragment?.isVisible == true) {
-                                    systemDialogFragment?.highlightViewWithFocus(data)
-                                } else if (standbyControlFragment?.isVisible == true) {
+                                }
+//                                else if (systemDialogFragment?.isVisible == true) {
+//                                    systemDialogFragment?.highlightViewWithFocus(data)
+//                                }
+                                else if (standbyControlFragment?.isVisible == true) {
                                     standbyControlFragment?.highlightViewWithFocus(data)
                                 } else if (modeDialogFragment?.isVisible == true) {
                                     // modeDialogFragment?.highlightViewWithFocus(data)

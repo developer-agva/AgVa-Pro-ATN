@@ -197,97 +197,97 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
                     VentilatorApp.Companion.setVentiData(dataBufferVentilator + " : " + AppUtils.getCurrentTime());
                     Log.i("READ_CHECK_VENTI", dataBufferVentilator.toString());
                     try {
-                        if (buffData.contains("X")) {
-                            int prefixPlusStartIndex = buffData.indexOf("X");
-                            int prefixPlusTerminalIndex = buffData.indexOf("X") + Configs.KNOB_LENGTH;
-                            String xValue = buffData.substring(prefixPlusStartIndex, prefixPlusTerminalIndex);
-                            broadcastKnobResponse(xValue);
-                            dataBufferVentilator.delete(prefixPlusStartIndex, prefixPlusTerminalIndex + 1);
-                        }
-
-                        if (buffData.contains(Configs.PREFIX_PLUS)) {
-                            int prefixPlusStartIndex = buffData.indexOf(Configs.PREFIX_PLUS);
-                            int prefixPlusTerminalIndex = buffData.indexOf(Configs.PREFIX_PLUS) + Configs.KNOB_LENGTH;
-                            String plusValue = buffData.substring(prefixPlusStartIndex, prefixPlusTerminalIndex);
-                            broadcastKnobResponse(plusValue);
-                            dataBufferVentilator.delete(prefixPlusStartIndex, prefixPlusTerminalIndex + 1);
-
-                        } else if (buffData.contains(Configs.PREFIX_MINUS)) {
-                            int prefixMinusStartIndex = buffData.indexOf(Configs.PREFIX_MINUS);
-                            int prefixMinusTerminalIndex = buffData.indexOf(Configs.PREFIX_MINUS) + Configs.KNOB_LENGTH;
-                            String minusValue = buffData.substring(prefixMinusStartIndex, prefixMinusTerminalIndex);
-                            broadcastKnobResponse(minusValue);
-                            dataBufferVentilator.delete(prefixMinusStartIndex, prefixMinusTerminalIndex + 1);
-
-                        } else if (buffData.contains(Configs.PREFIX_AND)) {
-                            int prefixAndStartIndex = buffData.indexOf(Configs.PREFIX_AND);
-                            int prefixAndTerminalIndex = buffData.indexOf(Configs.PREFIX_AND) + Configs.KNOB_LENGTH;
-                            String andValue = buffData.substring(prefixAndStartIndex, prefixAndTerminalIndex);
-
-                            broadcastKnobResponse(andValue);
-                            dataBufferVentilator.delete(prefixAndStartIndex, prefixAndTerminalIndex + 1);
-
-                        } else if (buffData.contains(Configs.QB_ALARM_MUTE_UNMUTE)) {
-                            int muteOptionStartIndex = buffData.indexOf(Configs.QB_ALARM_MUTE_UNMUTE);
-
-                            broadcastAlarmMuteUmuteResponse(buffData.substring(muteOptionStartIndex, muteOptionStartIndex + Configs.QB_ALARM_MUTE_UNMUTE.length()));
-                            dataBufferVentilator.delete(muteOptionStartIndex, muteOptionStartIndex + Configs.QB_ALARM_MUTE_UNMUTE.length());
-
-                        } else if (buffData.contains(Configs.QB_NEBULISER)) {
-                            int nubliserStartIndex = buffData.indexOf(Configs.QB_NEBULISER);
-                            broadcastNebuliserResponse();
-                            dataBufferVentilator.delete(nubliserStartIndex, nubliserStartIndex + Configs.QB_NEBULISER.length());
-
-                        } else if (buffData.contains(Configs.QB_OXYGEN)) {
-                            int oxygenStartIndex = buffData.indexOf(Configs.QB_OXYGEN);
-
-                            broadcastOxygenResponse(buffData.substring(oxygenStartIndex, oxygenStartIndex + Configs.QB_OXYGEN.length()));
-                            dataBufferVentilator.delete(oxygenStartIndex, oxygenStartIndex + Configs.QB_OXYGEN.length());
-
-                        } else if (buffData.contains(Configs.QB_INSPIRATORY_HOLD)) {
-                            int inspiratoryStartIndex = buffData.indexOf(Configs.QB_INSPIRATORY_HOLD);
-
-                            broadcastInspiratoryHoldResponse();
-                            dataBufferVentilator.delete(inspiratoryStartIndex, inspiratoryStartIndex + Configs.QB_INSPIRATORY_HOLD.length());
-
-                        } else if (buffData.contains(Configs.QB_EXPIRATORY_HOLD)) {
-                            int expiratoryStartIndex = buffData.indexOf(Configs.QB_EXPIRATORY_HOLD);
-
-                            broadcastExpiratoryHoldResponse();
-                            dataBufferVentilator.delete(expiratoryStartIndex, expiratoryStartIndex + Configs.QB_EXPIRATORY_HOLD.length());
-
-                        } else if (buffData.contains(Configs.QB_MANUAL_BREATH)) {
-                            int manualStartIndex = buffData.indexOf(Configs.QB_MANUAL_BREATH);
-
-                            broadcastManualBreathResponse();
-                            dataBufferVentilator.delete(manualStartIndex, manualStartIndex + Configs.QB_MANUAL_BREATH.length());
-
-                        } else if (buffData.contains(Configs.QB_HOME)) {
-                            int homeStartIndex = buffData.indexOf(Configs.QB_HOME);
-
-                            broadcastHomeResponse();
-                            dataBufferVentilator.delete(homeStartIndex, homeStartIndex + Configs.QB_HOME.length());
-
-                        } else if (buffData.contains(Configs.QB_LOCK)) {
-                            int lockStartIndex = buffData.indexOf(Configs.QB_LOCK);
-
-                            broadcastLockResponse();
-                            dataBufferVentilator.delete(lockStartIndex, lockStartIndex + Configs.QB_LOCK.length());
-
-                        }
-                        else if (buffData.contains(Configs.QB_POWER_SWITCH)) {
-                            int switchStopIndex = buffData.indexOf(Configs.QB_POWER_SWITCH);
-
-                            broadcastPowerSwitchOffResponse();
-                            dataBufferVentilator.delete(switchStopIndex, switchStopIndex + Configs.QB_POWER_SWITCH.length());
-
-                        }
-                        else if (buffData.contains(Configs.QB_POWER_ON)) {
-                            int switchStartIndex = buffData.indexOf(Configs.QB_POWER_ON);
-
-                            broadcastPowerSwitchOnResponse();
-                            dataBufferVentilator.delete(switchStartIndex, switchStartIndex + Configs.QB_POWER_ON.length());
-                        }
+//                        if (buffData.contains("X")) {
+//                            int prefixPlusStartIndex = buffData.indexOf("X");
+//                            int prefixPlusTerminalIndex = buffData.indexOf("X") + Configs.KNOB_LENGTH;
+//                            String xValue = buffData.substring(prefixPlusStartIndex, prefixPlusTerminalIndex);
+//                            broadcastKnobResponse(xValue);
+//                            dataBufferVentilator.delete(prefixPlusStartIndex, prefixPlusTerminalIndex + 1);
+//                        }
+//
+//                        if (buffData.contains(Configs.PREFIX_PLUS)) {
+//                            int prefixPlusStartIndex = buffData.indexOf(Configs.PREFIX_PLUS);
+//                            int prefixPlusTerminalIndex = buffData.indexOf(Configs.PREFIX_PLUS) + Configs.KNOB_LENGTH;
+//                            String plusValue = buffData.substring(prefixPlusStartIndex, prefixPlusTerminalIndex);
+//                            broadcastKnobResponse(plusValue);
+//                            dataBufferVentilator.delete(prefixPlusStartIndex, prefixPlusTerminalIndex + 1);
+//
+//                        } else if (buffData.contains(Configs.PREFIX_MINUS)) {
+//                            int prefixMinusStartIndex = buffData.indexOf(Configs.PREFIX_MINUS);
+//                            int prefixMinusTerminalIndex = buffData.indexOf(Configs.PREFIX_MINUS) + Configs.KNOB_LENGTH;
+//                            String minusValue = buffData.substring(prefixMinusStartIndex, prefixMinusTerminalIndex);
+//                            broadcastKnobResponse(minusValue);
+//                            dataBufferVentilator.delete(prefixMinusStartIndex, prefixMinusTerminalIndex + 1);
+//
+//                        } else if (buffData.contains(Configs.PREFIX_AND)) {
+//                            int prefixAndStartIndex = buffData.indexOf(Configs.PREFIX_AND);
+//                            int prefixAndTerminalIndex = buffData.indexOf(Configs.PREFIX_AND) + Configs.KNOB_LENGTH;
+//                            String andValue = buffData.substring(prefixAndStartIndex, prefixAndTerminalIndex);
+//
+//                            broadcastKnobResponse(andValue);
+//                            dataBufferVentilator.delete(prefixAndStartIndex, prefixAndTerminalIndex + 1);
+//
+//                        } else if (buffData.contains(Configs.QB_ALARM_MUTE_UNMUTE)) {
+//                            int muteOptionStartIndex = buffData.indexOf(Configs.QB_ALARM_MUTE_UNMUTE);
+//
+//                            broadcastAlarmMuteUmuteResponse(buffData.substring(muteOptionStartIndex, muteOptionStartIndex + Configs.QB_ALARM_MUTE_UNMUTE.length()));
+//                            dataBufferVentilator.delete(muteOptionStartIndex, muteOptionStartIndex + Configs.QB_ALARM_MUTE_UNMUTE.length());
+//
+//                        } else if (buffData.contains(Configs.QB_NEBULISER)) {
+//                            int nubliserStartIndex = buffData.indexOf(Configs.QB_NEBULISER);
+//                            broadcastNebuliserResponse();
+//                            dataBufferVentilator.delete(nubliserStartIndex, nubliserStartIndex + Configs.QB_NEBULISER.length());
+//
+//                        } else if (buffData.contains(Configs.QB_OXYGEN)) {
+//                            int oxygenStartIndex = buffData.indexOf(Configs.QB_OXYGEN);
+//
+//                            broadcastOxygenResponse(buffData.substring(oxygenStartIndex, oxygenStartIndex + Configs.QB_OXYGEN.length()));
+//                            dataBufferVentilator.delete(oxygenStartIndex, oxygenStartIndex + Configs.QB_OXYGEN.length());
+//
+//                        } else if (buffData.contains(Configs.QB_INSPIRATORY_HOLD)) {
+//                            int inspiratoryStartIndex = buffData.indexOf(Configs.QB_INSPIRATORY_HOLD);
+//
+//                            broadcastInspiratoryHoldResponse();
+//                            dataBufferVentilator.delete(inspiratoryStartIndex, inspiratoryStartIndex + Configs.QB_INSPIRATORY_HOLD.length());
+//
+//                        } else if (buffData.contains(Configs.QB_EXPIRATORY_HOLD)) {
+//                            int expiratoryStartIndex = buffData.indexOf(Configs.QB_EXPIRATORY_HOLD);
+//
+//                            broadcastExpiratoryHoldResponse();
+//                            dataBufferVentilator.delete(expiratoryStartIndex, expiratoryStartIndex + Configs.QB_EXPIRATORY_HOLD.length());
+//
+//                        } else if (buffData.contains(Configs.QB_MANUAL_BREATH)) {
+//                            int manualStartIndex = buffData.indexOf(Configs.QB_MANUAL_BREATH);
+//
+//                            broadcastManualBreathResponse();
+//                            dataBufferVentilator.delete(manualStartIndex, manualStartIndex + Configs.QB_MANUAL_BREATH.length());
+//
+//                        } else if (buffData.contains(Configs.QB_HOME)) {
+//                            int homeStartIndex = buffData.indexOf(Configs.QB_HOME);
+//
+//                            broadcastHomeResponse();
+//                            dataBufferVentilator.delete(homeStartIndex, homeStartIndex + Configs.QB_HOME.length());
+//
+//                        } else if (buffData.contains(Configs.QB_LOCK)) {
+//                            int lockStartIndex = buffData.indexOf(Configs.QB_LOCK);
+//
+//                            broadcastLockResponse();
+//                            dataBufferVentilator.delete(lockStartIndex, lockStartIndex + Configs.QB_LOCK.length());
+//
+//                        }
+//                        else if (buffData.contains(Configs.QB_POWER_SWITCH)) {
+//                            int switchStopIndex = buffData.indexOf(Configs.QB_POWER_SWITCH);
+//
+//                            broadcastPowerSwitchOffResponse();
+//                            dataBufferVentilator.delete(switchStopIndex, switchStopIndex + Configs.QB_POWER_SWITCH.length());
+//
+//                        }
+//                        else if (buffData.contains(Configs.QB_POWER_ON)) {
+//                            int switchStartIndex = buffData.indexOf(Configs.QB_POWER_ON);
+//
+//                            broadcastPowerSwitchOnResponse();
+//                            dataBufferVentilator.delete(switchStartIndex, switchStartIndex + Configs.QB_POWER_ON.length());
+//                        }
                         // To separated the ACKNOWLEDGEMENTS
                         if (buffData.contains(Configs.PREFIX_ACK)) {
                             // +1 for ACK code number (Don't remove -1 +1 this is for understanding)
@@ -822,7 +822,7 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
 //        for (Map.Entry<String, UsbDevice> entry : usbManager.getDeviceList().entrySet()) {
 //            if (entry.getValue().getVendorId() == ARDUINO_VENDOR_ID_HID) return true;
 //        }
-        return false;
+        return true;
     }
 
     @Override

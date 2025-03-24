@@ -25,150 +25,170 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/system_nav_container" />
 
-    <include
-        android:id="@+id/includeButtonInfo"
-        layout="@layout/content_button_layout"
+
+    <ScrollView
+        android:id="@+id/scrollViewLayout"
         android:layout_width="127dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="@dimen/_10sdp"
+        app:layout_constraintBottom_toBottomOf="@id/system_nav_container"
         app:layout_constraintEnd_toEndOf="@id/imageViewCrossSystem"
-        app:layout_constraintTop_toBottomOf="@id/imageViewCrossSystem" />
+        app:layout_constraintStart_toEndOf="@id/system_nav_container"
+        app:layout_constraintTop_toBottomOf="@id/imageViewCrossSystem">
 
-    <include
-        android:id="@+id/includeButtonStartup"
-        layout="@layout/content_button_layout"
-        android:layout_width="127dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_5sdp"
-        app:layout_constraintEnd_toEndOf="@id/imageViewCrossSystem"
-        app:layout_constraintTop_toBottomOf="@id/includeButtonInfo" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/innerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <include
-        android:id="@+id/includeButtonTestCalib"
-        layout="@layout/content_button_layout"
-        android:layout_width="127dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_5sdp"
-        app:layout_constraintEnd_toEndOf="@id/imageViewCrossSystem"
-        app:layout_constraintTop_toBottomOf="@id/includeButtonStartup"/>
+            <include
+                android:id="@+id/includeButtonInfo"
+                layout="@layout/content_button_layout"
+                android:layout_width="127dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <include
-        android:id="@+id/includeButtonSettings"
-        layout="@layout/content_button_layout"
-        android:layout_width="127dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_5sdp"
-        app:layout_constraintEnd_toEndOf="@id/imageViewCrossSystem"
-        app:layout_constraintTop_toBottomOf="@id/includeButtonTestCalib"/>
+            <include
+                android:id="@+id/includeButtonStartup"
+                layout="@layout/content_button_layout"
+                android:layout_width="127dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/includeButtonInfo" />
 
-    <include
-        android:id="@+id/includeButtonTube"
-        layout="@layout/content_button_layout"
-        android:layout_width="127dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_5sdp"
-        app:layout_constraintEnd_toEndOf="@id/imageViewCrossSystem"
-        app:layout_constraintTop_toBottomOf="@id/includeButtonSettings" />
+            <include
+                android:id="@+id/includeButtonTestCalib"
+                layout="@layout/content_button_layout"
+                android:layout_width="127dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/includeButtonStartup" />
 
-    <include
-        android:id="@+id/includeButtonService"
-        layout="@layout/content_button_layout"
-        android:layout_width="127dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_5sdp"
-        app:layout_constraintEnd_toEndOf="@id/imageViewCrossSystem"
-        app:layout_constraintTop_toBottomOf="@id/includeButtonTube"
-        android:visibility="visible" />
+            <include
+                android:id="@+id/includeButtonSettings"
+                layout="@layout/content_button_layout"
+                android:layout_width="127dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/includeButtonTestCalib" />
 
-    <include
-        android:id="@+id/includeButtonHL7"
-        layout="@layout/content_button_layout"
-        android:layout_width="127dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_5sdp"
-        app:layout_constraintEnd_toEndOf="@id/imageViewCrossSystem"
-        app:layout_constraintTop_toBottomOf="@id/includeButtonService"
-        android:visibility="visible" />
+            <include
+                android:id="@+id/includeButtonTube"
+                layout="@layout/content_button_layout"
+                android:layout_width="127dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/includeButtonSettings" />
 
-    <include
-        android:id="@+id/includeButtonDiagchk"
-        layout="@layout/content_button_layout"
-        android:layout_width="127dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_5sdp"
-        app:layout_constraintEnd_toEndOf="@id/imageViewCrossSystem"
-        app:layout_constraintTop_toBottomOf="@id/includeButtonHL7"
-        android:visibility="gone" />
+            <include
+                android:id="@+id/includeButtonService"
+                layout="@layout/content_button_layout"
+                android:layout_width="127dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/includeButtonTube" />
 
-    <include
-        android:id="@+id/includeButtonO2Regulate"
-        layout="@layout/content_button_layout"
-        android:layout_width="127dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_5sdp"
-        app:layout_constraintEnd_toEndOf="@id/imageViewCrossSystem"
-        app:layout_constraintTop_toBottomOf="@id/includeButtonDiagchk"
-        android:visibility="gone" />
+            <include
+                android:id="@+id/includeButtonHL7"
+                layout="@layout/content_button_layout"
+                android:layout_width="127dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/includeButtonService" />
 
-    <include
-        android:id="@+id/includeButtonAdvancedCalibration"
-        layout="@layout/content_button_layout"
-        android:layout_width="127dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_5sdp"
-        app:layout_constraintEnd_toEndOf="@id/imageViewCrossSystem"
-        app:layout_constraintTop_toBottomOf="@id/includeButtonO2Regulate"
-        android:visibility="gone" />
+            <include
+                android:id="@+id/includeButtonDiagchk"
+                layout="@layout/content_button_layout"
+                android:layout_width="127dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/includeButtonHL7" />
 
-    <include
-        android:id="@+id/includeButtonNetworkInfo"
-        layout="@layout/content_button_layout"
-        android:layout_width="127dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_5sdp"
-        app:layout_constraintEnd_toEndOf="@id/imageViewCrossSystem"
-        app:layout_constraintTop_toBottomOf="@id/includeButtondeviceUpdate"
-        android:visibility="gone" />
+            <include
+                android:id="@+id/includeButtonO2Regulate"
+                layout="@layout/content_button_layout"
+                android:layout_width="127dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/includeButtonDiagchk" />
 
-    <include
-        android:id="@+id/includeButtondeviceUpdate"
-        layout="@layout/content_button_layout"
-        android:layout_width="127dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_3sdp"
-        app:layout_constraintEnd_toEndOf="@id/imageViewCrossSystem"
-        app:layout_constraintTop_toBottomOf="@id/includeButtonAdvancedCalibration"
-        android:visibility="gone" />
+            <include
+                android:id="@+id/includeButtonAdvancedCalibration"
+                layout="@layout/content_button_layout"
+                android:layout_width="127dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/includeButtonO2Regulate" />
 
-    <include
-        android:id="@+id/includeButtonDebug"
-        layout="@layout/content_button_layout"
-        android:layout_width="127dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_5sdp"
-        app:layout_constraintEnd_toEndOf="@id/imageViewCrossSystem"
-        app:layout_constraintTop_toBottomOf="@id/includeButtonNetworkInfo"
-        android:visibility="gone" />
+            <include
+                android:id="@+id/includeButtonNetworkInfo"
+                layout="@layout/content_button_layout"
+                android:layout_width="127dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/includeButtondeviceUpdate" />
 
-    <include
-        android:id="@+id/includeButtonOTA"
-        layout="@layout/content_button_layout"
-        android:layout_width="127dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_5sdp"
-        app:layout_constraintEnd_toEndOf="@id/imageViewCrossSystem"
-        app:layout_constraintTop_toBottomOf="@id/includeButtonDebug"
-        android:visibility="gone" />
+            <include
+                android:id="@+id/includeButtondeviceUpdate"
+                layout="@layout/content_button_layout"
+                android:layout_width="127dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/includeButtonAdvancedCalibration" />
 
-    <include
-        android:id="@+id/includeButtonWifi"
-        layout="@layout/content_button_layout"
-        android:layout_width="127dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_5sdp"
-        app:layout_constraintEnd_toEndOf="@id/imageViewCrossSystem"
-        app:layout_constraintTop_toBottomOf="@id/includeButtonOTA"
-        android:visibility="gone" />
+            <include
+                android:id="@+id/includeButtonDebug"
+                layout="@layout/content_button_layout"
+                android:layout_width="127dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/includeButtonNetworkInfo" />
+
+            <include
+                android:id="@+id/includeButtonOTA"
+                layout="@layout/content_button_layout"
+                android:layout_width="127dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/includeButtonDebug" />
+
+            <include
+                android:id="@+id/includeButtonWifi"
+                layout="@layout/content_button_layout"
+                android:layout_width="127dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/includeButtonOTA" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </ScrollView>
 
     <LinearLayout
         android:id="@+id/ll_progress"
@@ -215,7 +235,7 @@
         android:layout_marginBottom="@dimen/_13sdp"
         android:background="@drawable/background_light_grey_border_grey"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/includeButtonInfo"
+        app:layout_constraintEnd_toStartOf="@+id/scrollViewLayout"
         app:layout_constraintHorizontal_bias="0.472"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

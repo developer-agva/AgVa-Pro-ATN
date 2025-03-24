@@ -629,8 +629,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         binding.includeButtonOTA.buttonView.text = getString(R.string.hint_ota)
         binding.includeButtonDiagchk.buttonView.text = getString(R.string.hint_diagnos)
         binding.includeButtonO2Regulate.buttonView.text = getString(R.string.hint_reg_o2)
-        binding.includeButtonAdvancedCalibration.buttonView.text =
-            getString(R.string.hint_advanced_calib)
+        binding.includeButtonAdvancedCalibration.buttonView.text = getString(R.string.hint_advanced_calib)
         binding.includeButtonService.buttonView.text = getString(R.string.hint_service)
         binding.includeButtonStartup.buttonView.text = getString(R.string.startup)
         binding.includeButtondeviceUpdate.buttonView.text = getString(R.string.hint_update)
@@ -1136,7 +1135,6 @@ class SystemDesignAdapter(private var dataList: ArrayList<String>, private var o
 
     override fun onBindViewHolder(holder: SystemDesignViewHolder, position: Int) {
         val data = dataList[position]
-
         holder.buttonView?.text = data
 
         holder.buttonLayout?.setOnClickListener {

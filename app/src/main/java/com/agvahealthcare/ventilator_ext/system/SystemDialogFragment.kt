@@ -7,11 +7,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
+import androidx.recyclerview.widget.RecyclerView
 import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.callback.*
 import com.agvahealthcare.ventilator_ext.databinding.FragmentSystemDialogBinding
@@ -28,6 +31,7 @@ import com.agvahealthcare.ventilator_ext.system.o2Regulation.O2RegulationFragmen
 import com.agvahealthcare.ventilator_ext.system.ota.OTAFragment
 import com.agvahealthcare.ventilator_ext.system.services.ServiceFragment
 import com.agvahealthcare.ventilator_ext.system.settings.SettingFragment
+import com.agvahealthcare.ventilator_ext.system.settings.onDropDownSelectionListener
 import com.agvahealthcare.ventilator_ext.system.test_calib.TestCalibrationFragment
 import com.agvahealthcare.ventilator_ext.system.tube.TubeDiaFragment
 import com.agvahealthcare.ventilator_ext.system.wifi.WiFiFragment
@@ -1121,4 +1125,35 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         }
     }
 
+}
+
+class SystemDesignAdapter(private var dataList: ArrayList<String>, private var onClick : onDropDownSelectionListener) : RecyclerView.Adapter<SystemDesignAdapter.SystemDesignViewHolder>() {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SystemDesignViewHolder {
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.system_design_single_layout, parent, false)
+        return SystemDesignViewHolder(itemView)
+    }
+
+    override fun onBindViewHolder(holder: SystemDesignViewHolder, position: Int) {
+        val data = dataList[position]
+
+        holder.buttonView?.text = data
+
+        holder.buttonLayout?.setOnClickListener {
+            onClick.onItemSelect(data,0)
+        }
+    }
+
+    override fun getItemCount(): Int {
+        return dataList.size
+    }
+
+    inner class SystemDesignViewHolder (view: View) : RecyclerView.ViewHolder(view){
+        var buttonLayout: ConstraintLayout? = null
+        var buttonView: AppCompatButton? = null
+        init {
+            buttonLayout = view.findViewById(R.id.buttonLayout)
+            buttonView = view.findViewById(R.id.buttonView)
+        }
+    }
 }

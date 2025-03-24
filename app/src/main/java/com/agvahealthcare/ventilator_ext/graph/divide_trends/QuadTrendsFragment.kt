@@ -23,21 +23,13 @@ import com.agvahealthcare.ventilator_ext.utility.GRAPH_PRESSURE_MAX
 import com.agvahealthcare.ventilator_ext.utility.GRAPH_PRESSURE_MIN
 
 
-enum class FragmentSwitchOptions {
-    FIRST_FRAGMENT,
-    SECOND_FRAGMENT
-}
-
-class QuadTrendsFragment : GraphLayoutFragment("QuadTrendsGraphFragment"), OnDismissDialogListener,
-    onDropDownSelectionListener {
+class QuadTrendsFragment : GraphLayoutFragment("QuadTrendsGraphFragment") {
 
     private lateinit var binding : FragmentQuadTrendsBinding
-    private var clickedFragmentOptions: FragmentSwitchOptions? = null
     private var pressureChartFragment: PressureChartFragment? = null
     private var oxygenModuleFragment: OxygenModuleFragment? = null
     private var complianceModuleFragment: ComplianceModuleFragment? = null
     private var lungsDynamicsFragment: LungsDynamicsFragment? = null
-    private var waveSelectionDialogFragment: WaveSelectionDialogFragment? = null
     private var mDashBoardViewModel : DashBoardViewModel? = null
 
     override fun onCreateView(
@@ -47,20 +39,9 @@ class QuadTrendsFragment : GraphLayoutFragment("QuadTrendsGraphFragment"), OnDis
         binding = FragmentQuadTrendsBinding.inflate(layoutInflater,container,false)
         return binding.root
     }
-
-    private fun getCurrentNotSelectedModule() : ArrayList<String>{
-
-        val tempList = arrayListOf(
-            "OXYGEN MODULE",
-            "COMPLIANCE MODULE",
-            "LUNGS MODULE"
-        )
-
-        oxygenModuleFragment?.takeIf { it.isVisible }?.apply { tempList.remove("OXYGEN MODULE") }
-        complianceModuleFragment?.takeIf { it.isVisible }?.apply { tempList.remove("COMPLIANCE MODULE") }
-        lungsDynamicsFragment?.takeIf { it.isVisible }?.apply { tempList.remove("LUNGS MODULE") }
-
-        return tempList
+    private fun makeNullAllFragment(){
+        complianceModuleFragment = null
+        oxygenModuleFragment = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -82,39 +63,16 @@ class QuadTrendsFragment : GraphLayoutFragment("QuadTrendsGraphFragment"), OnDis
         }
         initData()
 
-        binding.containerTrendsQuadGraph3.setOnLongClickListener {
-            clickedFragmentOptions = FragmentSwitchOptions.FIRST_FRAGMENT
-
-            waveSelectionDialogFragment?.dismiss()
-            waveSelectionDialogFragment = WaveSelectionDialogFragment(
-                this, this, getCurrentNotSelectedModule()
-            )
-            waveSelectionDialogFragment?.show(
-                childFragmentManager,
-                "WAVE"
-            )
-            return@setOnLongClickListener true
-        }
-
-        binding.containerTrendsQuadGraph4.setOnLongClickListener {
-            clickedFragmentOptions = FragmentSwitchOptions.SECOND_FRAGMENT
-
-            waveSelectionDialogFragment?.dismiss()
-            waveSelectionDialogFragment = WaveSelectionDialogFragment(
-                this, this, getCurrentNotSelectedModule()
-            )
-            waveSelectionDialogFragment?.show(
-                childFragmentManager,
-                "WAVE"
-            )
-            return@setOnLongClickListener true
+        binding.swapFirstGraph.setOnClickListener {
+            if (oxygenModuleFragment == null) initOxygenModuleFragment()
+            else initComplianceModuleFragment()
         }
     }
 
     private fun initData() {
         initPressureChartFragment()
-        initOxygenModuleFragment(R.id.containerTrendsQuadGraph3)
-        initLungsDynamicsFragment(R.id.containerTrendsQuadGraph4)
+        initOxygenModuleFragment()
+        initLungsDynamicsFragment()
     }
 
     fun setDataGobally(xMaxRange: Double) { pressureChartFragment?.addTextOnMaxRange(xMaxRange) }
@@ -140,33 +98,33 @@ class QuadTrendsFragment : GraphLayoutFragment("QuadTrendsGraphFragment"), OnDis
         complianceModuleFragment?.takeIf { it.isVisible }?.apply { updateTrendsViaParamAndDuration() }
     }
 
-    private fun initOxygenModuleFragment(container: Int) {
+    private fun initOxygenModuleFragment() {
+        makeNullAllFragment()
         oxygenModuleFragment = OxygenModuleFragment()
         childFragmentManager.beginTransaction()
             .replace(
-                container,
+                R.id.containerTrendsQuadGraph3,
                 oxygenModuleFragment!!,
                 oxygenModuleFragment!!::class.java.javaClass.simpleName
             )
             .commit()
     }
-
-    private fun initComplianceModuleFragment(container: Int) {
+    private fun initComplianceModuleFragment() {
+        makeNullAllFragment()
         complianceModuleFragment = ComplianceModuleFragment()
         childFragmentManager.beginTransaction()
             .replace(
-                container,
+                R.id.containerTrendsQuadGraph3,
                 complianceModuleFragment!!,
                 complianceModuleFragment!!::class.java.javaClass.simpleName
             )
             .commit()
     }
-
-    private fun initLungsDynamicsFragment(container: Int) {
+    private fun initLungsDynamicsFragment() {
         lungsDynamicsFragment = LungsDynamicsFragment()
         childFragmentManager.beginTransaction()
             .replace(
-                container,
+                R.id.containerTrendsQuadGraph4,
                 lungsDynamicsFragment!!,
                 lungsDynamicsFragment!!::class.java.javaClass.simpleName
             )
@@ -183,50 +141,5 @@ class QuadTrendsFragment : GraphLayoutFragment("QuadTrendsGraphFragment"), OnDis
         VentilatorApp.xTestingVolume = IntArray(FIFOCAPACITY_CUSTOM_SIZE) { i -> 0 }
         VentilatorApp.xTestingPressure = IntArray(FIFOCAPACITY_CUSTOM_SIZE) { i -> 0 }
         super.onPause()
-    }
-
-    override fun handleDialogClose() { waveSelectionDialogFragment?.dismiss() }
-
-    override fun onItemSelect(text: String, colorInt: Int) {
-        when (text) {
-
-            "OXYGEN MODULE" -> {
-                when(clickedFragmentOptions){
-                    FragmentSwitchOptions.FIRST_FRAGMENT ->{
-                        initOxygenModuleFragment(R.id.containerTrendsQuadGraph3)
-                    }
-                    FragmentSwitchOptions.SECOND_FRAGMENT ->{
-                        initOxygenModuleFragment(R.id.containerTrendsQuadGraph4)
-                    }
-                    else ->{}
-                }
-            }
-
-            "COMPLIANCE MODULE" -> {
-                when(clickedFragmentOptions){
-                    FragmentSwitchOptions.FIRST_FRAGMENT ->{
-                        initComplianceModuleFragment(R.id.containerTrendsQuadGraph3)
-                    }
-                    FragmentSwitchOptions.SECOND_FRAGMENT ->{
-                        initComplianceModuleFragment(R.id.containerTrendsQuadGraph4)
-                    }
-                    else ->{}
-                }
-            }
-
-            "LUNGS MODULE" -> {
-                when(clickedFragmentOptions){
-                    FragmentSwitchOptions.FIRST_FRAGMENT ->{
-                        initLungsDynamicsFragment(R.id.containerTrendsQuadGraph3)
-                    }
-                    FragmentSwitchOptions.SECOND_FRAGMENT ->{
-                        initLungsDynamicsFragment(R.id.containerTrendsQuadGraph4)
-                    }
-                    else ->{}
-                }
-            }
-        }
-        waveSelectionDialogFragment?.dismiss()
-        clickedFragmentOptions = null
     }
 }

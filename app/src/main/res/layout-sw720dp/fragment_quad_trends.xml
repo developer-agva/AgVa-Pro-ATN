@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".graph.divide_trends.QuadTrendsFragment">
+    tools:context=".graph.divide_trends.QuadTrendsFragment"
+    tools:ignore="MissingDefaultResource">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/containerTrendsQuadGraph1"
@@ -43,5 +44,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/containerTrendsQuadGraph3"
         app:layout_constraintTop_toBottomOf="@id/guidelineTop" />
+
+    <ImageView
+        android:id="@+id/swapFirstGraph"
+        android:layout_width="@dimen/_18sdp"
+        android:layout_height="@dimen/_18sdp"
+        android:src="@drawable/ic_swap"
+        android:layout_marginTop="@dimen/_1sdp"
+        android:layout_marginStart="@dimen/_2sdp"
+        app:layout_constraintStart_toStartOf="@id/containerTrendsQuadGraph3"
+        app:layout_constraintTop_toTopOf="@id/containerTrendsQuadGraph3"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

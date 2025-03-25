@@ -216,7 +216,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
     @SuppressLint("NotifyDataSetChanged")
     fun highlightViewWithFocus(data: String) {
 
-        Log.i("value_check_bonds", "index : $highlightedIndex ,size : $sizeOfCurrentArray , list size : ${dataListSystemItems.size}")
+        Log.i("value_check_bonds", "index : $highlightedIndex ,size : $sizeOfCurrentArray , list-size : ${dataListSystemItems.size}")
 
         if (diagnosticCheckFragment?.buttonState != null) {
             diagnosticCheckFragment?.updateValueOnKnobChange(data)
@@ -234,40 +234,74 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
             when (data) {
 
                 PREFIX_PLUS -> {
-                    if (highlightedIndex < dataListSystemItems.size) highlightedIndex++
+                    if (highlightedIndex < (sizeOfCurrentArray+dataListSystemItems.size)) highlightedIndex++
                     else { highlightedIndex = 0 }
 
                     normaliseView(data)
-                    if (highlightedIndex == 0) {
-                        changeConstraintsOfFocusLayout(binding.imageViewCrossSystem)
-                    } else {
-                        systemAdapter?.highlightedIndex = (highlightedIndex - 1)
-                        systemAdapter?.notifyDataSetChanged()
+
+                    if (sizeOfCurrentArray == 0) {
+
+                        if (highlightedIndex == 0) {
+                            changeConstraintsOfFocusLayout(binding.imageViewCrossSystem)
+                        } else {
+                            systemAdapter?.highlightedIndex = (highlightedIndex - 1)
+                            systemAdapter?.notifyDataSetChanged()
+                        }
+                    }else{
+                        if (highlightedIndex in 0 until sizeOfCurrentArray+1) highlightAdapters(highlightedIndex, data)
+                        else if (highlightedIndex == sizeOfCurrentArray+1) changeConstraintsOfFocusLayout(binding.imageViewCrossSystem)
+                        else {
+                            systemAdapter?.highlightedIndex = (highlightedIndex - (sizeOfCurrentArray+1))
+                            systemAdapter?.notifyDataSetChanged()
+                        }
                     }
                 }
 
                 PREFIX_MINUS -> {
-                    if (highlightedIndex > 0) highlightedIndex-- else highlightedIndex = dataListSystemItems.size
+                    if (highlightedIndex > 0) highlightedIndex-- else highlightedIndex = (sizeOfCurrentArray+dataListSystemItems.size)
 
                     normaliseView(data)
-                    if (highlightedIndex == 0) {
-                        changeConstraintsOfFocusLayout(binding.imageViewCrossSystem)
-                    } else {
-                        systemAdapter?.highlightedIndex = (highlightedIndex - 1)
-                        systemAdapter?.notifyDataSetChanged()
+                    if (sizeOfCurrentArray == 0) {
+
+                        if (highlightedIndex == 0) {
+                            changeConstraintsOfFocusLayout(binding.imageViewCrossSystem)
+                        } else {
+                            systemAdapter?.highlightedIndex = (highlightedIndex - 1)
+                            systemAdapter?.notifyDataSetChanged()
+                        }
+                    }else{
+                        if (highlightedIndex in 0 until sizeOfCurrentArray+1) highlightAdapters(highlightedIndex, data)
+                        else if (highlightedIndex == sizeOfCurrentArray+1) changeConstraintsOfFocusLayout(binding.imageViewCrossSystem)
+                        else {
+                            systemAdapter?.highlightedIndex = (highlightedIndex - (sizeOfCurrentArray+1))
+                            systemAdapter?.notifyDataSetChanged()
+                        }
                     }
                 }
 
                 PREFIX_AND -> {
                     normaliseView(data)
-                    if (highlightedIndex == 0) {
-                        binding.imageViewCrossSystem.callOnClick()
-                    } else {
-                        if (systemAdapter?.isEnable == true) {
-                            doSystemButtonClick(dataListSystemItems[highlightedIndex - 1].types)
-                            systemAdapter?.selectedIndexType =
-                                dataListSystemItems[highlightedIndex - 1].types
-                            systemAdapter?.notifyDataSetChanged()
+                    if (sizeOfCurrentArray == 0) {
+                        if (highlightedIndex == 0) {
+                            binding.imageViewCrossSystem.callOnClick()
+                        } else {
+                            if (systemAdapter?.isEnable == true) {
+                                doSystemButtonClick(dataListSystemItems[highlightedIndex - 1].types)
+                                systemAdapter?.selectedIndexType =
+                                    dataListSystemItems[highlightedIndex - 1].types
+                                systemAdapter?.notifyDataSetChanged()
+                            }
+                        }
+                    }else{
+                        if (highlightedIndex in 0 until sizeOfCurrentArray+1) handleAdaptersClick(highlightedIndex)
+                        else if (highlightedIndex == sizeOfCurrentArray+1) binding.imageViewCrossSystem.callOnClick()
+                        else {
+                            if (systemAdapter?.isEnable == true) {
+                                doSystemButtonClick(dataListSystemItems[highlightedIndex - (sizeOfCurrentArray+1)].types)
+                                systemAdapter?.selectedIndexType =
+                                    dataListSystemItems[highlightedIndex - (sizeOfCurrentArray+1)].types
+                                systemAdapter?.notifyDataSetChanged()
+                            }
                         }
                     }
                 }
@@ -323,25 +357,16 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         constraintSet.applyTo(binding.mainViewPanelSystem)
     }
 
-    private fun getViewForFocus(isMinus: Boolean?): Pair<View, View>? {
-
-        // NOTE : first value of pair is button view and second value of pair is root and is sometimes both are same
-        return when (highlightedIndex) {
-
-            else -> null
-        }
-    }
-
     fun startTimeoutWithDebounce() {
 
         cancelTimeout()
-
         visibilityTimeout = object : CountDownTimer(10000, 2000) {
             override fun onTick(millisUntilFinished: Long) {}
-
             override fun onFinish() {
                 highlightAdapters(-1, null)
                 clearPreviousConstraints()
+                systemAdapter?.highlightedIndex = -1
+                systemAdapter?.notifyDataSetChanged()
                 cancelTimeout()
             }
         }
@@ -355,8 +380,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         }
     }
 
-// knob highlight logic ends here
-
+    // knob highlight logic ends here
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

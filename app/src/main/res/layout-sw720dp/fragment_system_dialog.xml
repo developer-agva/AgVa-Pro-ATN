@@ -25,12 +25,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/system_nav_container" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewSystem"
+        android:layout_width="127dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:layout_constraintTop_toBottomOf="@id/imageViewCrossSystem"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/imageViewCrossSystem"/>
 
     <ScrollView
         android:id="@+id/scrollViewLayout"
         android:layout_width="127dp"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/_10sdp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/system_nav_container"
         app:layout_constraintEnd_toEndOf="@id/imageViewCrossSystem"
         app:layout_constraintStart_toEndOf="@id/system_nav_container"
@@ -235,7 +244,7 @@
         android:layout_marginBottom="@dimen/_13sdp"
         android:background="@drawable/background_light_grey_border_grey"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/scrollViewLayout"
+        app:layout_constraintEnd_toStartOf="@+id/recyclerViewSystem"
         app:layout_constraintHorizontal_bias="0.472"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

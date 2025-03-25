@@ -109,7 +109,8 @@ class EventsFragment : Fragment(), View.OnClickListener, onDropDownSelectionList
                     val list = (data.split("|") as ArrayList<String>).toSet()
 
                     withContext(Dispatchers.Main) {
-                        setupUhidLayout(list.toList() as ArrayList<String>)
+                        Log.i("valueList",list.size.toString())
+                        if (list.size > 1) setupUhidLayout(list.toList() as ArrayList<String>)
                     }
                 }
             }

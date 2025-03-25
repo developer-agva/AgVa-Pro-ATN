@@ -281,7 +281,7 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
     private fun startUpTimer() {
 
         try {
-            (parentFragment as SystemDialogFragment).enableAllTabs(false)
+            (parentFragment as SystemDialogFragment).updateEnableStatus(false)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -293,7 +293,7 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
 
             override fun onFinish() {
                 try {
-                    (parentFragment as SystemDialogFragment).enableAllTabs(true)
+                    (parentFragment as SystemDialogFragment).updateEnableStatus(true)
                     (requireActivity() as MainActivity).returnCommandsToSocket("Stop Diagnostic")
                     (requireActivity() as MainActivity).sendRangesToSocket("$defaultOfTurbineRanges,$defaultOfExhaleValveRanges,$defaultOfOxygenValveRanges")
                 } catch (e: Exception) {

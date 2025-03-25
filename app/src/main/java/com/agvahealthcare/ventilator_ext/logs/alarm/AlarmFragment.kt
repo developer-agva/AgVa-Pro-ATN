@@ -173,7 +173,7 @@ class AlarmFragment : Fragment(), View.OnClickListener, onDropDownSelectionListe
                     val list = (data.split("|") as java.util.ArrayList<String>).toSet()
 
                     withContext(Dispatchers.Main) {
-                        setupUhidLayout(list.toList() as java.util.ArrayList<String>)
+                        if (list.size > 1) setupUhidLayout(list.toList() as java.util.ArrayList<String>)
                     }
                 }
             }

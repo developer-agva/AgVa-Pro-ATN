@@ -216,10 +216,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
     @SuppressLint("NotifyDataSetChanged")
     fun highlightViewWithFocus(data: String) {
 
-        Log.i(
-            "value_check_bonds",
-            "index : $highlightedIndex ,size : $sizeOfCurrentArray , list size : ${dataListSystemItems.size}"
-        )
+        Log.i("value_check_bonds", "index : $highlightedIndex ,size : $sizeOfCurrentArray , list size : ${dataListSystemItems.size}")
 
         if (diagnosticCheckFragment?.buttonState != null) {
             diagnosticCheckFragment?.updateValueOnKnobChange(data)
@@ -238,9 +235,8 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
 
                 PREFIX_PLUS -> {
                     if (highlightedIndex < dataListSystemItems.size) highlightedIndex++
-                    else {
-                        highlightedIndex = 0
-                    }
+                    else { highlightedIndex = 0 }
+
                     normaliseView(data)
                     if (highlightedIndex == 0) {
                         changeConstraintsOfFocusLayout(binding.imageViewCrossSystem)
@@ -248,14 +244,11 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                         systemAdapter?.highlightedIndex = (highlightedIndex - 1)
                         systemAdapter?.notifyDataSetChanged()
                     }
-
                 }
 
                 PREFIX_MINUS -> {
-                    if (highlightedIndex > 0) highlightedIndex--
-                    else {
-                        highlightedIndex = dataListSystemItems.size
-                    }
+                    if (highlightedIndex > 0) highlightedIndex-- else highlightedIndex = dataListSystemItems.size
+
                     normaliseView(data)
                     if (highlightedIndex == 0) {
                         changeConstraintsOfFocusLayout(binding.imageViewCrossSystem)

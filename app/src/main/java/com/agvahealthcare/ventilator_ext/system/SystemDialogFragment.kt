@@ -228,84 +228,84 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
             settingFragment?.updateKnobSetting(data)
         } else {
 
-            clearPreviousConstraints()
-            startTimeoutWithDebounce()
+//            clearPreviousConstraints()
+//            startTimeoutWithDebounce()
 
-            when (data) {
-
-                PREFIX_PLUS -> {
-                    if (highlightedIndex < (sizeOfCurrentArray+dataListSystemItems.size)) highlightedIndex++
-                    else { highlightedIndex = 0 }
-
-                    normaliseView(data)
-
-                    if (sizeOfCurrentArray == 0) {
-
-                        if (highlightedIndex == 0) {
-                            changeConstraintsOfFocusLayout(binding.imageViewCrossSystem)
-                        } else {
-                            systemAdapter?.highlightedIndex = (highlightedIndex - 1)
-                            systemAdapter?.notifyDataSetChanged()
-                        }
-                    }else{
-                        if (highlightedIndex in 0 until sizeOfCurrentArray+1) highlightAdapters(highlightedIndex, data)
-                        else if (highlightedIndex == sizeOfCurrentArray+1) changeConstraintsOfFocusLayout(binding.imageViewCrossSystem)
-                        else {
-                            systemAdapter?.highlightedIndex = (highlightedIndex - (sizeOfCurrentArray+1))
-                            systemAdapter?.notifyDataSetChanged()
-                        }
-                    }
-                }
-
-                PREFIX_MINUS -> {
-                    if (highlightedIndex > 0) highlightedIndex-- else highlightedIndex = (sizeOfCurrentArray+dataListSystemItems.size)
-
-                    normaliseView(data)
-                    if (sizeOfCurrentArray == 0) {
-
-                        if (highlightedIndex == 0) {
-                            changeConstraintsOfFocusLayout(binding.imageViewCrossSystem)
-                        } else {
-                            systemAdapter?.highlightedIndex = (highlightedIndex - 1)
-                            systemAdapter?.notifyDataSetChanged()
-                        }
-                    }else{
-                        if (highlightedIndex in 0 until sizeOfCurrentArray+1) highlightAdapters(highlightedIndex, data)
-                        else if (highlightedIndex == sizeOfCurrentArray+1) changeConstraintsOfFocusLayout(binding.imageViewCrossSystem)
-                        else {
-                            systemAdapter?.highlightedIndex = (highlightedIndex - (sizeOfCurrentArray+1))
-                            systemAdapter?.notifyDataSetChanged()
-                        }
-                    }
-                }
-
-                PREFIX_AND -> {
-                    normaliseView(data)
-                    if (sizeOfCurrentArray == 0) {
-                        if (highlightedIndex == 0) {
-                            binding.imageViewCrossSystem.callOnClick()
-                        } else {
-                            if (systemAdapter?.isEnable == true) {
-                                doSystemButtonClick(dataListSystemItems[highlightedIndex - 1].types)
-                                systemAdapter?.selectedIndexType =
-                                    dataListSystemItems[highlightedIndex - 1].types
-                                systemAdapter?.notifyDataSetChanged()
-                            }
-                        }
-                    }else{
-                        if (highlightedIndex in 0 until sizeOfCurrentArray+1) handleAdaptersClick(highlightedIndex)
-                        else if (highlightedIndex == sizeOfCurrentArray+1) binding.imageViewCrossSystem.callOnClick()
-                        else {
-                            if (systemAdapter?.isEnable == true) {
-                                doSystemButtonClick(dataListSystemItems[highlightedIndex - (sizeOfCurrentArray+1)].types)
-                                systemAdapter?.selectedIndexType =
-                                    dataListSystemItems[highlightedIndex - (sizeOfCurrentArray+1)].types
-                                systemAdapter?.notifyDataSetChanged()
-                            }
-                        }
-                    }
-                }
-            }
+//            when (data) {
+//
+//                PREFIX_PLUS -> {
+//                    if (highlightedIndex < (sizeOfCurrentArray+dataListSystemItems.size)) highlightedIndex++
+//                    else { highlightedIndex = 0 }
+//
+//                    normaliseView(data)
+//
+//                    if (sizeOfCurrentArray == 0) {
+//
+//                        if (highlightedIndex == 0) {
+//                            changeConstraintsOfFocusLayout(binding.imageViewCrossSystem)
+//                        } else {
+//                            systemAdapter?.highlightedIndex = (highlightedIndex - 1)
+//                            systemAdapter?.notifyDataSetChanged()
+//                        }
+//                    }else{
+//                        if (highlightedIndex in 0 until sizeOfCurrentArray+1) highlightAdapters(highlightedIndex, data)
+//                        else if (highlightedIndex == sizeOfCurrentArray+1) changeConstraintsOfFocusLayout(binding.imageViewCrossSystem)
+//                        else {
+//                            systemAdapter?.highlightedIndex = (highlightedIndex - (sizeOfCurrentArray+1))
+//                            systemAdapter?.notifyDataSetChanged()
+//                        }
+//                    }
+//                }
+//
+//                PREFIX_MINUS -> {
+//                    if (highlightedIndex > 0) highlightedIndex-- else highlightedIndex = (sizeOfCurrentArray+dataListSystemItems.size)
+//
+//                    normaliseView(data)
+//                    if (sizeOfCurrentArray == 0) {
+//
+//                        if (highlightedIndex == 0) {
+//                            changeConstraintsOfFocusLayout(binding.imageViewCrossSystem)
+//                        } else {
+//                            systemAdapter?.highlightedIndex = (highlightedIndex - 1)
+//                            systemAdapter?.notifyDataSetChanged()
+//                        }
+//                    }else{
+//                        if (highlightedIndex in 0 until sizeOfCurrentArray+1) highlightAdapters(highlightedIndex, data)
+//                        else if (highlightedIndex == sizeOfCurrentArray+1) changeConstraintsOfFocusLayout(binding.imageViewCrossSystem)
+//                        else {
+//                            systemAdapter?.highlightedIndex = (highlightedIndex - (sizeOfCurrentArray+1))
+//                            systemAdapter?.notifyDataSetChanged()
+//                        }
+//                    }
+//                }
+//
+//                PREFIX_AND -> {
+//                    normaliseView(data)
+//                    if (sizeOfCurrentArray == 0) {
+//                        if (highlightedIndex == 0) {
+//                            binding.imageViewCrossSystem.callOnClick()
+//                        } else {
+//                            if (systemAdapter?.isEnable == true) {
+//                                doSystemButtonClick(dataListSystemItems[highlightedIndex - 1].types)
+//                                systemAdapter?.selectedIndexType =
+//                                    dataListSystemItems[highlightedIndex - 1].types
+//                                systemAdapter?.notifyDataSetChanged()
+//                            }
+//                        }
+//                    }else{
+//                        if (highlightedIndex in 0 until sizeOfCurrentArray+1) handleAdaptersClick(highlightedIndex)
+//                        else if (highlightedIndex == sizeOfCurrentArray+1) binding.imageViewCrossSystem.callOnClick()
+//                        else {
+//                            if (systemAdapter?.isEnable == true) {
+//                                doSystemButtonClick(dataListSystemItems[highlightedIndex - (sizeOfCurrentArray+1)].types)
+//                                systemAdapter?.selectedIndexType =
+//                                    dataListSystemItems[highlightedIndex - (sizeOfCurrentArray+1)].types
+//                                systemAdapter?.notifyDataSetChanged()
+//                            }
+//                        }
+//                    }
+//                }
+//            }
         }
     }
 
@@ -521,6 +521,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                     SystemFragmentButtonTypes.Diagnos
                 )
             )
+
             if (!dataListSystemItems.contains(
                     SystemButtonModelClass(
                         getString(R.string.hint_reg_o2),
@@ -533,6 +534,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                     SystemFragmentButtonTypes.O2_Reg
                 )
             )
+
             if (!dataListSystemItems.contains(
                     SystemButtonModelClass(
                         getString(R.string.hint_advanced_calib),
@@ -545,6 +547,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                     SystemFragmentButtonTypes.Advanced_Calibrations
                 )
             )
+
             if (!dataListSystemItems.contains(
                     SystemButtonModelClass(
                         getString(R.string.hint_update),
@@ -766,7 +769,6 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         systemAdapter?.isEnable = status
         systemAdapter?.notifyDataSetChanged()
     }
-
 
     private fun setupTestCalibFragment() {
         makeAllFragmentsNull()

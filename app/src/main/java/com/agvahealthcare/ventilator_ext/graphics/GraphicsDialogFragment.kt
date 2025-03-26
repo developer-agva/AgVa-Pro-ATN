@@ -61,7 +61,7 @@ class GraphicsDialogFragment(
 
         when (data) {
             PREFIX_PLUS -> {
-                if (highlightedIndex < 8) highlightedIndex++
+                if (highlightedIndex < 7) highlightedIndex++
                 else highlightedIndex = 1
 
                 getViewForFocus()?.let { changeConstraintsOfFocusLayout(it.second) }
@@ -69,14 +69,14 @@ class GraphicsDialogFragment(
 
             PREFIX_MINUS -> {
                 if (highlightedIndex > 1) highlightedIndex--
-                else highlightedIndex = 8
+                else highlightedIndex = 7
 
                 getViewForFocus()?.let { changeConstraintsOfFocusLayout(it.second) }
             }
 
             PREFIX_AND -> {
 
-                if (highlightedIndex != 8) {
+                if (highlightedIndex != 7) {
                     getViewForFocus()?.first?.callOnClick()
                 } else {
                     getViewForFocus()?.first?.callOnClick()
@@ -138,12 +138,12 @@ class GraphicsDialogFragment(
         return when (highlightedIndex) {
             1 -> Pair(binding.imageViewCrossGraphics,binding.imageViewCrossGraphics)
             2 -> Pair(binding.layoutPanelDuo,binding.layoutPanelDuo)
-            3 -> Pair(binding.layoutPanelQuadTrends,binding.layoutPanelQuadTrends)
-            4 -> Pair(binding.layoutPanelTrio,binding.layoutPanelTrio)
-            5 -> Pair(binding.layoutPanelDivideQuad,binding.layoutPanelDivideQuad)
-            6 -> Pair(binding.layoutPanelDivideTrio,binding.layoutPanelDivideTrio)
-            7 -> Pair(binding.layoutPanelDividePent,binding.layoutPanelDividePent)
-            8 -> Pair(binding.includeButtonDefault.buttonView,binding.includeButtonDefault.root)
+//            3 -> Pair(binding.layoutPanelQuadTrends,binding.layoutPanelQuadTrends)
+            3 -> Pair(binding.layoutPanelTrio,binding.layoutPanelTrio)
+            4 -> Pair(binding.layoutPanelDivideQuad,binding.layoutPanelDivideQuad)
+            5 -> Pair(binding.layoutPanelDivideTrio,binding.layoutPanelDivideTrio)
+            6 -> Pair(binding.layoutPanelDividePent,binding.layoutPanelDividePent)
+            7 -> Pair(binding.includeButtonDefault.buttonView,binding.includeButtonDefault.root)
 
             else -> null
         }
@@ -195,10 +195,10 @@ class GraphicsDialogFragment(
     private fun initView() {
         binding.includeButtonLayout0.buttonView.text = getString(R.string.hint_layout_default)
         binding.includeButtonLayout1.buttonView.text = getString(R.string.hint_layout_1)
-        binding.includeButtonLayout2.buttonView.text = getString(R.string.hint_layout_2)
-        binding.includeButtonLayout3.buttonView.text = getString(R.string.hint_layout_3)
-        binding.includeButtonLayout4.buttonView.text = getString(R.string.hint_layout_4)
-        binding.includeButtonLayout5.buttonView.text = getString(R.string.hint_layout_5)
+        binding.includeButtonLayout2.buttonView.text = getString(R.string.hint_layout_1)
+        binding.includeButtonLayout3.buttonView.text = getString(R.string.hint_layout_2)
+        binding.includeButtonLayout4.buttonView.text = getString(R.string.hint_layout_3)
+        binding.includeButtonLayout5.buttonView.text = getString(R.string.hint_layout_4)
         binding.includeButtonDefault.buttonView.text = getString(R.string.hint_layout_default)
 
         binding.includeButtonDefault.buttonView.setPadding(35, 10, 35, 10)

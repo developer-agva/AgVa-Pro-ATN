@@ -49,7 +49,7 @@ class VentilatorApp : Application() {
         val dynCompTimeList = ArrayList<String>()
         val spontRRTimeList = ArrayList<String>()
         val spontVTTimeList = ArrayList<String>()
-
+        var isDischargePatientDone = false
         val durationCounts = arrayListOf("2 Hrs", "4 Hrs", "8 Hrs", "16 Hrs", "24 Hrs", "48 Hrs")
 
         var defaultOfTurbineRanges = "0"

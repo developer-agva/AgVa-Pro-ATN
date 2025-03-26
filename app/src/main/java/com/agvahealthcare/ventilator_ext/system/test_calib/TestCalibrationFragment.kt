@@ -50,7 +50,7 @@ class TestCalibrationFragment(private var communicationService: CommunicationSer
 
             0 -> if (binding.topBarTestCalib.isVisible) binding.backBtnTestCalib.callOnClick() else binding.includeButtonO2Sensor.buttonView.callOnClick()
             1 -> if (binding.topBarTestCalib.isVisible) binding.includeButtonSendCmd.buttonView.callOnClick() else binding.includeButtonExhaleValve.buttonView.callOnClick()
-            2 -> binding.includeButtonExpFlowSensor.buttonView.callOnClick()
+//            2 -> binding.includeButtonExpFlowSensor.buttonView.callOnClick()
 
         }
     }
@@ -120,7 +120,7 @@ class TestCalibrationFragment(private var communicationService: CommunicationSer
 
                 0 -> if (binding.topBarTestCalib.isVisible) binding.backBtnTestCalib else binding.includeButtonO2Sensor.root
                 1 -> if (binding.topBarTestCalib.isVisible) binding.includeButtonSendCmd.root else binding.includeButtonExhaleValve.root
-                2 -> binding.includeButtonExpFlowSensor.root
+//                2 -> binding.includeButtonExpFlowSensor.root
 
                 else -> null
             }
@@ -218,15 +218,15 @@ class TestCalibrationFragment(private var communicationService: CommunicationSer
 
             // calib layouts
             binding.testCalibText.visibility = View.VISIBLE
-            binding.includeButtonExpFlowSensor.root.visibility = View.VISIBLE
+            binding.includeButtonExpFlowSensor.root.visibility = View.GONE
             binding.includeButtonO2Sensor.root.visibility = View.VISIBLE
             binding.includeButtonExhaleValve.root.visibility = View.VISIBLE
-            binding.ivExpFlowSensorStatus.visibility = View.VISIBLE
+            binding.ivExpFlowSensorStatus.visibility = View.GONE
             binding.ivO2SensorStatus.visibility = View.VISIBLE
             binding.ivExhaleValveStatus.visibility = View.VISIBLE
             binding.tvO2Sensor.visibility = View.VISIBLE
             binding.tvExhaleValve.visibility = View.VISIBLE
-            binding.tvExpFlowSensor.visibility = View.VISIBLE
+            binding.tvExpFlowSensor.visibility = View.GONE
 
         } else {
             // pre op check layout

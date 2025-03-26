@@ -56,8 +56,7 @@ enum class SystemFragmentButtonTypes {
     Debug,
     Diagnos,
     O2_Reg,
-    Network_Info,
-
+    Network_Info
 }
 
 data class SystemButtonModelClass(
@@ -70,7 +69,6 @@ interface SystemFragmentButtonListener {
     fun doSystemButtonLongClick(buttonType: SystemFragmentButtonTypes)
 }
 
-// NOTE :  just handle highlight of buttons with root id
 class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleCallbackListener,
     SystemFragmentButtonListener {
     private lateinit var binding: FragmentSystemDialogBinding
@@ -232,15 +230,15 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
 //            startTimeoutWithDebounce()
 
 //            when (data) {
-//
+
 //                PREFIX_PLUS -> {
 //                    if (highlightedIndex < (sizeOfCurrentArray+dataListSystemItems.size)) highlightedIndex++
 //                    else { highlightedIndex = 0 }
-//
+
 //                    normaliseView(data)
-//
+
 //                    if (sizeOfCurrentArray == 0) {
-//
+
 //                        if (highlightedIndex == 0) {
 //                            changeConstraintsOfFocusLayout(binding.imageViewCrossSystem)
 //                        } else {
@@ -256,7 +254,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
 //                        }
 //                    }
 //                }
-//
+
 //                PREFIX_MINUS -> {
 //                    if (highlightedIndex > 0) highlightedIndex-- else highlightedIndex = (sizeOfCurrentArray+dataListSystemItems.size)
 //
@@ -278,7 +276,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
 //                        }
 //                    }
 //                }
-//
+
 //                PREFIX_AND -> {
 //                    normaliseView(data)
 //                    if (sizeOfCurrentArray == 0) {
@@ -451,7 +449,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
             }
 
             SystemFragmentButtonTypes.Ota -> {
-                showNetworkInfoFragment()
+                setupOtaFragment()
             }
 
             SystemFragmentButtonTypes.Wifi -> {
@@ -662,14 +660,14 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                 SystemFragmentButtonTypes.Service
             )
         )
-        dataListSystemItems.add(
-            SystemButtonModelClass(
-                getString(R.string.hl7),
-                SystemFragmentButtonTypes.HL7
-            )
-        )
+//        dataListSystemItems.add(
+//            SystemButtonModelClass(
+//                getString(R.string.hl7),
+//                SystemFragmentButtonTypes.HL7
+//            )
+//        )
 
-        if (tag == "FromDashboard") dataListSystemItems.removeAt(dataListSystemItems.lastIndex)
+//        if (tag == "FromDashboard") dataListSystemItems.removeAt(dataListSystemItems.lastIndex)
 
         if (tag == "FromSplash") {
             systemAdapter?.selectedIndexType = SystemFragmentButtonTypes.Service
@@ -772,7 +770,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
 
     private fun setupTestCalibFragment() {
         makeAllFragmentsNull()
-        sizeOfCurrentArray = 2
+        sizeOfCurrentArray = 1
         if (testCalibrationFragment == null)
             testCalibrationFragment =
                 TestCalibrationFragment(communicationService)
@@ -1211,6 +1209,7 @@ class SystemDesignAdapter(
             selectedIndexType = data.types
             if (isEnable) onClick.doSystemButtonClick(data.types)
         }
+
         holder.buttonView?.setOnLongClickListener {
             if (isEnable) onClick.doSystemButtonLongClick(data.types)
             return@setOnLongClickListener true

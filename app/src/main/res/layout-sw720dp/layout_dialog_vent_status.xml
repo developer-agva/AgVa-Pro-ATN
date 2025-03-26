@@ -32,6 +32,16 @@
                 android:textSize="20dp"
                 android:textStyle="normal" />
 
+            <ImageView
+                android:id="@+id/ivCancel"
+                android:layout_width="@dimen/_14sdp"
+                android:layout_height="@dimen/_14sdp"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_cross_grey"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/_1sdp"
+                />
+
         </RelativeLayout>
 
         <FrameLayout

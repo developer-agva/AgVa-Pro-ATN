@@ -1235,6 +1235,7 @@ public class DialogBoxFactory {
         View view = LayoutInflater.from(ctx).inflate(R.layout.layout_dialog_vent_status, null, false);
 
         Button btnStandby = view.findViewById(R.id.btnStandby);
+        ImageView ivCancel = view.findViewById(R.id.ivCancel);
         Button btnDischarge = view.findViewById(R.id.btnDischarge);
 
         TextView dialogMessage = view.findViewById(R.id.etCmd);
@@ -1250,6 +1251,10 @@ public class DialogBoxFactory {
 
         btnDischarge.setOnClickListener(v -> {
             if (onDischarge != null) onDischarge.onDischarge();
+            dialog.cancel();
+        });
+
+        ivCancel.setOnClickListener(v ->{
             dialog.cancel();
         });
 

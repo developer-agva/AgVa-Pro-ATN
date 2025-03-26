@@ -79,17 +79,21 @@ class LogsTrendsFragment : Fragment(), View.OnClickListener, onDropDownSelection
         binding.uhidLayout.setOnClickListener {
             clickUhidLayout = true
             binding.uhidRecyclerView.visibility = View.VISIBLE
+            try {
+                CoroutineScope(Dispatchers.IO).launch {
+                    val data = FileLogger.readUhidFile("event")
+                    if (data != FileLogger.dataNotFound) {
+                        val list = (data.split("|") as java.util.ArrayList<String>).toSet()
 
-            CoroutineScope(Dispatchers.IO).launch {
-                val data = FileLogger.readUhidFile("event")
-                if (data != FileLogger.dataNotFound) {
-                    val list = (data.split("|") as java.util.ArrayList<String>).toSet()
-
-                    withContext(Dispatchers.Main) {
-                        if (list.size > 1) setupUhidLayout(list.toList() as java.util.ArrayList<String>)
+                        withContext(Dispatchers.Main) {
+                            if (list.size > 1) setupUhidLayout(list.toList() as java.util.ArrayList<String>)
+                        }
                     }
                 }
+            }catch (e: Exception){
+                e.printStackTrace()
             }
+
         }
     }
 

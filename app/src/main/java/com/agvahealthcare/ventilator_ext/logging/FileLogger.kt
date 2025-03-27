@@ -842,8 +842,7 @@ abstract class FileLogger {
                     fileData.reverse()
 
                     for (i in 0 until fileData.size){
-                        if (i == fileData.size-1) data += fileData[i].split(",")[2]
-                        else  data += fileData[i].split(",")[2] + "|"
+                        data += fileData[i].split(",")[2] + "|"
                     }
                     Log.i("data_get",data.toString())
                     return if (data == "") dataNotFound else data

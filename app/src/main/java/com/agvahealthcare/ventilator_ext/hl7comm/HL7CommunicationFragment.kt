@@ -130,16 +130,21 @@ class HL7CommunicationFragment() : Fragment(), onDropDownSelectionListener {
             clickUhidLayout = true
             binding.uhidRecyclerView.visibility = View.VISIBLE
 
-            CoroutineScope(Dispatchers.IO).launch {
-                val data = FileLogger.readUhidFile("event")
-                if (data != FileLogger.dataNotFound) {
-                    val list = (data.split("|") as ArrayList<String>).toSet()
-                    Log.d("dataUhid", list.size.toString())
+            try {
+                CoroutineScope(Dispatchers.IO).launch {
+                    val data = FileLogger.readUhidFile("event")
+                    if (data != FileLogger.dataNotFound) {
+                        val list = (data.split("|") as java.util.ArrayList<String>)
+                        list.removeLast()
+                        val newList = list.toSet()
 
-                    withContext(Dispatchers.Main) {
-                        setupUhidLayout(list.toList() as ArrayList<String>)
+                        withContext(Dispatchers.Main) {
+                            if (newList.size > 1) setupUhidLayout(newList.toList() as java.util.ArrayList<String>)
+                        }
                     }
                 }
+            }catch (e: Exception){
+                e.printStackTrace()
             }
         }
 

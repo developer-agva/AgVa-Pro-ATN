@@ -171,10 +171,12 @@ class AlarmFragment : Fragment(), View.OnClickListener, onDropDownSelectionListe
                 CoroutineScope(Dispatchers.IO).launch {
                     val data = FileLogger.readUhidFile("event")
                     if (data != FileLogger.dataNotFound) {
-                        val list = (data.split("|") as java.util.ArrayList<String>).toSet()
+                        val list = (data.split("|") as java.util.ArrayList<String>)
+                        list.removeLast()
+                        val newList = list.toSet()
 
                         withContext(Dispatchers.Main) {
-                            if (list.size > 1) setupUhidLayout(list.toList() as java.util.ArrayList<String>)
+                            if (newList.size > 1) setupUhidLayout(newList.toList() as java.util.ArrayList<String>)
                         }
                     }
                 }

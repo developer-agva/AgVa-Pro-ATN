@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_light_grey_border_grey"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:ignore="MissingDefaultResource">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/focusLayoutAdvancedCalib"
@@ -185,6 +186,44 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/ivLeakTestStatus"
         app:layout_constraintTop_toTopOf="@id/includeButtonLeakTest" />
+
+    <!--    leak test layout-->
+    <include
+        android:id="@+id/includeButtonNeoZero"
+        layout="@layout/content_button_layout"
+        android:layout_width="@dimen/_75sdp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/advancedCalibText"
+        app:layout_constraintTop_toBottomOf="@id/includeButtonLeakTest" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivNeoZeroStatus"
+        android:layout_width="@dimen/_10sdp"
+        android:layout_height="@dimen/_10sdp"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:src="@drawable/ic_red_cross"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/includeButtonNeoZero"
+        app:layout_constraintStart_toEndOf="@id/includeButtonNeoZero"
+        app:layout_constraintTop_toTopOf="@id/includeButtonNeoZero" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvNeoZero"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:gravity="center"
+        android:textColor="@color/grey_dark"
+        android:theme="@style/subheading_text_style"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/includeButtonNeoZero"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/ivNeoZeroStatus"
+        app:layout_constraintTop_toTopOf="@id/includeButtonNeoZero" />
 
     <!--    gif layout-->
 

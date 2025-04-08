@@ -795,7 +795,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
 
     private fun setupAdvancedFragment() {
         makeAllFragmentsNull()
-        sizeOfCurrentArray = 2
+        sizeOfCurrentArray = 3
         if (advancedCalibrationFragment == null)
             advancedCalibrationFragment = AdvancedCalibrationFragment(communicationService)
         advancedCalibrationFragment?.apply {

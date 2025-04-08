@@ -181,6 +181,7 @@
     <string name="hint_Turbine_Calibration">Calibrate Turbine</string>
     <string name="hint_Leak_Test_Text">Leak test</string>
     <string name="hint__Insp_Flow_Calibration">Calibrate Insp Flow</string>
+    <string name="hint_Neo_Zero_Calibration">Neonate Zeroing</string>
     <string name="hint_Exp_Flow_Calibration">Calibrate Exp Flow</string>
     <string name="hint_O2_Calibration">Calibrate Oxygen</string>
     <string name="hint_ExhaleValve_Calibration">Calibrate Exhale Valve</string>

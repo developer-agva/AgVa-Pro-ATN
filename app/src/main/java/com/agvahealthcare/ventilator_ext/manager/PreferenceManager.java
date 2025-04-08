@@ -279,6 +279,7 @@ public class PreferenceManager {
     private static final String PREF_PRESSER_CALIBRATION = "pref_presser_calibration";
     private static final String PREF_EXHALE_VALVE_CALIBRATION = "pref_exhale_valve_calibration";
     private static final String PREF_LEAK_TEST_CALIBRATION = "pref_leak_test_calibration";
+    private static final String PREF_NEO_ZERO = "pref_neo_zero";
 
     //Operational hours in hours and minutes.
     private static final String PREF_DASHBOARD_RUNNING_TIME = "pref_dashboard_running_time";
@@ -2118,8 +2119,49 @@ public class PreferenceManager {
         return "-";
     }
 
+    // neo zero
 
-    public SensorCalibration readInspFlowSensorCalibration() {
+    public void setNeoZeroCalibration(SensorCalibration sensorCalibration) {
+
+        if (sensorCalibration != null) {
+            SharedPreferences.Editor editor = sp.edit();
+            Gson gson = new Gson();
+            String json = gson.toJson(sensorCalibration);
+            editor.putString(PREF_NEO_ZERO, json);
+            editor.apply();
+        }
+
+    }
+
+    public SensorCalibration readNeoZeroCalibration() {
+
+        Gson gson = new Gson();
+        String json = sp.getString(PREF_NEO_ZERO, "Not Calibrated");
+        return gson.fromJson(json, SensorCalibration.class);
+    }
+
+    public boolean readNeoZeroStatus() {
+        try {
+            return readNeoZeroCalibration().getStatus() == SENSOR_CALIBRATION_SUCCESS;
+        } catch (JsonSyntaxException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public String readNeoZeroDate() {
+        try {
+            return readNeoZeroCalibration().getDate();
+        } catch (JsonSyntaxException e) {
+            e.printStackTrace();
+        }
+        return "-";
+    }
+
+
+    // insp flow pref
+    public SensorCalibration  readInspFlowSensorCalibration() {
         //return sp.getString(readCurrentUid() + "." + PREF_FLOW_SENSOR_CALIBRATION, "");
 
         Gson gson = new Gson();

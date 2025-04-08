@@ -401,7 +401,7 @@ public abstract class CommunicationService extends Service {
 
         // tlow is now changed to non-invasive status as per embedded team concern
 //        String tlow = String.format("%.1f", prefManager.readTlow());
-        String tlow = "";
+        String   tlow = "";
         if (VentilatorApp.Companion.getSelectedOptions() == null){
             switch (prefManager.readSelectedOptions()) {
                 case PRONGS_NAME:

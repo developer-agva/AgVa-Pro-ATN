@@ -1347,17 +1347,17 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 systemDialogFragment?.getUpdateDeviceFragment()?.updateSensorCalibrationStatus()
             }
 
-            // leak test
-            ACK_CODE_4020 -> {
-                showCalibrationDialog("Ventilator is under Leak Test")
-            }
-
             ACK_CODE_824 -> {
                 mMainActivityViewModel.batterySystemFailure.postValue(true)
             }
 
             ACK_CODE_834 -> {
                 mMainActivityViewModel.batterySystemFailure.postValue(false)
+            }
+
+            // leak test
+            ACK_CODE_4020 -> {
+                showCalibrationDialog("Ventilator is under Leak Test")
             }
 
             ACK_CODE_4021 -> {
@@ -1400,6 +1400,125 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     ?.updateSensorsCalibrationStatusViaPreference()
 
                 addEvents("Leak test success", prefManager?.readUHID().toString())
+            }
+
+            // neonate zeroing
+            ACK_CODE_4023 -> {
+                showCalibrationDialog("Zeroing under process")
+            }
+
+            ACK_CODE_4024 -> {
+                callCalibrationApi(Configs.CALIBRATION_NEO_ZERO, Configs.CALIBRATION_FAILED)
+
+                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply {
+                    this.dismiss()
+                }
+                prefManager?.setNeoZeroCalibration(
+                    SensorCalibration(
+                        AppUtils.getCurrentDateTime(),
+                        Configs.SENSOR_CALIBRATION_FAILURE
+                    )
+                )
+                // check if concerned view is visible , if yes then refresh to render it from preference
+                systemDialogFragment?.takeIf { it.isVisible }
+                    ?.updateSensorsCalibrationStatusViaPreference()
+
+                addEvents(
+                    "Neonate sensor zeroing failed",
+                    prefManager?.readUHID().toString()
+                )
+
+                showCalibrationErrorDialog("Neonate sensor zeroing failed")
+            }
+
+            ACK_CODE_4025 -> {
+                callCalibrationApi(Configs.CALIBRATION_NEO_ZERO, Configs.CALIBRATION_FAILED)
+
+                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply {
+                    this.dismiss()
+                }
+                prefManager?.setNeoZeroCalibration(
+                    SensorCalibration(
+                        AppUtils.getCurrentDateTime(),
+                        Configs.SENSOR_CALIBRATION_FAILURE
+                    )
+                )
+                // check if concerned view is visible , if yes then refresh to render it from preference
+                systemDialogFragment?.takeIf { it.isVisible }
+                    ?.updateSensorsCalibrationStatusViaPreference()
+
+                addEvents(
+                    "Neonate sensor zeroing failed",
+                    prefManager?.readUHID().toString()
+                )
+
+                showCalibrationErrorDialog("Neonate sensor zeroing failed")
+            }
+
+            ACK_CODE_4026 -> {
+                callCalibrationApi(Configs.CALIBRATION_NEO_ZERO, Configs.CALIBRATION_FAILED)
+
+                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply {
+                    this.dismiss()
+                }
+                prefManager?.setNeoZeroCalibration(
+                    SensorCalibration(
+                        AppUtils.getCurrentDateTime(),
+                        Configs.SENSOR_CALIBRATION_FAILURE
+                    )
+                )
+                // check if concerned view is visible , if yes then refresh to render it from preference
+                systemDialogFragment?.takeIf { it.isVisible }
+                    ?.updateSensorsCalibrationStatusViaPreference()
+
+                addEvents(
+                    "Neonate sensor zeroing failed",
+                    prefManager?.readUHID().toString()
+                )
+
+                showCalibrationErrorDialog("Neonate sensor zeroing failed")
+            }
+
+            ACK_CODE_4027 -> {
+                callCalibrationApi(Configs.CALIBRATION_NEO_ZERO, Configs.CALIBRATION_FAILED)
+
+                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply {
+                    this.dismiss()
+                }
+                prefManager?.setNeoZeroCalibration(
+                    SensorCalibration(
+                        AppUtils.getCurrentDateTime(),
+                        Configs.SENSOR_CALIBRATION_FAILURE
+                    )
+                )
+                // check if concerned view is visible , if yes then refresh to render it from preference
+                systemDialogFragment?.takeIf { it.isVisible }
+                    ?.updateSensorsCalibrationStatusViaPreference()
+
+                addEvents(
+                    "Neonate sensor zeroing failed",
+                    prefManager?.readUHID().toString()
+                )
+
+                showCalibrationErrorDialog("Neonate sensor zeroing failed")
+            }
+
+            ACK_CODE_4028 -> {
+                callCalibrationApi(Configs.CALIBRATION_NEO_ZERO, Configs.CALIBRATION_SUCCESS)
+                calibrationConfirmDialog?.dismiss()
+
+                prefManager?.setNeoZeroCalibration(
+                    SensorCalibration(
+                        AppUtils.getCurrentDateTime(),
+                        Configs.SENSOR_CALIBRATION_SUCCESS
+                    )
+                )
+
+                // check if concerned view is visible , if yes then refresh to render it from preference
+                systemDialogFragment?.takeIf { it.isVisible }
+                    ?.updateSensorsCalibrationStatusViaPreference()
+
+                addEvents("Neonate Sensor Zeroing Successfully", prefManager?.readUHID().toString())
             }
 
             // ACK FOR INSP FLOW

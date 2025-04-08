@@ -127,6 +127,7 @@ public interface Configs {
 
     String CALIBRATION_INSP_FLOW = "INSPIRATORY FLOW CALIBRATION";
     String CALIBRATION_LEAK_TEST = "LEAK TEST CALIBRATION";
+    String CALIBRATION_NEO_ZERO = "Neonate Zeroing";
     String CALIBRATION_EXP_FLOW = "EXPIRATORY FLOW CALIBRATION";
     String CALIBRATION_TURBINE = "TURBINE CALIBRATION";
     String CALIBRATION_OXYGEN = "OXYGEN CALIBRATION";
@@ -222,6 +223,7 @@ public interface Configs {
     String TAG_SENSOR_EXHALE_VALVE = "5";
     String TAG_SENSOR_INSP_FLOW = "6";
     String TAG_LEAK_TEST = "7";
+    String TAG_NEO_ZERO = "8";
 
     //Testing
     int DEVICE_DISCONNECTED = 0;
@@ -895,6 +897,14 @@ public interface Configs {
     String ACK_CODE_4020 = "ACK4020";
     String ACK_CODE_4021 = "ACK4021";
     String ACK_CODE_4022 = "ACK4022";
+
+    // ACK For Neo Zeroing
+    String ACK_CODE_4023 = "ACK4023";
+    String ACK_CODE_4024 = "ACK4024";
+    String ACK_CODE_4025 = "ACK4025";
+    String ACK_CODE_4026 = "ACK4026";
+    String ACK_CODE_4027 = "ACK4027";
+    String ACK_CODE_4028 = "ACK4028";
 
     //Inspiratory Flow Calibration Error
     String ACK_CODE_5133 = "ACK5133";

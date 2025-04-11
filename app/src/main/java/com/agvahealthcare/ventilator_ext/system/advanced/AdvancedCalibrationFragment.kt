@@ -118,7 +118,6 @@ class AdvancedCalibrationFragment(private var communicationService: Communicatio
     private fun getViewForFocus(highlightedIndex: Int, data: String?): View? {
 
         data?.let {
-
             return when (highlightedIndex) {
 
                 0 -> if (binding.topBarAdvancedCalib.isVisible) binding.backBtnAdvancedCalib else binding.includeButtonTurbine.root
@@ -213,19 +212,14 @@ class AdvancedCalibrationFragment(private var communicationService: Communicatio
         binding.includeButtonLeakTest.buttonView.text = getString(R.string.hint_Leak_Test_Text)
         binding.includeButtonNeoZero.buttonView.text = getString(R.string.hint_Neo_Zero_Calibration)
         binding.includeButtonSendCmdAdvancedCalib.buttonView.textAlignment = View.TEXT_ALIGNMENT_INHERIT
-        // includeButtonSendCmd.buttonView.isEnabled = false
         binding.includeButtonSendCmdAdvancedCalib.buttonView.setBackgroundColor(R.drawable.background_black_border_white)
-        binding.includeButtonSendCmdAdvancedCalib.buttonView.setTextColor(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.white
-            )
-        )
+        binding.includeButtonSendCmdAdvancedCalib.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white) )
         updateSensorCalibrationStatus()
     }
 
     private fun setUpOnClickListener() {
         if (tag == "FromDashboard") {
+
             binding.includeButtonTurbine.buttonView.setOnClickListener {
                 DialogBoxFactory.dismissDialogs()
                 DialogBoxFactory.showNeonateSensorDialog(
@@ -249,6 +243,7 @@ class AdvancedCalibrationFragment(private var communicationService: Communicatio
                     "Switch to standby for calibration process"
                 )
             }
+
             binding.includeButtonNeoZero.buttonView.setOnClickListener {
                 DialogBoxFactory.dismissDialogs()
                 DialogBoxFactory.showNeonateSensorDialog(
@@ -270,7 +265,6 @@ class AdvancedCalibrationFragment(private var communicationService: Communicatio
             (parentFragment as SystemDialogFragment).sizeOfCurrentArray = 3
             hideGoneFunction(true)
         }
-
     }
 
     @SuppressLint("SetTextI18n")
@@ -318,7 +312,7 @@ class AdvancedCalibrationFragment(private var communicationService: Communicatio
                 binding.ventigif.visibility = View.GONE
                 binding.includeButtonSendCmdAdvancedCalib.buttonView.text = "Start leak test"
             }
-
+ 
             binding.includeButtonNeoZero.buttonView -> {
                 (parentFragment as SystemDialogFragment).highlightedIndex = -1
                 (parentFragment as SystemDialogFragment).sizeOfCurrentArray = 1
@@ -327,7 +321,7 @@ class AdvancedCalibrationFragment(private var communicationService: Communicatio
                 binding.tvMainTitleAdvancedCalib.text = "Neonate Sensor Zeroing"
                 binding.tvtext1AdvancedCalib.text = "1. Insert Neonate Cable at Neonate port"
                 binding.tvtext2AdvancedCalib.text = "2. Make sure neonate sensor is connected to neonate cable"
-                binding.tvtext3AdvancedCalib.text = ""
+                binding.tvtext3AdvancedCalib.text = "3. Make sure the ventilator is connected to mains supply"
                 binding.capgif.visibility = View.GONE
                 binding.ventigif.visibility = View.GONE
                 binding.includeButtonSendCmdAdvancedCalib.buttonView.text = "Start Zeroing"
@@ -336,21 +330,18 @@ class AdvancedCalibrationFragment(private var communicationService: Communicatio
             binding.includeButtonSendCmdAdvancedCalib.buttonView -> {
                 when (currentTag) {
                     "Turbine" -> { sendCalibrationCommandToVentilator(Configs.TAG_SENSOR_TURBINE) }
-
                     "Leak Test" -> { sendCalibrationCommandToVentilator(Configs.TAG_LEAK_TEST) }
-
                     "Insp Flow" -> { sendCalibrationCommandToVentilator(Configs.TAG_SENSOR_INSP_FLOW) }
-
                     "Neo Zero" -> { sendCalibrationCommandToVentilator(Configs.TAG_NEO_ZERO) }
                 }
             }
+
         }
     }
 
     fun updateSensorCalibrationStatus() {
         hideGoneFunction(true)
         prefManager?.apply {
-            Log.i("CALIBCHECK", "Sensor data is refreshing on the view......")
 
             // Turbine sensor
             if (readTurbineCalibrationStatus()) {
@@ -379,7 +370,7 @@ class AdvancedCalibrationFragment(private var communicationService: Communicatio
                 binding.ivLeakTestStatus.setImageResource(R.drawable.ic_red_cross)
             }
 
-            // neo zero
+            // Neo Zero
             if (readNeoZeroStatus()) {
                 binding.tvNeoZero.text = readNeoZeroDate()
                 binding.ivNeoZeroStatus.setImageResource(R.drawable.ic_green_circle_tick)
@@ -389,9 +380,8 @@ class AdvancedCalibrationFragment(private var communicationService: Communicatio
             }
         }
     }
-
+        
     private fun sendCalibrationCommandToVentilator(sensorTag: String) {
-
         communicationService?.takeIf { it.isPortsConnected }?.apply {
             communicationService?.send("CM+" + Configs.PREFIX_SENSOR_CALIBRATION + sensorTag)
         }

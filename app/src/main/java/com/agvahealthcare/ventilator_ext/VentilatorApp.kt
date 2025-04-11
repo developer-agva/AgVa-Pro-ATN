@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.content.pm.PackageManager.NameNotFoundException
 import android.database.ContentObserver
 import android.os.Handler
+import android.os.StrictMode
 import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -179,6 +180,21 @@ class VentilatorApp : Application() {
             }
             exitProcess(2)
         }.start()
+
+        if (BuildConfig.DEBUG){
+            StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder()
+                .detectAll()
+                .penaltyLog()
+                .penaltyFlashScreen()
+                .build())
+
+            StrictMode.setVmPolicy(StrictMode.VmPolicy.Builder()
+                .detectLeakedSqlLiteObjects()
+                .detectLeakedClosableObjects()
+                .penaltyLog()
+                .penaltyDeath()
+                .build())
+        }
 
         remoteConfig = FirebaseRemoteConfig.getInstance()
         val defaultValue: MutableMap<String, Any> = HashMap()

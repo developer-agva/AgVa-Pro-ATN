@@ -327,6 +327,7 @@
     <string name="hint_smart_fio2_btn">Smart O₂</string>
     <string name="hint_ventilation_time">Ventilation Time : </string>
     <string name="hint_reset">Reset</string>
+    <string name="hint_reset_alarm">Reset Alarms</string>
     <string name="hint_shutdown">Shutdown Ventilator</string>
     <string name="hint_minVol">MinVol:</string>
     <string name="hint_p_ramp">P-ramp</string>

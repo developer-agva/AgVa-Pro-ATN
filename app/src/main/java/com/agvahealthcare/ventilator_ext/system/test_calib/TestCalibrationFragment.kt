@@ -54,7 +54,7 @@ class TestCalibrationFragment(private var communicationService: CommunicationSer
 
             0 -> if (topBarTestCalib.isVisible) backBtnTestCalib.callOnClick() else includeButtonO2Sensor.buttonView.callOnClick()
             1 -> if (topBarTestCalib.isVisible) includeButtonSendCmd.buttonView.callOnClick() else includeButtonExhaleValve.buttonView.callOnClick()
-            2 -> includeButtonExpFlowSensor.buttonView.callOnClick()
+//            2 -> includeButtonExpFlowSensor.buttonView.callOnClick()
 
         }
     }
@@ -124,7 +124,7 @@ class TestCalibrationFragment(private var communicationService: CommunicationSer
 
                 0 -> if (topBarTestCalib.isVisible) backBtnTestCalib else includeButtonO2Sensor
                 1 -> if (topBarTestCalib.isVisible) includeButtonSendCmd else includeButtonExhaleValve
-                2 -> includeButtonExpFlowSensor
+//                2 -> includeButtonExpFlowSensor
 
                 else -> null
             }

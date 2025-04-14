@@ -61,6 +61,7 @@ class VentilatorApp : Application() {
         var apneaActive:Boolean = false
         var isEtCo2Available:Boolean = false
         var dischargeDate:String? = null
+        var isPatientDischarged:Boolean = false;
 
         var isSocketConnected:Boolean = false
         var flowPeakValuePositive : Float? = null

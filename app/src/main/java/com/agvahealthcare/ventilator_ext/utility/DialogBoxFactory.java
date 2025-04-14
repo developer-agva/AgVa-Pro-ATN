@@ -78,6 +78,9 @@ public class DialogBoxFactory {
 
     public static AlertDialog dialogView;
     private static Handler handler = new Handler();
+//    private static  PreferenceManager preferenceManager = new PreferenceManager();
+
+
 
     public static void dismissDialogs() {
         if (dialogView != null) {
@@ -1225,7 +1228,6 @@ public class DialogBoxFactory {
         setShutDownDialogView(dialog, true);
 
 
-
         dialog.show();
 
         return dialog;
@@ -1251,7 +1253,7 @@ public class DialogBoxFactory {
 
         btnDischarge.setOnClickListener(v -> {
 //            VentilatorApp.Companion.setDischargeDate(AppUtils.getCurrentDateTime());
-            if(onclickStandby != null) onclickStandby.doAction();
+//            if(onclickStandby != null) onclickStandby.doAction();
             dialog.cancel();
         });
 

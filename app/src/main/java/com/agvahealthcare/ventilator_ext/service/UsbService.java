@@ -59,6 +59,7 @@ import com.agvahealthcare.ventilator_ext.utility.utils.AppUtils;
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs;
 import com.agvahealthcare.ventilator_ext.utility.utils.IntentFactory;
 
+import com.hoho.android.usbserial.driver.Ch34xSerialDriver;
 import com.hoho.android.usbserial.driver.FtdiSerialDriver;
 
 import com.hoho.android.usbserial.driver.ProbeTable;
@@ -84,6 +85,7 @@ class CustomProber {
     static UsbSerialProber getCustomProber() {
         ProbeTable customTable = new ProbeTable();
         customTable.addProduct(0x1234, 0xabcd, FtdiSerialDriver.class); // e.g. device with custom VID+PID
+//        customTable.addProduct(0x1a86, 0x7523, Ch34xSerialDriver.class); // e.g. device with custom VID+PID
         return new UsbSerialProber(customTable);
     }
 }
@@ -94,7 +96,7 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
     //For the Main PCB 9025 is the Vendor ID
 
     private static final int ARDUINO_VENDOR_ID_VENTILATOR = 9025;
-    //    private static final int ARDUINO_VENDOR_ID_VENTILATOR = 6790;
+//        private static final int ARDUINO_VENDOR_ID_VENTILATOR = 6790;
     private static final int DEFAULT_BAUD_RATE_VENTILATOR = 9600;
 
     private static final int READ_DELAY = 11;
@@ -198,6 +200,7 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
 //                    isEthernetConnected = false;
 ////                    broadcastEthernetDisConnected(false);
 //                }
+
                 if (!isProcessingData) {
                     startTime = System.currentTimeMillis();
                 }

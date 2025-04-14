@@ -78,7 +78,7 @@
                         android:id="@+id/btnDischarge"
                         android:layout_columnWeight="1"
                         android:background="@drawable/style_bordered_btn_white"
-                        android:text="Discharge Patient"
+                        android:text="Cancel"
                         android:textColor="@android:color/white" />
 
                     <androidx.appcompat.widget.AppCompatButton

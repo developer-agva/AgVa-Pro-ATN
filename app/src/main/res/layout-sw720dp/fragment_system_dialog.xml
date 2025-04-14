@@ -87,7 +87,7 @@
         android:layout_marginTop="@dimen/_5sdp"
         app:layout_constraintEnd_toEndOf="@id/imageViewCrossSystem"
         app:layout_constraintTop_toBottomOf="@id/includeButtonService"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
     <include
         android:id="@+id/includeButtonDiagchk"

@@ -47,7 +47,7 @@ class BufferFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        includeButtonReset?.buttonView?.text= this@BufferFragment.getString(R.string.hint_reset)
+        includeButtonReset?.buttonView?.text= this@BufferFragment.getString(R.string.hint_reset_alarm)
         includeButtonReset?.buttonView?.setBackgroundResource(R.color.trans_grey)
 
         setupClickListener()
@@ -70,7 +70,7 @@ class BufferFragment : Fragment() {
     private fun setupClickListener() {
         //includeButtonDefaults.buttonView.text = getString(R.string.hint_auto)
         includeButtonReset?.buttonView?.setOnClickListener {
-           // notifyBufferAlarmAdapter()
+//            notifyBufferAlarmAdapter()
             dashBoardViewModel?.alarms?.value?.clear()
             notifyBufferAlarmAdapter()
         }

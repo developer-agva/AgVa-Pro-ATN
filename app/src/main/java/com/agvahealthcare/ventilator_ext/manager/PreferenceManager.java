@@ -226,6 +226,8 @@ public class PreferenceManager {
     private static final String PREF_EMERGENCY_CONTACT = "pref_emergency_contact";
     private static final String PREF_GRAPH_AUTOSCALE = "pref_graph_autoscaling";
     private static final String PREF_LEAK_COMPENSATE = "pref_leak_compensate";
+    private static final String PREF_PT_DISCHARGE = "pref_patient_discharge";
+
     private static final String PREF_TUBE_BLOCKAGE_ALARM = "pref_tube_blockage_alarm";
     private static final String PREF_CUFF_LEAKAGE_ALARM = "pref_cuff_leakage_alarm";
     private static final String PREF_ALARM_SUGGESTION = "pref_alarm_suggestion";
@@ -2348,6 +2350,9 @@ public class PreferenceManager {
         return readLimitState(readCurrentUid() + "." + PREF_PIP_ALARM_STATE);
     }
 
+
+
+
     public void setVtiLimitState(boolean isActive) {
         updateLimitState(readCurrentUid() + "." + PREF_VTI_ALARM_STATE, isActive);
     }
@@ -2435,6 +2440,14 @@ public class PreferenceManager {
 
     public boolean readLeakCompensationStatus() {
         return sp.getBoolean(PREF_LEAK_COMPENSATE, true);
+    }
+
+    public void setPatientDischargeData(boolean isDischared){
+
+        updateData(PREF_PT_DISCHARGE,isDischared);
+    }
+    public boolean readPatientDischargeData(){
+        return sp.getBoolean(PREF_PT_DISCHARGE,false);
     }
 
     //FILLED GRAPHS TOGGLE STATUS STARTS

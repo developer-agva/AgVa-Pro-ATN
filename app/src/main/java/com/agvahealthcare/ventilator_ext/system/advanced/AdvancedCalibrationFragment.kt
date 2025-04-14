@@ -312,7 +312,7 @@ class AdvancedCalibrationFragment(private var communicationService: Communicatio
                 binding.ventigif.visibility = View.GONE
                 binding.includeButtonSendCmdAdvancedCalib.buttonView.text = "Start leak test"
             }
- 
+
             binding.includeButtonNeoZero.buttonView -> {
                 (parentFragment as SystemDialogFragment).highlightedIndex = -1
                 (parentFragment as SystemDialogFragment).sizeOfCurrentArray = 1
@@ -335,7 +335,6 @@ class AdvancedCalibrationFragment(private var communicationService: Communicatio
                     "Neo Zero" -> { sendCalibrationCommandToVentilator(Configs.TAG_NEO_ZERO) }
                 }
             }
-
         }
     }
 
@@ -380,7 +379,7 @@ class AdvancedCalibrationFragment(private var communicationService: Communicatio
             }
         }
     }
-        
+
     private fun sendCalibrationCommandToVentilator(sensorTag: String) {
         communicationService?.takeIf { it.isPortsConnected }?.apply {
             communicationService?.send("CM+" + Configs.PREFIX_SENSOR_CALIBRATION + sensorTag)

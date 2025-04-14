@@ -246,19 +246,16 @@ class VentilatorApp : Application() {
 //    }
 
     private fun setUpSciChartLicense() {
-
         try {
             SciChartSurface.setRuntimeLicenseKey(BuildConfig.SCHICHART_API)
         } catch (e: Exception) {
             Log.e("SciChart", "Error when setting the license", e)
         }
-
     }
 
     override fun onTerminate() {
         super.onTerminate()
         settingsContentObserver?.let { this.contentResolver.unregisterContentObserver(it) }
-
     }
 
     /**
@@ -270,7 +267,7 @@ class VentilatorApp : Application() {
         sendBroadcast(Intent(action))
     }
 
-    fun setupAppLevelExceptionHandler() {
+    private fun setupAppLevelExceptionHandler() {
         Log.i("APP_EXCEPTION_HANDLER", "Setting default error handler")
         Thread.setDefaultUncaughtExceptionHandler(AppLevelExceptionHandler(applicationContext))
     }

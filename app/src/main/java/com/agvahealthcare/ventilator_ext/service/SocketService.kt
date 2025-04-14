@@ -68,7 +68,6 @@ class SocketService(private val ctx: Context):Socket() {
             "5181" -> {
                 Log.i("SocketClient", "Received ACK5181")
                 DialogBoxFactory.showNeonateSensorDialog(ctx,"EtCuff inflation started")
-
             }
             "5183" -> {
 

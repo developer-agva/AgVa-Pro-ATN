@@ -48,7 +48,7 @@
             android:name="com.agvahealthcare.ventilator_ext.ShutDownActivity"
             android:exported="false" />
         <activity
-            android:name="com.agvahealthcare.ventilator_ext.SplashActivity"
+            android:name="com.agvahealthcare.ventilator_ext.SetupActivity"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
@@ -56,7 +56,7 @@
         </activity>
 
         <activity
-            android:name="com.agvahealthcare.ventilator_ext.SetupActivity"
+            android:name="com.agvahealthcare.ventilator_ext.SplashActivity"
             android:exported="true"
             android:launchMode="singleTop">
             <intent-filter>

@@ -774,6 +774,8 @@ public class PreferenceManager {
         updateData(readCurrentUid() + "." + PREF_HRLIMITS, val);
     }
 
+
+
     public Float readSmartFio2() {
         return sp.getFloat(readCurrentUid() + "." + PREF_SMARTFIO2, 0f);
     }
@@ -823,7 +825,6 @@ public class PreferenceManager {
     public Boolean readComplianceTubeCalibrationStatus() {
         return sp.getBoolean(PREF_TUBE_COMPLIANCE_CALIBRATION_STATUS, false);
     }
-
 
     public void setConcentratorStatus(Boolean value) {
         updateLimitState(PREF_CONCENTRATOR_STATUS, value);

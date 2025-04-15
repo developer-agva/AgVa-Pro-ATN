@@ -161,7 +161,7 @@
         android:id="@+id/btnResetVenti"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Reset Configs"
+        android:text="Start Dispatch"
         android:backgroundTint="@color/racing_green"
         android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="@id/etNewIPValue"

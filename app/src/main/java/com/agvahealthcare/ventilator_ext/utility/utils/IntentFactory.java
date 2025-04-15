@@ -61,6 +61,8 @@ public interface IntentFactory {
     String ACTION_MENDOR_SYMLINKING_FAILED = "com.agvahealthcare.ventilator_ext.ACTION_MENDOR_SYMLINKING_FAILED";
     String ACTION_MENDOR_SYMLINKING_COMPLETED= "com.agvahealthcare.ventilator_ext.ACTION_MENDOR_SYMLINKING_COMPLETED";
 
+    // created for payment due dialog dismiss task
+    String ACTION_PAYMENT_DONE="com.agvahealthcare.ventilator_ext.ACTION_PAYMENT_DONE";
 
     //battery connected and disconnected
     String ACTION_BATTERY_CONNECTED="com.agvahealthcare.ventilator_ext.ACTION_BATTERY_CONNECTED";

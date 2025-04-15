@@ -99,6 +99,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import java.io.BufferedReader
+import java.io.File
 import java.io.InputStreamReader
 import java.net.URISyntaxException
 import java.util.*
@@ -3443,23 +3444,19 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     @SuppressLint("HardwareIds")
     private fun getVentilatorDetailsApi() {
         CoroutineScope(Dispatchers.IO).launch {
-            val response = ServerLogger.getVentiDetailsRequest(
-                Settings.Secure.getString(
-                    this@MainActivity.contentResolver,
-                    Settings.Secure.ANDROID_ID
-                )
+
+            val deviceId = Settings.Secure.getString(
+                this@MainActivity.contentResolver,
+                Settings.Secure.ANDROID_ID
             )
+
+            val response = ServerLogger.getVentiDetailsRequest(deviceId)
             response?.let {
-                Log.i("DATA_OTA_CHECK", "${it.statusCode},${it.data.isPaymentDone}")
                 prefManager?.saveVentiDetails("${it.data.Ward_No},${it.data.Hospital_Name},${it.data.Department_Name}")
                 if (it.statusCode == 200) {
                     if (!it.data.isPaymentDone) {
-                        val request = PaymentStatusRequestModel(
-                            Settings.Secure.getString(
-                                this@MainActivity.contentResolver,
-                                Settings.Secure.ANDROID_ID
-                            ), "false", true
-                        )
+                        isVentiLocked = true
+                        val request = PaymentStatusRequestModel(deviceId, "false", true)
 
                         ServerLogger.sendPaymentStatus(request)
 
@@ -3468,13 +3465,15 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                             DialogBoxFactory.showServicePaymentDialog(this@MainActivity)
                         }
                     } else {
-                        val request = PaymentStatusRequestModel(
-                            Settings.Secure.getString(
-                                this@MainActivity.contentResolver,
-                                Settings.Secure.ANDROID_ID
-                            ), "true", false
-                        )
 
+                        if (isVentiLocked){
+                            isVentiLocked = false
+                            val calendar = Calendar.getInstance()
+                            val dayOfYear = calendar.get(Calendar.DAY_OF_YEAR)
+                            FileLogger.writeDispatchDate(this@MainActivity, dayOfYear.toString())
+                        }
+
+                        val request = PaymentStatusRequestModel(deviceId, "true", false)
                         ServerLogger.sendPaymentStatus(request)
                     }
                 }
@@ -3493,10 +3492,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         } else if (batteryLevel in 0..25) {
             binding.batteryStatus.setImageResource(R.drawable.ic_battery_low)
             addEvents("Battery Critically Low", prefManager?.readUHID().toString())
-            DialogBoxFactory.showBatteryCriticallyLowStatusDialog(
-                "Ventilator will shutdown anytime,For patient's safety please connect the ventilator to AC source.",
-                ctx
-            )
+            DialogBoxFactory.showBatteryCriticallyLowStatusDialog("Ventilator will shutdown anytime,For patient's safety please connect the ventilator to AC source.", ctx)
         }
     }
 
@@ -3585,11 +3581,9 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         val alertDialog: AlertDialog = builder.create()
 
         // Show the Alert Dialog box
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(resources.getColor(R.color.white))
+        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(resources.getColor(R.color.white))
         alertDialog.show()
-        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
-            .setTextColor(resources.getColor(R.color.white))
-        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
-            .setTextColor(resources.getColor(R.color.white))
     }
 
     override fun onRequestPermissionsResult(
@@ -3610,6 +3604,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     }
 
     //Service hours in hours and minutes.
+    @SuppressLint("DefaultLocale")
     private fun calculateServiceHourInTime(): String {
         val totalRunningTime = prefManager?.readDashBoardRunningTimeForService()?.toLong() ?: 0L
         val hr = TimeUnit.MILLISECONDS.toHours(totalRunningTime)
@@ -3623,18 +3618,22 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     }
 
     //Operational hours in hours and minutes.
+    @SuppressLint("DefaultLocale")
     private fun calculateOperationalHourInTime(): String {
         val totalRunningTime = prefManager?.readDashBoardRunningTime()?.toLong() ?: 0L
         val hr = TimeUnit.MILLISECONDS.toHours(totalRunningTime)
         val min = TimeUnit.MILLISECONDS.toMinutes(totalRunningTime) - TimeUnit.HOURS.toMinutes(
             TimeUnit.MILLISECONDS.toHours(totalRunningTime)
         )
+
+        Log.i("value_calculated",min.toString())
         return String.format(
             "%d hr, %d min",
             hr, min
         )
     }
 
+    @SuppressLint("DefaultLocale")
     private fun calculateTotalAndLastHours(
         millis: Long
     ): String {
@@ -3645,6 +3644,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         )
     }
 
+    @SuppressLint("UnspecifiedRegisterReceiverFlag")
     override fun onResume() {
         super.onResume()
         registerReceiver(connReceiver, getIntentFilter())
@@ -3653,7 +3653,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     }
 
     private fun disableNeoButton() {
-        binding.buttonNeonatal?.apply {
+        binding.buttonNeonatal.apply {
             this.setBackgroundResource(R.drawable.background_light_grey_disable)
             this.setTextColor(ContextCompat.getColor(this@MainActivity, R.color.black))
             setPaddingOnButtons()
@@ -3804,6 +3804,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     }
 
     private var isOSReboot = false
+    private var isVentiLocked = false
 
     private fun startTime() {
 
@@ -3811,6 +3812,29 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         customCountDownTimer = CustomCountDownTimer(liveData)
         customCountDownTimer?.start(100) //Epoch timestamp
         customCountDownTimer?.mutableLiveData?.observe(this, Observer { counterState ->
+
+            // lock ventilator manually as per 10 days poilcy
+            val dispatchData = FileLogger.readDispatchDate()
+
+            if (dispatchData != dataNotFound) {
+                val calendar = Calendar.getInstance()
+                val dayOfYear = calendar.get(Calendar.DAY_OF_YEAR)
+
+                androidx.media3.common.util.Log.i("data_Date", "continuos check -  $dayOfYear , $dispatchData")
+                if ((dayOfYear - dispatchData.toInt()) >= 10 && !isVentiLocked) {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val request = PaymentStatusRequestModel(deviceId, "false", true)
+
+                        ServerLogger.sendPaymentStatus(request)
+
+                        withContext(Dispatchers.Main) {
+                            isVentiLocked = true
+                            DialogBoxFactory.dismissDialogs()
+                            DialogBoxFactory.showServicePaymentDialog(this@MainActivity)
+                        }
+                    }
+                }
+            }
 
             mDebugViewModel.ackOccurenceLiveData.postValue(ack756Visibility)
 

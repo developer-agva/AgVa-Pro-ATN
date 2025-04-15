@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.media3.common.util.Log
 import androidx.recyclerview.widget.GridLayoutManager
 import com.agvahealthcare.ventilator_ext.MainActivityViewModel
 import com.agvahealthcare.ventilator_ext.SetupActivity
@@ -16,10 +17,13 @@ import com.agvahealthcare.ventilator_ext.databinding.FragmentNetworkBinding
 import com.agvahealthcare.ventilator_ext.logging.FileLogger
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.service.CommunicationService
+import com.agvahealthcare.ventilator_ext.utility.LOG_TYPE_INFO
 import com.agvahealthcare.ventilator_ext.utility.utils.AppUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.*
 
 
@@ -84,11 +88,18 @@ class NetworkFragment(private var communicationService: CommunicationService?) :
         }
 
         binding.btnResetVenti.setOnClickListener {
-            prefManager?.setVentiConfigSetupStatus(false)
-            Intent(requireActivity(), SetupActivity::class.java).also {
-                startActivity(it)
-                requireActivity().finish()
-            }
+//            prefManager?.setVentiConfigSetupStatus(false)
+//            Intent(requireActivity(), SetupActivity::class.java).also {
+//                startActivity(it)
+//                requireActivity().finish()
+//            }
+            val calendar = Calendar.getInstance()
+            val dayOfYear = calendar.get(Calendar.DAY_OF_YEAR)
+
+            Log.i("data_Date", "saved data check -  $dayOfYear")
+            FileLogger.writeDispatchDate(requireContext(), dayOfYear.toString())
+
+            binding.btnResetVenti.text = "Dispatching..."
         }
 
         binding.btnClearHours.setOnClickListener {

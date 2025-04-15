@@ -3208,9 +3208,9 @@ public interface Configs {
                         if (slope != null) advancedParameters.add(slope);
 //                        if (etPressure != null) etCuffParamters.add(etPressure);
 
-//                        apneaParameters.add(rrApnea);
-//                        apneaParameters.add(tApnea);
-//                        apneaParameters.add(vtApnea);
+                        apneaParameters.add(rrApnea);
+                        apneaParameters.add(tApnea);
+                        apneaParameters.add(vtApnea);
                         break;
 
                     case TYPE_NEONAT:
@@ -3225,9 +3225,9 @@ public interface Configs {
 //                        if (etPressure != null) etCuffParamters.add(etPressure);
 
 
-//                        apneaParameters.add(rrApnea);
-//                        apneaParameters.add(tApnea);
-//                        apneaParameters.add(vtApnea);
+                        apneaParameters.add(rrApnea);
+                        apneaParameters.add(tApnea);
+                        apneaParameters.add(vtApnea);
                         break;
                 }
                 break;
@@ -3271,9 +3271,9 @@ public interface Configs {
 //                        if (etPressure != null) etCuffParamters.add(etPressure);
 
 
-//                        apneaParameters.add(rrApnea);
-//                        apneaParameters.add(tApnea);
-//                        apneaParameters.add(vtApnea);
+                        apneaParameters.add(rrApnea);
+                        apneaParameters.add(tApnea);
+                        apneaParameters.add(vtApnea);
                         break;
                 }
                 break;

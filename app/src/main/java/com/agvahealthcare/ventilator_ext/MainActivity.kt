@@ -1073,11 +1073,9 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                                     Log.i("KNOB_DATADASH", DialogBoxFactory.dialogView.toString())
                                 } else if (progressDialog?.isVisible == true) {
                                     progressDialog?.updateWithTimeoutDebounce(data)
-                                }
-                                else if (systemDialogFragment?.isVisible == true) {
+                                } else if (systemDialogFragment?.isVisible == true) {
                                     systemDialogFragment?.highlightViewWithFocus(data)
-                                }
-                                else if (standbyControlFragment?.isVisible == true) {
+                                } else if (standbyControlFragment?.isVisible == true) {
                                     standbyControlFragment?.highlightViewWithFocus(data)
                                 } else if (modeDialogFragment?.isVisible == true) {
                                     // modeDialogFragment?.highlightViewWithFocus(data)
@@ -1719,7 +1717,10 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     sendConfigurationToVentilatorWithWatchDog()
                 } else {
 
-                    prefManager?.setAdmitDate(prefManager?.readUHID(),AppUtils.getCurrentDateTime())
+                    prefManager?.setAdmitDate(
+                        prefManager?.readUHID(),
+                        AppUtils.getCurrentDateTime()
+                    )
                     // set selected options into preference
                     when (VentilatorApp.selectedOptions) {
                         SELECTED_OPTIONS.PRONGS_NAME -> {
@@ -2678,7 +2679,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             etCuffControlParameterList = it
         }
 //Inspiratory Termination Tile change
-        if(VentilatorApp.selectedOptions == SELECTED_OPTIONS.NON_INVASIVE_NAME){
+        if (VentilatorApp.selectedOptions == SELECTED_OPTIONS.NON_INVASIVE_NAME) {
             if (requestedModeCode == MODE_NIV_BPAP || requestedModeCode == MODE_NIV_CPAP) {
                 advancedControlParameterList?.filter {
                     it.ventKey == LBL_TEXP
@@ -2697,7 +2698,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 }
             }
 
-        }else{
+        } else {
             if (requestedModeCode == MODE_NIV_BPAP || requestedModeCode == MODE_NIV_CPAP) {
                 advancedControlParameterList?.filter {
                     it.ventKey == LBL_TEXP
@@ -2927,6 +2928,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         getViewForFocus(isMinus)
                     }
                 }
+
             6 -> binding.includeMale.layoutPanelMale
             7 -> binding.includeFemale.layoutPanelFemale
             8 -> binding.layoutPanelPatientHeightMain
@@ -3021,6 +3023,41 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
         // connect hote hi device id bhejo backend ko
         mSocket?.emit("AndroidStartUp", deviceId)
+
+        // connect hote hi locked ka status mango
+        mSocket?.emit("DeviceRequestForPaymentStatus", deviceId)
+
+        mSocket?.on("AndroidReceivingPaymentStatus") {
+            Log.i("Payment_Status", it[0].toString())
+            CoroutineScope(Dispatchers.Main).launch {
+                if (deviceId == it[0].toString().split("^")[0]) {
+                    if (it[0].toString().split("^")[1] == "false") {
+                        isVentiLocked = true
+
+                        val lockedStatusData = "$deviceId,false,true,Locked"
+                        mSocket?.emit("NodeReceivingLockedStatus", lockedStatusData)
+
+                        try {
+                            DialogBoxFactory.dismissDialogs()
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                        DialogBoxFactory.showServicePaymentDialog(this@MainActivity)
+                    } else {
+
+                        if (isVentiLocked) {
+                            isVentiLocked = false
+                            val calendar = Calendar.getInstance()
+                            val dayOfYear = calendar.get(Calendar.DAY_OF_YEAR)
+                            FileLogger.writeDispatchDate(this@MainActivity, dayOfYear.toString())
+                        }
+                        val lockedStatusData = "$deviceId,true,false,Unlocked"
+                        mSocket?.emit("NodeReceivingLockedStatus", lockedStatusData)
+                    }
+                }
+            }
+        }
+
 
         mSocket?.on("AndroidReceivingRange") { it1 ->
             if (deviceId == it1[0].toString().split("^")[0]) {
@@ -3231,7 +3268,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         VentilatorApp.isNebuliserActive = true
         mMainActivityViewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
         mDiagnosticCheckViewModel = ViewModelProvider(this)[DiagnosticCheckViewModel::class.java]
-        mO2RegulationCheckViewModel = ViewModelProvider(this)[O2RegulationCheckViewModel::class.java]
+        mO2RegulationCheckViewModel =
+            ViewModelProvider(this)[O2RegulationCheckViewModel::class.java]
 
         mMainActivityViewModel.setBAtteryConnectedFlag(false)
 
@@ -3453,30 +3491,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             val response = ServerLogger.getVentiDetailsRequest(deviceId)
             response?.let {
                 prefManager?.saveVentiDetails("${it.data.Ward_No},${it.data.Hospital_Name},${it.data.Department_Name}")
-                if (it.statusCode == 200) {
-                    if (!it.data.isPaymentDone) {
-                        isVentiLocked = true
-                        val request = PaymentStatusRequestModel(deviceId, "false", true)
-
-                        ServerLogger.sendPaymentStatus(request)
-
-                        withContext(Dispatchers.Main) {
-                            DialogBoxFactory.dismissDialogs()
-                            DialogBoxFactory.showServicePaymentDialog(this@MainActivity)
-                        }
-                    } else {
-
-                        if (isVentiLocked){
-                            isVentiLocked = false
-                            val calendar = Calendar.getInstance()
-                            val dayOfYear = calendar.get(Calendar.DAY_OF_YEAR)
-                            FileLogger.writeDispatchDate(this@MainActivity, dayOfYear.toString())
-                        }
-
-                        val request = PaymentStatusRequestModel(deviceId, "true", false)
-                        ServerLogger.sendPaymentStatus(request)
-                    }
-                }
             }
         }
     }
@@ -3492,7 +3506,10 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         } else if (batteryLevel in 0..25) {
             binding.batteryStatus.setImageResource(R.drawable.ic_battery_low)
             addEvents("Battery Critically Low", prefManager?.readUHID().toString())
-            DialogBoxFactory.showBatteryCriticallyLowStatusDialog("Ventilator will shutdown anytime,For patient's safety please connect the ventilator to AC source.", ctx)
+            DialogBoxFactory.showBatteryCriticallyLowStatusDialog(
+                "Ventilator will shutdown anytime,For patient's safety please connect the ventilator to AC source.",
+                ctx
+            )
         }
     }
 
@@ -3564,7 +3581,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         builder.setIcon(R.drawable.ic_info_param)
         builder.setCancelable(false)
 
-        builder.setPositiveButton("Install",
+        builder.setPositiveButton(
+            "Install",
             DialogInterface.OnClickListener { dialog: DialogInterface, which: Int ->
                 // When the user click yes button dialog box also be cancelled
                 // check storage permission granted if yes then start downloading file
@@ -3572,7 +3590,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 dialog.cancel()
             } as DialogInterface.OnClickListener)
 
-        builder.setNegativeButton("Cancel",
+        builder.setNegativeButton(
+            "Cancel",
             DialogInterface.OnClickListener { dialog: DialogInterface, which: Int ->
                 // If user click no then dialog box is cancelled.
                 dialog.cancel()
@@ -3581,8 +3600,10 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         val alertDialog: AlertDialog = builder.create()
 
         // Show the Alert Dialog box
-        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(resources.getColor(R.color.white))
-        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(resources.getColor(R.color.white))
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+            .setTextColor(resources.getColor(R.color.white))
+        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+            .setTextColor(resources.getColor(R.color.white))
         alertDialog.show()
     }
 
@@ -3626,7 +3647,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             TimeUnit.MILLISECONDS.toHours(totalRunningTime)
         )
 
-        Log.i("value_calculated",min.toString())
+        Log.i("value_calculated", min.toString())
         return String.format(
             "%d hr, %d min",
             hr, min
@@ -3820,7 +3841,10 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 val calendar = Calendar.getInstance()
                 val dayOfYear = calendar.get(Calendar.DAY_OF_YEAR)
 
-                androidx.media3.common.util.Log.i("data_Date", "continuos check -  $dayOfYear , $dispatchData")
+                androidx.media3.common.util.Log.i(
+                    "data_Date",
+                    "continuos check -  $dayOfYear , $dispatchData"
+                )
                 if ((dayOfYear - dispatchData.toInt()) >= 10 && !isVentiLocked) {
                     CoroutineScope(Dispatchers.IO).launch {
                         val request = PaymentStatusRequestModel(deviceId, "false", true)
@@ -4243,7 +4267,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         binding.includeFemale.buttonFemale.setBackgroundResource(R.drawable.background_medium_grey)
         binding.includeFemale.buttonFemale.setTextColor(ContextCompat.getColor(this, R.color.black))
         prefManager?.setGender(Gender.TYPE_MALE)
-        prefManager?.setPatientGender(prefManager?.readUHID(),Gender.TYPE_MALE)
+        prefManager?.setPatientGender(prefManager?.readUHID(), Gender.TYPE_MALE)
         gender = Gender.TYPE_MALE
     }
 
@@ -4255,7 +4279,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         binding.includeFemale.buttonFemale.setBackgroundResource(R.drawable.background_green_border)
         binding.includeFemale.buttonFemale.setTextColor(ContextCompat.getColor(this, R.color.white))
         prefManager?.setGender(Gender.TYPE_FEMALE)
-        prefManager?.setPatientGender(prefManager?.readUHID(),Gender.TYPE_FEMALE)
+        prefManager?.setPatientGender(prefManager?.readUHID(), Gender.TYPE_FEMALE)
         gender = Gender.TYPE_FEMALE
     }
 
@@ -5500,7 +5524,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
         //Inspiratory Termination tile Change
         prefManager?.apply {
-            if(VentilatorApp.selectedOptions == SELECTED_OPTIONS.NON_INVASIVE_NAME){
+            if (VentilatorApp.selectedOptions == SELECTED_OPTIONS.NON_INVASIVE_NAME) {
                 if (requestedModeCode == MODE_NIV_CPAP || requestedModeCode == MODE_NIV_BPAP) {
                     // note : we only need to handle first tym value because every time it receives value from preferences
                     if (isKnobPressedForControlTile) updateParameter(
@@ -5521,7 +5545,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         50.0f.toInt().toString()
                     )
                 }
-            }else{
+            } else {
                 if (requestedModeCode == MODE_NIV_CPAP || requestedModeCode == MODE_NIV_BPAP) {
                     // note : we only need to handle first tym value because every time it receives value from preferences
                     if (isKnobPressedForControlTile) updateParameter(

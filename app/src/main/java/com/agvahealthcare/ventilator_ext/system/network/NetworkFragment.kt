@@ -61,8 +61,7 @@ class NetworkFragment(private var communicationService: CommunicationService?) :
 
         binding.settingsData.layoutManager = GridLayoutManager(requireContext(), 5)
 
-        var result = communicationService?.controlSettingsList
-
+        val result = communicationService?.controlSettingsList
 
         try {
             (requireActivity() as DashBoardActivity)
@@ -71,8 +70,6 @@ class NetworkFragment(private var communicationService: CommunicationService?) :
         } catch (e: Exception) {
             e.printStackTrace()
         }
-
-
         result?.let {
             if (it.size > 0) {
                 tableAdapter = SettingsParamsAdapter(requireContext(), it, prefManager)

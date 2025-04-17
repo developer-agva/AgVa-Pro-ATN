@@ -3028,14 +3028,10 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         mSocket?.emit("DeviceRequestForPaymentStatus", deviceId)
 
         mSocket?.on("AndroidReceivingPaymentStatus") {
-            Log.i("Payment_Status", it[0].toString())
-            CoroutineScope(Dispatchers.Main).launch {
+            CoroutineScope(Dispatchers.Main).launch{
                 if (deviceId == it[0].toString().split("^")[0]) {
                     if (it[0].toString().split("^")[1] == "false") {
-                        isVentiLocked = true
-
-                        val lockedStatusData = "$deviceId,false,true,Locked"
-                        mSocket?.emit("NodeReceivingLockedStatus", lockedStatusData)
+                        Log.i("Payment_Status", "if ${it[0]}")
 
                         try {
                             DialogBoxFactory.dismissDialogs()
@@ -3043,13 +3039,23 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                             e.printStackTrace()
                         }
                         DialogBoxFactory.showServicePaymentDialog(this@MainActivity)
-                    } else {
 
+                        isVentiLocked = true
+                        val lockedStatusData = "$deviceId,false,true,Locked"
+                        mSocket?.emit("NodeReceivingLockedStatus", lockedStatusData)
+
+                    } else {
+                        Log.i("Payment_Status", "else ${it[0]}")
                         if (isVentiLocked) {
                             isVentiLocked = false
                             val calendar = Calendar.getInstance()
                             val dayOfYear = calendar.get(Calendar.DAY_OF_YEAR)
                             FileLogger.writeDispatchDate(this@MainActivity, dayOfYear.toString())
+                        }
+                        try {
+                            DialogBoxFactory.dismissDialogs()
+                        } catch (e: Exception) {
+                            e.printStackTrace()
                         }
                         val lockedStatusData = "$deviceId,true,false,Unlocked"
                         mSocket?.emit("NodeReceivingLockedStatus", lockedStatusData)
@@ -3057,7 +3063,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 }
             }
         }
-
 
         mSocket?.on("AndroidReceivingRange") { it1 ->
             if (deviceId == it1[0].toString().split("^")[0]) {
@@ -3267,7 +3272,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         sendDiagnosticDataToSocket()
         VentilatorApp.isNebuliserActive = true
         mMainActivityViewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
-        mDiagnosticCheckViewModel = ViewModelProvider(this)[DiagnosticCheckViewModel::class.java]
+        mDiagnosticCheckViewModel =
+            ViewModelProvider(this)[DiagnosticCheckViewModel::class.java]
         mO2RegulationCheckViewModel =
             ViewModelProvider(this)[O2RegulationCheckViewModel::class.java]
 
@@ -3324,7 +3330,10 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         disablePresence()
 
         val deviceId =
-            Settings.Secure.getString(this@MainActivity.contentResolver, Settings.Secure.ANDROID_ID)
+            Settings.Secure.getString(
+                this@MainActivity.contentResolver,
+                Settings.Secure.ANDROID_ID
+            )
         val input =
             "https://wa.me/7330405060?text=Hi, i need support for this ventilator id - +${deviceId}"
 
@@ -3524,8 +3533,10 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         Settings.Secure.ANDROID_ID
                     )
                     this.message = status
-                    this.last_hours = calculateTotalAndLastHours(getLastHours().first().toLong())
-                    this.total_hours = calculateTotalAndLastHours(getTotalHours().first().toLong())
+                    this.last_hours =
+                        calculateTotalAndLastHours(getLastHours().first().toLong())
+                    this.total_hours =
+                        calculateTotalAndLastHours(getTotalHours().first().toLong())
                     this.health = " Good"
                     this.address = LocationFilter(this@MainActivity).getAddress(
                         VentilatorApp.latitude,
@@ -3533,7 +3544,9 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     )
                 }
                 Log.i("value_check_hours", "INVENTILATION $request")
-                if (!ServerLogger.sendStatusRequest(request)) ServerLogger.sendStatusRequest(request)
+                if (!ServerLogger.sendStatusRequest(request)) ServerLogger.sendStatusRequest(
+                    request
+                )
             }
         }
     }
@@ -4010,7 +4023,9 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
             if (Gender.TYPE_MALE == readGender()) setDataMale() else setDataFemale()
 
-            if (isExistingVentilationModeAvailable()) setExistingVentilationMode(readLastVentMode())
+            if (isExistingVentilationModeAvailable()) setExistingVentilationMode(
+                readLastVentMode()
+            )
             binding.checkMode.visibility =
                 if (isExistingVentilationModeAvailable()) View.VISIBLE else View.INVISIBLE
             binding.existinglabel.visibility =
@@ -4175,19 +4190,28 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             when (it) {
                 binding.layoutPanelPatientAgeMain -> {
                     binding.includeProgressAge.paramProgressBar.background =
-                        ContextCompat.getDrawable(this, R.drawable.progresscircle_with_selection)
+                        ContextCompat.getDrawable(
+                            this,
+                            R.drawable.progresscircle_with_selection
+                        )
                     binding.includeProgressAge.textView.setTextColor(Color.BLACK)
                 }
 
                 binding.layoutPanelPatientWeightMain -> {
                     binding.includeProgressWeight.paramProgressBar.background =
-                        ContextCompat.getDrawable(this, R.drawable.progresscircle_with_selection)
+                        ContextCompat.getDrawable(
+                            this,
+                            R.drawable.progresscircle_with_selection
+                        )
                     binding.includeProgressWeight.textView.setTextColor(Color.BLACK)
                 }
 
                 binding.layoutPanelPatientHeightMain -> {
                     binding.includeProgressHeight.paramProgressBar.background =
-                        ContextCompat.getDrawable(this, R.drawable.progresscircle_with_selection)
+                        ContextCompat.getDrawable(
+                            this,
+                            R.drawable.progresscircle_with_selection
+                        )
                     binding.includeProgressHeight.textView.setTextColor(Color.BLACK)
                 }
 
@@ -4265,7 +4289,12 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         binding.includeMale.buttonMale.setTextColor(ContextCompat.getColor(this, R.color.white))
         binding.includeFemale.imageViewFemale.setImageResource(R.drawable.ic_female_unselect)
         binding.includeFemale.buttonFemale.setBackgroundResource(R.drawable.background_medium_grey)
-        binding.includeFemale.buttonFemale.setTextColor(ContextCompat.getColor(this, R.color.black))
+        binding.includeFemale.buttonFemale.setTextColor(
+            ContextCompat.getColor(
+                this,
+                R.color.black
+            )
+        )
         prefManager?.setGender(Gender.TYPE_MALE)
         prefManager?.setPatientGender(prefManager?.readUHID(), Gender.TYPE_MALE)
         gender = Gender.TYPE_MALE
@@ -4277,7 +4306,12 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         binding.includeMale.buttonMale.setTextColor(ContextCompat.getColor(this, R.color.black))
         binding.includeFemale.imageViewFemale.setImageResource(R.drawable.ic_female_select)
         binding.includeFemale.buttonFemale.setBackgroundResource(R.drawable.background_green_border)
-        binding.includeFemale.buttonFemale.setTextColor(ContextCompat.getColor(this, R.color.white))
+        binding.includeFemale.buttonFemale.setTextColor(
+            ContextCompat.getColor(
+                this,
+                R.color.white
+            )
+        )
         prefManager?.setGender(Gender.TYPE_FEMALE)
         prefManager?.setPatientGender(prefManager?.readUHID(), Gender.TYPE_FEMALE)
         gender = Gender.TYPE_FEMALE
@@ -5712,37 +5746,42 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         }
     }
 
-    private val onAdvanceControlParameterClickListener = object : ControlParameterClickListener {
-        override fun onClick(position: Int, model: ControlParameterModel) {
-            advancedControlParameterList?.let {
-                selectedBasicPosition = null
-                selectAdvancedPosition = position
-                selectedBackupPosition = null
-                selectSmartFio2Position = null
-                selectVtasPosition = null
-                selectEtCuffPosition = null
-                val knobModel = KnobParameterModel.fromControlParameter(model)
-                highlightParameterTile(it, position)
-                val encoderValue = EncoderValue(
-                    model.lowerLimit.toFloat(),
-                    model.upperLimit.toFloat(),
-                    model.step.toFloat()
-                )
-                //  showGraphicTooltip()
-                showKnob(knobModel, encoderValue)
+    private val onAdvanceControlParameterClickListener =
+        object : ControlParameterClickListener {
+            override fun onClick(position: Int, model: ControlParameterModel) {
+                advancedControlParameterList?.let {
+                    selectedBasicPosition = null
+                    selectAdvancedPosition = position
+                    selectedBackupPosition = null
+                    selectSmartFio2Position = null
+                    selectVtasPosition = null
+                    selectEtCuffPosition = null
+                    val knobModel = KnobParameterModel.fromControlParameter(model)
+                    highlightParameterTile(it, position)
+                    val encoderValue = EncoderValue(
+                        model.lowerLimit.toFloat(),
+                        model.upperLimit.toFloat(),
+                        model.step.toFloat()
+                    )
+                    //  showGraphicTooltip()
+                    showKnob(knobModel, encoderValue)
+                }
+                standbyControlFragment?.notifyItemParameterAdapter(position)
             }
-            standbyControlFragment?.notifyItemParameterAdapter(position)
-        }
 
-        override fun onStateChange(isActive: Boolean, type: ControlSettingType, position: Int) {
+            override fun onStateChange(
+                isActive: Boolean,
+                type: ControlSettingType,
+                position: Int
+            ) {
 
-            if (type == ControlSettingType.ADVANCED) {
-                if (position == 0) {
-                    prefManager?.setIRVStatusTemp(isActive)
+                if (type == ControlSettingType.ADVANCED) {
+                    if (position == 0) {
+                        prefManager?.setIRVStatusTemp(isActive)
+                    }
                 }
             }
         }
-    }
 
     private val onBackupControlParameterClickListener = object : ControlParameterClickListener {
         override fun onClick(position: Int, model: ControlParameterModel) {
@@ -5779,35 +5818,40 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     }
 
     // change here 8 feb
-    private val onSmartFio2ControlParameterClickListener = object : ControlParameterClickListener {
-        override fun onClick(position: Int, model: ControlParameterModel) {
-            smartFio2ControlParameterList?.let {
-                selectedBasicPosition = null
-                selectAdvancedPosition = null
-                selectedBackupPosition = null
-                selectVtasPosition = null
-                selectEtCuffPosition = null
-                selectSmartFio2Position = position
-                val knobModel = KnobParameterModel.fromControlParameter(model)
-                highlightParameterTile(it, position)
-                val encoderValue = EncoderValue(
-                    model.lowerLimit.toFloat(),
-                    model.upperLimit.toFloat(),
-                    model.step.toFloat()
-                )
-                //  showGraphicTooltip()
-                showKnob(knobModel, encoderValue)
+    private val onSmartFio2ControlParameterClickListener =
+        object : ControlParameterClickListener {
+            override fun onClick(position: Int, model: ControlParameterModel) {
+                smartFio2ControlParameterList?.let {
+                    selectedBasicPosition = null
+                    selectAdvancedPosition = null
+                    selectedBackupPosition = null
+                    selectVtasPosition = null
+                    selectEtCuffPosition = null
+                    selectSmartFio2Position = position
+                    val knobModel = KnobParameterModel.fromControlParameter(model)
+                    highlightParameterTile(it, position)
+                    val encoderValue = EncoderValue(
+                        model.lowerLimit.toFloat(),
+                        model.upperLimit.toFloat(),
+                        model.step.toFloat()
+                    )
+                    //  showGraphicTooltip()
+                    showKnob(knobModel, encoderValue)
 
+                }
+                standbyControlFragment?.notifyItemParameterAdapter(position)
             }
-            standbyControlFragment?.notifyItemParameterAdapter(position)
-        }
 
-        override fun onStateChange(isActive: Boolean, type: ControlSettingType, position: Int) {
-            if (type == ControlSettingType.SmartFio2) prefManager?.setSmartFiO2StatusTemp(
-                isActive
-            )
+            override fun onStateChange(
+                isActive: Boolean,
+                type: ControlSettingType,
+                position: Int
+            ) {
+                if (type == ControlSettingType.SmartFio2) prefManager?.setSmartFiO2StatusTemp(
+                    isActive
+                )
+            }
         }
-    }
 
     // change here 8 feb
     private val onVTasControlParameterClickListener = object : ControlParameterClickListener {

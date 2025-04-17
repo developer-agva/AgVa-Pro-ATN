@@ -393,7 +393,9 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             binding.progressIndicator?.visibility = View.INVISIBLE
             normaliseButtons()
             disablePresence()
-
+            if(isVentiLocked) {
+                DialogBoxFactory.showServicePaymentDialog(ctx,null)
+            }
         }
     }
 
@@ -3017,6 +3019,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         try {
             mSocket = IO.socket(FileLogger.readBaseUrl())
             mSocket?.connect()
+
+            Log.i("Payment_Status", "mSocket?.connected() ")
         } catch (e: URISyntaxException) {
             e.printStackTrace()
         }
@@ -3028,22 +3032,22 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         mSocket?.emit("DeviceRequestForPaymentStatus", deviceId)
 
         mSocket?.on("AndroidReceivingPaymentStatus") {
-            CoroutineScope(Dispatchers.Main).launch{
+            CoroutineScope(Dispatchers.Main).launch {
                 if (deviceId == it[0].toString().split("^")[0]) {
                     if (it[0].toString().split("^")[1] == "false") {
                         Log.i("Payment_Status", "if ${it[0]}")
-
                         try {
                             DialogBoxFactory.dismissDialogs()
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }
-                        DialogBoxFactory.showServicePaymentDialog(this@MainActivity)
+                        DialogBoxFactory.showServicePaymentDialog(this@MainActivity,null)
 
                         isVentiLocked = true
                         val lockedStatusData = "$deviceId,false,true,Locked"
                         mSocket?.emit("NodeReceivingLockedStatus", lockedStatusData)
 
+                        prefManager?.saveLockedStatus(true)
                     } else {
                         Log.i("Payment_Status", "else ${it[0]}")
                         if (isVentiLocked) {
@@ -3059,6 +3063,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         }
                         val lockedStatusData = "$deviceId,true,false,Unlocked"
                         mSocket?.emit("NodeReceivingLockedStatus", lockedStatusData)
+                        prefManager?.saveLockedStatus(false)
                     }
                 }
             }
@@ -3502,6 +3507,21 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 prefManager?.saveVentiDetails("${it.data.Ward_No},${it.data.Hospital_Name},${it.data.Department_Name}")
             }
         }
+
+        if (prefManager?.readLockedStatus() == true){
+            try {
+                DialogBoxFactory.dismissDialogs()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            DialogBoxFactory.showServicePaymentDialog(this@MainActivity,null)
+
+            isVentiLocked = true
+            val lockedStatusData = "$deviceId,false,true,Locked"
+            mSocket?.emit("NodeReceivingLockedStatus", lockedStatusData)
+
+            prefManager?.saveLockedStatus(true)
+        }
     }
 
     private fun updateBatteryImage(batteryLevel: Int) {
@@ -3856,19 +3876,17 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
                 androidx.media3.common.util.Log.i(
                     "data_Date",
-                    "continuos check -  $dayOfYear , $dispatchData"
+                    "continuos check -  $dayOfYear , $dispatchData, ${mSocket?.connected()} "
                 )
                 if ((dayOfYear - dispatchData.toInt()) >= 10 && !isVentiLocked) {
-                    CoroutineScope(Dispatchers.IO).launch {
-                        val request = PaymentStatusRequestModel(deviceId, "false", true)
-
-                        ServerLogger.sendPaymentStatus(request)
-
-                        withContext(Dispatchers.Main) {
-                            isVentiLocked = true
-                            DialogBoxFactory.dismissDialogs()
-                            DialogBoxFactory.showServicePaymentDialog(this@MainActivity)
-                        }
+//                if (counterState.split(":")[2].toInt() == 59 && !isVentiLocked) {
+                    val lockedStatusData = "$deviceId,false,true,Auto Locked"
+                    mSocket?.emit("NodeReceivingLockedStatus", lockedStatusData)
+                    prefManager?.saveLockedStatus(false)
+                    if (!isVentiLocked) {
+                        isVentiLocked = true
+                        DialogBoxFactory.dismissDialogs()
+                        DialogBoxFactory.showServicePaymentDialog(this@MainActivity,null)
                     }
                 }
             }

@@ -350,6 +350,8 @@ public class PreferenceManager {
     private static final String PREF_SERVICE_HOURS_START_TIME = "pref_service_hours_start_time";
     private static final String PREF_SERVICE_HOURS_END_TIME = "pref_service_hours_end_time";
 
+    private static final String PREF_PAYMENT_STATUS = "pref_payment_status";
+
     private static final String PREF_TUBE_COMPLIANCE_CALIBRATION = "pref_tube_compliance_calibration";
     private static final String PREF_TUBE_COMPLIANCE_CALIBRATION_STATUS = "pref_tube_compliance_calibration_status";
     private static final String PREF_TUBE_RESISTANCE_CALIBRATION = "pref_tube_resistance_calibration";
@@ -406,6 +408,13 @@ public class PreferenceManager {
 
     public void setPatientGender(String key,Gender gender) {
         updateData(key + PREF_GENDER, gender.toString());
+    }
+
+    public void saveLockedStatus(Boolean val) {
+        updateData(PREF_PAYMENT_STATUS, val);
+    }
+    public Boolean readLockedStatus() {
+        return sp.getBoolean(PREF_PAYMENT_STATUS, false);
     }
 
     public void setAdmitDate(String key,String val) {

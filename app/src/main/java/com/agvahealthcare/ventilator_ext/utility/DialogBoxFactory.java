@@ -84,17 +84,21 @@ public class DialogBoxFactory {
         }
     }
 
-    public static AlertDialog showServicePaymentDialog(Context ctx) {
+    public static AlertDialog showServicePaymentDialog(Context ctx,SimpleCallbackListener onClickActivate) {
 
         View view = LayoutInflater.from(ctx).inflate(R.layout.layout_payment_service_dialog, null, false);
 
         TextView deviceIdText = view.findViewById(R.id.deviceIdText);
+        Button btnActivate = view.findViewById(R.id.btnActivate);
         AlertDialog dialog = new AlertDialog.Builder(ctx).setView(view).create();
-        dialog.setCancelable(false);
+        dialog.setCancelable(true);
 
         deviceIdText.setText("Device Id : " + Settings.Secure.getString(
                 ctx.getContentResolver(), Settings.Secure.ANDROID_ID
         ));
+        btnActivate.setOnClickListener(v ->{
+            dialog.cancel();
+        });
 
         setShutDownDialogView(dialog, true);
 

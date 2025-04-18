@@ -106,12 +106,15 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
+interface ActivateVentilatorListener{
+    fun activateVentilatorListener()
+}
 
 class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpdateCheckListener,
     UpdateHelper.OnUpdateBaseUrlListener,
     View.OnClickListener,
     ControlParameterClickListener,
-    OnLoudnessAdjustmentListener {
+    OnLoudnessAdjustmentListener , ActivateVentilatorListener {
 
     private lateinit var binding: ActivityMainBinding
     private val ctx = this@MainActivity
@@ -386,7 +389,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         mEventViewModel.addEventForDevelopers(eventDataModel)
     }
 
-
     private val fragmentDismissListener = object : OnDismissDialogListener {
         override fun handleDialogClose() {
             //normaliseButtons()
@@ -394,7 +396,12 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             normaliseButtons()
             disablePresence()
             if(isVentiLocked) {
-                DialogBoxFactory.showServicePaymentDialog(ctx,null)
+                try {
+                    DialogBoxFactory.dismissDialogs()
+                }catch (e:Exception){
+                    e.printStackTrace()
+                }
+                DialogBoxFactory.showServicePaymentDialog(ctx,this@MainActivity)
             }
         }
     }
@@ -431,9 +438,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                             "%.1f",
                             newValue
                         )
-                        binding.includeProgressWeight.paramProgressBar.setCurrentProgress(
-                            newValue.toDouble()
-                        )
+                        binding.includeProgressWeight.paramProgressBar.setCurrentProgress(newValue.toDouble())
                         prefManager?.setBodyWeight(newValue.toDouble().toFloat())
                         weight = newValue
                         normalizeProgressBars()
@@ -3041,7 +3046,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }
-                        DialogBoxFactory.showServicePaymentDialog(this@MainActivity,null)
+                        DialogBoxFactory.showServicePaymentDialog(this@MainActivity,this@MainActivity)
 
                         isVentiLocked = true
                         val lockedStatusData = "$deviceId,false,true,Locked"
@@ -3230,6 +3235,20 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 }
             }
         }
+    }
+
+    override fun activateVentilatorListener() {
+        systemDialogFragment = SystemDialogFragment.newInstance(
+            heightSize,
+            widthSize,
+            false,
+            fragmentDismissListener,
+            this,
+            this,
+            communicationService
+        ).apply { show(supportFragmentManager, "Activate_Ventilator") }
+
+        systemDialogFragment?.isCancelable = false
     }
 
     @SuppressLint("HardwareIds")
@@ -3514,7 +3533,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-            DialogBoxFactory.showServicePaymentDialog(this@MainActivity,null)
+            DialogBoxFactory.showServicePaymentDialog(this@MainActivity,this@MainActivity)
 
             isVentiLocked = true
             val lockedStatusData = "$deviceId,false,true,Locked"
@@ -3886,7 +3905,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     if (!isVentiLocked) {
                         isVentiLocked = true
                         DialogBoxFactory.dismissDialogs()
-                        DialogBoxFactory.showServicePaymentDialog(this@MainActivity,null)
+                        DialogBoxFactory.showServicePaymentDialog(this@MainActivity,this@MainActivity)
                     }
                 }
             }

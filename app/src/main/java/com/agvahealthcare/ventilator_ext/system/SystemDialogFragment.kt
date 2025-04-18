@@ -393,6 +393,9 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
 
         preferenceManager = PreferenceManager(requireContext())
         TAG = tag.toString()
+
+        Log.i("given_tag",tag.toString())
+
         setStyle(STYLE_NO_TITLE, R.style.CustomDialog)
         setUpNavigation()
     }
@@ -731,7 +734,20 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                 )
             )
             systemAdapter?.isEnable = true
-        } else {
+        }
+        else if (tag == "Activate_Ventilator"){
+
+            dataListSystemItems.add(
+                SystemButtonModelClass(
+                    getString(R.string.wifi),
+                    SystemFragmentButtonTypes.Wifi
+                )
+            )
+            systemAdapter?.isEnable = false
+            systemAdapter?.selectedIndexType = SystemFragmentButtonTypes.Wifi
+            showWifiFragment()
+        }
+        else {
             if (arguments?.getString("CALIBRATE_CIRCUIT") == "TouchHere") {
                 systemAdapter?.selectedIndexType = SystemFragmentButtonTypes.Tube
                 setupTubeFragment()
@@ -1214,7 +1230,6 @@ class SystemDesignAdapter(
             if (isEnable) onClick.doSystemButtonLongClick(data.types)
             return@setOnLongClickListener true
         }
-
     }
 
     override fun getItemCount(): Int {

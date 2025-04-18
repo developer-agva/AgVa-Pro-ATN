@@ -40,6 +40,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.cardview.widget.CardView;
 
+import com.agvahealthcare.ventilator_ext.ActivateVentilatorListener;
 import com.agvahealthcare.ventilator_ext.R;
 import com.agvahealthcare.ventilator_ext.api.model.serviceDataModel.Data;
 import com.agvahealthcare.ventilator_ext.callback.OnModeChangeListener;
@@ -84,7 +85,7 @@ public class DialogBoxFactory {
         }
     }
 
-    public static AlertDialog showServicePaymentDialog(Context ctx,SimpleCallbackListener onClickActivate) {
+    public static AlertDialog showServicePaymentDialog(Context ctx, ActivateVentilatorListener onClickActivate) {
 
         View view = LayoutInflater.from(ctx).inflate(R.layout.layout_payment_service_dialog, null, false);
 
@@ -96,7 +97,9 @@ public class DialogBoxFactory {
         deviceIdText.setText("Device Id : " + Settings.Secure.getString(
                 ctx.getContentResolver(), Settings.Secure.ANDROID_ID
         ));
+
         btnActivate.setOnClickListener(v ->{
+            onClickActivate.activateVentilatorListener();
             dialog.cancel();
         });
 

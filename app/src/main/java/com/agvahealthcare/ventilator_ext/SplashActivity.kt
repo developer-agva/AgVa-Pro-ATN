@@ -598,7 +598,7 @@ class SplashActivity : AppCompatActivity(), SimpleCallbackListener,
         }
     }
 
-    private fun callRunningStatusApi(status: String) {
+    private fun callRunningStatusApi(status: String,deviceStatus: String) {
 
         CoroutineScope(Dispatchers.IO).launch {
             val request = StatusRequestModel()
@@ -608,6 +608,7 @@ class SplashActivity : AppCompatActivity(), SimpleCallbackListener,
                         this@SplashActivity.contentResolver,
                         Settings.Secure.ANDROID_ID
                     )
+                    this.deviceStatus = deviceStatus
                     this.message = status
                     this.last_hours = calculateTotalAndLastHours(getLastHours().first().toLong())
                     this.total_hours = calculateTotalAndLastHours(getTotalHours().first().toLong())
@@ -703,7 +704,7 @@ class SplashActivity : AppCompatActivity(), SimpleCallbackListener,
         }
 
         addEvents("Ventilator Started", preferenceManager?.readUHID().toString())
-        callRunningStatusApi(RUNNING_STATUS_INACTIVE)
+        callRunningStatusApi(RUNNING_STATUS_INACTIVE, ACTIVITY_SPLASH)
         CoroutineScope(Dispatchers.IO).launch {
 
             FileLogger.readCrashFile().let {

@@ -788,8 +788,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         makeAllFragmentsNull()
         sizeOfCurrentArray = 1
         if (testCalibrationFragment == null)
-            testCalibrationFragment =
-                TestCalibrationFragment(communicationService)
+            testCalibrationFragment = TestCalibrationFragment(communicationService)
         testCalibrationFragment?.apply {
             replaceFragment(this, TAG, R.id.system_nav_container)
         }
@@ -893,7 +892,6 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         }
     }
 
-
     fun closeFragment() {
         requireActivity().supportFragmentManager
             .beginTransaction()
@@ -982,13 +980,11 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         }
     }
 
-
     override fun onStart() {
         super.onStart()
         val heightDialog = arguments?.getInt(KEY_HEIGHT)
         val widthDialog = arguments?.getInt(KEY_WIDTH)
         val isCheck = arguments?.getBoolean(KEY_STATUS)
-
         setHeightWidthPercent(heightDialog, widthDialog, isCheck)
     }
 
@@ -1008,7 +1004,6 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         msg: String,
         textAlignment: Int
     ) {
-
         testCalibrationFragment?.takeIf { it.isVisible }?.apply {
             updateOxygenCalibrateProgressStatus(
                 progress,
@@ -1028,30 +1023,24 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         settingFragment?.takeIf { it.isVisible }?.apply {
             updateKnobSetting(data.toString())
         }
-
         networkFragment?.takeIf { it.isVisible }?.apply {
             updateKnobRawData(data.toString())
         }
-
         diagnosticCheckFragment?.takeIf { it.isVisible }?.apply {
             updateValueOnKnobChange(data)
         }
-
         advancedCalibrationFragment?.takeIf { it.isVisible }?.apply {
             updateValueOnKnobChange(data)
         }
-
         o2RegulationFragment?.takeIf { it.isVisible }?.apply {
             updateValueOnKnobChange(data)
         }
-
         serviceFragment?.takeIf { it.isVisible }?.apply {
             updateValueOnKnobChange(data)
         }
     }
 
-    override fun closeDialog() {
-    }
+    override fun closeDialog() {}
 
     override fun doAction() {
         if (passWord == "8000") {
@@ -1170,7 +1159,6 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                 )
             )
         }
-
         systemAdapter?.updateList(dataListSystemItems)
     }
 }

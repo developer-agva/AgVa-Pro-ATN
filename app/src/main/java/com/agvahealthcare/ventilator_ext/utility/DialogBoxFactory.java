@@ -92,7 +92,7 @@ public class DialogBoxFactory {
         TextView deviceIdText = view.findViewById(R.id.deviceIdText);
         Button btnActivate = view.findViewById(R.id.btnActivate);
         AlertDialog dialog = new AlertDialog.Builder(ctx).setView(view).create();
-        dialog.setCancelable(true);
+        dialog.setCancelable(false);
 
         deviceIdText.setText("Device Id : " + Settings.Secure.getString(
                 ctx.getContentResolver(), Settings.Secure.ANDROID_ID
@@ -100,7 +100,6 @@ public class DialogBoxFactory {
 
         btnActivate.setOnClickListener(v ->{
             onClickActivate.activateVentilatorListener();
-            dialog.cancel();
         });
 
         setShutDownDialogView(dialog, true);

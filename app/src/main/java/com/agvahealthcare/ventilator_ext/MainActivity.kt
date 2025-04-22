@@ -106,7 +106,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
-interface ActivateVentilatorListener{
+interface ActivateVentilatorListener {
     fun activateVentilatorListener()
 }
 
@@ -114,7 +114,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     UpdateHelper.OnUpdateBaseUrlListener,
     View.OnClickListener,
     ControlParameterClickListener,
-    OnLoudnessAdjustmentListener , ActivateVentilatorListener {
+    OnLoudnessAdjustmentListener, ActivateVentilatorListener {
 
     private lateinit var binding: ActivityMainBinding
     private val ctx = this@MainActivity
@@ -395,13 +395,13 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             binding.progressIndicator?.visibility = View.INVISIBLE
             normaliseButtons()
             disablePresence()
-            if(isVentiLocked) {
+            if (isVentiLocked) {
                 try {
                     DialogBoxFactory.dismissDialogs()
-                }catch (e:Exception){
+                } catch (e: Exception) {
                     e.printStackTrace()
                 }
-                DialogBoxFactory.showServicePaymentDialog(ctx,this@MainActivity)
+                DialogBoxFactory.showServicePaymentDialog(ctx, this@MainActivity)
             }
         }
     }
@@ -3033,9 +3033,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         // connect hote hi device id bhejo backend ko
         mSocket?.emit("AndroidStartUp", deviceId)
 
-        // connect hote hi locked ka status mango
-        mSocket?.emit("DeviceRequestForPaymentStatus", deviceId)
-
         mSocket?.on("AndroidReceivingPaymentStatus") {
             CoroutineScope(Dispatchers.Main).launch {
                 if (deviceId == it[0].toString().split("^")[0]) {
@@ -3046,19 +3043,25 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }
-                        DialogBoxFactory.showServicePaymentDialog(this@MainActivity,this@MainActivity)
+                        DialogBoxFactory.showServicePaymentDialog(
+                            this@MainActivity,
+                            this@MainActivity
+                        )
 
                         isVentiLocked = true
-                        val lockedStatusData = "$deviceId,false,true,Locked"
+                        prefManager?.saveLockedStatus("Locked")
+                        val lockedStatusData =
+                            "$deviceId,false,true,${prefManager?.readLockedStatus()}"
                         mSocket?.emit("NodeReceivingLockedStatus", lockedStatusData)
 
-                        prefManager?.saveLockedStatus(true)
                     } else {
                         Log.i("Payment_Status", "else ${it[0]}")
+
                         if (isVentiLocked) {
                             isVentiLocked = false
                             val calendar = Calendar.getInstance()
                             val dayOfYear = calendar.get(Calendar.DAY_OF_YEAR)
+                            testingLockVariable += 3
                             FileLogger.writeDispatchDate(this@MainActivity, dayOfYear.toString())
                         }
                         try {
@@ -3066,9 +3069,11 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }
-                        val lockedStatusData = "$deviceId,true,false,Unlocked"
+                        prefManager?.saveLockedStatus("Unlocked")
+                        val lockedStatusData =
+                            "$deviceId,true,false,${prefManager?.readLockedStatus()}"
                         mSocket?.emit("NodeReceivingLockedStatus", lockedStatusData)
-                        prefManager?.saveLockedStatus(false)
+
                     }
                 }
             }
@@ -3238,17 +3243,22 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     }
 
     override fun activateVentilatorListener() {
-        systemDialogFragment = SystemDialogFragment.newInstance(
-            heightSize,
-            widthSize,
-            false,
-            fragmentDismissListener,
-            this,
-            this,
-            communicationService
-        ).apply { show(supportFragmentManager, "Activate_Ventilator") }
+        DialogBoxFactory.dismissDialogs()
 
-        systemDialogFragment?.isCancelable = false
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(2000L)
+            systemDialogFragment = SystemDialogFragment.newInstance(
+                heightSize,
+                widthSize,
+                false,
+                fragmentDismissListener,
+                this@MainActivity,
+                this@MainActivity,
+                communicationService
+            ).apply { show(supportFragmentManager, "Activate_Ventilator") }
+
+            systemDialogFragment?.isCancelable = false
+        }
     }
 
     @SuppressLint("HardwareIds")
@@ -3265,6 +3275,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         dataStoreManager = DataStoreManager(this)
         mEventViewModel = ViewModelProvider(this)[EventViewModel::class.java]
         mDebugViewModel = ViewModelProvider(this)[DebugViewModel::class.java]
+        mMainActivityViewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
 
         prefManager?.setRebootStatusForHandshake(false)
 
@@ -3274,9 +3285,14 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         }
 
         addEvents("Standby process success", prefManager?.readUHID().toString())
-
+        mMainActivityViewModel.isSocketConnected.distinctUntilChanged()
+            .observe(this, Observer { it ->
+                it?.let {
+                    if (it) mSocket?.emit("DeviceRequestForPaymentStatus", deviceId)
+                }
+            })
         // status api call
-        callRunningStatusApi(RUNNING_STATUS_INACTIVE)
+        callRunningStatusApi(RUNNING_STATUS_INACTIVE, ACTIVITY_STANDBY)
         getVentilatorDetailsApi()
         CoroutineScope(Dispatchers.IO).launch {
 
@@ -3295,7 +3311,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
         sendDiagnosticDataToSocket()
         VentilatorApp.isNebuliserActive = true
-        mMainActivityViewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
         mDiagnosticCheckViewModel =
             ViewModelProvider(this)[DiagnosticCheckViewModel::class.java]
         mO2RegulationCheckViewModel =
@@ -3527,19 +3542,19 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             }
         }
 
-        if (prefManager?.readLockedStatus() == true){
+        if (prefManager?.readLockedStatus() != "Unlocked") {
             try {
                 DialogBoxFactory.dismissDialogs()
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-            DialogBoxFactory.showServicePaymentDialog(this@MainActivity,this@MainActivity)
+            DialogBoxFactory.showServicePaymentDialog(this@MainActivity, this@MainActivity)
 
             isVentiLocked = true
-            val lockedStatusData = "$deviceId,false,true,Locked"
+            val lockedStatusData = "$deviceId,false,true,${prefManager?.readLockedStatus()}"
             mSocket?.emit("NodeReceivingLockedStatus", lockedStatusData)
 
-            prefManager?.saveLockedStatus(true)
+            prefManager?.saveLockedStatus(prefManager?.readLockedStatus())
         }
     }
 
@@ -3561,7 +3576,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         }
     }
 
-    private fun callRunningStatusApi(status: String) {
+    private fun callRunningStatusApi(status: String, deviceStatus: String) {
 
         CoroutineScope(Dispatchers.IO).launch {
             val request = StatusRequestModel()
@@ -3571,6 +3586,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         this@MainActivity.contentResolver,
                         Settings.Secure.ANDROID_ID
                     )
+                    this.deviceStatus = deviceStatus
                     this.message = status
                     this.last_hours =
                         calculateTotalAndLastHours(getLastHours().first().toLong())
@@ -3879,6 +3895,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     private var isOSReboot = false
     private var isVentiLocked = false
 
+    private var testingLockVariable = Calendar.getInstance().get(Calendar.MINUTE) + 1
+
     private fun startTime() {
 
         val liveData: MutableLiveData<String> = MutableLiveData()
@@ -3886,26 +3904,41 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         customCountDownTimer?.start(100) //Epoch timestamp
         customCountDownTimer?.mutableLiveData?.observe(this, Observer { counterState ->
 
+            mMainActivityViewModel.isSocketConnected.postValue(mSocket?.connected())
+
             // lock ventilator manually as per 10 days poilcy
             val dispatchData = FileLogger.readDispatchDate()
 
             if (dispatchData != dataNotFound) {
                 val calendar = Calendar.getInstance()
                 val dayOfYear = calendar.get(Calendar.DAY_OF_YEAR)
+                val currentMins = calendar.get(Calendar.MINUTE)
 
                 androidx.media3.common.util.Log.i(
                     "data_Date",
-                    "continuos check -  $dayOfYear , $dispatchData, ${mSocket?.connected()} "
+                    "continuos check -  $dayOfYear , $dispatchData, ${testingLockVariable} ,${currentMins} "
                 )
-                if ((dayOfYear - dispatchData.toInt()) >= 10 && !isVentiLocked) {
-//                if (counterState.split(":")[2].toInt() == 59 && !isVentiLocked) {
-                    val lockedStatusData = "$deviceId,false,true,Auto Locked"
-                    mSocket?.emit("NodeReceivingLockedStatus", lockedStatusData)
-                    prefManager?.saveLockedStatus(false)
-                    if (!isVentiLocked) {
-                        isVentiLocked = true
-                        DialogBoxFactory.dismissDialogs()
-                        DialogBoxFactory.showServicePaymentDialog(this@MainActivity,this@MainActivity)
+//                if ((dayOfYear - dispatchData.toInt()) >= 2 && !isVentiLocked) {
+                if (currentMins >= testingLockVariable && !isVentiLocked) {
+
+                    prefManager?.saveLockedStatus("Auto Locked")
+                    isVentiLocked = true
+
+                    if (mSocket?.connected() == true) mSocket?.emit(
+                        "DeviceRequestForPaymentStatus",
+                        deviceId
+                    )
+                    else {
+                        try {
+                            DialogBoxFactory.dismissDialogs()
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                        DialogBoxFactory.showServicePaymentDialog(
+                            this@MainActivity,
+                            this@MainActivity
+                        )
+
                     }
                 }
             }
@@ -3951,7 +3984,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     if (countBatteryData == 10 && dataStoreManager?.getDashRebootStatusFlag()
                             ?.first() == true
                     ) {
-
                         dataStoreManager?.saveDashRebootStatusFlag(false)
                         addEventsForDevelopers(
                             "Re-Initiate Handshake Due to Battery Data Not Available during ventilation",
@@ -4660,11 +4692,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                             )
                         }
                     }
-
                     highlightProgressBar(view)
-
                     showKnobForBodyParams(view, param, encoder)
-
                 }
 
                 binding.layoutPanelPatientWeightMain -> {
@@ -4710,7 +4739,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                                 ""
                             )
                         }
-
                     }
 
                     highlightProgressBar(view)
@@ -4912,6 +4940,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                             )
                             binding.includeProgressHeight.textView.text = it.toString()
                         }
+
                         readAge()?.toDouble()?.toInt()?.let {
                             binding.includeProgressAge.paramProgressBar.setProgress(
                                 it.toDouble(),

@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class StatusRequestModel(
     @SerializedName("deviceId"     ) var did     : String? = null,
     @SerializedName("message" ) var message : String? = null,
+    @SerializedName("deviceStatus" ) var deviceStatus : String? = null,
     @SerializedName("last_hours" ) var last_hours : String? = null,
     @SerializedName("total_hours" ) var total_hours : String? = null,
     @SerializedName("health" ) var health : String? = null,

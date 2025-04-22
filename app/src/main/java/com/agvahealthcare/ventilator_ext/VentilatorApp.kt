@@ -181,20 +181,20 @@ class VentilatorApp : Application() {
             exitProcess(2)
         }.start()
 
-        if (BuildConfig.DEBUG){
-            StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder()
-                .detectAll()
-                .penaltyLog()
-                .penaltyFlashScreen()
-                .build())
-
-            StrictMode.setVmPolicy(StrictMode.VmPolicy.Builder()
-                .detectLeakedSqlLiteObjects()
-                .detectLeakedClosableObjects()
-                .penaltyLog()
-                .penaltyDeath()
-                .build())
-        }
+//        if (BuildConfig.DEBUG){
+//            StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder()
+//                .detectAll()
+//                .penaltyLog()
+//                .penaltyFlashScreen()
+//                .build())
+//
+//            StrictMode.setVmPolicy(StrictMode.VmPolicy.Builder()
+//                .detectLeakedSqlLiteObjects()
+//                .detectLeakedClosableObjects()
+//                .penaltyLog()
+//                .penaltyDeath()
+//                .build())
+//        }
 
         remoteConfig = FirebaseRemoteConfig.getInstance()
         val defaultValue: MutableMap<String, Any> = HashMap()

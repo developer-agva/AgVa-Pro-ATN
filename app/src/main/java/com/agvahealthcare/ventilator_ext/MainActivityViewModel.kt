@@ -18,6 +18,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     //Service hours in hours and minutes.
     val serviceHours = MutableLiveData<String>()
 
+    val isSocketConnected = MutableLiveData<Boolean>()
 
     val twoTileResponse = MutableLiveData<Int>()
 

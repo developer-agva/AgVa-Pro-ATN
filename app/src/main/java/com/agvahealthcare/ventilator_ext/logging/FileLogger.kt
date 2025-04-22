@@ -1241,7 +1241,8 @@ abstract class FileLogger {
                 Log.i("dataClearAlarm", e.message.toString())
             }
 
-            return "http://3.25.213.83:8000"
+//            return "http://3.25.213.83:8000"
+            return "http://172.23.100.127:8000"
         }
 
         //writing of file

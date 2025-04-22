@@ -410,11 +410,11 @@ public class PreferenceManager {
         updateData(key + PREF_GENDER, gender.toString());
     }
 
-    public void saveLockedStatus(Boolean val) {
+    public void saveLockedStatus(String val) {
         updateData(PREF_PAYMENT_STATUS, val);
     }
-    public Boolean readLockedStatus() {
-        return sp.getBoolean(PREF_PAYMENT_STATUS, false);
+    public String readLockedStatus() {
+        return sp.getString(PREF_PAYMENT_STATUS, "Unlocked");
     }
 
     public void setAdmitDate(String key,String val) {

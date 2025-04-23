@@ -153,15 +153,15 @@ class AdvancedCalibrationFragment(private var communicationService: Communicatio
             binding.includeButtonTurbine.root.visibility = View.VISIBLE
             binding.includeButtonInspFlowSensor.root.visibility = View.VISIBLE
             binding.includeButtonLeakTest.root.visibility = View.VISIBLE
-            binding.includeButtonNeoZero.root.visibility = View.VISIBLE
+            binding.includeButtonNeoZero.root.visibility = View.GONE
             binding.ivTurbineSensorStatus.visibility = View.VISIBLE
             binding.ivInspFlowSensorStatus.visibility = View.VISIBLE
             binding.ivLeakTestStatus.visibility = View.VISIBLE
-            binding.ivNeoZeroStatus.visibility = View.VISIBLE
+            binding.ivNeoZeroStatus.visibility = View.GONE
             binding.tvTurbineSensor.visibility = View.VISIBLE
             binding.tvInspFlowSensor.visibility = View.VISIBLE
             binding.tvLeakTest.visibility = View.VISIBLE
-            binding.tvNeoZero.visibility = View.VISIBLE
+            binding.tvNeoZero.visibility = View.GONE
         } else {
             // pre op check layout
             binding.topBarAdvancedCalib.visibility = View.VISIBLE

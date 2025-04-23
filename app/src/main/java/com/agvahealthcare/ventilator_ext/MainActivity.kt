@@ -395,14 +395,14 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             binding.progressIndicator?.visibility = View.INVISIBLE
             normaliseButtons()
             disablePresence()
-            if (isVentiLocked) {
-                try {
-                    DialogBoxFactory.dismissDialogs()
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-                DialogBoxFactory.showServicePaymentDialog(ctx, this@MainActivity)
-            }
+//            if (isVentiLocked) {
+//                try {
+//                    DialogBoxFactory.dismissDialogs()
+//                } catch (e: Exception) {
+//                    e.printStackTrace()
+//                }
+//                DialogBoxFactory.showServicePaymentDialog(ctx, this@MainActivity)
+//            }
         }
     }
 
@@ -3025,7 +3025,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             mSocket = IO.socket(FileLogger.readBaseUrl())
             mSocket?.connect()
 
-            Log.i("Payment_Status", "mSocket?.connected() ")
+            Log.i("Payment_Status", "${mSocket?.connected()}")
         } catch (e: URISyntaxException) {
             e.printStackTrace()
         }
@@ -3038,15 +3038,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 if (deviceId == it[0].toString().split("^")[0]) {
                     if (it[0].toString().split("^")[1] == "false") {
                         Log.i("Payment_Status", "if ${it[0]}")
-                        try {
-                            DialogBoxFactory.dismissDialogs()
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-                        DialogBoxFactory.showServicePaymentDialog(
-                            this@MainActivity,
-                            this@MainActivity
-                        )
+
+                        if (prefManager?.readLockedStatus() == "Unlocked") DialogBoxFactory.showServicePaymentDialog(this@MainActivity, this@MainActivity)
 
                         isVentiLocked = true
                         prefManager?.saveLockedStatus("Locked")
@@ -3061,7 +3054,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                             isVentiLocked = false
                             val calendar = Calendar.getInstance()
                             val dayOfYear = calendar.get(Calendar.DAY_OF_YEAR)
-                            testingLockVariable += 3
+                            testingLockVariable += 2
                             FileLogger.writeDispatchDate(this@MainActivity, dayOfYear.toString())
                         }
                         try {
@@ -3543,11 +3536,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         }
 
         if (prefManager?.readLockedStatus() != "Unlocked") {
-            try {
-                DialogBoxFactory.dismissDialogs()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
             DialogBoxFactory.showServicePaymentDialog(this@MainActivity, this@MainActivity)
 
             isVentiLocked = true
@@ -3895,7 +3883,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     private var isOSReboot = false
     private var isVentiLocked = false
 
-    private var testingLockVariable = Calendar.getInstance().get(Calendar.MINUTE) + 1
+    private var testingLockVariable = Calendar.getInstance().get(Calendar.MINUTE) + 2
 
     private fun startTime() {
 
@@ -3916,29 +3904,30 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
                 androidx.media3.common.util.Log.i(
                     "data_Date",
-                    "continuos check -  $dayOfYear , $dispatchData, ${testingLockVariable} ,${currentMins} "
+                    "continues check - $dayOfYear, $dispatchData, $currentMins , $testingLockVariable"
                 )
-//                if ((dayOfYear - dispatchData.toInt()) >= 2 && !isVentiLocked) {
-                if (currentMins >= testingLockVariable && !isVentiLocked) {
+//              if ((dayOfYear - dispatchData.toInt()) >= 10 && !isVentiLocked) {
+                if (currentMins >= testingLockVariable && !isVentiLocked){
 
                     prefManager?.saveLockedStatus("Auto Locked")
                     isVentiLocked = true
 
-                    if (mSocket?.connected() == true) mSocket?.emit(
-                        "DeviceRequestForPaymentStatus",
-                        deviceId
-                    )
+                    if (mSocket?.connected() == true) {
+                        mSocket?.emit(
+                            "DeviceRequestForPaymentStatus",
+                            deviceId
+                        )
+                    }
                     else {
                         try {
                             DialogBoxFactory.dismissDialogs()
-                        } catch (e: Exception) {
+                        }catch (e:Exception){
                             e.printStackTrace()
                         }
                         DialogBoxFactory.showServicePaymentDialog(
                             this@MainActivity,
                             this@MainActivity
                         )
-
                     }
                 }
             }

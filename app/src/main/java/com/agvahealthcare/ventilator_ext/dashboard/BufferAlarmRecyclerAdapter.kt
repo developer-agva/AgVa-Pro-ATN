@@ -1,6 +1,7 @@
 package com.agvahealthcare.ventilator_ext.dashboard
 
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,12 +13,17 @@ import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.model.AlarmModel
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.AlarmType
 
-class BufferAlarmRecyclerAdapter(private val ackList:ArrayList<AlarmModel>):RecyclerView.Adapter<BufferAlarmRecyclerAdapter.BufferAlarmViewHolder>() {
+class BufferAlarmRecyclerAdapter(private var ackList:ArrayList<AlarmModel>):RecyclerView.Adapter<BufferAlarmRecyclerAdapter.BufferAlarmViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BufferAlarmViewHolder {
         val itemView=LayoutInflater.from(parent.context).inflate(R.layout.list_item_stand_drop_down,parent,false)
         return BufferAlarmViewHolder(itemView)
+    }
+
+    fun updateList(newList:ArrayList<AlarmModel>){
+        ackList = newList
+        notifyDataSetChanged()
     }
 
     override fun onBindViewHolder(holder: BufferAlarmViewHolder, position: Int) {

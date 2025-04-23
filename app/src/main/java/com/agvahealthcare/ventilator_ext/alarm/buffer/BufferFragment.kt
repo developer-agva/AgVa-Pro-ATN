@@ -1,6 +1,7 @@
 package com.agvahealthcare.ventilator_ext.alarm.buffer
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,8 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.dashboard.BufferAlarmRecyclerAdapter
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardViewModel
+import com.agvahealthcare.ventilator_ext.dashboard.adapter.PrimaryActionAdapter
 import com.agvahealthcare.ventilator_ext.databinding.FragmentBufferBinding
 import com.agvahealthcare.ventilator_ext.model.AlarmModel
+import com.agvahealthcare.ventilator_ext.utility.LOG_TYPE_INFO
+import java.util.PriorityQueue
 
 class BufferFragment : Fragment() {
     private var ackList:ArrayList<AlarmModel> = arrayListOf()
@@ -45,28 +49,19 @@ class BufferFragment : Fragment() {
         binding.includeButtonReset.buttonView.text= this@BufferFragment.getString(R.string.hint_reset)
         binding.includeButtonReset.buttonView.setBackgroundResource(R.color.trans_grey)
 
-        setupClickListener()
+        bufferAdapter = BufferAlarmRecyclerAdapter(ArrayList())
+        binding.rvAlarms.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = bufferAdapter
+        }
         dashBoardViewModel?.alarms?.observe(viewLifecycleOwner) {
-            bufferAdapter = BufferAlarmRecyclerAdapter(ArrayList(it))
-            binding.rvAlarms.apply {
-                layoutManager = LinearLayoutManager(requireContext())
-                adapter = bufferAdapter
+            Log.i("buffer_reset_alarm",it.toString())
+            it?.let { it1 ->
+                bufferAdapter?.updateList(ArrayList(it1))
             }
         }
-    }
-
-    private fun setupClickListener() {
         binding.includeButtonReset.buttonView.setOnClickListener {
-            dashBoardViewModel?.alarms?.value?.clear()
-            notifyBufferAlarmAdapter()
+            dashBoardViewModel?.alarms?.value = PriorityQueue<AlarmModel>()
         }
     }
-
-    private fun updateList(ackList: ArrayList<AlarmModel>){
-        this.ackList = ackList
-        notifyBufferAlarmAdapter()
-    }
-
-    fun notifyBufferAlarmAdapter() = bufferAdapter?.notifyDataSetChanged()
-
 }

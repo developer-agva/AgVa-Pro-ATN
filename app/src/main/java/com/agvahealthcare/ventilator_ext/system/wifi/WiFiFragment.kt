@@ -120,7 +120,6 @@ class   WiFiFragment : Fragment() {
     // adb tcpip 5555
     // adb connect ipaddress:5555
 
-
     private fun getIpAddress(wifiManager: WifiManager?) {
         try {
             val ipAddress =
@@ -132,7 +131,6 @@ class   WiFiFragment : Fragment() {
             e.printStackTrace()
         }
     }
-
 
     override fun onDestroy() {
         showConnectionStatusThread.cancel()

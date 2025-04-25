@@ -2991,6 +2991,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     var deviceId = ""
     var isSocketStop = false
 
+
     fun returnCommandsToSocket(command: String) {
         CoroutineScope(Dispatchers.IO).launch {
             mSocket?.emit("AndroidSendingCommand", "$deviceId^$command")
@@ -3039,7 +3040,10 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     if (it[0].toString().split("^")[1] == "false") {
                         Log.i("Payment_Status", "if ${it[0]}")
 
-                        if (prefManager?.readLockedStatus() == "Unlocked") DialogBoxFactory.showServicePaymentDialog(this@MainActivity, this@MainActivity)
+                        if (prefManager?.readLockedStatus() == "Unlocked") DialogBoxFactory.showServicePaymentDialog(
+                            this@MainActivity,
+                            this@MainActivity
+                        )
 
                         isVentiLocked = true
                         prefManager?.saveLockedStatus("Locked")
@@ -3054,7 +3058,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                             isVentiLocked = false
                             val calendar = Calendar.getInstance()
                             val dayOfYear = calendar.get(Calendar.DAY_OF_YEAR)
-                            testingLockVariable += 2
+//                            testingLockVariable += 2
                             FileLogger.writeDispatchDate(this@MainActivity, dayOfYear.toString())
                         }
                         try {
@@ -3883,7 +3887,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     private var isOSReboot = false
     private var isVentiLocked = false
 
-    private var testingLockVariable = Calendar.getInstance().get(Calendar.MINUTE) + 2
+//    private var testingLockVariable = Calendar.getInstance().get(Calendar.MINUTE) + 2
 
     private fun startTime() {
 
@@ -3904,10 +3908,10 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
                 androidx.media3.common.util.Log.i(
                     "data_Date",
-                    "continues check - $dayOfYear, $dispatchData, $currentMins , $testingLockVariable"
+                    "continues check - $dayOfYear, $dispatchData, $currentMins"
                 )
-//              if ((dayOfYear - dispatchData.toInt()) >= 10 && !isVentiLocked) {
-                if (currentMins >= testingLockVariable && !isVentiLocked){
+                if ((dayOfYear - dispatchData.toInt()) >= 10 && !isVentiLocked) {
+//                if (currentMins >= testingLockVariable && !isVentiLocked){
 
                     prefManager?.saveLockedStatus("Auto Locked")
                     isVentiLocked = true
@@ -3917,11 +3921,10 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                             "DeviceRequestForPaymentStatus",
                             deviceId
                         )
-                    }
-                    else {
+                    } else {
                         try {
                             DialogBoxFactory.dismissDialogs()
-                        }catch (e:Exception){
+                        } catch (e: Exception) {
                             e.printStackTrace()
                         }
                         DialogBoxFactory.showServicePaymentDialog(
@@ -3935,7 +3938,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             mDebugViewModel.ackOccurenceLiveData.postValue(ack756Visibility)
 
             mDebugViewModel.ventiLiveData.value?.let {
-
                 val dataList = it
                 if (dataList.size < 17) {
                     dataList.add(VentilatorApp.ventiData)
@@ -3969,6 +3971,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             }
 
             CoroutineScope(Dispatchers.Main).launch {
+
                 if (!isOSReboot) {
                     if (countBatteryData == 10 && dataStoreManager?.getDashRebootStatusFlag()
                             ?.first() == true
@@ -4080,10 +4083,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             initBodyParamsViaPreferences()
 
             if (Gender.TYPE_MALE == readGender()) setDataMale() else setDataFemale()
+            if (isExistingVentilationModeAvailable()) setExistingVentilationMode(readLastVentMode())
 
-            if (isExistingVentilationModeAvailable()) setExistingVentilationMode(
-                readLastVentMode()
-            )
             binding.checkMode.visibility =
                 if (isExistingVentilationModeAvailable()) View.VISIBLE else View.INVISIBLE
             binding.existinglabel.visibility =
@@ -4110,10 +4111,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             if (readCurrentUid() == PatientProfile.TYPE_NEONAT) {
                 readBodyWeight()?.toDouble()?.let {
                     binding.includeProgressWeight.paramProgressBar.setCurrentProgress(it)
-                    binding.includeProgressWeight.textView.text = String.format(
-                        "%.1f",
-                        it.toFloat()
-                    )
+                    binding.includeProgressWeight.textView.text =
+                        String.format("%.1f", it.toFloat())
                 }
             } else {
                 readBodyWeight()?.toDouble()?.toInt()?.let {
@@ -4126,6 +4125,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 binding.includeProgressHeight.paramProgressBar.setCurrentProgress(it.toDouble())
                 binding.includeProgressHeight.textView.text = it.toString()
             }
+
             readAge()?.toDouble()?.toInt()?.let {
                 binding.includeProgressAge.paramProgressBar.setCurrentProgress(it.toDouble())
                 binding.includeProgressAge.textView.text = it.toString()
@@ -4197,9 +4197,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 //                }
 //            }
 //        }
-
     }
-
 
     private fun setPaddingOnButtons() {
 
@@ -4340,7 +4338,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         setPaddingOnButtons()
     }
 
-
     private fun setDataMale() {
         binding.includeMale.imageViewMale.setImageResource(R.drawable.ic_male_select)
         binding.includeMale.buttonMale.setBackgroundResource(R.drawable.background_green_border)
@@ -4410,14 +4407,12 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     }
 
     private fun doBindService() {
-
         if (!isServiceBound) {
             serviceIntent = Intent(this, UsbService::class.java)
             bindService(serviceIntent, mServiceConnection, BIND_AUTO_CREATE)
         }
         startService(serviceIntent)
     }
-
 
     private fun doUnbindService() {
         if (isServiceBound) {
@@ -4433,9 +4428,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         }
     }
 
-    override fun onCalibration() {
-
-    }
+    override fun onCalibration() {}
 
     private fun sendConfigurationToVentilatorWithWatchDog() {
 
@@ -4445,7 +4438,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         }
     }
 
-
     // remove 38 & 39 mode functionality code as per embedded team concern
     fun sendControlModeToVentilator(mode: Int) {
 
@@ -4454,8 +4446,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 Log.i("CHECK_HERE_MODE", VentilatorApp.selectedOptions.toString())
 
                 if (isExistingVentilation == true) {
-//                    if (VentilatorApp.selectedOptions == SELECTED_OPTIONS.NON_INVASIVE_NAME && (mode == MODE_NIV_CPAP)) send(Configs.INV_CPAP.toString())
-//                    else if (VentilatorApp.selectedOptions == SELECTED_OPTIONS.NON_INVASIVE_NAME && (mode == MODE_NIV_BPAP)) send(Configs.INV_BPAP.toString())
                     if (VentilatorApp.selectedOptions == SELECTED_OPTIONS.PRONGS_NAME && (mode != MODE_NC_CPAP && mode != MODE_HFNC)) send(
                         MODE_NC_IPPV.toString()
                     )
@@ -4465,8 +4455,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         send(mode.toString())
                     }
                 } else {
-//                    if (VentilatorApp.selectedOptions == SELECTED_OPTIONS.NON_INVASIVE_NAME && (mode == MODE_NIV_CPAP)) send(Configs.INV_CPAP.toString())
-//                    else if (VentilatorApp.selectedOptions == SELECTED_OPTIONS.NON_INVASIVE_NAME && (mode == MODE_NIV_BPAP)) send(Configs.INV_BPAP.toString())
                     if (VentilatorApp.selectedOptions == SELECTED_OPTIONS.PRONGS_NAME && (mode != MODE_NC_CPAP && mode != MODE_HFNC)) send(
                         MODE_NC_IPPV.toString()
                     )
@@ -4481,20 +4469,13 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         }
     }
 
-    /*
- * This method start pinging to ventilator
- */
     private fun startPinging() {
         communicationService?.apply {
             if (pingingTask == null) pingingTask = PingingTask(this)
             if (pingingTask?.isRunning == false) pingingTask?.start()
         }
-
     }
 
-    /*
-* This method stop pinging to ventilator
-*/
     private fun stopPinging() {
         pingingTask?.apply {
             if (isRunning) stop()
@@ -4502,8 +4483,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     }
 
     private fun setExistingVentilationMode(readVentilationMode: Int) {
-        Log.i("READ_MODE_VALUE", readVentilationMode.toString())
-        Log.i("check_vent_mode", "setExistingVentilationMode ${readVentilationMode.toString()}")
         when (readVentilationMode) {
 
             MODE_VCV_CMV -> {

@@ -3047,8 +3047,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
                         isVentiLocked = true
                         prefManager?.saveLockedStatus("Locked")
-                        val lockedStatusData =
-                            "$deviceId,false,true,${prefManager?.readLockedStatus()}"
+                        val lockedStatusData = "$deviceId,false,true,${prefManager?.readLockedStatus()}"
                         mSocket?.emit("NodeReceivingLockedStatus", lockedStatusData)
 
                     } else {
@@ -3058,7 +3057,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                             isVentiLocked = false
                             val calendar = Calendar.getInstance()
                             val dayOfYear = calendar.get(Calendar.DAY_OF_YEAR)
-//                            testingLockVariable += 2
                             FileLogger.writeDispatchDate(this@MainActivity, dayOfYear.toString())
                         }
                         try {
@@ -3887,7 +3885,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     private var isOSReboot = false
     private var isVentiLocked = false
 
-//    private var testingLockVariable = Calendar.getInstance().get(Calendar.MINUTE) + 2
 
     private fun startTime() {
 
@@ -3911,7 +3908,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     "continues check - $dayOfYear, $dispatchData, $currentMins"
                 )
                 if ((dayOfYear - dispatchData.toInt()) >= 10 && !isVentiLocked) {
-//                if (currentMins >= testingLockVariable && !isVentiLocked){
 
                     prefManager?.saveLockedStatus("Auto Locked")
                     isVentiLocked = true

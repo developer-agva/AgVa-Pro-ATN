@@ -195,10 +195,10 @@ class GraphicsDialogFragment(
     private fun initView() {
         binding.includeButtonLayout0.buttonView.text = getString(R.string.hint_layout_default)
         binding.includeButtonLayout1.buttonView.text = getString(R.string.hint_layout_1)
-        binding.includeButtonLayout2.buttonView.text = getString(R.string.hint_layout_1)
-        binding.includeButtonLayout3.buttonView.text = getString(R.string.hint_layout_2)
-        binding.includeButtonLayout4.buttonView.text = getString(R.string.hint_layout_3)
-        binding.includeButtonLayout5.buttonView.text = getString(R.string.hint_layout_4)
+        binding.includeButtonLayout2.buttonView.text = getString(R.string.hint_layout_2)
+        binding.includeButtonLayout3.buttonView.text = getString(R.string.hint_layout_3)
+        binding.includeButtonLayout4.buttonView.text = getString(R.string.hint_layout_4)
+        binding.includeButtonLayout5.buttonView.text = getString(R.string.hint_layout_5)
         binding.includeButtonDefault.buttonView.text = getString(R.string.hint_layout_default)
 
         binding.includeButtonDefault.buttonView.setPadding(35, 10, 35, 10)

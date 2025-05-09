@@ -336,17 +336,17 @@ class ComplianceModuleFragment : GraphFragment() {
             val dataFirstChart = FileLogger.readTrendFileAsPerParamAndDuration(
                 Configs.getTrendsFileName(
                     PreferenceManager(requireContext())
-                ), 17, defaultDurationCount
+                ), 3, defaultDurationCount
             )
             val dataSecondChart = FileLogger.readTrendFileAsPerParamAndDuration(
                 Configs.getTrendsFileName(
                     PreferenceManager(requireContext())
-                ), 18, defaultDurationCount
+                ), 5, defaultDurationCount
             )
             val dataThirdChart = FileLogger.readTrendFileAsPerParamAndDuration(
                 Configs.getTrendsFileName(
                     PreferenceManager(requireContext())
-                ), 19, defaultDurationCount
+                ), 4, defaultDurationCount
             )
 
             // list having data like "time~data"
@@ -404,17 +404,17 @@ class ComplianceModuleFragment : GraphFragment() {
             val dataFirstChart = FileLogger.readTrendFileAsPerParamAndDuration(
                     Configs.getTrendsFileName(
                         PreferenceManager(requireContext())
-                    ), 17, defaultDurationCount
+                    ), 3, defaultDurationCount
                 )
             val dataSecondChart = FileLogger.readTrendFileAsPerParamAndDuration(
                     Configs.getTrendsFileName(
                         PreferenceManager(requireContext())
-                    ), 18, defaultDurationCount
+                    ), 5, defaultDurationCount
                 )
             val dataThirdChart = FileLogger.readTrendFileAsPerParamAndDuration(
                     Configs.getTrendsFileName(
                         PreferenceManager(requireContext())
-                    ), 19, defaultDurationCount
+                    ), 4, defaultDurationCount
                 )
 
             // list having data like "time~data"

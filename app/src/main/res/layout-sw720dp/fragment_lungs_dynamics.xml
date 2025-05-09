@@ -70,7 +70,7 @@
         android:id="@+id/img_lungs"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="@drawable/lungs_amber"
+        android:src="@drawable/lungs_grey"
         android:padding="20dp"
         app:layout_constraintStart_toEndOf="@id/guidelineOne"
         app:layout_constraintEnd_toStartOf="@id/guideLineSecond"
@@ -81,7 +81,7 @@
         android:id="@+id/img_veins"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="@drawable/veins_red"
+        android:src="@drawable/veins_grey"
         android:padding="20dp"
         app:layout_constraintStart_toEndOf="@id/guidelineOne"
         app:layout_constraintEnd_toStartOf="@id/guideLineSecond"
@@ -92,7 +92,7 @@
         android:id="@+id/img_trachea"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="@drawable/trachea_amber"
+        android:src="@drawable/trachea_grey"
         android:padding="10dp"
         app:layout_constraintStart_toEndOf="@id/guidelineOne"
         app:layout_constraintEnd_toStartOf="@id/guideLineSecond"
@@ -163,13 +163,13 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <TextView
-            android:id="@+id/spontVtLabel"
+            android:id="@+id/resistanceLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/arialn"
             android:textSize="@dimen/_5sdp"
             android:textColor="@color/white"
-            android:text="Spont VT"
+            android:text="Dyn Resistance"
             android:alpha="@dimen/parameter_title_alpha"
             android:layout_marginTop="@dimen/_2sdp"
             android:layout_marginStart="@dimen/_2sdp"
@@ -177,7 +177,7 @@
             app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
-            android:id="@+id/spontVtValue"
+            android:id="@+id/resistanceValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/avenir_next_lt_pro_medium"
@@ -187,16 +187,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/spontVtLabel"/>
+            app:layout_constraintTop_toBottomOf="@id/resistanceLabel"/>
 
         <TextView
-            android:id="@+id/spontVtUnit"
+            android:id="@+id/resistanceUnit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/arialn"
             android:textSize="@dimen/_5sdp"
             android:textColor="@color/white"
-            android:text="mL"
+            android:text="cmH₂O/L/sec"
             android:alpha="@dimen/parameter_title_alpha"
             android:layout_marginTop="@dimen/_2sdp"
             android:layout_marginEnd="@dimen/_2sdp"

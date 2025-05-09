@@ -3065,8 +3065,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                             e.printStackTrace()
                         }
                         prefManager?.saveLockedStatus("Unlocked")
-                        val lockedStatusData =
-                            "$deviceId,true,false,${prefManager?.readLockedStatus()}"
+                        val lockedStatusData = "$deviceId,true,false,${prefManager?.readLockedStatus()}"
                         mSocket?.emit("NodeReceivingLockedStatus", lockedStatusData)
 
                     }
@@ -3092,9 +3091,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
                 CoroutineScope(Dispatchers.Main).launch {
 
-
                     when (debugCommand) {
-
 
                         "Start Debug" -> {
 
@@ -3189,6 +3186,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                                     highlightButton(binding.buttonPreopCheck)
 
                                     systemDialogFragment = SystemDialogFragment.newInstance(
+
                                         heightSize,
                                         widthSize,
                                         false,
@@ -3216,7 +3214,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
                                 systemDialogFragment?.isCancelable = false
                             }
-
                         }
 
                         "Stop Diagnostic" -> {
@@ -3267,7 +3264,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         setContentView(binding.root)
 
         prefManager = PreferenceManager(this@MainActivity)
-        dataStoreManager = DataStoreManager(this)
+        dataStoreManager = DataStoreManager(this@MainActivity)
         mEventViewModel = ViewModelProvider(this)[EventViewModel::class.java]
         mDebugViewModel = ViewModelProvider(this)[DebugViewModel::class.java]
         mMainActivityViewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
@@ -3306,10 +3303,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
         sendDiagnosticDataToSocket()
         VentilatorApp.isNebuliserActive = true
-        mDiagnosticCheckViewModel =
-            ViewModelProvider(this)[DiagnosticCheckViewModel::class.java]
-        mO2RegulationCheckViewModel =
-            ViewModelProvider(this)[O2RegulationCheckViewModel::class.java]
+        mDiagnosticCheckViewModel = ViewModelProvider(this)[DiagnosticCheckViewModel::class.java]
+        mO2RegulationCheckViewModel = ViewModelProvider(this)[O2RegulationCheckViewModel::class.java]
 
         mMainActivityViewModel.setBAtteryConnectedFlag(false)
 
@@ -3321,7 +3316,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         binding.layouterrorsensor.visibility = View.VISIBLE
                         binding.tvsensor.text = "BATTERY SYSTEM FAILURE"
                     } else {
-                        //  checkSesnsor()
+                        //  checkSensor()
                     }
                 }
             })
@@ -3363,13 +3358,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         normaliseButtons()
         disablePresence()
 
-        val deviceId =
-            Settings.Secure.getString(
-                this@MainActivity.contentResolver,
-                Settings.Secure.ANDROID_ID
-            )
-        val input =
-            "https://wa.me/7330405060?text=Hi, i need support for this ventilator id - +${deviceId}"
+        val deviceId = Settings.Secure.getString(this@MainActivity.contentResolver, Settings.Secure.ANDROID_ID)
+        val input = "https://wa.me/7330405060?text=Hi, i need support for this ventilator id - +${deviceId}"
 
         val qrCodeBitmap = qrCode(input)
         binding.qrCodeStandby.setImageBitmap(qrCodeBitmap)
@@ -3381,12 +3371,9 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 applicationContext
             )
         )
-        Log.i("check_location", locationClient.toString())
 
         locationClient.getLocationUpdates(5000L)
-            .catch {
-
-                    e ->
+            .catch { e ->
                 {
                     e.printStackTrace()
                     Log.i("check_location", e.toString())
@@ -3397,7 +3384,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
                 latitude = location.latitude
                 logitude = location.longitude
-                Log.i("check_location", latitude.toString() + " " + logitude.toString())
+                Log.i("check_location", "$latitude $logitude")
                 serviceScope.cancel()
                 CoroutineScope(Dispatchers.IO).launch {
 
@@ -3424,10 +3411,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         val updateHelper = UpdateHelper(this, this, this)
         updateHelper.checkForUpdates(this)
 
-
-        if (!prefManager?.readUHID()
-                .equals(FIRST_FILTER_NAME)
-        ) binding.etUhid.setText(prefManager?.readUHID())
+        if (!prefManager?.readUHID().equals(FIRST_FILTER_NAME)) binding.etUhid.setText(prefManager?.readUHID())
 
         binding.etUhid.setOnClickListener { it ->
             binding.etUhid.isCursorVisible = true
@@ -3463,7 +3447,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         )
                     }
                     AppUtils.hideKeyBoard(this@MainActivity, binding.etUhid)
-                    if (prefManager?.readUHID() != FIRST_FILTER_NAME) binding.etUhid?.setText(
+                    if (prefManager?.readUHID() != FIRST_FILTER_NAME) binding.etUhid.setText(
                         prefManager?.readUHID()
                     )
                     return true
@@ -3578,14 +3562,12 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     )
                     this.deviceStatus = deviceStatus
                     this.message = status
-                    this.last_hours =
-                        calculateTotalAndLastHours(getLastHours().first().toLong())
-                    this.total_hours =
-                        calculateTotalAndLastHours(getTotalHours().first().toLong())
+                    this.last_hours = calculateTotalAndLastHours(getLastHours().first().toLong())
+                    this.total_hours = calculateTotalAndLastHours(getTotalHours().first().toLong())
                     this.health = " Good"
                     this.address = LocationFilter(this@MainActivity).getAddress(
-                        VentilatorApp.latitude,
-                        VentilatorApp.logitude
+                        latitude,
+                        logitude
                     )
                 }
                 Log.i("value_check_hours", "INVENTILATION $request")
@@ -3895,17 +3877,16 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
             mMainActivityViewModel.isSocketConnected.postValue(mSocket?.connected())
 
-            // lock ventilator manually as per 10 days poilcy
+            // lock ventilator manually as per 10 days policy
             val dispatchData = FileLogger.readDispatchDate()
 
             if (dispatchData != dataNotFound) {
                 val calendar = Calendar.getInstance()
                 val dayOfYear = calendar.get(Calendar.DAY_OF_YEAR)
-                val currentMins = calendar.get(Calendar.MINUTE)
 
                 androidx.media3.common.util.Log.i(
                     "data_Date",
-                    "continues check - $dayOfYear, $dispatchData, $currentMins"
+                    "continues check - $dayOfYear, $dispatchData"
                 )
                 if ((dayOfYear - dispatchData.toInt()) >= 10 && !isVentiLocked) {
 
@@ -3936,7 +3917,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             mDebugViewModel.ventiLiveData.value?.let {
                 val dataList = it
                 if (dataList.size < 17) {
-                    dataList.add(VentilatorApp.ventiData)
+                    dataList.add(ventiData)
                     mDebugViewModel.ventiLiveData.postValue(dataList)
                 } else {
                     val newDataList = dataList.subList(1, dataList.size)
@@ -3945,7 +3926,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 }
             } ?: kotlin.run {
                 val newDataList = ArrayList<String>()
-                newDataList.add(VentilatorApp.ventiData)
+                newDataList.add(ventiData)
                 mDebugViewModel.ventiLiveData.postValue(newDataList)
             }
 
@@ -4005,6 +3986,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             if (isExistingVentilationModeAvailable() && currentPatientType == prefManager?.readLastUid()
                     .toString()
             ) View.VISIBLE else View.INVISIBLE
+
 
         binding.buttonModes.isEnabled =
             isExistingVentilationModeAvailable() && currentPatientType == prefManager?.readLastUid()

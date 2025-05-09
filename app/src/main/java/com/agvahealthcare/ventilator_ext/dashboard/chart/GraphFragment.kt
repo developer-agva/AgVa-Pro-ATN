@@ -76,7 +76,7 @@ open class GraphFragment() : Fragment() {
 
                 when(type){
                     GraphType.PRESSURE -> {
-                        text = "Pressure: ${seriesInfo.formattedXValue}"
+                        text = "Pressure: ${seriesInfo.formattedYValue}"
                     }
 
                     GraphType.VOLUME -> {

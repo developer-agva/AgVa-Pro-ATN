@@ -20,11 +20,21 @@ data class TrendDBModel(
     var dynamicCompliance: Float = 0f,
     var spontRR: Float = 0f,
     var spontVT: Float = 0f
+)
 
-    )
 data class TrendLungsDynamicsModel(
     var dynamicCompliance: Float = 0f,
     var spontRR: Float = 0f,
     var spontVT: Float = 0f,
+    var resistance: Float = 0f
+)
 
-    )
+data class TrendSpo2AndOxygenModel(
+    var fio2: Float = 0f,
+    var spo2: Float = 0f,
+    var pr: Float = 0f,
+    var spontRR: Float = 0f,
+    var spontVT: Float = 0f,
+    var dynamicCompliance: Float = 0f
+
+)

@@ -327,6 +327,74 @@ abstract class FileLogger {
             return isSuccess
         }
 
+        fun writeOxygenAndComplianceFile(
+            ctx: Context,
+            fileName: String,
+            data: String,
+        ): Boolean {
+            var isSuccess = false
+
+            val path = File(
+                Environment.getExternalStorageDirectory(),
+                AppUtils.PATH_FOLDER_AGVA + File.separator + "oxygen_compliance"
+            )
+            val isPathAccessible = path.exists() || path.mkdirs()
+
+            if (isPathAccessible) {
+
+                val file = File(path, fileName)
+
+                try {
+                    if (file.exists()) {
+
+                        val fileData = file.readLines()
+
+                        if (fileData.size <= 2000) {
+                            isSuccess = true
+                            val fileOutPutStream = FileOutputStream(file, true)
+                            fileOutPutStream.write(data.toByteArray())
+                            fileOutPutStream.close()
+                        } else {
+
+                            // create temp file
+                            val tempFile = File(path, "temp_$fileName")
+                            for (i in fileData.indices) {
+                                if (i != 0) {
+                                    if (tempFile.exists()) {
+                                        val fileOutPutStream = FileOutputStream(tempFile, true)
+                                        fileOutPutStream.write(fileData[i].toByteArray())
+                                        fileOutPutStream.close()
+                                    } else {
+                                        if (tempFile.createNewFile()) {
+                                            val fileOutPutStream = FileOutputStream(tempFile)
+                                            fileOutPutStream.write(fileData[i].toByteArray())
+                                            fileOutPutStream.close()
+                                        }
+                                    }
+                                }
+                            }
+                            file.delete()
+                            tempFile.renameTo(file)
+                            writeOxygenAndComplianceFile(ctx, fileName, data)
+                        }
+
+                    } else {
+                        if (file.createNewFile()) {
+                            isSuccess = true
+                            val fileOutPutStream = FileOutputStream(file)
+                            fileOutPutStream.write(data.toByteArray())
+                            fileOutPutStream.close()
+                        }
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    Log.i("asdaqe213", e.message.toString())
+                }
+
+            }
+            return isSuccess
+        }
+
         fun writeTrendLungsDynamicsFile(
             ctx: Context,
             fileName: String,
@@ -713,7 +781,7 @@ abstract class FileLogger {
 
             var filePath = File(
                 Environment.getExternalStorageDirectory(),
-                AppUtils.PATH_FOLDER_AGVA + File.separator + "trend"
+                AppUtils.PATH_FOLDER_AGVA + File.separator + "oxygen_compliance"
             )
             filePath = File(filePath, fileName)
             try {
@@ -745,6 +813,7 @@ abstract class FileLogger {
             }
             return dataNotFound
         }
+
 
         fun readLungsDynamicsFile(paramIndex: Int): String {
 

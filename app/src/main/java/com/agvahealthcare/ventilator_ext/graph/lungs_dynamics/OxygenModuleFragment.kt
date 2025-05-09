@@ -326,17 +326,17 @@ class OxygenModuleFragment : GraphFragment() {
             val dataFirstChart = FileLogger.readTrendFileAsPerParamAndDuration(
                 Configs.getTrendsFileName(
                     PreferenceManager(requireContext())
-                ), 15, defaultDurationCount
+                ), 1, defaultDurationCount
             )
             val dataSecondChart = FileLogger.readTrendFileAsPerParamAndDuration(
                 Configs.getTrendsFileName(
                     PreferenceManager(requireContext())
-                ), 16, defaultDurationCount
+                ), 2, defaultDurationCount
             )
             val dataThirdChart = FileLogger.readTrendFileAsPerParamAndDuration(
                 Configs.getTrendsFileName(
                     PreferenceManager(requireContext())
-                ), 9, defaultDurationCount
+                ), 0, defaultDurationCount
             )
 
             // list having data like "time~data"
@@ -389,17 +389,17 @@ class OxygenModuleFragment : GraphFragment() {
             val dataFirstChart = FileLogger.readTrendFileAsPerParamAndDuration(
                 Configs.getTrendsFileName(
                     PreferenceManager(requireContext())
-                ), 15, defaultDurationCount
+                ), 1, defaultDurationCount
             )
             val dataSecondChart = FileLogger.readTrendFileAsPerParamAndDuration(
                 Configs.getTrendsFileName(
                     PreferenceManager(requireContext())
-                ), 16, defaultDurationCount
+                ), 2, defaultDurationCount
             )
             val dataThirdChart = FileLogger.readTrendFileAsPerParamAndDuration(
                 Configs.getTrendsFileName(
                     PreferenceManager(requireContext())
-                ), 9, defaultDurationCount
+                ), 0, defaultDurationCount
             )
 
             // list having data like "time~data"

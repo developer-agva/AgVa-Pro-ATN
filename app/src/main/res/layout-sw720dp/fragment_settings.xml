@@ -106,7 +106,7 @@
         android:layout_height="0dp"
         android:layout_margin="@dimen/_5sdp"
         android:background="@drawable/background_grey_border_white"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/includeButtonLoudness"

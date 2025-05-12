@@ -137,8 +137,8 @@ class GraphicsDialogFragment(
 
         return when (highlightedIndex) {
             1 -> Pair(binding.imageViewCrossGraphics,binding.imageViewCrossGraphics)
-            2 -> Pair(binding.layoutPanelDuo,binding.layoutPanelDuo)
-//            3 -> Pair(binding.layoutPanelQuadTrends,binding.layoutPanelQuadTrends)
+            2 -> Pair(binding.layoutPanelQuadTrends,binding.layoutPanelQuadTrends)
+            3 -> Pair(binding.layoutPanelDuo,binding.layoutPanelDuo)
             3 -> Pair(binding.layoutPanelTrio,binding.layoutPanelTrio)
             4 -> Pair(binding.layoutPanelDivideQuad,binding.layoutPanelDivideQuad)
             5 -> Pair(binding.layoutPanelDivideTrio,binding.layoutPanelDivideTrio)
@@ -193,8 +193,8 @@ class GraphicsDialogFragment(
     }
 
     private fun initView() {
-        binding.includeButtonLayout0.buttonView.text = getString(R.string.hint_layout_default)
-        binding.includeButtonLayout1.buttonView.text = getString(R.string.hint_layout_1)
+        binding.includeButtonLayout0.buttonView.text = getString(R.string.hint_layout_1)
+        binding.includeButtonLayout1.buttonView.text = getString(R.string.hint_layout_default)
         binding.includeButtonLayout2.buttonView.text = getString(R.string.hint_layout_2)
         binding.includeButtonLayout3.buttonView.text = getString(R.string.hint_layout_3)
         binding.includeButtonLayout4.buttonView.text = getString(R.string.hint_layout_4)
@@ -338,8 +338,8 @@ class GraphicsDialogFragment(
         }
 
         binding.includeButtonDefault.buttonView.setOnClickListener {
-            prefManager?.setGraphParentType(parentType.DuoFragmentGraph)
-            onGraphSelectListener?.onSelectDuoGraph()
+            prefManager?.setGraphParentType(parentType.QuadTrendsFragment)
+            onGraphSelectListener?.onSelectQuadTrendsGraph()
             closeListener?.handleDialogClose()
             closeDialog()
         }

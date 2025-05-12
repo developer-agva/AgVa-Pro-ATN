@@ -302,7 +302,6 @@ class SettingFragment : Fragment(), OnKnobPressListener, onDropDownSelectionList
         setUpLoudness()
         setOnClickListener()
 
-
     }
 
     private fun setDataViaPreference() {
@@ -343,7 +342,6 @@ class SettingFragment : Fragment(), OnKnobPressListener, onDropDownSelectionList
         binding.includeButtonApply.buttonView.setBackgroundResource(R.drawable.background_dark_grey)
 
         binding.includeButtonTest.buttonView.setPadding(50, 0, 50, 0)
-
 
         binding.pressureLayout.setOnClickListener {
 

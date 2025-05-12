@@ -124,7 +124,7 @@ class ComplianceModuleFragment : GraphFragment() {
 
         val rs2 = sciChartBuilder.newSplineLineSeries()
             .withStrokeStyle(
-                sciChartBuilder.newPen().withColor(ColorUtil.Beige)
+                sciChartBuilder.newPen().withColor(ColorUtil.White)
                     .withThickness(3f).build()
             )
             .withSeriesInfoProvider(CustomSeriesInfoProvider(GraphType.DYNAMIC_COMP_CHART))
@@ -209,7 +209,7 @@ class ComplianceModuleFragment : GraphFragment() {
         val rs2: IRenderableSeries = sciChartBuilder.newSplineLineSeries()
             .withStrokeStyle(
                 sciChartBuilder.newPen()
-                    .withColor(ColorUtil.LimeGreen)
+                    .withColor(ColorUtil.White)
                     .withThickness(3f).build()
             )
             .withSeriesInfoProvider(CustomSeriesInfoProvider(GraphType.SPONT_RR_CHART))
@@ -295,7 +295,7 @@ class ComplianceModuleFragment : GraphFragment() {
         val rs2: IRenderableSeries = sciChartBuilder.newSplineLineSeries()
             .withStrokeStyle(
                 sciChartBuilder.newPen()
-                    .withColor(ColorUtil.Brown)
+                    .withColor(ColorUtil.White)
                     .withThickness(3f).build()
             )
             .withSeriesInfoProvider(CustomSeriesInfoProvider(GraphType.SPONT_VT_CHART))
@@ -325,28 +325,27 @@ class ComplianceModuleFragment : GraphFragment() {
         binding.txtChartDynamicsFirst.text = defaultParamsIndexFirst
         binding.txtChartDynamicsSecond.text = defaultParamsIndexSecond
         binding.txtChartDynamicsThird.text = defaultParamsIndexThird
-
     }
 
-    fun updateTrendsViaParamAndDuration() {
-        Log.i("value_lungs", "read compliance module")
+    fun updateTrendsViaParamAndDuration(duration: String) {
+        Log.i("value_lungs", "read compliance module $duration")
 
         CoroutineScope(Dispatchers.IO).launch {
 
             val dataFirstChart = FileLogger.readTrendFileAsPerParamAndDuration(
                 Configs.getTrendsFileName(
                     PreferenceManager(requireContext())
-                ), 3, defaultDurationCount
+                ), 17, duration
             )
             val dataSecondChart = FileLogger.readTrendFileAsPerParamAndDuration(
                 Configs.getTrendsFileName(
                     PreferenceManager(requireContext())
-                ), 5, defaultDurationCount
+                ), 18, duration
             )
             val dataThirdChart = FileLogger.readTrendFileAsPerParamAndDuration(
                 Configs.getTrendsFileName(
                     PreferenceManager(requireContext())
-                ), 4, defaultDurationCount
+                ), 19, duration
             )
 
             // list having data like "time~data"
@@ -404,17 +403,17 @@ class ComplianceModuleFragment : GraphFragment() {
             val dataFirstChart = FileLogger.readTrendFileAsPerParamAndDuration(
                     Configs.getTrendsFileName(
                         PreferenceManager(requireContext())
-                    ), 3, defaultDurationCount
+                    ), 17, "one_hour"
                 )
             val dataSecondChart = FileLogger.readTrendFileAsPerParamAndDuration(
                     Configs.getTrendsFileName(
                         PreferenceManager(requireContext())
-                    ), 5, defaultDurationCount
+                    ), 18, "one_hour"
                 )
             val dataThirdChart = FileLogger.readTrendFileAsPerParamAndDuration(
                     Configs.getTrendsFileName(
                         PreferenceManager(requireContext())
-                    ), 4, defaultDurationCount
+                    ), 19, "one_hour"
                 )
 
             // list having data like "time~data"

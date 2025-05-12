@@ -167,6 +167,7 @@ class LungsDynamicsFragment : Fragment() {
             val dataFirstChart = FileLogger.readLungsDynamicsFile(0)
             val dataSecondChart = FileLogger.readLungsDynamicsFile(3)
             val dataThirdChart = FileLogger.readLungsDynamicsFile(2)
+            Log.i("Resistance","spontRR : $dataThirdChart")
 
             withContext(Dispatchers.Main) {
                 if (dataFirstChart != FileLogger.dataNotFound) {

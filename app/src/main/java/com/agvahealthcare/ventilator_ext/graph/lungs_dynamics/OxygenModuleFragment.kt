@@ -40,7 +40,6 @@ class OxygenModuleFragment : GraphFragment() {
     private var defaultParamsIndexFirst = "Spo2"
     private var defaultParamsIndexSecond = "Pulse"
     private var defaultParamsIndexThird = "Fio2"
-    private var defaultDurationCount = 2
     private lateinit var binding : FragmentOxygenModuleBinding
     private var dataSeries1First: IXyDataSeries<Int, Float>? = null
     private var dataSeries1Second: IXyDataSeries<Int, Float>? = null
@@ -121,7 +120,7 @@ class OxygenModuleFragment : GraphFragment() {
 
         val rs2 = sciChartBuilder.newSplineLineSeries()
             .withStrokeStyle(
-                sciChartBuilder.newPen().withColor(resources.getColor(R.color.preCalib_amber))
+                sciChartBuilder.newPen().withColor(resources.getColor(R.color.white))
                     .withThickness(3f).build()
             )
             .withSeriesInfoProvider(CustomSeriesInfoProvider(GraphType.SPO2_CHART))
@@ -172,7 +171,7 @@ class OxygenModuleFragment : GraphFragment() {
             .withTickLabelStyle(titleStyle)
             .withDrawMajorBands(true)
             .withAutoRangeMode(AutoRange.Never)
-            .withVisibleRange(0.0, 150.0)
+            .withVisibleRange(0.0, 200.0)
             .build()
 
         binding.trendSecondChart.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.black))
@@ -202,7 +201,7 @@ class OxygenModuleFragment : GraphFragment() {
         val rs2: IRenderableSeries = sciChartBuilder.newSplineLineSeries()
             .withStrokeStyle(
                 sciChartBuilder.newPen()
-                    .withColor(resources.getColor(R.color.design_default_color_secondary_variant))
+                    .withColor(resources.getColor(R.color.red))
                     .withThickness(3f).build()
             )
             .withSeriesInfoProvider(CustomSeriesInfoProvider(GraphType.PR_CHART))
@@ -286,7 +285,7 @@ class OxygenModuleFragment : GraphFragment() {
         val rs2: IRenderableSeries = sciChartBuilder.newSplineLineSeries()
             .withStrokeStyle(
                 sciChartBuilder.newPen()
-                    .withColor(resources.getColor(R.color.purple_200))
+                    .withColor(resources.getColor(R.color.green))
                     .withThickness(3f).build()
             )
             .withSeriesInfoProvider(CustomSeriesInfoProvider(GraphType.FIO2_CHART))
@@ -319,26 +318,27 @@ class OxygenModuleFragment : GraphFragment() {
         binding.txtChartThird.text = defaultParamsIndexThird
     }
 
-    fun updateTrendsViaParamAndDuration() {
-        Log.i("value_lungs", "read oxygen module")
+    fun updateTrendsViaParamAndDuration(duration :String) {
+        Log.i("value_lungs", "read oxygen module $duration")
         CoroutineScope(Dispatchers.IO).launch {
 
             val dataFirstChart = FileLogger.readTrendFileAsPerParamAndDuration(
                 Configs.getTrendsFileName(
                     PreferenceManager(requireContext())
-                ), 1, defaultDurationCount
+                ), 15, duration
             )
             val dataSecondChart = FileLogger.readTrendFileAsPerParamAndDuration(
                 Configs.getTrendsFileName(
                     PreferenceManager(requireContext())
-                ), 2, defaultDurationCount
+                ), 16, duration
             )
             val dataThirdChart = FileLogger.readTrendFileAsPerParamAndDuration(
                 Configs.getTrendsFileName(
                     PreferenceManager(requireContext())
-                ), 0, defaultDurationCount
+                ), 9, duration
             )
 
+            Log.i("value_lungs", "$dataFirstChart - $dataSecondChart - $dataThirdChart")
             // list having data like "time~data"
             // handle data for first chart
             if (dataFirstChart != FileLogger.dataNotFound) {
@@ -384,24 +384,26 @@ class OxygenModuleFragment : GraphFragment() {
     }
 
     private fun readTrendsViaParamAndDuration() {
+        Log.i("value_lungs", "default oxygen module")
         CoroutineScope(Dispatchers.IO).launch {
 
             val dataFirstChart = FileLogger.readTrendFileAsPerParamAndDuration(
                 Configs.getTrendsFileName(
                     PreferenceManager(requireContext())
-                ), 1, defaultDurationCount
+                ), 15, "one_hour"
             )
             val dataSecondChart = FileLogger.readTrendFileAsPerParamAndDuration(
                 Configs.getTrendsFileName(
                     PreferenceManager(requireContext())
-                ), 2, defaultDurationCount
+                ), 16, "one_hour"
             )
             val dataThirdChart = FileLogger.readTrendFileAsPerParamAndDuration(
                 Configs.getTrendsFileName(
                     PreferenceManager(requireContext())
-                ), 0, defaultDurationCount
+                ), 9, "one_hour"
             )
 
+            Log.i("value_lungs", "$dataFirstChart - $dataSecondChart - $dataThirdChart")
             // list having data like "time~data"
             // handle data for first chart
             if (dataFirstChart != FileLogger.dataNotFound) {

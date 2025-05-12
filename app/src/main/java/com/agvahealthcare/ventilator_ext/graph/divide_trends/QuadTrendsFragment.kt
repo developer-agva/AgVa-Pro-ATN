@@ -4,33 +4,47 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.VentilatorApp
-import com.agvahealthcare.ventilator_ext.callback.OnDismissDialogListener
-import com.agvahealthcare.ventilator_ext.custom_dialogs.WaveSelectionDialogFragment
+import com.agvahealthcare.ventilator_ext.dashboard.DashBoardActivity
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardViewModel
 import com.agvahealthcare.ventilator_ext.dashboard.GraphLayoutFragment
+import com.agvahealthcare.ventilator_ext.dashboard.chart.FlowChartFragment
 import com.agvahealthcare.ventilator_ext.dashboard.chart.GraphType
 import com.agvahealthcare.ventilator_ext.dashboard.chart.PressureChartFragment
 import com.agvahealthcare.ventilator_ext.databinding.FragmentQuadTrendsBinding
 import com.agvahealthcare.ventilator_ext.graph.lungs_dynamics.ComplianceModuleFragment
 import com.agvahealthcare.ventilator_ext.graph.lungs_dynamics.LungsDynamicsFragment
 import com.agvahealthcare.ventilator_ext.graph.lungs_dynamics.OxygenModuleFragment
+import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
+import com.agvahealthcare.ventilator_ext.system.settings.CommonSetupAdapter
 import com.agvahealthcare.ventilator_ext.system.settings.onDropDownSelectionListener
 import com.agvahealthcare.ventilator_ext.utility.FIFOCAPACITY_CUSTOM_SIZE
 import com.agvahealthcare.ventilator_ext.utility.GRAPH_PRESSURE_MAX
 import com.agvahealthcare.ventilator_ext.utility.GRAPH_PRESSURE_MIN
+import com.agvahealthcare.ventilator_ext.utility.TRIO_GRAPH_FLOW_MAX
+import com.agvahealthcare.ventilator_ext.utility.TRIO_GRAPH_FLOW_MIN
 
 
-class QuadTrendsFragment : GraphLayoutFragment("QuadTrendsGraphFragment") {
+class QuadTrendsFragment : GraphLayoutFragment("QuadTrendsGraphFragment") ,onDropDownSelectionListener {
 
     private lateinit var binding : FragmentQuadTrendsBinding
     private var pressureChartFragment: PressureChartFragment? = null
+    private var flowChartFragment: FlowChartFragment? = null
     private var oxygenModuleFragment: OxygenModuleFragment? = null
     private var complianceModuleFragment: ComplianceModuleFragment? = null
     private var lungsDynamicsFragment: LungsDynamicsFragment? = null
     private var mDashBoardViewModel : DashBoardViewModel? = null
+    private var clickedTrendTile = false
+    private var clickedModuleTile = false
+    private var trendParamList = arrayListOf("1 hour", "8 hours" ,"12 hours", "24 hours")
+    private var moduleList = arrayListOf("OXYGEN", "COMPLIANCE" ,"FLOW")
+    private var mTrendAdapter: CommonSetupAdapter? = null
+    private var prefManager : PreferenceManager? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,6 +55,7 @@ class QuadTrendsFragment : GraphLayoutFragment("QuadTrendsGraphFragment") {
     }
     private fun makeNullAllFragment(){
         complianceModuleFragment = null
+        flowChartFragment = null
         oxygenModuleFragment = null
     }
 
@@ -48,6 +63,7 @@ class QuadTrendsFragment : GraphLayoutFragment("QuadTrendsGraphFragment") {
         super.onViewCreated(view, savedInstanceState)
 
         mDashBoardViewModel = ViewModelProvider(requireActivity())[DashBoardViewModel::class.java]
+        prefManager = PreferenceManager(requireContext())
         // RM scichart
         mDashBoardViewModel?.isTouchGraph?.observe(viewLifecycleOwner) {
 
@@ -55,18 +71,73 @@ class QuadTrendsFragment : GraphLayoutFragment("QuadTrendsGraphFragment") {
                 pressureChartFragment?.setRollOver()
                 oxygenModuleFragment?.setRollOver()
                 complianceModuleFragment?.setRollOver()
+                flowChartFragment?.setRollOver()
             } else {
                 pressureChartFragment?.removeRollover()
                 oxygenModuleFragment?.removeRollover()
                 complianceModuleFragment?.removeRollover()
+                flowChartFragment?.removeRollover()
             }
         }
         initData()
+        binding.trendDurationText.text = "1 hour"
+        binding.moduleSwitchText.text = "OXYGEN"
 
-        binding.swapFirstGraph.setOnClickListener {
-            if (oxygenModuleFragment == null) initOxygenModuleFragment()
-            else initComplianceModuleFragment()
+        binding.moduleSwitchLayout.setOnClickListener {
+            clickedModuleTile = true
+            binding.trendsRecyclerView.visibility = View.GONE
+            binding.moduleRecyclerView.visibility = if (binding.moduleRecyclerView.isVisible) View.GONE else View.VISIBLE
+            setupTrendDropDownAdapter(binding.moduleRecyclerView,moduleList)
         }
+
+        binding.trendDurationLayout.setOnClickListener {
+            clickedTrendTile = true
+            binding.moduleRecyclerView.visibility = View.GONE
+            binding.trendsRecyclerView.visibility = if (binding.trendsRecyclerView.isVisible) View.GONE else View.VISIBLE
+            setupTrendDropDownAdapter(binding.trendsRecyclerView,trendParamList)
+        }
+    }
+
+    private fun setupTrendDropDownAdapter(recyclerView: RecyclerView,list:ArrayList<String>) {
+        mTrendAdapter = CommonSetupAdapter(list, this@QuadTrendsFragment)
+        recyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = mTrendAdapter
+        }
+    }
+
+    override fun onItemSelect(text: String, colorInt: Int) {
+
+        binding.trendsRecyclerView.visibility = View.GONE
+        binding.moduleRecyclerView.visibility = View.GONE
+        mTrendAdapter = null
+
+        if (clickedTrendTile) {
+            binding.trendDurationText.text = text
+            (requireActivity() as DashBoardActivity).changeOxygenAndComplianceDurationListener(text)
+        }
+        if (clickedModuleTile) {
+            when(text){
+                "OXYGEN" -> {
+                    binding.moduleSwitchText.text = "OXYGEN"
+                    initOxygenModuleFragment()
+                    binding.trendDurationLayout.visibility = View.VISIBLE
+                }
+                "COMPLIANCE" -> {
+                    binding.moduleSwitchText.text = "COMPLIANCE"
+                    initComplianceModuleFragment()
+                    binding.trendDurationLayout.visibility = View.VISIBLE
+                }
+                "FLOW" -> {
+                    binding.moduleSwitchText.text = "FLOW"
+                    (requireActivity() as DashBoardActivity).resetFlowChartCounter()
+                    initFlowChartFragment()
+                    binding.trendDurationLayout.visibility = View.GONE
+                }
+            }
+        }
+        clickedTrendTile = false
+        clickedModuleTile = false
     }
 
     private fun initData() {
@@ -91,11 +162,23 @@ class QuadTrendsFragment : GraphLayoutFragment("QuadTrendsGraphFragment") {
             )
             .commit()
     }
+    private fun initFlowChartFragment() {
+        makeNullAllFragment()
+        flowChartFragment =
+            FlowChartFragment.newInstance(GraphType.FLOW, TRIO_GRAPH_FLOW_MIN, TRIO_GRAPH_FLOW_MAX)
+        childFragmentManager.beginTransaction()
+            .replace(
+                R.id.containerTrendsQuadGraph3,
+                flowChartFragment!!,
+                flowChartFragment!!::class.java.javaClass.simpleName
+            )
+            .commit()
+    }
 
     fun updateLungsParams(){ lungsDynamicsFragment?.takeIf { it.isVisible }?.apply { readTrendsViaParamAndDuration() } }
-    fun updateOxygenAndComplianceParams(){
-        oxygenModuleFragment?.takeIf { it.isVisible }?.apply { updateTrendsViaParamAndDuration() }
-        complianceModuleFragment?.takeIf { it.isVisible }?.apply { updateTrendsViaParamAndDuration() }
+    fun updateOxygenAndComplianceParams(duration:String){
+        oxygenModuleFragment?.takeIf { it.isVisible }?.apply { updateTrendsViaParamAndDuration(duration) }
+        complianceModuleFragment?.takeIf { it.isVisible }?.apply { updateTrendsViaParamAndDuration(duration) }
     }
 
     private fun initOxygenModuleFragment() {
@@ -133,7 +216,9 @@ class QuadTrendsFragment : GraphLayoutFragment("QuadTrendsGraphFragment") {
 
     fun clearSeries() {}
     fun addGraphPressureData(x: Int, y: Float, trigger: String?) { pressureChartFragment?.addEntry(x, y, trigger) }
-    fun addGraphFlowData(x: Int, y: Float) {}
+    fun addGraphFlowData(x: Int, y: Float) {
+        flowChartFragment?.addEntry(x, y)
+    }
     fun addGraphVolumeData(x: Int, y: Float) {}
 
     override fun onPause() {

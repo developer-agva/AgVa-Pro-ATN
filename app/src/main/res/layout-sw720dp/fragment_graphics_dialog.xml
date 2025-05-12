@@ -47,8 +47,8 @@
         android:layout_marginHorizontal="@dimen/_3sdp"
         app:layout_constraintTop_toTopOf="@id/layoutPanelTrio"
         app:layout_constraintBottom_toBottomOf="@id/layoutPanelTrio"
-        app:layout_constraintEnd_toStartOf="@id/layoutPanelQuadTrends"
-        app:layout_constraintStart_toEndOf="@id/MonitoringVertical1"
+        app:layout_constraintEnd_toStartOf="@id/layoutPanelTrio"
+        app:layout_constraintStart_toEndOf="@id/layoutPanelQuadTrends"
         android:orientation="vertical">
 
 
@@ -78,8 +78,8 @@
         android:layout_marginHorizontal="@dimen/_3sdp"
         app:layout_constraintTop_toTopOf="@id/layoutPanelTrio"
         app:layout_constraintBottom_toBottomOf="@id/layoutPanelTrio"
-        app:layout_constraintEnd_toStartOf="@id/layoutPanelTrio"
-        app:layout_constraintStart_toEndOf="@id/layoutPanelDuo"
+        app:layout_constraintEnd_toStartOf="@id/layoutPanelDuo"
+        app:layout_constraintStart_toEndOf="@id/MonitoringVertical1"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -107,7 +107,7 @@
         android:layout_marginHorizontal="@dimen/_3sdp"
         app:layout_constraintTop_toBottomOf="@id/imageViewCrossGraphics"
         app:layout_constraintBottom_toTopOf="@id/layoutPanelDivideQuad"
-        app:layout_constraintStart_toEndOf="@id/layoutPanelQuadTrends"
+        app:layout_constraintStart_toEndOf="@id/layoutPanelDuo"
         app:layout_constraintEnd_toEndOf="@id/MonitoringVertical2"
         android:orientation="vertical">
 

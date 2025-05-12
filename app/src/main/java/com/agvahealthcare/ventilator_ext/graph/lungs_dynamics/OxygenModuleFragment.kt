@@ -390,20 +390,20 @@ class OxygenModuleFragment : GraphFragment() {
             val dataFirstChart = FileLogger.readTrendFileAsPerParamAndDuration(
                 Configs.getTrendsFileName(
                     PreferenceManager(requireContext())
-                ), 15, "one_hour"
+                ), 15, "1 hour"
             )
             val dataSecondChart = FileLogger.readTrendFileAsPerParamAndDuration(
                 Configs.getTrendsFileName(
                     PreferenceManager(requireContext())
-                ), 16, "one_hour"
+                ), 16, "1 hour"
             )
             val dataThirdChart = FileLogger.readTrendFileAsPerParamAndDuration(
                 Configs.getTrendsFileName(
                     PreferenceManager(requireContext())
-                ), 9, "one_hour"
+                ), 9, "1 hour"
             )
 
-            Log.i("value_lungs", "$dataFirstChart - $dataSecondChart - $dataThirdChart")
+
             // list having data like "time~data"
             // handle data for first chart
             if (dataFirstChart != FileLogger.dataNotFound) {
@@ -411,6 +411,7 @@ class OxygenModuleFragment : GraphFragment() {
                 withContext(Dispatchers.Main) {
                     initFirstGraph(list.size.toDouble())
                     spo2TimeList.clear()
+                    Log.i("value_lungs", "${list.size}")
                     for (i in list.indices) {
                         spo2TimeList.add(list[i].split("~")[0])
                         dataSeries1First?.append(i, list[i].split("~")[1].toFloat())

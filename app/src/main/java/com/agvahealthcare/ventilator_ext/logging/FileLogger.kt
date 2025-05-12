@@ -215,7 +215,7 @@ abstract class FileLogger {
         }
 
         //reading of file
-        fun readTrendFile(fileName: String,uhid: String, startIndex: Int, endIndex: Int): String {
+        fun readTrendFile(fileName: String, uhid: String, startIndex: Int, endIndex: Int): String {
 
             var filePath = File(
                 Environment.getExternalStorageDirectory(),
@@ -232,7 +232,7 @@ abstract class FileLogger {
                     fileData.removeAt(fileData.size - 1)
                     // adding filter as per UHID
                     fileData = (fileData.filter { s ->
-                        Log.i("Log.ia",s)
+                        Log.i("Log.ia", s)
                         s.split(",")[20] == uhid
 
                     }) as ArrayList<String>
@@ -270,12 +270,36 @@ abstract class FileLogger {
             return dataNotFound
         }
 
-        fun readTrendFileAsPerParamAndDuration(fileName: String, paramIndex: Int, duration: String): String {
+        fun readTrendFileAsPerParamAndDuration(
+            fileName: String,
+            paramIndex: Int,
+            duration: String
+        ): String {
+
+            var requiredHours = 0
+            val currentDate = AppUtils.getCurrentDate()
+            val currentHours = AppUtils.getCurrentTime().split(":")[0].toInt()
 
             var filePath = File(
                 Environment.getExternalStorageDirectory(),
                 AppUtils.PATH_FOLDER_AGVA + File.separator + "trend"
             )
+
+            when (duration) {
+                "1 hour" -> requiredHours = 1
+                "8 hours" -> requiredHours = 8
+                "12 hours" -> requiredHours = 12
+                "24 hours" -> requiredHours = 24
+            }
+
+            // logic for last month/date/year
+            if (requiredHours > currentHours) {
+
+            } else {
+                requiredHours = (currentHours - requiredHours)
+            }
+
+            Log.i("testing_build", "$requiredHours $currentDate $currentHours")
             filePath = File(filePath, fileName)
             try {
 
@@ -286,8 +310,14 @@ abstract class FileLogger {
                     fileData.removeAt(fileData.size - 1)
                     // get data as per duration
                     for (i in 0 until fileData.size) {
-                        data += if (i != fileData.size - 1) fileData[i].split(",")[0].split(" ")[1] + "~" + fileData[i].split(",")[paramIndex] + "|"
-                        else fileData[i].split(",")[0].split(" ")[1] + "~" + fileData[i].split(",")[paramIndex]
+
+                        if (fileData[i].split(",")[0].split(" ")[1].split(":")[0].toInt() >= requiredHours) {
+
+                            data += if (i != fileData.size - 1) fileData[i].split(",")[0].split(" ")[1] + "~" + fileData[i].split(
+                                ","
+                            )[paramIndex] + "|"
+                            else fileData[i].split(",")[0].split(" ")[1] + "~" + fileData[i].split(",")[paramIndex]
+                        }
                     }
 
                     return data
@@ -458,7 +488,7 @@ abstract class FileLogger {
         }
 
         //reading of file
-        fun readHL7File(uhid:String) : String {
+        fun readHL7File(uhid: String): String {
 
             var filePath = File(
                 Environment.getExternalStorageDirectory(),
@@ -474,7 +504,7 @@ abstract class FileLogger {
                     fileData.removeAt(fileData.size - 1)
                     fileData.reverse()
 
-                    for(i in 0 until fileData.size){
+                    for (i in 0 until fileData.size) {
                         data += if (fileData[i].split(",")[0] == uhid) fileData[i] else dataNotFound
                     }
 
@@ -713,10 +743,10 @@ abstract class FileLogger {
                     fileData.removeAt(fileData.size - 1)
                     fileData.reverse()
 
-                    for (i in 0 until fileData.size){
+                    for (i in 0 until fileData.size) {
                         data += fileData[i].split(",")[2] + "|"
                     }
-                    Log.i("data_get",data.toString())
+                    Log.i("data_get", data.toString())
                     return if (data == "") dataNotFound else data
                 }
 
@@ -728,7 +758,7 @@ abstract class FileLogger {
         }
 
         //reading of file
-        fun readEventFile(fileName: String,uhid:String, startIndex: Int, endIndex: Int): String {
+        fun readEventFile(fileName: String, uhid: String, startIndex: Int, endIndex: Int): String {
 
             var filePath = File(
                 Environment.getExternalStorageDirectory(),
@@ -745,7 +775,7 @@ abstract class FileLogger {
                     fileData.removeAt(fileData.size - 1)
                     // adding filter as per UHID
                     fileData = (fileData.filter { s ->
-                        Log.i("Log.ia",s)
+                        Log.i("Log.ia", s)
                         s.split(",")[2] == uhid
 
                     }) as ArrayList<String>
@@ -809,7 +839,7 @@ abstract class FileLogger {
         }
 
         //reading of alarm file
-        fun readAlarmFile(fileName: String,uhid: String, startIndex: Int, endIndex: Int): String {
+        fun readAlarmFile(fileName: String, uhid: String, startIndex: Int, endIndex: Int): String {
 
             var filePath = File(
                 Environment.getExternalStorageDirectory(),
@@ -825,7 +855,7 @@ abstract class FileLogger {
                     fileData.removeAt(fileData.size - 1)
                     // adding filter as per UHID
                     fileData = (fileData.filter { s ->
-                        Log.i("Log.ia",s)
+                        Log.i("Log.ia", s)
                         s.split(",")[3] == uhid
 
                     }) as ArrayList<String>

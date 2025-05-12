@@ -403,17 +403,17 @@ class ComplianceModuleFragment : GraphFragment() {
             val dataFirstChart = FileLogger.readTrendFileAsPerParamAndDuration(
                     Configs.getTrendsFileName(
                         PreferenceManager(requireContext())
-                    ), 17, "one_hour"
+                    ), 17, "1 hour"
                 )
             val dataSecondChart = FileLogger.readTrendFileAsPerParamAndDuration(
                     Configs.getTrendsFileName(
                         PreferenceManager(requireContext())
-                    ), 18, "one_hour"
+                    ), 18, "1 hour"
                 )
             val dataThirdChart = FileLogger.readTrendFileAsPerParamAndDuration(
                     Configs.getTrendsFileName(
                         PreferenceManager(requireContext())
-                    ), 19, "one_hour"
+                    ), 19, "1 hour"
                 )
 
             // list having data like "time~data"

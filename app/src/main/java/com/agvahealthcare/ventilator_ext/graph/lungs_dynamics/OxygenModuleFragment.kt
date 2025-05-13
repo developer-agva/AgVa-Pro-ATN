@@ -220,7 +220,6 @@ class OxygenModuleFragment : GraphFragment() {
             Collections.addAll(binding.trendSecondChart.yAxes, yAxis)
             Collections.addAll(binding.trendSecondChart.renderableSeries, rs2)
         }
-
     }
 
     private fun initThirdGraph(listSize: Double) {
@@ -338,7 +337,7 @@ class OxygenModuleFragment : GraphFragment() {
                 ), 9, duration
             )
 
-            Log.i("value_lungs", "$dataFirstChart - $dataSecondChart - $dataThirdChart")
+            Log.i("testing_build", "Value : $dataFirstChart $dataSecondChart $dataThirdChart")
             // list having data like "time~data"
             // handle data for first chart
             if (dataFirstChart != FileLogger.dataNotFound) {
@@ -346,6 +345,7 @@ class OxygenModuleFragment : GraphFragment() {
                 withContext(Dispatchers.Main) {
                     dataSeries1First?.clear()
                     spo2TimeList.clear()
+                    Log.i("testing_build", "Size : ${list.size}")
                     for (i in list.indices) {
                         spo2TimeList.add(list[i].split("~")[0])
                         dataSeries1First?.append(i, list[i].split("~")[1].toFloat())
@@ -403,6 +403,7 @@ class OxygenModuleFragment : GraphFragment() {
                 ), 9, "1 hour"
             )
 
+            Log.i("testing_build", "Value : $dataFirstChart $dataSecondChart $dataThirdChart")
 
             // list having data like "time~data"
             // handle data for first chart
@@ -411,7 +412,7 @@ class OxygenModuleFragment : GraphFragment() {
                 withContext(Dispatchers.Main) {
                     initFirstGraph(list.size.toDouble())
                     spo2TimeList.clear()
-                    Log.i("value_lungs", "${list.size}")
+                    Log.i("testing_build", "Size : ${list.size}")
                     for (i in list.indices) {
                         spo2TimeList.add(list[i].split("~")[0])
                         dataSeries1First?.append(i, list[i].split("~")[1].toFloat())

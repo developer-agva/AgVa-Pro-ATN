@@ -7,6 +7,7 @@ import android.util.Log
 import com.agvahealthcare.ventilator_ext.utility.utils.AppUtils
 import java.io.*
 import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -270,6 +271,13 @@ abstract class FileLogger {
             return dataNotFound
         }
 
+        private fun getLastDayOfLastMonth(): Int {
+            val calendar = Calendar.getInstance()
+            calendar.add(Calendar.MONTH, -1) // Go to last month
+            calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH)) // Set to last day
+            return AppUtils.dateFormatter.format(calendar.time).split("-")[0].toInt()
+        }
+
         fun readTrendFileAsPerParamAndDuration(
             fileName: String,
             paramIndex: Int,
@@ -277,7 +285,14 @@ abstract class FileLogger {
         ): String {
 
             var requiredHours = 0
-            val currentDate = AppUtils.getCurrentDate()
+            var requiredMonth = 0
+            var requiredDate = 0
+            var requiredYear = 0
+
+            val currentDate = AppUtils.getCurrentDate().split("-")[0].toInt()
+            val currentMonth = AppUtils.getCurrentDate().split("-")[1].toInt()
+            val currentYear = AppUtils.getCurrentDate().split("-")[2].toInt()
+
             val currentHours = AppUtils.getCurrentTime().split(":")[0].toInt()
 
             var filePath = File(
@@ -292,14 +307,51 @@ abstract class FileLogger {
                 "24 hours" -> requiredHours = 24
             }
 
+            Log.i(
+                "testing_build",
+                "Current : $currentHours $currentDate $currentMonth $currentYear"
+            )
+
             // logic for last month/date/year
             if (requiredHours > currentHours) {
 
+                // check if date is not 01
+                if (currentDate != 1) {
+                    val remainingHours = requiredHours - currentHours
+                    requiredHours = 24 - remainingHours
+                    requiredDate = currentDate - 1
+                    requiredMonth = currentMonth
+                    requiredYear = currentYear
+                }
+                // Date is 01 Now check if month is not 01
+                else if (currentMonth != 1) {
+                    val remainingHours = requiredHours - currentHours
+                    requiredHours = 24 - remainingHours
+                    requiredDate = getLastDayOfLastMonth()
+                    requiredMonth = currentMonth - 1
+                    requiredYear = currentYear
+                }
+                // both month and date is 01/01 now get data from last year
+                else {
+                    val remainingHours = requiredHours - currentHours
+                    requiredHours = 24 - remainingHours
+                    requiredDate = 31
+                    requiredMonth = 12
+                    requiredYear = currentYear - 1
+                }
+
             } else {
                 requiredHours = (currentHours - requiredHours)
+                requiredDate = currentDate
+                requiredMonth = currentMonth
+                requiredYear = currentYear
             }
 
-            Log.i("testing_build", "$requiredHours $currentDate $currentHours")
+            Log.i(
+                "testing_build",
+                "Required : $requiredHours $requiredDate $requiredMonth $requiredYear"
+            )
+
             filePath = File(filePath, fileName)
             try {
 
@@ -311,16 +363,19 @@ abstract class FileLogger {
                     // get data as per duration
                     for (i in 0 until fileData.size) {
 
-                        if (fileData[i].split(",")[0].split(" ")[1].split(":")[0].toInt() >= requiredHours) {
+                        val dataDate = fileData[i].split(",")[0].split(" ")[0].split("-")[0].toInt()
+                        val dataMonth = fileData[i].split(",")[0].split(" ")[0].split("-")[1].toInt()
+                        val dataYear = fileData[i].split(",")[0].split(" ")[0].split("-")[2].toInt()
+                        val dataHour = fileData[i].split(",")[0].split(" ")[1].split(":")[0].toInt()
 
-                            data += if (i != fileData.size - 1) fileData[i].split(",")[0].split(" ")[1] + "~" + fileData[i].split(
-                                ","
-                            )[paramIndex] + "|"
-                            else fileData[i].split(",")[0].split(" ")[1] + "~" + fileData[i].split(",")[paramIndex]
+                        if ((dataYear >= requiredYear && dataMonth >= requiredMonth) && (dataDate >= requiredDate && dataHour >= requiredHours)) {
+                            data += fileData[i].split(",")[0].split(" ")[1] + "~" + fileData[i].split(",")[paramIndex] + "|"
                         }
                     }
+                    val newData = data.substring(0, data.length - 1)
+                    Log.i("testing_build", "What We Get : $newData")
 
-                    return data
+                    return newData
                 }
 
             } catch (e: Exception) {

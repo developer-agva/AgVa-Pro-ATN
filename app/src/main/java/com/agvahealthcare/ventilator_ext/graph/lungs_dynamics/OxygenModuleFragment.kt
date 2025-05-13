@@ -35,19 +35,19 @@ import kotlinx.coroutines.withContext
 import java.util.Collections
 
 
-class OxygenModuleFragment : GraphFragment() {
+class OxygenModuleFragment(private var duration: String) : GraphFragment() {
 
     private var defaultParamsIndexFirst = "Spo2"
     private var defaultParamsIndexSecond = "Pulse"
     private var defaultParamsIndexThird = "Fio2"
-    private lateinit var binding : FragmentOxygenModuleBinding
+    private lateinit var binding: FragmentOxygenModuleBinding
     private var dataSeries1First: IXyDataSeries<Int, Float>? = null
     private var dataSeries1Second: IXyDataSeries<Int, Float>? = null
     private var dataSeries1Third: IXyDataSeries<Int, Float>? = null
 
-    private var modifierSpo2 : GraphFragment.CustomRolloverModifier? = null
-    private var modifierPR : GraphFragment.CustomRolloverModifier? = null
-    private var modifierFio2 : GraphFragment.CustomRolloverModifier? = null
+    private var modifierSpo2: GraphFragment.CustomRolloverModifier? = null
+    private var modifierPR: GraphFragment.CustomRolloverModifier? = null
+    private var modifierFio2: GraphFragment.CustomRolloverModifier? = null
 
     val titleStyle = FontStyle(14.0f, ColorUtil.White)
     val titleXStyle = FontStyle(14.0f, ColorUtil.Black)
@@ -57,7 +57,7 @@ class OxygenModuleFragment : GraphFragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentOxygenModuleBinding.inflate(layoutInflater,container,false)
+        binding = FragmentOxygenModuleBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
@@ -94,7 +94,12 @@ class OxygenModuleFragment : GraphFragment() {
             .withVisibleRange(0.0, 120.0)
             .build()
 
-        binding.trendFirstChart.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.black))
+        binding.trendFirstChart.setBackgroundColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.black
+            )
+        )
         binding.trendFirstChart.renderableSeriesAreaBorderStyle =
             sciChartBuilder.newPen().withColor(ColorUtil.Transparent).build();
 
@@ -118,7 +123,7 @@ class OxygenModuleFragment : GraphFragment() {
             Float::class.javaObjectType
         ).withAcceptsUnsortedData().build()
 
-        val rs2 = sciChartBuilder.newSplineLineSeries()
+        val rs2 = sciChartBuilder.newLineSeries()
             .withStrokeStyle(
                 sciChartBuilder.newPen().withColor(resources.getColor(R.color.white))
                     .withThickness(3f).build()
@@ -174,7 +179,12 @@ class OxygenModuleFragment : GraphFragment() {
             .withVisibleRange(0.0, 200.0)
             .build()
 
-        binding.trendSecondChart.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.black))
+        binding.trendSecondChart.setBackgroundColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.black
+            )
+        )
         binding.trendSecondChart.renderableSeriesAreaBorderStyle =
             sciChartBuilder.newPen().withColor(ColorUtil.Transparent).build();
 
@@ -257,7 +267,12 @@ class OxygenModuleFragment : GraphFragment() {
             .withVisibleRange(0.0, 105.0)
             .build()
 
-        binding.trendThirdChart.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.black))
+        binding.trendThirdChart.setBackgroundColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.black
+            )
+        )
         binding.trendThirdChart.renderableSeriesAreaBorderStyle =
             sciChartBuilder.newPen().withColor(ColorUtil.Transparent).build();
 
@@ -310,15 +325,15 @@ class OxygenModuleFragment : GraphFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        readTrendsViaParamAndDuration()
+        readTrendsViaParamAndDuration(duration)
 
         binding.txtChartFirst.text = defaultParamsIndexFirst
         binding.txtChartSecond.text = defaultParamsIndexSecond
         binding.txtChartThird.text = defaultParamsIndexThird
     }
 
-    fun updateTrendsViaParamAndDuration(duration :String) {
-        Log.i("value_lungs", "read oxygen module $duration")
+    private fun readTrendsViaParamAndDuration(duration: String) {
+        Log.i("value_lungs", "default oxygen module")
         CoroutineScope(Dispatchers.IO).launch {
 
             val dataFirstChart = FileLogger.readTrendFileAsPerParamAndDuration(
@@ -337,14 +352,14 @@ class OxygenModuleFragment : GraphFragment() {
                 ), 9, duration
             )
 
-            Log.i("testing_build", "Value : $dataFirstChart $dataSecondChart $dataThirdChart")
             // list having data like "time~data"
-            // handle data for first chart
             if (dataFirstChart != FileLogger.dataNotFound) {
-                val list = dataFirstChart.split("|")
+                val list = dataFirstChart.split("|").asReversed()
                 withContext(Dispatchers.Main) {
-                    dataSeries1First?.clear()
+
                     spo2TimeList.clear()
+                    dataSeries1First?.clear()
+                    initFirstGraph(list.size.toDouble())
                     Log.i("testing_build", "Size : ${list.size}")
                     for (i in list.indices) {
                         spo2TimeList.add(list[i].split("~")[0])
@@ -353,13 +368,12 @@ class OxygenModuleFragment : GraphFragment() {
                 }
             }
 
-            // list having data like "time~data"
-            // handle data for second chart
             if (dataSecondChart != FileLogger.dataNotFound) {
-                val list = dataSecondChart.split("|")
+                val list = dataSecondChart.split("|").asReversed()
                 withContext(Dispatchers.Main) {
                     dataSeries1Second?.clear()
                     prTimeList.clear()
+                    initSecondGraph(list.size.toDouble())
                     for (i in list.indices) {
                         prTimeList.add(list[i].split("~")[0])
                         dataSeries1Second?.append(i, list[i].split("~")[1].toFloat())
@@ -367,97 +381,31 @@ class OxygenModuleFragment : GraphFragment() {
                 }
             }
 
-            // list having data like "time~data"
-            // handle data for third chart
             if (dataThirdChart != FileLogger.dataNotFound) {
-                val list = dataThirdChart.split("|")
+                val list = dataThirdChart.split("|").asReversed()
                 withContext(Dispatchers.Main) {
                     dataSeries1Third?.clear()
                     fio2TimeList.clear()
-                    for (i in list.indices) {
-                        fio2TimeList.add(list[i].split("~")[0])
-                        dataSeries1Third?.append(i, list[i].split("~")[1].toFloat())
-                    }
-                }
-            } else withContext(Dispatchers.Main) { binding.txtOxygenModuleLoading.visibility = View.GONE }
-        }
-    }
-
-    private fun readTrendsViaParamAndDuration() {
-        Log.i("value_lungs", "default oxygen module")
-        CoroutineScope(Dispatchers.IO).launch {
-
-            val dataFirstChart = FileLogger.readTrendFileAsPerParamAndDuration(
-                Configs.getTrendsFileName(
-                    PreferenceManager(requireContext())
-                ), 15, "1 hour"
-            )
-            val dataSecondChart = FileLogger.readTrendFileAsPerParamAndDuration(
-                Configs.getTrendsFileName(
-                    PreferenceManager(requireContext())
-                ), 16, "1 hour"
-            )
-            val dataThirdChart = FileLogger.readTrendFileAsPerParamAndDuration(
-                Configs.getTrendsFileName(
-                    PreferenceManager(requireContext())
-                ), 9, "1 hour"
-            )
-
-//            Log.i("testing_build", "Value : $dataFirstChart $dataSecondChart $dataThirdChart")
-
-            // list having data like "time~data"
-            // handle data for first chart
-            if (dataFirstChart != FileLogger.dataNotFound) {
-                val list = dataFirstChart.split("|")
-                withContext(Dispatchers.Main) {
-                    initFirstGraph(list.size.toDouble())
-                    spo2TimeList.clear()
-                    Log.i("testing_build", "Size : ${list.size}")
-                    for (i in list.indices) {
-                        spo2TimeList.add(list[i].split("~")[0])
-                        dataSeries1First?.append(i, list[i].split("~")[1].toFloat())
-                    }
-                }
-            }
-
-            // list having data like "time~data"
-            // handle data for second chart
-            if (dataSecondChart != FileLogger.dataNotFound) {
-                val list = dataSecondChart.split("|")
-                withContext(Dispatchers.Main) {
-                    initSecondGraph(list.size.toDouble())
-                    prTimeList.clear()
-                    for (i in list.indices) {
-                        prTimeList.add(list[i].split("~")[0])
-                        dataSeries1Second?.append(i, list[i].split("~")[1].toFloat())
-                    }
-                }
-            }
-
-            // list having data like "time~data"
-            // handle data for third chart
-            if (dataThirdChart != FileLogger.dataNotFound) {
-                val list = dataThirdChart.split("|")
-                withContext(Dispatchers.Main) {
                     initThirdGraph(list.size.toDouble())
-                    fio2TimeList.clear()
                     for (i in list.indices) {
                         fio2TimeList.add(list[i].split("~")[0])
                         dataSeries1Third?.append(i, list[i].split("~")[1].toFloat())
                     }
                 }
-            } else withContext(Dispatchers.Main) { binding.txtOxygenModuleLoading.visibility = View.GONE }
+            } else withContext(Dispatchers.Main) {
+                binding.txtOxygenModuleLoading.visibility = View.GONE
+            }
         }
     }
 
     // RM scichart
-    fun setRollOver(){
+    fun setRollOver() {
         modifierSpo2?.setRolloverAt(currentXValue, currentYValue)
         modifierPR?.setRolloverAt(currentXValue, currentYValue)
         modifierFio2?.setRolloverAt(currentXValue, currentYValue)
     }
 
-    fun removeRollover(){
+    fun removeRollover() {
         modifierSpo2?.removeRolloverAt(currentXValue, currentYValue)
         modifierPR?.removeRolloverAt(currentXValue, currentYValue)
         modifierFio2?.removeRolloverAt(currentXValue, currentYValue)

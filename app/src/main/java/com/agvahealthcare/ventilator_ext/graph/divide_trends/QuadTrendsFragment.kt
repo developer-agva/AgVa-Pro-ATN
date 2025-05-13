@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.VentilatorApp
-import com.agvahealthcare.ventilator_ext.api.model.Log
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardActivity
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardViewModel
 import com.agvahealthcare.ventilator_ext.dashboard.GraphLayoutFragment
@@ -120,7 +119,7 @@ class QuadTrendsFragment : GraphLayoutFragment("QuadTrendsGraphFragment"),
     }
 
     override fun onItemSelect(text: String, colorInt: Int) {
-
+        binding.trendDurationText.text = "1 hour"
         binding.trendsRecyclerView.visibility = View.GONE
         binding.moduleRecyclerView.visibility = View.GONE
         mTrendAdapter = null
@@ -133,13 +132,13 @@ class QuadTrendsFragment : GraphLayoutFragment("QuadTrendsGraphFragment"),
             when (text) {
                 "OXYGEN" -> {
                     binding.moduleSwitchText.text = "OXYGEN"
-                    initOxygenModuleFragment()
+                    initOxygenModuleFragment("1 hour")
                     binding.trendDurationLayout.visibility = View.VISIBLE
                 }
 
                 "COMPLIANCE" -> {
                     binding.moduleSwitchText.text = "COMPLIANCE"
-                    initComplianceModuleFragment()
+                    initComplianceModuleFragment("1 hour")
                     binding.trendDurationLayout.visibility = View.VISIBLE
                 }
 
@@ -157,7 +156,7 @@ class QuadTrendsFragment : GraphLayoutFragment("QuadTrendsGraphFragment"),
 
     private fun initData() {
         initPressureChartFragment()
-        initOxygenModuleFragment()
+        initOxygenModuleFragment("1 hour")
         initLungsDynamicsFragment()
     }
 
@@ -200,14 +199,14 @@ class QuadTrendsFragment : GraphLayoutFragment("QuadTrendsGraphFragment"),
 
     fun updateOxygenAndComplianceParams(duration: String) {
         oxygenModuleFragment?.takeIf { it.isVisible }
-            ?.apply { updateTrendsViaParamAndDuration(duration) }
+            ?.apply { initOxygenModuleFragment(duration) }
         complianceModuleFragment?.takeIf { it.isVisible }
-            ?.apply { updateTrendsViaParamAndDuration(duration) }
+            ?.apply { initComplianceModuleFragment(duration) }
     }
 
-    private fun initOxygenModuleFragment() {
+    private fun initOxygenModuleFragment(duration: String) {
         makeNullAllFragment()
-        oxygenModuleFragment = OxygenModuleFragment()
+        oxygenModuleFragment = OxygenModuleFragment(duration)
         childFragmentManager.beginTransaction()
             .replace(
                 R.id.containerTrendsQuadGraph3,
@@ -217,9 +216,9 @@ class QuadTrendsFragment : GraphLayoutFragment("QuadTrendsGraphFragment"),
             .commit()
     }
 
-    private fun initComplianceModuleFragment() {
+    private fun initComplianceModuleFragment(duration: String) {
         makeNullAllFragment()
-        complianceModuleFragment = ComplianceModuleFragment()
+        complianceModuleFragment = ComplianceModuleFragment(duration)
         childFragmentManager.beginTransaction()
             .replace(
                 R.id.containerTrendsQuadGraph3,

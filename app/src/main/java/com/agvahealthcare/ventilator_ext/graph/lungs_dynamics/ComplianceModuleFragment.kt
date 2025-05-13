@@ -33,9 +33,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Collections
+import kotlin.time.Duration
 
 
-class ComplianceModuleFragment : GraphFragment() {
+class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
 
     private var defaultParamsIndexFirst = "Compliance"
     private var defaultParamsIndexSecond = "Spont RR"
@@ -327,102 +328,34 @@ class ComplianceModuleFragment : GraphFragment() {
         binding.txtChartDynamicsThird.text = defaultParamsIndexThird
     }
 
-    fun updateTrendsViaParamAndDuration(duration: String) {
-        Log.i("value_lungs", "read compliance module $duration")
-
-        CoroutineScope(Dispatchers.IO).launch {
-
-            val dataFirstChart = FileLogger.readTrendFileAsPerParamAndDuration(
-                Configs.getTrendsFileName(
-                    PreferenceManager(requireContext())
-                ), 17, duration
-            )
-            val dataSecondChart = FileLogger.readTrendFileAsPerParamAndDuration(
-                Configs.getTrendsFileName(
-                    PreferenceManager(requireContext())
-                ), 18, duration
-            )
-            val dataThirdChart = FileLogger.readTrendFileAsPerParamAndDuration(
-                Configs.getTrendsFileName(
-                    PreferenceManager(requireContext())
-                ), 19, duration
-            )
-
-            // list having data like "time~data"
-            // handle data for first chart
-            if (dataFirstChart != FileLogger.dataNotFound) {
-                val list = dataFirstChart.split("|")
-                withContext(Dispatchers.Main) {
-                    dataSeries1First?.clear()
-                    dynCompTimeList.clear()
-                    for (i in list.indices) {
-                        dynCompTimeList.add(list[i].split("~")[0])
-                        dataSeries1First?.append(i, list[i].split("~")[1].toFloat())
-                    }
-                }
-            }
-
-            // list having data like "time~data"
-            // handle data for second chart
-            if (dataSecondChart != FileLogger.dataNotFound) {
-                val list = dataSecondChart.split("|")
-                withContext(Dispatchers.Main) {
-                    dataSeries1Second?.clear()
-                    spontRRTimeList.clear()
-                    for (i in list.indices){
-                        spontRRTimeList.add(list[i].split("~")[0])
-                        dataSeries1Second?.append(i, list[i].split("~")[1].toFloat())
-                    }
-                }
-            }
-
-            // list having data like "time~data"
-            // handle data for third chart
-            if (dataThirdChart != FileLogger.dataNotFound) {
-                val list = dataThirdChart.split("|")
-                withContext(Dispatchers.Main) {
-                    dataSeries1Third?.clear()
-                    spontVTTimeList.clear()
-                    for (i in list.indices) {
-                        spontVTTimeList.add(list[i].split("~")[0])
-                        dataSeries1Third?.append(i, list[i].split("~")[1].toFloat())
-                    }
-                }
-            } else withContext(Dispatchers.Main) {
-                binding.txtComplianceModuleLoading.visibility = View.GONE
-            }
-        }
-    }
-
-
     private fun readTrendsViaParamAndDuration() {
 
-
         CoroutineScope(Dispatchers.IO).launch {
 
             val dataFirstChart = FileLogger.readTrendFileAsPerParamAndDuration(
                     Configs.getTrendsFileName(
                         PreferenceManager(requireContext())
-                    ), 17, "1 hour"
+                    ), 17, duration
                 )
             val dataSecondChart = FileLogger.readTrendFileAsPerParamAndDuration(
                     Configs.getTrendsFileName(
                         PreferenceManager(requireContext())
-                    ), 18, "1 hour"
+                    ), 18, duration
                 )
             val dataThirdChart = FileLogger.readTrendFileAsPerParamAndDuration(
                     Configs.getTrendsFileName(
                         PreferenceManager(requireContext())
-                    ), 19, "1 hour"
+                    ), 19, duration
                 )
 
             // list having data like "time~data"
             // handle data for first chart
             if (dataFirstChart != FileLogger.dataNotFound) {
-                val list = dataFirstChart.split("|")
+                val list = dataFirstChart.split("|").asReversed()
                 withContext(Dispatchers.Main) {
                     initFirstGraph(list.size.toDouble())
                     dynCompTimeList.clear()
+                    dataSeries1First?.clear()
                     for (i in list.indices) {
                         dynCompTimeList.add(list[i].split("~")[0])
                         dataSeries1First?.append(i, list[i].split("~")[1].toFloat())
@@ -433,10 +366,11 @@ class ComplianceModuleFragment : GraphFragment() {
             // list having data like "time~data"
             // handle data for second chart
             if (dataSecondChart != FileLogger.dataNotFound) {
-                val list = dataSecondChart.split("|")
+                val list = dataSecondChart.split("|").asReversed()
                 withContext(Dispatchers.Main) {
                     initSecondGraph(list.size.toDouble())
                     spontRRTimeList.clear()
+                    dataSeries1Second?.clear()
                     for (i in list.indices){
                         spontRRTimeList.add(list[i].split("~")[0])
                         dataSeries1Second?.append(i, list[i].split("~")[1].toFloat())
@@ -451,6 +385,7 @@ class ComplianceModuleFragment : GraphFragment() {
                 withContext(Dispatchers.Main) {
                     initThirdGraph(list.size.toDouble())
                     spontVTTimeList.clear()
+                    dataSeries1Third?.clear()
                     for (i in list.indices){
                         spontVTTimeList.add(list[i].split("~")[0])
                         dataSeries1Third?.append(i, list[i].split("~")[1].toFloat())
@@ -474,194 +409,5 @@ class ComplianceModuleFragment : GraphFragment() {
         modifierSpontRR?.removeRolloverAt(currentXValue, currentYValue)
         modifierSpontVT?.removeRolloverAt(currentXValue, currentYValue)
     }
-
-//    // Two Parameter Comparison Graph Logic for future use
-//
-//    private fun initComparisonGraph(firstListSize:Int,secondListSize:Int) {
-//
-//        val sciChartBuilder: SciChartBuilder = SciChartBuilder.instance()
-//
-//        //For the initial graphs the xprimary Axis and the XSecondary Axis will be updated.
-//        val xPRimaryAxis: IAxis = sciChartBuilder.newNumericAxis()
-//            .withVisibleRange(DoubleRange(0.0, max(firstListSize,secondListSize).toDouble()))
-//            .withMaxAutoTicks(4)
-//            .withTickLabelStyle(titleStyle)
-//            .withAxisId("OLD")
-//            .withAutoRangeMode(AutoRange.Never)
-//            .build()
-//
-//        val xsecondaryAxis: IAxis = sciChartBuilder.newNumericAxis()
-//            .withVisibleRange(DoubleRange(0.0, max(firstListSize,secondListSize).toDouble()))
-//            .withTickLabelStyle(titleStyle)
-//            .withMaxAutoTicks(5)
-//            .withAxisId("HiddenXAxis")
-//            .withAutoRangeMode(AutoRange.Never)
-//            .build()
-//
-//        // modified at 20 jan 2023
-//
-//        val yAxis: IAxis = sciChartBuilder.newNumericAxis()
-//            .withAxisAlignment(AxisAlignment.Left)
-//            .withMaxAutoTicks(2)
-//            .withTickLabelStyle(titleStyle)
-//            .withDrawMajorBands(true)
-//            .withAutoRangeMode(AutoRange.Never)
-//            .withVisibleRange(0.0, 50.0)
-//            .build()
-//
-//        trendComparisonChart.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.black))
-//        trendComparisonChart.renderableSeriesAreaBorderStyle = sciChartBuilder.newPen().withColor(ColorUtil.Transparent).build();
-//
-//        xPRimaryAxis.visibility = View.GONE
-//        xsecondaryAxis.visibility = View.VISIBLE
-//
-//        xPRimaryAxis.drawMajorGridLines = false
-//        xPRimaryAxis.drawMinorGridLines = false
-//        xPRimaryAxis.drawMajorBands = false
-//        xPRimaryAxis.drawMajorTicks = false
-//        xPRimaryAxis.drawMinorTicks = false
-//
-//        yAxis.drawMajorGridLines = false
-//        yAxis.drawMinorGridLines = false
-//        yAxis.drawMajorBands = false
-//        yAxis.drawMajorTicks = false
-//        yAxis.drawMajorTicks = false
-//
-//        dataSeries1First = sciChartBuilder.newXyDataSeries(
-//            Int::class.javaObjectType,
-//            Float::class.javaObjectType
-//        ).withAcceptsUnsortedData().build()
-//
-//        dataSeries1Second = sciChartBuilder.newXyDataSeries(
-//            Int::class.javaObjectType,
-//            Float::class.javaObjectType
-//        ).withAcceptsUnsortedData().build()
-//
-//        val rs1 = sciChartBuilder.newColumnSeries()
-//            .withOpacity(0.5f)
-//            .withDataSeries(dataSeries1First)
-//            .withFillColor(ColorUtil.Grey)
-//            .withXAxisId("OLD")
-//            .build()
-//
-//        val rs2 = sciChartBuilder.newSplineLineSeries()
-//            .withStrokeStyle(sciChartBuilder.newPen().withColor(resources.getColor(R.color.purple_200)).withThickness(3f).build())
-//            .withDataSeries(dataSeries1Second)
-//            .withXAxisId("OLD")
-//            .build()
-//
-//        UpdateSuspender.using(trendComparisonChart) {
-//            Collections.addAll(trendComparisonChart.xAxes, xPRimaryAxis)
-//            Collections.addAll(trendComparisonChart.xAxes, xsecondaryAxis)
-//            Collections.addAll(trendComparisonChart.yAxes, yAxis)
-//            Collections.addAll(trendComparisonChart.renderableSeries,  rs1 ,rs2)
-//        }
-//    }
-//
-//    private fun readTrendsViaParamAndDuration(
-//        firstParameterName: String,
-//        secondParameterName: String,
-//        duration: String
-//    ) {
-//        val dataFirstParam = FileLogger.readTrendFileAsPerParamAndDuration(
-//            firstParameterName,
-//            duration.split(" ")[0].toInt()
-//        )
-//        val dataSecondParam = FileLogger.readTrendFileAsPerParamAndDuration(
-//            secondParameterName,
-//            duration.split(" ")[0].toInt()
-//        )
-//
-//        if (dataFirstParam != FileLogger.dataNotFound && dataSecondParam != FileLogger.dataNotFound){
-//            val listOne = dataFirstParam.split("|") as ArrayList<String>
-//            val listTwo = dataSecondParam.split("|") as ArrayList<String>
-//
-//            initComparisonGraph(listOne.size,listTwo.size)
-//
-//            for (i in 0 until listOne.size) dataSeries1First.append(i,listOne[i].toFloat())
-//            for (i in 0 until listTwo.size) dataSeries1Second.append(i,listTwo[i].toFloat())
-//        }
-//
-//        Log.i("Trends_DATA", "first param : $dataFirstParam")
-//        Log.i("Trends_DATA", "second param : $dataSecondParam")
-//    }
-//
-//    override fun handleDialogClose() {
-//        waveSelectionDialogFragment?.dismiss()
-//    }
-//
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        super.onViewCreated(view, savedInstanceState)
-//
-//        readTrendsViaParamAndDuration(defaultParamsIndexFirst,defaultParamsIndexSecond,defaultDurationCountCommon)
-//        txtChartComparison.text = "$defaultParamsIndexFirst - $defaultParamsIndexSecond"
-//
-//        trendComparisonChart.setOnClickListener {
-//
-//            clickedButtonType = TrendButtonType.COMPARISON_PARAMETER_FIRST
-//
-//            waveSelectionDialogFragment?.dismiss()
-//            waveSelectionDialogFragment = WaveSelectionDialogFragment(
-//                this, this,
-//                clickedButtonType
-//            )
-//            waveSelectionDialogFragment?.show(
-//                childFragmentManager,
-//                "WAVE"
-//            )
-//        }
-//    }
-//
-//    override fun onItemSelect(text: String, colorInt: Int) {
-//        clickedButtonType?.let {
-//
-//            when (it) {
-//
-//                TrendButtonType.COMPARISON_PARAMETER_FIRST -> {
-//                    defaultParamsIndexFirst = text
-//                    clickedButtonType = TrendButtonType.COMPARISON_PARAMETER_SECOND
-//
-//                    waveSelectionDialogFragment?.dismiss()
-//                    waveSelectionDialogFragment = WaveSelectionDialogFragment(
-//                        this, this,
-//                        clickedButtonType
-//                    )
-//                    waveSelectionDialogFragment?.show(
-//                        childFragmentManager,
-//                        "WAVE"
-//                    )
-//                }
-//
-//                TrendButtonType.COMPARISON_PARAMETER_SECOND -> {
-//                    defaultParamsIndexSecond = text
-//                    clickedButtonType = TrendButtonType.DURATION_COMMON
-//
-//                    waveSelectionDialogFragment?.dismiss()
-//                    waveSelectionDialogFragment = WaveSelectionDialogFragment(
-//                        this, this,
-//                        clickedButtonType
-//                    )
-//                    waveSelectionDialogFragment?.show(
-//                        childFragmentManager,
-//                        "WAVE"
-//                    )
-//                }
-//
-//                TrendButtonType.DURATION_COMMON -> {
-//                    defaultDurationCountCommon = text
-//
-//                    waveSelectionDialogFragment?.dismiss()
-//                    readTrendsViaParamAndDuration(
-//                        defaultParamsIndexFirst,
-//                        defaultParamsIndexSecond,
-//                        defaultDurationCountCommon
-//                    )
-//
-//                    txtChartComparison.text = "$defaultParamsIndexFirst - $defaultParamsIndexSecond"
-//                }
-//                else -> {}
-//            }
-//        }
-//    }
 
 }

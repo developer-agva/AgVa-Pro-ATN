@@ -77,6 +77,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 class CustomProber {
@@ -790,7 +791,7 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
             switch (intent.getAction()) {
                 case IntentFactory.ACTION_USB_PERMISSION_VENTILATOR:
                     Log.i("USB_CHECK", "venti permission broadcast started");
-                    if (intent.getExtras().getBoolean(UsbManager.EXTRA_PERMISSION_GRANTED)) {
+                    if (Objects.requireNonNull(intent.getExtras()).getBoolean(UsbManager.EXTRA_PERMISSION_GRANTED)) {
                         Log.i("USB_CHECK", "venti permission broadcast started and get permission");
                         openConnectionToReadVentilator(true);
                     }
@@ -798,7 +799,7 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
 
                 case IntentFactory.ACTION_USB_PERMISSION_HID:
                     Log.i("USB_CHECK", "hid permission broadcast started");
-                    if (intent.getExtras().getBoolean(UsbManager.EXTRA_PERMISSION_GRANTED)) {
+                    if (Objects.requireNonNull(intent.getExtras()).getBoolean(UsbManager.EXTRA_PERMISSION_GRANTED)) {
                         Log.i("USB_CHECK", "hid permission broadcast started and get permission");
                         openConnectionToReadHID(true);
                     }

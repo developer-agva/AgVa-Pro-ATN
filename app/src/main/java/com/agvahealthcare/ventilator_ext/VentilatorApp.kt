@@ -76,6 +76,7 @@ class VentilatorApp : Application() {
 
         var hardwareSerialNumber = "---"
         // testing graph coloring
+        var isPatientDisconnected = false
         var isPatientTrigger = false
         var isNebuliserActive = true
         var isManualBreath = false

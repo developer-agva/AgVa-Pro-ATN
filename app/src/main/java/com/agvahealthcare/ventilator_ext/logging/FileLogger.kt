@@ -283,7 +283,7 @@ abstract class FileLogger {
             paramIndex: Int,
             duration: String
         ): String {
-
+            var isLessThanRequiredHour = true
             var requiredHours = 0
             var requiredMonth = 0
             var requiredDate = 0
@@ -314,7 +314,7 @@ abstract class FileLogger {
 
             // logic for last month/date/year
             if (requiredHours > currentHours) {
-
+                isLessThanRequiredHour = false
                 // check if date is not 01
                 if (currentDate != 1) {
                     val remainingHours = requiredHours - currentHours
@@ -341,6 +341,7 @@ abstract class FileLogger {
                 }
 
             } else {
+                isLessThanRequiredHour = true
                 requiredHours = (currentHours - requiredHours)
                 requiredDate = currentDate
                 requiredMonth = currentMonth
@@ -360,6 +361,7 @@ abstract class FileLogger {
                     var data = ""
                     val fileData = filePath.readText().split("|") as ArrayList<String>
                     fileData.removeAt(fileData.size - 1)
+                    fileData.reverse()
                     // get data as per duration
                     for (i in 0 until fileData.size) {
 
@@ -368,13 +370,20 @@ abstract class FileLogger {
                         val dataYear = fileData[i].split(",")[0].split(" ")[0].split("-")[2].toInt()
                         val dataHour = fileData[i].split(",")[0].split(" ")[1].split(":")[0].toInt()
 
-                        if ((dataYear >= requiredYear && dataMonth >= requiredMonth) && (dataDate >= requiredDate && dataHour >= requiredHours)) {
-                            data += fileData[i].split(",")[0].split(" ")[1] + "~" + fileData[i].split(",")[paramIndex] + "|"
+                        // required hour is less than
+                        if (isLessThanRequiredHour && ((dataYear == requiredYear && dataMonth == requiredMonth) && (dataDate == requiredDate && dataHour >= requiredHours))) {
+//                            Log.i("testing_build", "What We Get : $dataHour $dataDate $dataMonth $dataYear")
+                            data += fileData[i].split(",")[0].split(" ")[1] + "~" + if (fileData[i].split(",")[paramIndex].toFloat().toInt() < 0) "0|" else fileData[i].split(",")[paramIndex] + "|"
+                        }
+                        // required hours is greater than
+                        else if (!isLessThanRequiredHour && ((requiredYear >= dataYear && requiredMonth >= dataMonth) && (requiredDate >= dataDate && requiredHours >= dataHour))){
+//                            Log.i("testing_build", "What We Get : $dataHour $dataDate $dataMonth $dataYear")
+                            data += fileData[i].split(",")[0].split(" ")[1] + "~" + if (fileData[i].split(",")[paramIndex].toFloat().toInt() < 0) "0|" else fileData[i].split(",")[paramIndex] + "|"
                         }
                     }
-                    val newData = data.substring(0, data.length - 1)
-                    Log.i("testing_build", "What We Get : $newData")
 
+                    val newData = data.substring(0, data.length - 1)
+//                    Log.i("testing_build", "What We Get : $newData")
                     return newData
                 }
 

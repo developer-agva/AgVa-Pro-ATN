@@ -403,7 +403,7 @@ class OxygenModuleFragment : GraphFragment() {
                 ), 9, "1 hour"
             )
 
-            Log.i("testing_build", "Value : $dataFirstChart $dataSecondChart $dataThirdChart")
+//            Log.i("testing_build", "Value : $dataFirstChart $dataSecondChart $dataThirdChart")
 
             // list having data like "time~data"
             // handle data for first chart

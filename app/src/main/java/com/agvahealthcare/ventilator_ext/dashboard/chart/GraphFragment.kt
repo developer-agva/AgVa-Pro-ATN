@@ -126,6 +126,7 @@ open class GraphFragment() : Fragment() {
     inner class CustomRolloverModifier() : RolloverModifier() {
 
         override fun onTouchDown(args: ModifierTouchEventArgs?): Boolean {
+            Log.i("asdawd","123123")
             VentilatorApp.isTouchGraph = true
             testingDashBoardViewModel?.isTouchGraph?.postValue(true)
             currentXValue = args?.e?.x?.toFloat() ?: 0.0f
@@ -134,6 +135,7 @@ open class GraphFragment() : Fragment() {
         }
 
         override fun onTouchUp(args: ModifierTouchEventArgs?): Boolean {
+            Log.i("asdawd","12312389")
             VentilatorApp.isTouchGraph = false
             testingDashBoardViewModel?.isTouchGraph?.postValue(false)
             currentXValue = args?.e?.x?.toFloat() ?: 0.0f
@@ -142,6 +144,7 @@ open class GraphFragment() : Fragment() {
         }
 
         override fun onTouchMove(args: ModifierTouchEventArgs?): Boolean {
+            Log.i("asdawd","12312315")
             VentilatorApp.isTouchGraph = true
             testingDashBoardViewModel?.isTouchGraph?.postValue(true)
             currentXValue = args?.e?.x?.toFloat() ?: 0.0f

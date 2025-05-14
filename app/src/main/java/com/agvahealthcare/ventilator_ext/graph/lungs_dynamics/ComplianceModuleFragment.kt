@@ -1,5 +1,6 @@
 package com.agvahealthcare.ventilator_ext.graph.lungs_dynamics
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -22,10 +23,12 @@ import com.scichart.charting.model.dataSeries.IXyDataSeries
 import com.scichart.charting.visuals.axes.AutoRange
 import com.scichart.charting.visuals.axes.AxisAlignment
 import com.scichart.charting.visuals.axes.IAxis
+import com.scichart.charting.visuals.pointmarkers.EllipsePointMarker
 import com.scichart.charting.visuals.renderableSeries.IRenderableSeries
 import com.scichart.core.framework.UpdateSuspender
 import com.scichart.data.model.DoubleRange
 import com.scichart.drawing.common.FontStyle
+import com.scichart.drawing.common.SolidBrushStyle
 import com.scichart.drawing.utility.ColorUtil
 import com.scichart.extensions.builders.SciChartBuilder
 import kotlinx.coroutines.CoroutineScope
@@ -123,15 +126,18 @@ class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
             Float::class.javaObjectType
         ).withAcceptsUnsortedData().build()
 
-        val rs2 = sciChartBuilder.newSplineLineSeries()
-            .withStrokeStyle(
-                sciChartBuilder.newPen().withColor(ColorUtil.White)
-                    .withThickness(3f).build()
-            )
-            .withSeriesInfoProvider(CustomSeriesInfoProvider(GraphType.DYNAMIC_COMP_CHART))
+        // === Create point marker ===
+        val pointMarker = EllipsePointMarker().apply {
+            fillStyle = SolidBrushStyle(Color.WHITE)
+            width = 10
+            height = 10
+        }
+
+        // === Create scatter series ===
+        val rs2 = sciChartBuilder.newScatterSeries().withPointMarker(pointMarker)
             .withDataSeries(dataSeries1First)
-            .withXAxisId("OLD")
-            .build()
+            .withSeriesInfoProvider(CustomSeriesInfoProvider(GraphType.DYNAMIC_COMP_CHART))
+            .withXAxisId("OLD").build()
         modifierDynComp?.showTooltip = true
         modifierDynComp?.showAxisLabels = true
         modifierDynComp?.isEnabled = true
@@ -207,17 +213,18 @@ class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
             Float::class.javaObjectType
         ).withAcceptsUnsortedData().build()
 
-        val rs2: IRenderableSeries = sciChartBuilder.newSplineLineSeries()
-            .withStrokeStyle(
-                sciChartBuilder.newPen()
-                    .withColor(ColorUtil.White)
-                    .withThickness(3f).build()
-            )
-            .withSeriesInfoProvider(CustomSeriesInfoProvider(GraphType.SPONT_RR_CHART))
-            .withOpacity(1.0f)
+        // === Create point marker ===
+        val pointMarker = EllipsePointMarker().apply {
+            fillStyle = SolidBrushStyle(Color.WHITE)
+            width = 10
+            height = 10
+        }
+
+        // === Create scatter series ===
+        val rs2 = sciChartBuilder.newScatterSeries().withPointMarker(pointMarker)
             .withDataSeries(dataSeries1Second)
-            .withXAxisId("OLD")
-            .build()
+            .withSeriesInfoProvider(CustomSeriesInfoProvider(GraphType.SPONT_RR_CHART))
+            .withXAxisId("OLD").build()
         modifierSpontRR?.showTooltip = true
         modifierSpontRR?.showAxisLabels = true
         modifierSpontRR?.isEnabled = true
@@ -293,17 +300,19 @@ class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
             Float::class.javaObjectType
         ).withAcceptsUnsortedData().build()
 
-        val rs2: IRenderableSeries = sciChartBuilder.newSplineLineSeries()
-            .withStrokeStyle(
-                sciChartBuilder.newPen()
-                    .withColor(ColorUtil.White)
-                    .withThickness(3f).build()
-            )
-            .withSeriesInfoProvider(CustomSeriesInfoProvider(GraphType.SPONT_VT_CHART))
-            .withOpacity(1.0f)
+        // === Create point marker ===
+        val pointMarker = EllipsePointMarker().apply {
+            fillStyle = SolidBrushStyle(Color.WHITE)
+            width = 10
+            height = 10
+        }
+
+        // === Create scatter series ===
+        val rs2 = sciChartBuilder.newScatterSeries().withPointMarker(pointMarker)
             .withDataSeries(dataSeries1Third)
-            .withXAxisId("OLD")
-            .build()
+            .withSeriesInfoProvider(CustomSeriesInfoProvider(GraphType.SPONT_VT_CHART))
+            .withXAxisId("OLD").build()
+
         modifierSpontVT?.showTooltip = true
         modifierSpontVT?.showAxisLabels = true
         modifierSpontVT?.isEnabled = true
@@ -393,6 +402,7 @@ class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
                 }
             } else withContext(Dispatchers.Main) {
                 binding.txtComplianceModuleLoading.visibility = View.GONE
+                binding.txtComplianceModuleLoading.text = "Trends Not Found"
             }
         }
     }

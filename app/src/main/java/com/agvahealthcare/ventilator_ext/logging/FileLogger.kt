@@ -4,7 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Environment
 import android.util.Log
+import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.utility.utils.AppUtils
+import com.agvahealthcare.ventilator_ext.utility.utils.Configs
 import java.io.*
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -148,7 +150,6 @@ abstract class FileLogger {
 
 
         fun writeTrendGraphFile(
-            ctx: Context,
             fileName: String,
             data: String,
         ): Boolean {
@@ -167,9 +168,10 @@ abstract class FileLogger {
                 try {
                     if (file.exists()) {
 
-                        val fileData = file.readLines()
+                        val fileData = file.readText().split("|") as ArrayList<String>
+                        fileData.removeAt(fileData.size - 1)
 
-                        if (fileData.size <= 2000) {
+                        if (fileData.size <= 720) {
                             isSuccess = true
                             val fileOutPutStream = FileOutputStream(file, true)
                             fileOutPutStream.write(data.toByteArray())
@@ -195,7 +197,7 @@ abstract class FileLogger {
                             }
                             file.delete()
                             tempFile.renameTo(file)
-                            writeTrendGraphFile(ctx, fileName, data)
+                            writeTrendGraphFile(fileName, data)
                         }
 
                     } else {
@@ -215,6 +217,89 @@ abstract class FileLogger {
             return isSuccess
         }
 
+        private fun generateTimeFrames(): ArrayList<String> {
+            val formatter = SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault())
+            val calendar = Calendar.getInstance().apply {
+                set(Calendar.SECOND, 0)  // Optional, to clean up seconds
+                set(Calendar.MILLISECOND, 0) // Optional, to clean up milliseconds
+            }
+
+            if (formatter.format(calendar.time).toString()
+                    .split(" ")[1].split(":")[1].toInt() % 2 != 0
+            ) {
+                calendar.add(Calendar.MINUTE, -1)
+            }
+
+            val timeLabels = ArrayList<String>()
+
+            // 24 hours = 1440 minutes → step every 2 minutes = 720 points
+            for (i in 0 until 1440 step 2) {
+                timeLabels.add(formatter.format(calendar.time))
+                calendar.add(Calendar.MINUTE, -2)
+            }
+
+            return timeLabels
+        }
+
+
+        fun readTrendFileAndUpdateMissings(
+            fileName: String,
+            prefManager: PreferenceManager
+        ) {
+            var filePath = File(
+                Environment.getExternalStorageDirectory(),
+                AppUtils.PATH_FOLDER_AGVA + File.separator + "trend"
+            )
+            filePath = File(filePath, fileName)
+            try {
+
+                if (filePath.exists()) {
+
+                    val fileData = filePath.readText().split("|") as ArrayList<String>
+                    fileData.removeAt(fileData.size - 1)
+
+                    val timeFrames = generateTimeFrames()
+
+                    var i = fileData.size-1
+                    for (j in 0 until  timeFrames.size) {
+                        println("timeFrames : ${timeFrames[j]}")
+
+                        if (i > 0 && fileData[i].split(",")[0] == timeFrames[j]) {
+                            Log.i("dataClear", "ismatched ")
+                            writeTrendGraphFile("trends_timeframes_demo", fileData[i])
+                            i--
+                        } else {
+                            Log.i("dataClear", "isNotmatched ")
+                            val zeroTrends =
+                                "${timeFrames[j]},NA,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,${prefManager.readUHID()}|"
+                            writeTrendGraphFile("trends_timeframes_demo", zeroTrends)
+                        }
+                    }
+
+                    filePath.delete()
+                    File(
+                        File(
+                            Environment.getExternalStorageDirectory(),
+                            AppUtils.PATH_FOLDER_AGVA + File.separator + "trend"
+                        ), "trends_timeframes_demo"
+                    ).renameTo(
+                        File(
+                            File(
+                                Environment.getExternalStorageDirectory(),
+                                AppUtils.PATH_FOLDER_AGVA + File.separator + "trend"
+                            ),
+                            Configs.trendTwoMin
+                        )
+                    )
+
+                }
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Log.i("dataClear", e.message.toString())
+            }
+        }
+
         //reading of file
         fun readTrendFile(fileName: String, uhid: String, startIndex: Int, endIndex: Int): String {
 
@@ -227,18 +312,16 @@ abstract class FileLogger {
 
                 if (filePath.exists()) {
 
-
                     var data = ""
                     var fileData = filePath.readText().split("|") as ArrayList<String>
                     fileData.removeAt(fileData.size - 1)
+
                     // adding filter as per UHID
                     fileData = (fileData.filter { s ->
                         Log.i("Log.ia", s)
                         s.split(",")[20] == uhid
 
                     }) as ArrayList<String>
-
-                    fileData.reverse()
 
                     Log.i("value_check_events", fileData.size.toString())
 
@@ -261,7 +344,10 @@ abstract class FileLogger {
                     // since data not added
                     else data = dataNotFound
 
-                    return data
+                    if (data != "") {
+                        val newData = data.substring(0,data.length-1)
+                        return newData
+                    }else return dataNotFound
                 }
 
             } catch (e: Exception) {
@@ -274,7 +360,10 @@ abstract class FileLogger {
         private fun getLastDayOfLastMonth(): Int {
             val calendar = Calendar.getInstance()
             calendar.add(Calendar.MONTH, -1) // Go to last month
-            calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH)) // Set to last day
+            calendar.set(
+                Calendar.DAY_OF_MONTH,
+                calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+            ) // Set to last day
             return AppUtils.dateFormatter.format(calendar.time).split("-")[0].toInt()
         }
 
@@ -283,17 +372,8 @@ abstract class FileLogger {
             paramIndex: Int,
             duration: String
         ): String {
-            var isLessThanRequiredHour = true
+
             var requiredHours = 0
-            var requiredMonth = 0
-            var requiredDate = 0
-            var requiredYear = 0
-
-            val currentDate = AppUtils.getCurrentDate().split("-")[0].toInt()
-            val currentMonth = AppUtils.getCurrentDate().split("-")[1].toInt()
-            val currentYear = AppUtils.getCurrentDate().split("-")[2].toInt()
-
-            val currentHours = AppUtils.getCurrentTime().split(":")[0].toInt()
 
             var filePath = File(
                 Environment.getExternalStorageDirectory(),
@@ -301,57 +381,11 @@ abstract class FileLogger {
             )
 
             when (duration) {
-                "1 hour" -> requiredHours = 1
-                "8 hours" -> requiredHours = 8
-                "12 hours" -> requiredHours = 12
-                "24 hours" -> requiredHours = 24
+                "1 hour" -> requiredHours = (60 * 1)/2
+                "8 hours" -> requiredHours = (60 * 8)/2
+                "12 hours" -> requiredHours = (60 * 12)/2
+                "24 hours" -> requiredHours = (60 * 24)/2
             }
-
-            Log.i(
-                "testing_build",
-                "Current : $currentHours $currentDate $currentMonth $currentYear"
-            )
-
-            // logic for last month/date/year
-            if (requiredHours > currentHours) {
-                isLessThanRequiredHour = false
-                // check if date is not 01
-                if (currentDate != 1) {
-                    val remainingHours = requiredHours - currentHours
-                    requiredHours = 24 - remainingHours
-                    requiredDate = currentDate - 1
-                    requiredMonth = currentMonth
-                    requiredYear = currentYear
-                }
-                // Date is 01 Now check if month is not 01
-                else if (currentMonth != 1) {
-                    val remainingHours = requiredHours - currentHours
-                    requiredHours = 24 - remainingHours
-                    requiredDate = getLastDayOfLastMonth()
-                    requiredMonth = currentMonth - 1
-                    requiredYear = currentYear
-                }
-                // both month and date is 01/01 now get data from last year
-                else {
-                    val remainingHours = requiredHours - currentHours
-                    requiredHours = 24 - remainingHours
-                    requiredDate = 31
-                    requiredMonth = 12
-                    requiredYear = currentYear - 1
-                }
-
-            } else {
-                isLessThanRequiredHour = true
-                requiredHours = (currentHours - requiredHours)
-                requiredDate = currentDate
-                requiredMonth = currentMonth
-                requiredYear = currentYear
-            }
-
-            Log.i(
-                "testing_build",
-                "Required : $requiredHours $requiredDate $requiredMonth $requiredYear"
-            )
 
             filePath = File(filePath, fileName)
             try {
@@ -362,29 +396,17 @@ abstract class FileLogger {
                     val fileData = filePath.readText().split("|") as ArrayList<String>
                     fileData.removeAt(fileData.size - 1)
                     fileData.reverse()
+                    var count = 0
                     // get data as per duration
                     for (i in 0 until fileData.size) {
-
-                        val dataDate = fileData[i].split(",")[0].split(" ")[0].split("-")[0].toInt()
-                        val dataMonth = fileData[i].split(",")[0].split(" ")[0].split("-")[1].toInt()
-                        val dataYear = fileData[i].split(",")[0].split(" ")[0].split("-")[2].toInt()
-                        val dataHour = fileData[i].split(",")[0].split(" ")[1].split(":")[0].toInt()
-
-                        // required hour is less than
-                        if (isLessThanRequiredHour && ((dataYear == requiredYear && dataMonth == requiredMonth) && (dataDate == requiredDate && dataHour >= requiredHours))) {
-//                            Log.i("testing_build", "What We Get : $dataHour $dataDate $dataMonth $dataYear")
-                            data += fileData[i].split(",")[0].split(" ")[1] + "~" + if (fileData[i].split(",")[paramIndex].toFloat().toInt() < 0) "0|" else fileData[i].split(",")[paramIndex] + "|"
-                        }
-                        // required hours is greater than
-                        else if (!isLessThanRequiredHour && ((requiredYear >= dataYear && requiredMonth >= dataMonth) && (requiredDate >= dataDate && requiredHours >= dataHour))){
-//                            Log.i("testing_build", "What We Get : $dataHour $dataDate $dataMonth $dataYear")
-                            data += fileData[i].split(",")[0].split(" ")[1] + "~" + if (fileData[i].split(",")[paramIndex].toFloat().toInt() < 0) "0|" else fileData[i].split(",")[paramIndex] + "|"
-                        }
+                        if (count++ < requiredHours) data += fileData[i].split(",")[0].split(" ")[1] + "~" + fileData[i].split(",")[paramIndex] + "|"
                     }
 
-                    val newData = data.substring(0, data.length - 1)
-//                    Log.i("testing_build", "What We Get : $newData")
-                    return newData
+                    if (data != "") {
+                        val newData = data.substring(0, data.length - 1)
+                        Log.i("testing_build", "What We Get : $newData")
+                        return newData
+                    } else return dataNotFound
                 }
 
             } catch (e: Exception) {

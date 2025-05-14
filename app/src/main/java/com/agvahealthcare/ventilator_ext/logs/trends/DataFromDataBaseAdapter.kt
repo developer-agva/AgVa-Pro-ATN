@@ -85,7 +85,7 @@ class DataFromDataBaseAdapter(private var dataList:ArrayList<String>) : Recycler
 
 
     override fun getItemCount(): Int {
-        return if (dataList.size > 2) dataList.size - 1 else dataList.size
+        return dataList.size
     }
     override fun getItemViewType(position: Int): Int {
         return position

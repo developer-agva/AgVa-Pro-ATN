@@ -1,5 +1,6 @@
 package com.agvahealthcare.ventilator_ext.graph.lungs_dynamics
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -22,17 +23,24 @@ import com.scichart.charting.model.dataSeries.IXyDataSeries
 import com.scichart.charting.visuals.axes.AutoRange
 import com.scichart.charting.visuals.axes.AxisAlignment
 import com.scichart.charting.visuals.axes.IAxis
+import com.scichart.charting.visuals.pointmarkers.EllipsePointMarker
 import com.scichart.charting.visuals.renderableSeries.IRenderableSeries
+import com.scichart.charting3d.visuals.renderableSeries.scatter.ScatterRenderableSeries3D
 import com.scichart.core.framework.UpdateSuspender
 import com.scichart.data.model.DoubleRange
 import com.scichart.drawing.common.FontStyle
+import com.scichart.drawing.common.SolidBrushStyle
 import com.scichart.drawing.utility.ColorUtil
+import com.scichart.extensions.builders.PointMarkerBuilder
 import com.scichart.extensions.builders.SciChartBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Collections
+import java.util.Locale
 
 
 class OxygenModuleFragment(private var duration: String) : GraphFragment() {
@@ -123,22 +131,26 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
             Float::class.javaObjectType
         ).withAcceptsUnsortedData().build()
 
-        val rs2 = sciChartBuilder.newLineSeries()
-            .withStrokeStyle(
-                sciChartBuilder.newPen().withColor(resources.getColor(R.color.white))
-                    .withThickness(3f).build()
-            )
-            .withSeriesInfoProvider(CustomSeriesInfoProvider(GraphType.SPO2_CHART))
+        // === Create point marker ===
+        val pointMarker = EllipsePointMarker().apply {
+            fillStyle = SolidBrushStyle(Color.WHITE)
+            width = 10
+            height = 10
+        }
+
+        // === Create scatter series ===
+        val rs2 = sciChartBuilder.newScatterSeries().withPointMarker(pointMarker)
             .withDataSeries(dataSeries1First)
-            .withXAxisId("OLD")
-            .build()
+            .withSeriesInfoProvider(CustomSeriesInfoProvider(GraphType.SPO2_CHART))
+            .withXAxisId("OLD").build()
 
         modifierSpo2?.showTooltip = true
         modifierSpo2?.showAxisLabels = true
         modifierSpo2?.isEnabled = true
 
         Collections.addAll(binding.trendFirstChart.chartModifiers, modifierSpo2!!)
-        UpdateSuspender.using(binding.trendFirstChart) {
+        UpdateSuspender.using(binding.trendFirstChart)
+        {
             Collections.addAll(binding.trendFirstChart.xAxes, xPRimaryAxis)
             Collections.addAll(binding.trendFirstChart.xAxes, xsecondaryAxis)
             Collections.addAll(binding.trendFirstChart.yAxes, yAxis)
@@ -208,17 +220,19 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
             Float::class.javaObjectType
         ).withAcceptsUnsortedData().build()
 
-        val rs2: IRenderableSeries = sciChartBuilder.newSplineLineSeries()
-            .withStrokeStyle(
-                sciChartBuilder.newPen()
-                    .withColor(resources.getColor(R.color.red))
-                    .withThickness(3f).build()
-            )
-            .withSeriesInfoProvider(CustomSeriesInfoProvider(GraphType.PR_CHART))
-            .withOpacity(1.0f)
+        // === Create point marker ===
+        val pointMarker = EllipsePointMarker().apply {
+            fillStyle = SolidBrushStyle(Color.RED)
+            width = 10
+            height = 10
+        }
+
+        // === Create scatter series ===
+        val rs2 = sciChartBuilder.newScatterSeries().withPointMarker(pointMarker)
             .withDataSeries(dataSeries1Second)
-            .withXAxisId("OLD")
-            .build()
+            .withSeriesInfoProvider(CustomSeriesInfoProvider(GraphType.PR_CHART))
+            .withXAxisId("OLD").build()
+
         modifierPR?.showTooltip = true
         modifierPR?.showAxisLabels = true
         modifierPR?.isEnabled = true
@@ -296,17 +310,18 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
             Float::class.javaObjectType
         ).withAcceptsUnsortedData().build()
 
-        val rs2: IRenderableSeries = sciChartBuilder.newSplineLineSeries()
-            .withStrokeStyle(
-                sciChartBuilder.newPen()
-                    .withColor(resources.getColor(R.color.green))
-                    .withThickness(3f).build()
-            )
-            .withSeriesInfoProvider(CustomSeriesInfoProvider(GraphType.FIO2_CHART))
-            .withOpacity(1.0f)
+        // === Create point marker ===
+        val pointMarker = EllipsePointMarker().apply {
+            fillStyle = SolidBrushStyle(Color.GREEN)
+            width = 10
+            height = 10
+        }
+
+        // === Create scatter series ===
+        val rs2 = sciChartBuilder.newScatterSeries().withPointMarker(pointMarker)
             .withDataSeries(dataSeries1Third)
-            .withXAxisId("OLD")
-            .build()
+            .withSeriesInfoProvider(CustomSeriesInfoProvider(GraphType.FIO2_CHART))
+            .withXAxisId("OLD").build()
 
         modifierFio2?.showTooltip = true
         modifierFio2?.showAxisLabels = true
@@ -332,7 +347,11 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
         binding.txtChartThird.text = defaultParamsIndexThird
     }
 
+
+
     private fun readTrendsViaParamAndDuration(duration: String) {
+
+//        generateTimeFrames()
         Log.i("value_lungs", "default oxygen module")
         CoroutineScope(Dispatchers.IO).launch {
 
@@ -393,7 +412,8 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
                     }
                 }
             } else withContext(Dispatchers.Main) {
-                binding.txtOxygenModuleLoading.visibility = View.GONE
+                binding.txtOxygenModuleLoading.visibility = View.VISIBLE
+                binding.txtOxygenModuleLoading.text = "Trends Not Found"
             }
         }
     }

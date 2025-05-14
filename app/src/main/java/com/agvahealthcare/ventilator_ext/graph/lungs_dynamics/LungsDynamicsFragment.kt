@@ -190,7 +190,6 @@ class LungsDynamicsFragment : Fragment() {
                 val dataFirstChart = FileLogger.readLungsDynamicsFile(0)
                 val dataSecondChart = FileLogger.readLungsDynamicsFile(3)
                 val dataThirdChart = FileLogger.readLungsDynamicsFile(2)
-                Log.i("Resistance", "spontRR : $dataThirdChart")
 
                 withContext(Dispatchers.Main) {
                     if (dataFirstChart != FileLogger.dataNotFound) {
@@ -199,7 +198,6 @@ class LungsDynamicsFragment : Fragment() {
                     } else binding.dynamicComplianceValue.text = "-"
 
                     if (dataSecondChart != FileLogger.dataNotFound) {
-                        Log.i("Resistance", "average : $dataSecondChart")
                         binding.resistanceValue.text = if (dataSecondChart.toFloat().toInt() == 0) "-" else dataSecondChart.toFloat().toInt().toString()
                         changeVeinsAsPerResistance(dataSecondChart.toFloat().toInt())
                     } else binding.resistanceValue.text = "-"

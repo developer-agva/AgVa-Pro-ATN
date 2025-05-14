@@ -479,7 +479,7 @@ public class PreferenceManager {
     }
 
     public String readTrendDuration() {
-        return sp.getString(PREF_TREND_DURATION, "5 Min");
+        return sp.getString(PREF_TREND_DURATION, "2 Min");
     }
     // status ota
     public void setDownloadStatus(Boolean value) {

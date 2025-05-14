@@ -44,6 +44,8 @@ class DashBoardViewModel(application: Application) : AndroidViewModel(applicatio
 
     val isTouchGraph = MutableLiveData<Boolean>()
 
+    val currentTimeLiveData = MutableLiveData<Int>()
+
     val vtiValue = MutableLiveData<Float>()
     val vtApneaValue = MutableLiveData<Float>()
     val pipValue = MutableLiveData<Float>()

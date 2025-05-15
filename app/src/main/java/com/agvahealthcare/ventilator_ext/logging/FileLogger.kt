@@ -10,6 +10,7 @@ import com.agvahealthcare.ventilator_ext.utility.utils.Configs
 import java.io.*
 import java.text.SimpleDateFormat
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -259,21 +260,39 @@ abstract class FileLogger {
 
                     val timeFrames = generateTimeFrames()
 
-                    var i = 0
-                    for (j in 0 until timeFrames.size) {
-                        // handle duplicates
+                    var t = 0
+                    var d = 0
 
-                        Log.i("MasoomTesting", "${fileData[i]} - ${timeFrames[j]}")
+                    while (t < timeFrames.size && d < fileData.size){
 
-                        if (i < fileData.size && fileData[i].split(",")[0] == timeFrames[j]) {
-//                            Log.i("MasoomTesting", "ismatched ${timeFrames[j]}")
-                            writeTrendGraphFile("trends_timeframes_demo", fileData[i] + "|")
-                            i++
-                        } else {
-//                            Log.i("MasoomTesting", "isNotmatched ${timeFrames[j]}")
-                            val zeroTrends = "${timeFrames[j]},NA,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,${prefManager.readUHID()}|"
+                        val dateFormat = SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault())
+
+                        val date1 = dateFormat.parse(timeFrames[t])
+                        val date2 = dateFormat.parse(fileData[d].split(",")[0])
+
+                        val calendar1 = Calendar.getInstance().apply { time = date1!! }
+                        val calendar2 = Calendar.getInstance().apply { time = date2!! }
+
+                        if (calendar1.before(calendar2)){
+                            val zeroTrends = "${timeFrames[t]},NA,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,${prefManager.readUHID()}|"
                             writeTrendGraphFile("trends_timeframes_demo", zeroTrends)
+                            t++
                         }
+                        else{
+                            writeTrendGraphFile("trends_timeframes_demo", fileData[d] + "|")
+                            d++
+                        }
+                    }
+
+                    while (t < timeFrames.size){
+                        val zeroTrends = "${timeFrames[t]},NA,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,${prefManager.readUHID()}|"
+                        writeTrendGraphFile("trends_timeframes_demo", zeroTrends)
+                        t++
+                    }
+
+                    while (d < fileData.size){
+                        writeTrendGraphFile("trends_timeframes_demo", fileData[d] + "|")
+                        d++
                     }
 
                     filePath.delete()
@@ -291,6 +310,24 @@ abstract class FileLogger {
                             Configs.trendTwoMin
                         )
                     )
+
+//                    for (j in 0 until timeFrames.size) {
+//                        // handle duplicates
+//
+//                        Log.i("MasoomTesting", "${fileData[i]} - ${timeFrames[j]}")
+//
+//                        if (i < fileData.size && fileData[i].split(",")[0] == timeFrames[j]) {
+////                            Log.i("MasoomTesting", "ismatched ${timeFrames[j]}")
+//                            writeTrendGraphFile("trends_timeframes_demo", fileData[i] + "|")
+//                            i++
+//                        } else {
+////                            Log.i("MasoomTesting", "isNotmatched ${timeFrames[j]}")
+//                            val zeroTrends = "${timeFrames[j]},NA,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,${prefManager.readUHID()}|"
+//                            writeTrendGraphFile("trends_timeframes_demo", zeroTrends)
+//                        }
+//                    }
+
+
                 }
 
             } catch (e: Exception) {

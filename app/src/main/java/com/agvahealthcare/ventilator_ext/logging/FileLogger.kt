@@ -171,33 +171,36 @@ abstract class FileLogger {
                         val fileData = file.readText().split("|") as ArrayList<String>
                         fileData.removeAt(fileData.size - 1)
 
-                        if (fileData.size <= 720) {
-                            isSuccess = true
-                            val fileOutPutStream = FileOutputStream(file, true)
-                            fileOutPutStream.write(data.toByteArray())
-                            fileOutPutStream.close()
-                        } else {
+                        // handle for duplicates
+                        if (fileData[fileData.size-1].split(",")[0] != data.split(",")[0]) {
+                            if (fileData.size <= 720) {
+                                isSuccess = true
+                                val fileOutPutStream = FileOutputStream(file, true)
+                                fileOutPutStream.write(data.toByteArray())
+                                fileOutPutStream.close()
+                            } else {
 
-                            // create temp file
-                            val tempFile = File(path, "temp_$fileName")
-                            for (i in fileData.indices) {
-                                if (i != 0) {
-                                    if (tempFile.exists()) {
-                                        val fileOutPutStream = FileOutputStream(tempFile, true)
-                                        fileOutPutStream.write(fileData[i].toByteArray())
-                                        fileOutPutStream.close()
-                                    } else {
-                                        if (tempFile.createNewFile()) {
-                                            val fileOutPutStream = FileOutputStream(tempFile)
+                                // create temp file
+                                val tempFile = File(path, "temp_$fileName")
+                                for (i in fileData.indices) {
+                                    if (i != 0) {
+                                        if (tempFile.exists()) {
+                                            val fileOutPutStream = FileOutputStream(tempFile, true)
                                             fileOutPutStream.write(fileData[i].toByteArray())
                                             fileOutPutStream.close()
+                                        } else {
+                                            if (tempFile.createNewFile()) {
+                                                val fileOutPutStream = FileOutputStream(tempFile)
+                                                fileOutPutStream.write(fileData[i].toByteArray())
+                                                fileOutPutStream.close()
+                                            }
                                         }
                                     }
                                 }
+                                file.delete()
+                                tempFile.renameTo(file)
+                                writeTrendGraphFile(fileName, data)
                             }
-                            file.delete()
-                            tempFile.renameTo(file)
-                            writeTrendGraphFile(fileName, data)
                         }
 
                     } else {
@@ -213,6 +216,7 @@ abstract class FileLogger {
                     Log.i("asdaqe213", e.message.toString())
                 }
 
+
             }
             return isSuccess
         }
@@ -224,23 +228,20 @@ abstract class FileLogger {
                 set(Calendar.MILLISECOND, 0) // Optional, to clean up milliseconds
             }
 
-            if (formatter.format(calendar.time).toString()
-                    .split(" ")[1].split(":")[1].toInt() % 2 != 0
-            ) {
-                calendar.add(Calendar.MINUTE, -1)
-            }
+            if (formatter.format(calendar.time).toString().split(" ")[1].split(":")[1].toInt() % 2 != 0) calendar.add(Calendar.MINUTE, -1)
 
             val timeLabels = ArrayList<String>()
 
             // 24 hours = 1440 minutes → step every 2 minutes = 720 points
-            for (i in 0 until 1440 step 2) {
+            for (i in 0 until 120 step 2) {
                 timeLabels.add(formatter.format(calendar.time))
                 calendar.add(Calendar.MINUTE, -2)
             }
 
+            timeLabels.reverse()
+
             return timeLabels
         }
-
 
         fun readTrendFileAndUpdateMissings(
             fileName: String,
@@ -252,26 +253,25 @@ abstract class FileLogger {
             )
             filePath = File(filePath, fileName)
             try {
-
                 if (filePath.exists()) {
-
                     val fileData = filePath.readText().split("|") as ArrayList<String>
                     fileData.removeAt(fileData.size - 1)
 
                     val timeFrames = generateTimeFrames()
 
-                    var i = fileData.size-1
-                    for (j in 0 until  timeFrames.size) {
-                        println("timeFrames : ${timeFrames[j]}")
+                    var i = 0
+                    for (j in 0 until timeFrames.size) {
+                        // handle duplicates
 
-                        if (i > 0 && fileData[i].split(",")[0] == timeFrames[j]) {
-                            Log.i("dataClear", "ismatched ")
-                            writeTrendGraphFile("trends_timeframes_demo", fileData[i])
-                            i--
+                        Log.i("MasoomTesting", "${fileData[i]} - ${timeFrames[j]}")
+
+                        if (i < fileData.size && fileData[i].split(",")[0] == timeFrames[j]) {
+//                            Log.i("MasoomTesting", "ismatched ${timeFrames[j]}")
+                            writeTrendGraphFile("trends_timeframes_demo", fileData[i] + "|")
+                            i++
                         } else {
-                            Log.i("dataClear", "isNotmatched ")
-                            val zeroTrends =
-                                "${timeFrames[j]},NA,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,${prefManager.readUHID()}|"
+//                            Log.i("MasoomTesting", "isNotmatched ${timeFrames[j]}")
+                            val zeroTrends = "${timeFrames[j]},NA,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,${prefManager.readUHID()}|"
                             writeTrendGraphFile("trends_timeframes_demo", zeroTrends)
                         }
                     }
@@ -291,7 +291,6 @@ abstract class FileLogger {
                             Configs.trendTwoMin
                         )
                     )
-
                 }
 
             } catch (e: Exception) {
@@ -316,12 +315,13 @@ abstract class FileLogger {
                     var fileData = filePath.readText().split("|") as ArrayList<String>
                     fileData.removeAt(fileData.size - 1)
 
-                    // adding filter as per UHID
-                    fileData = (fileData.filter { s ->
-                        Log.i("Log.ia", s)
-                        s.split(",")[20] == uhid
+                    fileData.reverse()
 
-                    }) as ArrayList<String>
+//                    // adding filter as per UHID
+//                    fileData = (fileData.filter { s ->
+//                        Log.i("Log.ia", s)
+//                        s.split(",")[20] == uhid
+//                    }) as ArrayList<String>
 
                     Log.i("value_check_events", fileData.size.toString())
 
@@ -344,10 +344,7 @@ abstract class FileLogger {
                     // since data not added
                     else data = dataNotFound
 
-                    if (data != "") {
-                        val newData = data.substring(0,data.length-1)
-                        return newData
-                    }else return dataNotFound
+                   return data
                 }
 
             } catch (e: Exception) {
@@ -355,16 +352,6 @@ abstract class FileLogger {
                 Log.i("dataClear", e.message.toString())
             }
             return dataNotFound
-        }
-
-        private fun getLastDayOfLastMonth(): Int {
-            val calendar = Calendar.getInstance()
-            calendar.add(Calendar.MONTH, -1) // Go to last month
-            calendar.set(
-                Calendar.DAY_OF_MONTH,
-                calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
-            ) // Set to last day
-            return AppUtils.dateFormatter.format(calendar.time).split("-")[0].toInt()
         }
 
         fun readTrendFileAsPerParamAndDuration(
@@ -381,10 +368,10 @@ abstract class FileLogger {
             )
 
             when (duration) {
-                "1 hour" -> requiredHours = (60 * 1)/2
-                "8 hours" -> requiredHours = (60 * 8)/2
-                "12 hours" -> requiredHours = (60 * 12)/2
-                "24 hours" -> requiredHours = (60 * 24)/2
+                "1 hour" -> requiredHours = (60 * 1) / 2
+                "8 hours" -> requiredHours = (60 * 8) / 2
+                "12 hours" -> requiredHours = (60 * 12) / 2
+                "24 hours" -> requiredHours = (60 * 24) / 2
             }
 
             filePath = File(filePath, fileName)
@@ -399,7 +386,9 @@ abstract class FileLogger {
                     var count = 0
                     // get data as per duration
                     for (i in 0 until fileData.size) {
-                        if (count++ < requiredHours) data += fileData[i].split(",")[0].split(" ")[1] + "~" + fileData[i].split(",")[paramIndex] + "|"
+                        if (count++ < requiredHours) data += fileData[i].split(",")[0].split(" ")[1] + "~" + fileData[i].split(
+                            ","
+                        )[paramIndex] + "|"
                     }
 
                     if (data != "") {

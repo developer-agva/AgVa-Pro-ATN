@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.VentilatorApp
+import com.agvahealthcare.ventilator_ext.api.model.Log
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardViewModel
 import com.agvahealthcare.ventilator_ext.databinding.FragmentLogsTableDemoBinding
 import com.agvahealthcare.ventilator_ext.logging.FileLogger

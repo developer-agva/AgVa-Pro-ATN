@@ -20,27 +20,75 @@ import com.agvahealthcare.ventilator_ext.logging.FileLogger
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs
 import com.scichart.charting.model.dataSeries.IXyDataSeries
+import com.scichart.charting.numerics.tickProviders.TickProvider
 import com.scichart.charting.visuals.axes.AutoRange
 import com.scichart.charting.visuals.axes.AxisAlignment
 import com.scichart.charting.visuals.axes.IAxis
 import com.scichart.charting.visuals.pointmarkers.EllipsePointMarker
-import com.scichart.charting.visuals.renderableSeries.IRenderableSeries
-import com.scichart.charting3d.visuals.renderableSeries.scatter.ScatterRenderableSeries3D
 import com.scichart.core.framework.UpdateSuspender
+import com.scichart.core.model.DoubleValues
 import com.scichart.data.model.DoubleRange
 import com.scichart.drawing.common.FontStyle
 import com.scichart.drawing.common.SolidBrushStyle
 import com.scichart.drawing.utility.ColorUtil
-import com.scichart.extensions.builders.PointMarkerBuilder
 import com.scichart.extensions.builders.SciChartBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.text.SimpleDateFormat
-import java.util.Calendar
 import java.util.Collections
-import java.util.Locale
+
+
+class CustomTickProvider(var s: String) : TickProvider() {
+
+    override fun updateTicks(majorTicks: DoubleValues?, minorTicks: DoubleValues?) {
+
+        when(s){
+            "Fio2" ->{
+                majorTicks?.apply {
+                    clear()
+                    add(21.0)
+                    add(100.0)
+                }
+
+                minorTicks?.apply {
+                    clear()
+                    add(21.0)
+                    add(100.0)
+                } // No minor ticks
+            }
+
+            "Spo2" ->{
+                majorTicks?.apply {
+                    clear()
+                    add(80.0)
+                    add(100.0)
+                }
+
+                minorTicks?.apply {
+                    clear()
+                    add(80.0)
+                    add(100.0)
+                } // No minor ticks
+            }
+
+            "PULSE" ->{
+                majorTicks?.apply {
+                    clear()
+                    add(50.0)
+                    add(150.0)
+                }
+
+                minorTicks?.apply {
+                    clear()
+                    add(50.0)
+                    add(150.0)
+                } // No minor ticks
+            }
+        }
+
+    }
+}
 
 
 class OxygenModuleFragment(private var duration: String) : GraphFragment() {
@@ -95,12 +143,14 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
 
         val yAxis: IAxis = sciChartBuilder.newNumericAxis()
             .withAxisAlignment(AxisAlignment.Left)
-            .withMaxAutoTicks(2)
+            .withAutoTicks(false)
             .withTickLabelStyle(titleStyle)
             .withDrawMajorBands(true)
             .withAutoRangeMode(AutoRange.Never)
-            .withVisibleRange(0.0, 120.0)
+            .withVisibleRange(80.0, 100.0)
             .build()
+
+        yAxis.tickProvider = CustomTickProvider("Spo2")
 
         binding.trendFirstChart.setBackgroundColor(
             ContextCompat.getColor(
@@ -184,12 +234,14 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
 
         val yAxis: IAxis = sciChartBuilder.newNumericAxis()
             .withAxisAlignment(AxisAlignment.Left)
-            .withMaxAutoTicks(2)
+            .withAutoTicks(false)
             .withTickLabelStyle(titleStyle)
             .withDrawMajorBands(true)
             .withAutoRangeMode(AutoRange.Never)
-            .withVisibleRange(0.0, 200.0)
+            .withVisibleRange(50.0, 150.0)
             .build()
+
+        yAxis.tickProvider = CustomTickProvider("PULSE")
 
         binding.trendSecondChart.setBackgroundColor(
             ContextCompat.getColor(
@@ -274,12 +326,14 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
 
         val yAxis: IAxis = sciChartBuilder.newNumericAxis()
             .withAxisAlignment(AxisAlignment.Left)
-            .withMaxAutoTicks(2)
+            .withAutoTicks(false)
             .withTickLabelStyle(titleStyle)
             .withDrawMajorBands(true)
             .withAutoRangeMode(AutoRange.Never)
-            .withVisibleRange(0.0, 105.0)
+            .withVisibleRange(21.0, 100.0)
             .build()
+
+        yAxis.tickProvider = CustomTickProvider("Fio2")
 
         binding.trendThirdChart.setBackgroundColor(
             ContextCompat.getColor(
@@ -287,8 +341,7 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
                 R.color.black
             )
         )
-        binding.trendThirdChart.renderableSeriesAreaBorderStyle =
-            sciChartBuilder.newPen().withColor(ColorUtil.Transparent).build();
+        binding.trendThirdChart.renderableSeriesAreaBorderStyle = sciChartBuilder.newPen().withColor(ColorUtil.Transparent).build();
 
         xPRimaryAxis.visibility = View.GONE
         xsecondaryAxis.visibility = View.VISIBLE

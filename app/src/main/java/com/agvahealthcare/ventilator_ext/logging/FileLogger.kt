@@ -247,7 +247,7 @@ abstract class FileLogger {
         fun readTrendFileAndUpdateMissings(
             fileName: String,
             prefManager: PreferenceManager
-        ) {
+        ) : Boolean{
             var filePath = File(
                 Environment.getExternalStorageDirectory(),
                 AppUtils.PATH_FOLDER_AGVA + File.separator + "trend"
@@ -334,6 +334,8 @@ abstract class FileLogger {
                 e.printStackTrace()
                 Log.i("dataClear", e.message.toString())
             }
+
+            return true
         }
 
         //reading of file

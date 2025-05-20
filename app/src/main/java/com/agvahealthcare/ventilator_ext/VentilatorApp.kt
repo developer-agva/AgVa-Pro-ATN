@@ -44,6 +44,9 @@ class VentilatorApp : Application() {
         val android.content.Context.ventiPref: DataStore<Preferences> by preferencesDataStore(
             name = "Ventilator_Pro"
         )
+
+        var choosedHours = "1 hour"
+        var firstTimeVisitChart = true
         val spo2TimeList = ArrayList<String>()
         val prTimeList = ArrayList<String>()
         val fio2TimeList = ArrayList<String>()
@@ -51,8 +54,6 @@ class VentilatorApp : Application() {
         val spontRRTimeList = ArrayList<String>()
         val spontVTTimeList = ArrayList<String>()
         var isDischargePatientDone = false
-        val durationCounts = arrayListOf("2 Hrs", "4 Hrs", "8 Hrs", "16 Hrs", "24 Hrs", "48 Hrs")
-
         var defaultOfTurbineRanges = "0"
         var defaultOfExhaleValveRanges = "0"
         var defaultOfOxygenValveRanges = "0"

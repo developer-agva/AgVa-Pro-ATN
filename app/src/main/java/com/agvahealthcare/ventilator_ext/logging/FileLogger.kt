@@ -177,7 +177,7 @@ abstract class FileLogger {
                             if (fileData.size <= 720) {
                                 isSuccess = true
                                 val fileOutPutStream = FileOutputStream(file, true)
-                                fileOutPutStream.write(data.toByteArray())
+                                fileOutPutStream.write(data.toByteArray() )
                                 fileOutPutStream.close()
                             } else {
 
@@ -187,12 +187,12 @@ abstract class FileLogger {
                                     if (i != 0) {
                                         if (tempFile.exists()) {
                                             val fileOutPutStream = FileOutputStream(tempFile, true)
-                                            fileOutPutStream.write(fileData[i].toByteArray())
+                                            fileOutPutStream.write(("${fileData[i]}|").toByteArray())
                                             fileOutPutStream.close()
                                         } else {
                                             if (tempFile.createNewFile()) {
                                                 val fileOutPutStream = FileOutputStream(tempFile)
-                                                fileOutPutStream.write(fileData[i].toByteArray())
+                                                fileOutPutStream.write(("${fileData[i]}|").toByteArray())
                                                 fileOutPutStream.close()
                                             }
                                         }
@@ -216,8 +216,6 @@ abstract class FileLogger {
                     e.printStackTrace()
                     Log.i("asdaqe213", e.message.toString())
                 }
-
-
             }
             return isSuccess
         }
@@ -234,13 +232,12 @@ abstract class FileLogger {
             val timeLabels = ArrayList<String>()
 
             // 24 hours = 1440 minutes → step every 2 minutes = 720 points
-            for (i in 0 until 120 step 2) {
+            for (i in 0 until 1440 step 2) {
                 timeLabels.add(formatter.format(calendar.time))
                 calendar.add(Calendar.MINUTE, -2)
             }
 
             timeLabels.reverse()
-
             return timeLabels
         }
 
@@ -255,7 +252,10 @@ abstract class FileLogger {
             filePath = File(filePath, fileName)
             try {
                 if (filePath.exists()) {
+
+                    Log.i("FILEDATA",filePath.readText())
                     val fileData = filePath.readText().split("|") as ArrayList<String>
+
                     fileData.removeAt(fileData.size - 1)
 
                     val timeFrames = generateTimeFrames()

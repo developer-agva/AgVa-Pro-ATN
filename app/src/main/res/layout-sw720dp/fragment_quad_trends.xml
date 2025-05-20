@@ -98,7 +98,7 @@
         app:layout_constraintEnd_toEndOf="@id/trendDurationLayout"
         app:layout_constraintStart_toStartOf="@id/trendDurationLayout"
         app:layout_constraintTop_toTopOf="@id/trendDurationLayout"
-        android:text="2 Min" />
+        android:text="1 hour" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/trendsRecyclerView"
@@ -108,5 +108,6 @@
         app:layout_constraintStart_toStartOf="@id/trendDurationLayout"
         app:layout_constraintEnd_toEndOf="@id/trendDurationLayout"
         app:layout_constraintTop_toBottomOf="@id/trendDurationLayout" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

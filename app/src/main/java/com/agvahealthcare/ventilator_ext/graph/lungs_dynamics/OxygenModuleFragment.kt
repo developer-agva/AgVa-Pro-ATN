@@ -6,11 +6,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
-import com.agvahealthcare.ventilator_ext.R
+import com.agvahealthcare.ventilator_ext.VentilatorApp
 import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.currentXValue
 import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.currentYValue
 import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.fio2TimeList
+import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.isFromControlFragment
+import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.isTrendsFirstTime
 import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.prTimeList
 import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.spo2TimeList
 import com.agvahealthcare.ventilator_ext.dashboard.chart.GraphFragment
@@ -43,8 +44,8 @@ class CustomTickProvider(var s: String) : TickProvider() {
 
     override fun updateTicks(majorTicks: DoubleValues?, minorTicks: DoubleValues?) {
 
-        when(s){
-            "Fio2" ->{
+        when (s) {
+            "Fio2" -> {
                 majorTicks?.apply {
                     clear()
                     add(21.0)
@@ -58,7 +59,7 @@ class CustomTickProvider(var s: String) : TickProvider() {
                 } // No minor ticks
             }
 
-            "Spo2" ->{
+            "Spo2" -> {
                 majorTicks?.apply {
                     clear()
                     add(80.0)
@@ -72,7 +73,7 @@ class CustomTickProvider(var s: String) : TickProvider() {
                 } // No minor ticks
             }
 
-            "PULSE" ->{
+            "PULSE" -> {
                 majorTicks?.apply {
                     clear()
                     add(50.0)
@@ -86,10 +87,8 @@ class CustomTickProvider(var s: String) : TickProvider() {
                 } // No minor ticks
             }
         }
-
     }
 }
-
 
 class OxygenModuleFragment(private var duration: String) : GraphFragment() {
 
@@ -116,6 +115,7 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
         binding = FragmentOxygenModuleBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
+
 
     private fun initFirstGraph(listSize: Double) {
 
@@ -153,10 +153,7 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
         yAxis.tickProvider = CustomTickProvider("Spo2")
 
         binding.trendFirstChart.setBackgroundColor(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.black
-            )
+            ColorUtil.Black
         )
         binding.trendFirstChart.renderableSeriesAreaBorderStyle =
             sciChartBuilder.newPen().withColor(ColorUtil.Transparent).build();
@@ -244,10 +241,7 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
         yAxis.tickProvider = CustomTickProvider("PULSE")
 
         binding.trendSecondChart.setBackgroundColor(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.black
-            )
+            ColorUtil.Black
         )
         binding.trendSecondChart.renderableSeriesAreaBorderStyle =
             sciChartBuilder.newPen().withColor(ColorUtil.Transparent).build();
@@ -300,8 +294,6 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
 
     private fun initThirdGraph(listSize: Double) {
 
-        binding.txtOxygenModuleLoading.visibility = View.GONE
-
         val sciChartBuilder: SciChartBuilder = SciChartBuilder.instance()
         modifierFio2 = CustomRolloverModifier()
 
@@ -336,12 +328,10 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
         yAxis.tickProvider = CustomTickProvider("Fio2")
 
         binding.trendThirdChart.setBackgroundColor(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.black
-            )
+            ColorUtil.Black
         )
-        binding.trendThirdChart.renderableSeriesAreaBorderStyle = sciChartBuilder.newPen().withColor(ColorUtil.Transparent).build();
+        binding.trendThirdChart.renderableSeriesAreaBorderStyle =
+            sciChartBuilder.newPen().withColor(ColorUtil.Transparent).build();
 
         xPRimaryAxis.visibility = View.GONE
         xsecondaryAxis.visibility = View.VISIBLE
@@ -393,14 +383,24 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+//        if (VentilatorApp.firstTimeVisitChart){
+//            binding.trendFirstChart.visibility = View.GONE
+//            binding.trendSecondChart.visibility = View.GONE
+//            binding.trendThirdChart.visibility = View.GONE
+//            binding.txtChartFirst.text = ""
+//            binding.txtChartSecond.text = ""
+//            binding.txtChartThird.text = ""
+//            binding.txtOxygenModuleLoading.visibility = View.VISIBLE
+//            binding.txtOxygenModuleLoading.text = "Trends Loading..."
+//            VentilatorApp.firstTimeVisitChart = false
+//        }else{
+            binding.txtChartFirst.text = defaultParamsIndexFirst
+            binding.txtChartSecond.text = defaultParamsIndexSecond
+            binding.txtChartThird.text = defaultParamsIndexThird
+//        }
+
         readTrendsViaParamAndDuration(duration)
-
-        binding.txtChartFirst.text = defaultParamsIndexFirst
-        binding.txtChartSecond.text = defaultParamsIndexSecond
-        binding.txtChartThird.text = defaultParamsIndexThird
     }
-
-
 
     private fun readTrendsViaParamAndDuration(duration: String) {
 
@@ -465,8 +465,8 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
                     }
                 }
             } else withContext(Dispatchers.Main) {
-                binding.txtOxygenModuleLoading.visibility = View.VISIBLE
                 binding.txtOxygenModuleLoading.text = "Trends Not Found"
+                binding.txtOxygenModuleLoading.visibility = View.VISIBLE
             }
         }
     }

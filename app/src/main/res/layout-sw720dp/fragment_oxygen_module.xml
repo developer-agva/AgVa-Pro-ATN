@@ -20,21 +20,6 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.67" />
 
-
-    <TextView
-        android:id="@+id/txtOxygenModuleLoading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/arial_bold"
-        android:text="Loading..."
-        android:textColor="@color/white"
-        android:textSize="@dimen/_9sdp"
-        android:translationZ="@dimen/_5sdp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/txtChartFirst"
         android:layout_width="wrap_content"
@@ -103,6 +88,21 @@
         android:layout_margin="@dimen/_2sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txtChartThird" />
+
+    <TextView
+        android:id="@+id/txtOxygenModuleLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/arial_bold"
+        android:text="Loading..."
+        android:visibility="gone"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_9sdp"
+        android:translationZ="@dimen/_2sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

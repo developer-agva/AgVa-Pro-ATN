@@ -29,7 +29,6 @@ import com.agvahealthcare.ventilator_ext.utility.GRAPH_PRESSURE_MIN
 import com.agvahealthcare.ventilator_ext.utility.TRIO_GRAPH_FLOW_MAX
 import com.agvahealthcare.ventilator_ext.utility.TRIO_GRAPH_FLOW_MIN
 
-
 class QuadTrendsFragment : GraphLayoutFragment("QuadTrendsGraphFragment"),
     onDropDownSelectionListener {
 
@@ -85,7 +84,7 @@ class QuadTrendsFragment : GraphLayoutFragment("QuadTrendsGraphFragment"),
             }
         }
         initData()
-        binding.trendDurationText.text = "1 hour"
+        binding.trendDurationText.text = VentilatorApp.choosedHours
         binding.moduleSwitchText.text = "OXYGEN"
 
         binding.moduleSwitchLayout.setOnClickListener {
@@ -94,7 +93,7 @@ class QuadTrendsFragment : GraphLayoutFragment("QuadTrendsGraphFragment"),
             if (complianceModuleFragment == null) moduleList.add("COMPLIANCE")
             if (flowChartFragment == null) moduleList.add("FLOW")
 
-            clickedModuleTile = true
+            clickedModuleTile = !clickedModuleTile
             binding.trendsRecyclerView.visibility = View.GONE
             binding.moduleRecyclerView.visibility =
                 if (binding.moduleRecyclerView.isVisible) View.GONE else View.VISIBLE
@@ -102,7 +101,7 @@ class QuadTrendsFragment : GraphLayoutFragment("QuadTrendsGraphFragment"),
         }
 
         binding.trendDurationLayout.setOnClickListener {
-            clickedTrendTile = true
+            clickedTrendTile = !clickedTrendTile
             binding.moduleRecyclerView.visibility = View.GONE
             binding.trendsRecyclerView.visibility =
                 if (binding.trendsRecyclerView.isVisible) View.GONE else View.VISIBLE
@@ -119,26 +118,27 @@ class QuadTrendsFragment : GraphLayoutFragment("QuadTrendsGraphFragment"),
     }
 
     override fun onItemSelect(text: String, colorInt: Int) {
-        binding.trendDurationText.text = "1 hour"
+
         binding.trendsRecyclerView.visibility = View.GONE
         binding.moduleRecyclerView.visibility = View.GONE
         mTrendAdapter = null
 
         if (clickedTrendTile) {
             binding.trendDurationText.text = text
+            VentilatorApp.choosedHours = text
             (requireActivity() as DashBoardActivity).changeOxygenAndComplianceDurationListener(text)
         }
         if (clickedModuleTile) {
             when (text) {
                 "OXYGEN" -> {
                     binding.moduleSwitchText.text = "OXYGEN"
-                    initOxygenModuleFragment("1 hour")
+                    initOxygenModuleFragment(VentilatorApp.choosedHours)
                     binding.trendDurationLayout.visibility = View.VISIBLE
                 }
 
                 "COMPLIANCE" -> {
                     binding.moduleSwitchText.text = "COMPLIANCE"
-                    initComplianceModuleFragment("1 hour")
+                    initComplianceModuleFragment(VentilatorApp.choosedHours)
                     binding.trendDurationLayout.visibility = View.VISIBLE
                 }
 
@@ -156,7 +156,7 @@ class QuadTrendsFragment : GraphLayoutFragment("QuadTrendsGraphFragment"),
 
     private fun initData() {
         initPressureChartFragment()
-        initOxygenModuleFragment("1 hour")
+        initOxygenModuleFragment(VentilatorApp.choosedHours)
         initLungsDynamicsFragment()
     }
 

@@ -26,6 +26,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/arial_bold"
         android:text="Loading..."
+        android:visibility="gone"
         android:textColor="@color/white"
         android:textSize="@dimen/_9sdp"
         android:translationZ="@dimen/_5sdp"

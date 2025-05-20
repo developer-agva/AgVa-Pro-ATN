@@ -19,7 +19,10 @@ import com.agvahealthcare.ventilator_ext.databinding.FragmentComplianceModuleBin
 import com.agvahealthcare.ventilator_ext.logging.FileLogger
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs
+import com.scichart.charting.Direction2D
 import com.scichart.charting.model.dataSeries.IXyDataSeries
+import com.scichart.charting.modifiers.PinchZoomModifier
+import com.scichart.charting.modifiers.ZoomPanModifier
 import com.scichart.charting.visuals.axes.AutoRange
 import com.scichart.charting.visuals.axes.AxisAlignment
 import com.scichart.charting.visuals.axes.IAxis
@@ -142,8 +145,13 @@ class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
         modifierDynComp?.showAxisLabels = true
         modifierDynComp?.isEnabled = true
 
+        val zoomPan = ZoomPanModifier()
+        zoomPan.direction = Direction2D.XDirection
+
         Collections.addAll(binding.trendFirstDynamicsChart.chartModifiers, modifierDynComp!!)
         UpdateSuspender.using(binding.trendFirstDynamicsChart) {
+//            Collections.addAll(binding.trendFirstDynamicsChart.chartModifiers,PinchZoomModifier())
+//            Collections.addAll(binding.trendFirstDynamicsChart.chartModifiers,zoomPan)
             Collections.addAll(binding.trendFirstDynamicsChart.xAxes, xPRimaryAxis)
             Collections.addAll(binding.trendFirstDynamicsChart.xAxes, xsecondaryAxis)
             Collections.addAll(binding.trendFirstDynamicsChart.yAxes, yAxis)
@@ -236,11 +244,9 @@ class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
             Collections.addAll(binding.trendSecondDynamicsChart.yAxes, yAxis)
             Collections.addAll(binding.trendSecondDynamicsChart.renderableSeries, rs2)
         }
-
     }
 
     private fun initThirdGraph(listSize: Double) {
-        binding.txtComplianceModuleLoading.visibility = View.GONE
         val sciChartBuilder: SciChartBuilder = SciChartBuilder.instance()
         modifierSpontVT = CustomRolloverModifier()
         //For the initial graphs the xprimary Axis and the XSecondary Axis will be updated.
@@ -338,7 +344,6 @@ class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
     }
 
     private fun readTrendsViaParamAndDuration() {
-
         CoroutineScope(Dispatchers.IO).launch {
 
             val dataFirstChart = FileLogger.readTrendFileAsPerParamAndDuration(
@@ -401,8 +406,8 @@ class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
                     }
                 }
             } else withContext(Dispatchers.Main) {
-                binding.txtComplianceModuleLoading.visibility = View.GONE
                 binding.txtComplianceModuleLoading.text = "Trends Not Found"
+                binding.txtComplianceModuleLoading.visibility = View.GONE
             }
         }
     }

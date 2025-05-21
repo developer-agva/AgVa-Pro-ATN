@@ -337,7 +337,7 @@ class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         readTrendsViaParamAndDuration()
-
+ 
         binding.txtChartDynamicsFirst.text = defaultParamsIndexFirst
         binding.txtChartDynamicsSecond.text = defaultParamsIndexSecond
         binding.txtChartDynamicsThird.text = defaultParamsIndexThird

@@ -92,7 +92,11 @@ public class RaspiParser extends ParserUtils
 
     public static final String DATA_HARDWARE_VERSION = "DATA_HARDWARE_VERSION";
 
-
+    public static final String TYPE_RAW_VALUE = "E";
+    public static final String RAW_INSPIRATORY_FLOW = "RawInspiratoryFlow";
+    public static final String RAW_EXPIRATORY_FLOW = "RawExpiratoryFlow";
+    public static final String RAW_INSPIRATORY_ZERO = "RawInspiratoryZero";
+    public static final String RAW_EXPIRATORY_ZERO = "RawExpiratoryZero";
 
 
     private Map<String, Map<String, String>> dataMap;{
@@ -105,6 +109,8 @@ public class RaspiParser extends ParserUtils
         dataMap.put(TYPE_DIA_FIRST, getConfigMap(DATA_INSP_PRESSURE_RAW,DATA_EXP_PRESSURE_RAW,DATA_OXP_PRESSURE_RAW,DATA_INSP_PRESSURE,DATA_EXP_PRESSURE,DATA_OXP_PRESSURE,DATA_INSP_FLOW_VOLTAGE,DATA_INSP_FLOW,DATA_EXP_DP_RAW,DATA_EXP_FLOW));
         dataMap.put(TYPE_DIA_MID, getConfigMap(DATA_BTRY_CURRENT,DATA_BTRY_VOLTAGE,DATA_BTRY_SOC,DATA_BTRY_REMAINING_TIME,DATA_BTRY_STATE,DATA_POWER_CONNECTION,DATA_MAIN_SWITCH,DATA_SPO2_STATUS,DATA_HR,DATA_Spo2));
         dataMap.put(TYPE_DIA_LAST, getConfigMap(DATA_OXYGEN_SENSOR_VOLTAGE,DATA_PI_TEMP,DATA_PI_CPU_LOAD,DATA_HARDWARE_VERSION,"0","0","0","0","0","0"));
+        dataMap.put(TYPE_RAW_VALUE,getConfigMap(RAW_INSPIRATORY_FLOW,RAW_INSPIRATORY_ZERO,RAW_EXPIRATORY_FLOW,RAW_EXPIRATORY_ZERO));
+
     }
 
     public RaspiParser addExtension(Class<? extends ParserExtension> extClass){

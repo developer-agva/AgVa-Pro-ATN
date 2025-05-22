@@ -137,6 +137,12 @@ public interface Configs {
     String SUFFIX_OR_START = "!";
     String PREFIX_HFNC = "HF~";
 
+    String LBL_RAW_INSP_FLOW = "Raw Insp.";
+    String LBL_RAW_EXP_FLOW = "Raw Exp.";
+    String LBL_RAW_INSP_ZERO = "Raw Insp. Zero";
+    String LBL_RAW_EXP_ZERO = "Raw Exp. Zero";
+    String LBL_RAW_INEXP_DIFF = "Raw IE Diff";
+
     String CALIBRATION_INSP_FLOW = "INSPIRATORY FLOW CALIBRATION";
     String CALIBRATION_LEAK_TEST = "LEAK TEST CALIBRATION";
     String CALIBRATION_NEO_ZERO = "Neonate Zeroing";

@@ -21,7 +21,7 @@
     <string name="hint_oxy_plus" translatable="false">Oxy +</string>
     <string name="hint_previous_mode" translatable="false">Previous Mode :</string>
     <string name="hint_command_graph_xvalue" translatable="false">CM+GR</string>
-    <string name="hint_litre_perminute">lpm</string>
+
     <!--StandBy UI Design-->
     <string name="hint_stand_by" translatable="false">StandBy</string>
     <string name="hint_IRV_SETTING" translatable="false">IRV MODE</string>

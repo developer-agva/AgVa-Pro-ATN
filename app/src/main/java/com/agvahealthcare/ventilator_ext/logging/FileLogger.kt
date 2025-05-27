@@ -13,6 +13,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.math.abs
 
 /*
  * Created by MOHIT MALHOTRA
@@ -161,11 +162,8 @@ abstract class FileLogger {
                 AppUtils.PATH_FOLDER_AGVA + File.separator + "trend"
             )
             val isPathAccessible = path.exists() || path.mkdirs()
-
             if (isPathAccessible) {
-
                 val file = File(path, fileName)
-
                 try {
                     if (file.exists()) {
 
@@ -174,10 +172,10 @@ abstract class FileLogger {
 
                         // handle for duplicates
                         if (fileData[fileData.size-1].split(",")[0] != data.split(",")[0]) {
-                            if (fileData.size <= 720) {
+                            if (fileData.size <= 144) {
                                 isSuccess = true
                                 val fileOutPutStream = FileOutputStream(file, true)
-                                fileOutPutStream.write(data.toByteArray() )
+                                fileOutPutStream.write(if (data.contains("|")) data.toByteArray() else "$data|".toByteArray() )
                                 fileOutPutStream.close()
                             } else {
 
@@ -187,17 +185,18 @@ abstract class FileLogger {
                                     if (i != 0) {
                                         if (tempFile.exists()) {
                                             val fileOutPutStream = FileOutputStream(tempFile, true)
-                                            fileOutPutStream.write(("${fileData[i]}|").toByteArray())
+                                            fileOutPutStream.write(if (fileData[i].contains("|")) fileData[i].toByteArray() else "${fileData[i]}|".toByteArray())
                                             fileOutPutStream.close()
                                         } else {
                                             if (tempFile.createNewFile()) {
                                                 val fileOutPutStream = FileOutputStream(tempFile)
-                                                fileOutPutStream.write(("${fileData[i]}|").toByteArray())
+                                                fileOutPutStream.write(if (fileData[i].contains("|")) fileData[i].toByteArray() else "${fileData[i]}|".toByteArray())
                                                 fileOutPutStream.close()
                                             }
                                         }
                                     }
                                 }
+
                                 file.delete()
                                 tempFile.renameTo(file)
                                 writeTrendGraphFile(fileName, data)
@@ -212,9 +211,10 @@ abstract class FileLogger {
                             fileOutPutStream.close()
                         }
                     }
-                } catch (e: Exception) {
+                }
+                catch (e: Exception) {
                     e.printStackTrace()
-                    Log.i("asdaqe213", e.message.toString())
+                    Log.i("MasoomTesting", e.message.toString())
                 }
             }
             return isSuccess
@@ -227,14 +227,14 @@ abstract class FileLogger {
                 set(Calendar.MILLISECOND, 0) // Optional, to clean up milliseconds
             }
 
-            if (formatter.format(calendar.time).toString().split(" ")[1].split(":")[1].toInt() % 2 != 0) calendar.add(Calendar.MINUTE, -1)
+            val ansForCurrentTime = formatter.format(calendar.time).toString().split(" ")[1].split(":")[1].toInt() % 10
+            if (ansForCurrentTime != 0) calendar.add(Calendar.MINUTE, -ansForCurrentTime)
 
             val timeLabels = ArrayList<String>()
 
-            // 24 hours = 1440 minutes → step every 2 minutes = 720 points
-            for (i in 0 until 1440 step 2) {
+            for (i in 0 until 1440 step 10) {
                 timeLabels.add(formatter.format(calendar.time))
-                calendar.add(Calendar.MINUTE, -2)
+                calendar.add(Calendar.MINUTE, -10)
             }
 
             timeLabels.reverse()
@@ -265,8 +265,8 @@ abstract class FileLogger {
 
                     while (t < timeFrames.size && d < fileData.size){
 
+                        Log.i("MasoomTesting", "${timeFrames[t]} - ${fileData[d].split(",")[0]} | ${fileData.size} - ${timeFrames.size}")
                         val dateFormat = SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault())
-
                         val date1 = dateFormat.parse(timeFrames[t])
                         val date2 = dateFormat.parse(fileData[d].split(",")[0])
 
@@ -307,26 +307,9 @@ abstract class FileLogger {
                                 Environment.getExternalStorageDirectory(),
                                 AppUtils.PATH_FOLDER_AGVA + File.separator + "trend"
                             ),
-                            Configs.trendTwoMin
+                            Configs.trendTenMin
                         )
                     )
-
-//                    for (j in 0 until timeFrames.size) {
-//                        // handle duplicates
-//
-//                        Log.i("MasoomTesting", "${fileData[i]} - ${timeFrames[j]}")
-//
-//                        if (i < fileData.size && fileData[i].split(",")[0] == timeFrames[j]) {
-////                            Log.i("MasoomTesting", "ismatched ${timeFrames[j]}")
-//                            writeTrendGraphFile("trends_timeframes_demo", fileData[i] + "|")
-//                            i++
-//                        } else {
-////                            Log.i("MasoomTesting", "isNotmatched ${timeFrames[j]}")
-//                            val zeroTrends = "${timeFrames[j]},NA,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,${prefManager.readUHID()}|"
-//                            writeTrendGraphFile("trends_timeframes_demo", zeroTrends)
-//                        }
-//                    }
-
 
                 }
 
@@ -407,10 +390,10 @@ abstract class FileLogger {
             )
 
             when (duration) {
-                "1 hour" -> requiredHours = (60 * 1) / 2
-                "8 hours" -> requiredHours = (60 * 8) / 2
-                "12 hours" -> requiredHours = (60 * 12) / 2
-                "24 hours" -> requiredHours = (60 * 24) / 2
+                "1 hour" -> requiredHours = 6
+                "8 hours" -> requiredHours = 48
+                "12 hours" -> requiredHours = 72
+                "24 hours" -> requiredHours = 144
             }
 
             filePath = File(filePath, fileName)

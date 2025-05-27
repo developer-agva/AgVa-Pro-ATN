@@ -55,7 +55,7 @@ public interface Configs {
                 return trendTenMin;
         }
 
-        return trendFiveMin;
+        return trendTenMin;
     }
 
     enum Direction {

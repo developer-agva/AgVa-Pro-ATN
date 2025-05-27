@@ -92,7 +92,7 @@ class QuadTrendsFragment : GraphLayoutFragment("QuadTrendsGraphFragment"),
             if (oxygenModuleFragment == null) moduleList.add("OXYGEN")
             if (complianceModuleFragment == null) moduleList.add("COMPLIANCE")
             if (flowChartFragment == null) moduleList.add("FLOW")
-
+            clickedTrendTile = false
             clickedModuleTile = !clickedModuleTile
             binding.trendsRecyclerView.visibility = View.GONE
             binding.moduleRecyclerView.visibility =
@@ -101,6 +101,7 @@ class QuadTrendsFragment : GraphLayoutFragment("QuadTrendsGraphFragment"),
         }
 
         binding.trendDurationLayout.setOnClickListener {
+            clickedModuleTile = false
             clickedTrendTile = !clickedTrendTile
             binding.moduleRecyclerView.visibility = View.GONE
             binding.trendsRecyclerView.visibility =

@@ -214,6 +214,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Select Log Trends Duration"
+                android:visibility="gone"
                 android:theme="@style/subheading_text_style"
                 app:layout_constraintBottom_toBottomOf="@+id/trendDurationLayout"
                 app:layout_constraintStart_toStartOf="parent"
@@ -222,6 +223,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/trendDurationLayout"
                 android:layout_width="@dimen/_40sdp"
+                android:visibility="gone"
                 android:layout_height="@dimen/_14sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:background="@drawable/background_offwhite_border_none"

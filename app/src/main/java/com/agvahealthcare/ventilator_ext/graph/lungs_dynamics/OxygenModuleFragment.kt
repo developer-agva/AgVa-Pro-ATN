@@ -21,15 +21,20 @@ import com.agvahealthcare.ventilator_ext.logging.FileLogger
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs
 import com.scichart.charting.model.dataSeries.IXyDataSeries
+import com.scichart.charting.numerics.labelProviders.CategoryLabelProviderBase
+import com.scichart.charting.numerics.labelProviders.ILabelProvider
 import com.scichart.charting.numerics.tickProviders.TickProvider
 import com.scichart.charting.visuals.axes.AutoRange
 import com.scichart.charting.visuals.axes.AxisAlignment
 import com.scichart.charting.visuals.axes.IAxis
+import com.scichart.charting.visuals.axes.IAxisCore
 import com.scichart.charting.visuals.pointmarkers.EllipsePointMarker
+import com.scichart.core.IServiceContainer
 import com.scichart.core.framework.UpdateSuspender
 import com.scichart.core.model.DoubleValues
 import com.scichart.data.model.DoubleRange
 import com.scichart.drawing.common.FontStyle
+import com.scichart.drawing.common.PenStyle
 import com.scichart.drawing.common.SolidBrushStyle
 import com.scichart.drawing.utility.ColorUtil
 import com.scichart.extensions.builders.SciChartBuilder
@@ -38,6 +43,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Collections
+import kotlin.math.roundToInt
 
 
 class CustomTickProvider(var s: String) : TickProvider() {
@@ -105,7 +111,7 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
     private var modifierFio2: GraphFragment.CustomRolloverModifier? = null
 
     val titleStyle = FontStyle(14.0f, ColorUtil.White)
-    val titleXStyle = FontStyle(14.0f, ColorUtil.Black)
+    val titleXStyle = FontStyle(14.0f, ColorUtil.White)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -125,7 +131,7 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
         //For the initial graphs the xprimary Axis and the XSecondary Axis will be updated.
         val xPRimaryAxis: IAxis = sciChartBuilder.newNumericAxis()
             .withVisibleRange(DoubleRange(0.0, listSize))
-            .withMaxAutoTicks(4)
+            .withMaxAutoTicks(dataSeries1First?.count ?: 0)
             .withTickLabelStyle(titleXStyle)
             .withAxisId("OLD")
             .withAutoRangeMode(AutoRange.Never)
@@ -134,7 +140,7 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
         val xsecondaryAxis: IAxis = sciChartBuilder.newNumericAxis()
             .withVisibleRange(DoubleRange(0.0, listSize))
             .withTickLabelStyle(titleXStyle)
-            .withMaxAutoTicks(5)
+            .withMaxAutoTicks(dataSeries1First?.count ?: 0)
             .withAxisId("HiddenXAxis")
             .withAutoRangeMode(AutoRange.Never)
             .build()
@@ -178,24 +184,16 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
             Float::class.javaObjectType
         ).withAcceptsUnsortedData().build()
 
-        // === Create point marker ===
-        val pointMarker = EllipsePointMarker().apply {
-            fillStyle = SolidBrushStyle(Color.WHITE)
-            width = 10
-            height = 10
-        }
-
         // === Create scatter series ===
-        val rs2 = sciChartBuilder.newScatterSeries().withPointMarker(pointMarker)
+        val rs2 = sciChartBuilder.newColumnSeries()
             .withDataSeries(dataSeries1First)
+            .withFillColor(Color.WHITE)
+            .withStrokeStyle(Color.GRAY,0f)
             .withSeriesInfoProvider(CustomSeriesInfoProvider(GraphType.SPO2_CHART))
             .withXAxisId("OLD").build()
 
-        modifierSpo2?.showTooltip = true
-        modifierSpo2?.showAxisLabels = true
-        modifierSpo2?.isEnabled = true
+        rs2.dataPointWidth = 0.2
 
-        Collections.addAll(binding.trendFirstChart.chartModifiers, modifierSpo2!!)
         UpdateSuspender.using(binding.trendFirstChart)
         {
             Collections.addAll(binding.trendFirstChart.xAxes, xPRimaryAxis)
@@ -203,7 +201,6 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
             Collections.addAll(binding.trendFirstChart.yAxes, yAxis)
             Collections.addAll(binding.trendFirstChart.renderableSeries, rs2)
         }
-
     }
 
     private fun initSecondGraph(listSize: Double) {
@@ -213,7 +210,7 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
         //For the initial graphs the xprimary Axis and the XSecondary Axis will be updated.
         val xPRimaryAxis: IAxis = sciChartBuilder.newNumericAxis()
             .withVisibleRange(DoubleRange(0.0, listSize))
-            .withMaxAutoTicks(4)
+            .withMaxAutoTicks(dataSeries1Second?.count ?: 0)
             .withTickLabelStyle(titleXStyle)
             .withAxisId("OLD")
             .withAutoRangeMode(AutoRange.Never)
@@ -222,7 +219,7 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
         val xsecondaryAxis: IAxis = sciChartBuilder.newNumericAxis()
             .withVisibleRange(DoubleRange(0.0, listSize))
             .withTickLabelStyle(titleXStyle)
-            .withMaxAutoTicks(5)
+            .withMaxAutoTicks(dataSeries1Second?.count ?: 0)
             .withAxisId("HiddenXAxis")
             .withAutoRangeMode(AutoRange.Never)
             .build()
@@ -266,24 +263,16 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
             Float::class.javaObjectType
         ).withAcceptsUnsortedData().build()
 
-        // === Create point marker ===
-        val pointMarker = EllipsePointMarker().apply {
-            fillStyle = SolidBrushStyle(Color.RED)
-            width = 10
-            height = 10
-        }
-
         // === Create scatter series ===
-        val rs2 = sciChartBuilder.newScatterSeries().withPointMarker(pointMarker)
+        val rs2 = sciChartBuilder.newColumnSeries()
             .withDataSeries(dataSeries1Second)
+            .withFillColor(Color.RED)
+            .withStrokeStyle(Color.RED,0f)
             .withSeriesInfoProvider(CustomSeriesInfoProvider(GraphType.PR_CHART))
             .withXAxisId("OLD").build()
 
-        modifierPR?.showTooltip = true
-        modifierPR?.showAxisLabels = true
-        modifierPR?.isEnabled = true
+        rs2.dataPointWidth = 0.2
 
-        Collections.addAll(binding.trendSecondChart.chartModifiers, modifierPR!!)
         UpdateSuspender.using(binding.trendSecondChart) {
             Collections.addAll(binding.trendSecondChart.xAxes, xPRimaryAxis)
             Collections.addAll(binding.trendSecondChart.xAxes, xsecondaryAxis)
@@ -300,7 +289,7 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
         //For the initial graphs the xprimary Axis and the XSecondary Axis will be updated.
         val xPRimaryAxis: IAxis = sciChartBuilder.newNumericAxis()
             .withVisibleRange(DoubleRange(0.0, listSize))
-            .withMaxAutoTicks(4)
+            .withMaxAutoTicks(dataSeries1Third?.count ?: 0)
             .withTickLabelStyle(titleXStyle)
             .withAxisId("OLD")
             .withAutoRangeMode(AutoRange.Never)
@@ -309,7 +298,7 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
         val xsecondaryAxis: IAxis = sciChartBuilder.newNumericAxis()
             .withVisibleRange(DoubleRange(0.0, listSize))
             .withTickLabelStyle(titleXStyle)
-            .withMaxAutoTicks(5)
+            .withMaxAutoTicks(dataSeries1Third?.count ?: 0)
             .withAxisId("HiddenXAxis")
             .withAutoRangeMode(AutoRange.Never)
             .build()
@@ -324,6 +313,7 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
             .withAutoRangeMode(AutoRange.Never)
             .withVisibleRange(21.0, 100.0)
             .build()
+
 
         yAxis.tickProvider = CustomTickProvider("Fio2")
 
@@ -353,24 +343,20 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
             Float::class.javaObjectType
         ).withAcceptsUnsortedData().build()
 
-        // === Create point marker ===
-        val pointMarker = EllipsePointMarker().apply {
-            fillStyle = SolidBrushStyle(Color.GREEN)
-            width = 10
-            height = 10
-        }
+
 
         // === Create scatter series ===
-        val rs2 = sciChartBuilder.newScatterSeries().withPointMarker(pointMarker)
+        val rs2 = sciChartBuilder.newColumnSeries()
             .withDataSeries(dataSeries1Third)
+            .withFillColor(Color.GREEN)
+            .withStrokeStyle(Color.GREEN,0f)
             .withSeriesInfoProvider(CustomSeriesInfoProvider(GraphType.FIO2_CHART))
             .withXAxisId("OLD").build()
 
-        modifierFio2?.showTooltip = true
-        modifierFio2?.showAxisLabels = true
-        modifierFio2?.isEnabled = true
 
-        Collections.addAll(binding.trendThirdChart.chartModifiers, modifierFio2!!)
+
+        rs2.dataPointWidth = 0.2
+
         UpdateSuspender.using(binding.trendThirdChart) {
             Collections.addAll(binding.trendThirdChart.xAxes, xPRimaryAxis)
             Collections.addAll(binding.trendThirdChart.xAxes, xsecondaryAxis)

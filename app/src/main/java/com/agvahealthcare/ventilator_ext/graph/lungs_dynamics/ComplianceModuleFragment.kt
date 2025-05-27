@@ -53,7 +53,7 @@ class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
     private var dataSeries1Second: IXyDataSeries<Int, Float>? = null
     private var dataSeries1Third: IXyDataSeries<Int, Float>? = null
     val titleStyle = FontStyle(14.0f, ColorUtil.White)
-    val titleXStyle = FontStyle(14.0f, ColorUtil.Black)
+    val titleXStyle = FontStyle(14.0f, ColorUtil.White)
 
     private var modifierDynComp : GraphFragment.CustomRolloverModifier? = null
     private var modifierSpontRR : GraphFragment.CustomRolloverModifier? = null
@@ -75,7 +75,7 @@ class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
         //For the initial graphs the xprimary Axis and the XSecondary Axis will be updated.
         val xPRimaryAxis: IAxis = sciChartBuilder.newNumericAxis()
             .withVisibleRange(DoubleRange(0.0, listSize))
-            .withMaxAutoTicks(4)
+            .withMaxAutoTicks(dataSeries1First?.count ?: 0)
             .withTickLabelStyle(titleXStyle)
             .withAxisId("OLD")
             .withAutoRangeMode(AutoRange.Never)
@@ -84,7 +84,7 @@ class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
         val xsecondaryAxis: IAxis = sciChartBuilder.newNumericAxis()
             .withVisibleRange(DoubleRange(0.0, listSize))
             .withTickLabelStyle(titleXStyle)
-            .withMaxAutoTicks(5)
+            .withMaxAutoTicks(dataSeries1First?.count ?: 0)
             .withAxisId("HiddenXAxis")
             .withAutoRangeMode(AutoRange.Never)
             .build()
@@ -128,27 +128,16 @@ class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
             Int::class.javaObjectType,
             Float::class.javaObjectType
         ).withAcceptsUnsortedData().build()
-
-        // === Create point marker ===
-        val pointMarker = EllipsePointMarker().apply {
-            fillStyle = SolidBrushStyle(Color.WHITE)
-            width = 10
-            height = 10
-        }
-
-        // === Create scatter series ===
-        val rs2 = sciChartBuilder.newScatterSeries().withPointMarker(pointMarker)
+// === Create scatter series ===
+        val rs2 = sciChartBuilder.newColumnSeries()
             .withDataSeries(dataSeries1First)
+            .withFillColor(Color.WHITE)
+            .withStrokeStyle(Color.GRAY,0f)
             .withSeriesInfoProvider(CustomSeriesInfoProvider(GraphType.DYNAMIC_COMP_CHART))
             .withXAxisId("OLD").build()
-        modifierDynComp?.showTooltip = true
-        modifierDynComp?.showAxisLabels = true
-        modifierDynComp?.isEnabled = true
 
-        val zoomPan = ZoomPanModifier()
-        zoomPan.direction = Direction2D.XDirection
+        rs2.dataPointWidth = 0.2
 
-        Collections.addAll(binding.trendFirstDynamicsChart.chartModifiers, modifierDynComp!!)
         UpdateSuspender.using(binding.trendFirstDynamicsChart) {
 //            Collections.addAll(binding.trendFirstDynamicsChart.chartModifiers,PinchZoomModifier())
 //            Collections.addAll(binding.trendFirstDynamicsChart.chartModifiers,zoomPan)
@@ -167,7 +156,7 @@ class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
         //For the initial graphs the xprimary Axis and the XSecondary Axis will be updated.
         val xPRimaryAxis: IAxis = sciChartBuilder.newNumericAxis()
             .withVisibleRange(DoubleRange(0.0, listSize))
-            .withMaxAutoTicks(4)
+            .withMaxAutoTicks(dataSeries1Second?.count ?: 0)
             .withTickLabelStyle(titleXStyle)
             .withAxisId("OLD")
             .withAutoRangeMode(AutoRange.Never)
@@ -176,7 +165,7 @@ class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
         val xsecondaryAxis: IAxis = sciChartBuilder.newNumericAxis()
             .withVisibleRange(DoubleRange(0.0, listSize))
             .withTickLabelStyle(titleXStyle)
-            .withMaxAutoTicks(5)
+            .withMaxAutoTicks(dataSeries1Second?.count ?: 0)
             .withAxisId("HiddenXAxis")
             .withAutoRangeMode(AutoRange.Never)
             .build()
@@ -221,23 +210,15 @@ class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
             Float::class.javaObjectType
         ).withAcceptsUnsortedData().build()
 
-        // === Create point marker ===
-        val pointMarker = EllipsePointMarker().apply {
-            fillStyle = SolidBrushStyle(Color.WHITE)
-            width = 10
-            height = 10
-        }
-
-        // === Create scatter series ===
-        val rs2 = sciChartBuilder.newScatterSeries().withPointMarker(pointMarker)
+        val rs2 = sciChartBuilder.newColumnSeries()
             .withDataSeries(dataSeries1Second)
+            .withFillColor(Color.WHITE)
+            .withStrokeStyle(Color.GRAY,0f)
             .withSeriesInfoProvider(CustomSeriesInfoProvider(GraphType.SPONT_RR_CHART))
             .withXAxisId("OLD").build()
-        modifierSpontRR?.showTooltip = true
-        modifierSpontRR?.showAxisLabels = true
-        modifierSpontRR?.isEnabled = true
 
-        Collections.addAll(binding.trendSecondDynamicsChart.chartModifiers, modifierSpontRR!!)
+        rs2.dataPointWidth = 0.2
+
         UpdateSuspender.using(binding.trendSecondDynamicsChart) {
             Collections.addAll(binding.trendSecondDynamicsChart.xAxes, xPRimaryAxis)
             Collections.addAll(binding.trendSecondDynamicsChart.xAxes, xsecondaryAxis)
@@ -252,7 +233,7 @@ class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
         //For the initial graphs the xprimary Axis and the XSecondary Axis will be updated.
         val xPRimaryAxis: IAxis = sciChartBuilder.newNumericAxis()
             .withVisibleRange(DoubleRange(0.0, listSize))
-            .withMaxAutoTicks(4)
+            .withMaxAutoTicks(dataSeries1Third?.count ?: 0)
             .withTickLabelStyle(titleXStyle)
             .withAxisId("OLD")
             .withAutoRangeMode(AutoRange.Never)
@@ -261,7 +242,7 @@ class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
         val xsecondaryAxis: IAxis = sciChartBuilder.newNumericAxis()
             .withVisibleRange(DoubleRange(0.0, listSize))
             .withTickLabelStyle(titleXStyle)
-            .withMaxAutoTicks(5)
+            .withMaxAutoTicks(dataSeries1Third?.count ?: 0)
             .withAxisId("HiddenXAxis")
             .withAutoRangeMode(AutoRange.Never)
             .build()
@@ -306,24 +287,15 @@ class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
             Float::class.javaObjectType
         ).withAcceptsUnsortedData().build()
 
-        // === Create point marker ===
-        val pointMarker = EllipsePointMarker().apply {
-            fillStyle = SolidBrushStyle(Color.WHITE)
-            width = 10
-            height = 10
-        }
-
-        // === Create scatter series ===
-        val rs2 = sciChartBuilder.newScatterSeries().withPointMarker(pointMarker)
+        val rs2 = sciChartBuilder.newColumnSeries()
             .withDataSeries(dataSeries1Third)
+            .withFillColor(Color.WHITE)
+            .withStrokeStyle(Color.GRAY,0f)
             .withSeriesInfoProvider(CustomSeriesInfoProvider(GraphType.SPONT_VT_CHART))
             .withXAxisId("OLD").build()
 
-        modifierSpontVT?.showTooltip = true
-        modifierSpontVT?.showAxisLabels = true
-        modifierSpontVT?.isEnabled = true
+        rs2.dataPointWidth = 0.2
 
-        Collections.addAll(binding.trendThirdDynamicsChart.chartModifiers, modifierSpontVT!!)
         UpdateSuspender.using(binding.trendThirdDynamicsChart) {
             Collections.addAll(binding.trendThirdDynamicsChart.xAxes, xPRimaryAxis)
             Collections.addAll(binding.trendThirdDynamicsChart.xAxes, xsecondaryAxis)

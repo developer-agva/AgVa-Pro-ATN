@@ -71,6 +71,7 @@ public class PreferenceManager {
     // HL7 Communication System
     private static final String PREF_ADMIT_DATE = "PREF_ADMIT_DATE";
     private static final String PREF_DISCHARGE_DATE = "PREF_DISCHARGE_DATE";
+    private static final String PREF_VENTI_NEED_LOCK = "PREF_VENTI_NEED_LOCK";
     private static final String PREF_GENDER = "PREF_GENDER";
     private static final String PREF_DOB = "PREF_DOB";
     private static final String PREF_FIRST_NAME = "PREF_FIRST_NAME";
@@ -423,6 +424,13 @@ public class PreferenceManager {
     }
     public String readAdmitDate(String key) {
         return sp.getString(key + PREF_ADMIT_DATE, "");
+    }
+
+    public void setVentilatorNeedToLock(Boolean val) {
+        updateData(PREF_VENTI_NEED_LOCK, val);
+    }
+    public Boolean readVentilatorNeedToLock() {
+        return sp.getBoolean(PREF_VENTI_NEED_LOCK, true);
     }
 
     public void setDischargeDate(String key,String val) {

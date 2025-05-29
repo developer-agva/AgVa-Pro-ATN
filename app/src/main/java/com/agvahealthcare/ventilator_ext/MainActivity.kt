@@ -3050,6 +3050,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         val lockedStatusData = "$deviceId,false,true,${prefManager?.readLockedStatus()}"
                         mSocket?.emit("NodeReceivingLockedStatus", lockedStatusData)
 
+                        if (it[0].toString().split("^")[2].trim().toInt() >= 100) prefManager?.setVentilatorNeedToLock(false) else prefManager?.setVentilatorNeedToLock(true)
+
                     } else {
                         Log.i("Payment_Status", "else ${it[0]}")
 
@@ -3065,9 +3067,10 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                             e.printStackTrace()
                         }
                         prefManager?.saveLockedStatus("Unlocked")
+                        if (it[0].toString().split("^")[2].toInt() >= 100) prefManager?.setVentilatorNeedToLock(false) else prefManager?.setVentilatorNeedToLock(true)
+
                         val lockedStatusData = "$deviceId,true,false,${prefManager?.readLockedStatus()}"
                         mSocket?.emit("NodeReceivingLockedStatus", lockedStatusData)
-
                     }
                 }
             }
@@ -3886,9 +3889,10 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
                 androidx.media3.common.util.Log.i(
                     "data_Date",
-                    "continues check - $dayOfYear, $dispatchData"
+                    "continues check - $isVentiLocked ,${prefManager?.readVentilatorNeedToLock()}" +
+                            ",$dayOfYear, $dispatchData"
                 )
-                if ((dayOfYear - dispatchData.toInt()) >= 10 && !isVentiLocked) {
+                if (( (dayOfYear - dispatchData.toInt()) >= 10 && !isVentiLocked) && prefManager?.readVentilatorNeedToLock() == true) {
 
                     prefManager?.saveLockedStatus("Auto Locked")
                     isVentiLocked = true

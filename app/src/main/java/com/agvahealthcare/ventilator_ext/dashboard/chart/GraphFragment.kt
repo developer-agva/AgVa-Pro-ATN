@@ -9,12 +9,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.agvahealthcare.ventilator_ext.VentilatorApp
 import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.currentXValue
 import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.currentYValue
-import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.dynCompTimeList
-import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.fio2TimeList
-import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.prTimeList
-import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.spo2TimeList
-import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.spontRRTimeList
-import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.spontVTTimeList
 import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.testingDashBoardViewModel
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardViewModel
 import com.scichart.charting.model.RenderableSeriesCollection
@@ -88,27 +82,27 @@ open class GraphFragment() : Fragment() {
                     }
 
                     GraphType.SPO2_CHART -> {
-                        text = "Time : ${spo2TimeList[seriesInfo.formattedXValue.toString().toInt()]},Value : ${seriesInfo.formattedYValue})"
+//                        text = "Time : ${spo2TimeList[seriesInfo.formattedXValue.toString().toInt()]},Value : ${seriesInfo.formattedYValue})"
                     }
 
                     GraphType.PR_CHART -> {
-                        text = "Time : ${prTimeList[seriesInfo.formattedXValue.toString().toInt()]},Value : ${seriesInfo.formattedYValue})"
+//                        text = "Time : ${prTimeList[seriesInfo.formattedXValue.toString().toInt()]},Value : ${seriesInfo.formattedYValue})"
                     }
 
                     GraphType.FIO2_CHART -> {
-                        text = "Time : ${fio2TimeList[seriesInfo.formattedXValue.toString().toInt()]},Value : ${seriesInfo.formattedYValue})"
+//                        text = "Time : ${fio2TimeList[seriesInfo.formattedXValue.toString().toInt()]},Value : ${seriesInfo.formattedYValue})"
                     }
 
                     GraphType.DYNAMIC_COMP_CHART -> {
-                        text = "Time : ${dynCompTimeList[seriesInfo.formattedXValue.toString().toInt()]},Value : ${seriesInfo.formattedYValue})"
+//                        text = "Time : ${dynCompTimeList[seriesInfo.formattedXValue.toString().toInt()]},Value : ${seriesInfo.formattedYValue})"
                     }
 
                     GraphType.SPONT_RR_CHART -> {
-                        text = "Time : ${spontRRTimeList[seriesInfo.formattedXValue.toString().toInt()]},Value : ${seriesInfo.formattedYValue})"
+//                        text = "Time : ${spontRRTimeList[seriesInfo.formattedXValue.toString().toInt()]},Value : ${seriesInfo.formattedYValue})"
                     }
 
                     GraphType.SPONT_VT_CHART -> {
-                        text = "Time : ${spontVTTimeList[seriesInfo.formattedXValue.toString().toInt()]},Value : ${seriesInfo.formattedYValue})"
+//                        text = "Time : ${spontVTTimeList[seriesInfo.formattedXValue.toString().toInt()]},Value : ${seriesInfo.formattedYValue})"
                     }
                     else -> {
                         text = "Testing: ${seriesInfo.formattedYValue}"

@@ -47,12 +47,8 @@ class VentilatorApp : Application() {
 
         var choosedHours = "1 hour"
         var firstTimeVisitChart = true
-        val spo2TimeList = ArrayList<String>()
-        val prTimeList = ArrayList<String>()
-        val fio2TimeList = ArrayList<String>()
-        val dynCompTimeList = ArrayList<String>()
-        val spontRRTimeList = ArrayList<String>()
-        val spontVTTimeList = ArrayList<String>()
+
+
         var isDischargePatientDone = false
         var defaultOfTurbineRanges = "0"
         var defaultOfExhaleValveRanges = "0"

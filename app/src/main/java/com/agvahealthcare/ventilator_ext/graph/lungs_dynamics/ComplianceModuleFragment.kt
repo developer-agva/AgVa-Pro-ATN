@@ -8,30 +8,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import com.agvahealthcare.ventilator_ext.R
-import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.currentXValue
-import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.currentYValue
-import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.dynCompTimeList
-import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.spontRRTimeList
-import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.spontVTTimeList
 import com.agvahealthcare.ventilator_ext.dashboard.chart.GraphFragment
 import com.agvahealthcare.ventilator_ext.dashboard.chart.GraphType
 import com.agvahealthcare.ventilator_ext.databinding.FragmentComplianceModuleBinding
 import com.agvahealthcare.ventilator_ext.logging.FileLogger
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs
-import com.scichart.charting.Direction2D
 import com.scichart.charting.model.dataSeries.IXyDataSeries
-import com.scichart.charting.modifiers.PinchZoomModifier
-import com.scichart.charting.modifiers.ZoomPanModifier
 import com.scichart.charting.visuals.axes.AutoRange
 import com.scichart.charting.visuals.axes.AxisAlignment
 import com.scichart.charting.visuals.axes.IAxis
-import com.scichart.charting.visuals.pointmarkers.EllipsePointMarker
-import com.scichart.charting.visuals.renderableSeries.IRenderableSeries
 import com.scichart.core.framework.UpdateSuspender
 import com.scichart.data.model.DoubleRange
 import com.scichart.drawing.common.FontStyle
-import com.scichart.drawing.common.SolidBrushStyle
+import com.scichart.drawing.common.SolidPenStyle
 import com.scichart.drawing.utility.ColorUtil
 import com.scichart.extensions.builders.SciChartBuilder
 import kotlinx.coroutines.CoroutineScope
@@ -39,25 +29,20 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Collections
-import kotlin.time.Duration
-
 
 class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
 
+    val dynCompTimeList = ArrayList<String>()
+    val spontRRTimeList = ArrayList<String>()
+    val spontVTTimeList = ArrayList<String>()
     private var defaultParamsIndexFirst = "Compliance"
     private var defaultParamsIndexSecond = "Spont RR"
     private var defaultParamsIndexThird = "Spont VT"
-    private var defaultDurationCount = 2
     private lateinit var binding : FragmentComplianceModuleBinding
     private var dataSeries1First: IXyDataSeries<Int, Float>? = null
     private var dataSeries1Second: IXyDataSeries<Int, Float>? = null
     private var dataSeries1Third: IXyDataSeries<Int, Float>? = null
-    val titleStyle = FontStyle(14.0f, ColorUtil.White)
-    val titleXStyle = FontStyle(14.0f, ColorUtil.White)
-
-    private var modifierDynComp : GraphFragment.CustomRolloverModifier? = null
-    private var modifierSpontRR : GraphFragment.CustomRolloverModifier? = null
-    private var modifierSpontVT : GraphFragment.CustomRolloverModifier? = null
+    val titleStyle = FontStyle(12.0f, ColorUtil.White)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,27 +53,21 @@ class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
         return binding.root
     }
 
-    private fun initFirstGraph(listSize: Double) {
+    private fun initFirstGraph(list: List<String>) {
 
         val sciChartBuilder: SciChartBuilder = SciChartBuilder.instance()
-        modifierDynComp = CustomRolloverModifier()
         //For the initial graphs the xprimary Axis and the XSecondary Axis will be updated.
-        val xPRimaryAxis: IAxis = sciChartBuilder.newNumericAxis()
-            .withVisibleRange(DoubleRange(0.0, listSize))
-            .withMaxAutoTicks(dataSeries1First?.count ?: 0)
-            .withTickLabelStyle(titleXStyle)
+        val xPRimaryAxis = sciChartBuilder.newNumericAxis()
+            .withVisibleRange(DoubleRange(0.0, list.size.toDouble()))
+            .withMaxAutoTicks(list.size)
+            .withTickLabelStyle(titleStyle)
             .withAxisId("OLD")
             .withAutoRangeMode(AutoRange.Never)
             .build()
 
-        val xsecondaryAxis: IAxis = sciChartBuilder.newNumericAxis()
-            .withVisibleRange(DoubleRange(0.0, listSize))
-            .withTickLabelStyle(titleXStyle)
-            .withMaxAutoTicks(dataSeries1First?.count ?: 0)
-            .withAxisId("HiddenXAxis")
-            .withAutoRangeMode(AutoRange.Never)
-            .build()
-
+        xPRimaryAxis.majorTickLineStyle = SolidPenStyle(Color.WHITE, false, 1f, null)
+        xPRimaryAxis.minorTickLineStyle = SolidPenStyle(Color.WHITE, false, 1f, null)
+        xPRimaryAxis.labelProvider = StringLabelProvider(dynCompTimeList)
         // modified at 20 jan 2023
 
         val yAxis: IAxis = sciChartBuilder.newNumericAxis()
@@ -109,14 +88,12 @@ class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
         binding.trendFirstDynamicsChart.renderableSeriesAreaBorderStyle =
             sciChartBuilder.newPen().withColor(ColorUtil.Transparent).build();
 
-        xPRimaryAxis.visibility = View.GONE
-        xsecondaryAxis.visibility = View.VISIBLE
 
         xPRimaryAxis.drawMajorGridLines = false
         xPRimaryAxis.drawMinorGridLines = false
         xPRimaryAxis.drawMajorBands = false
-        xPRimaryAxis.drawMajorTicks = false
-        xPRimaryAxis.drawMinorTicks = false
+        xPRimaryAxis.drawMajorTicks = true
+        xPRimaryAxis.drawMinorTicks = true
 
         yAxis.drawMajorGridLines = false
         yAxis.drawMinorGridLines = false
@@ -142,33 +119,27 @@ class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
 //            Collections.addAll(binding.trendFirstDynamicsChart.chartModifiers,PinchZoomModifier())
 //            Collections.addAll(binding.trendFirstDynamicsChart.chartModifiers,zoomPan)
             Collections.addAll(binding.trendFirstDynamicsChart.xAxes, xPRimaryAxis)
-            Collections.addAll(binding.trendFirstDynamicsChart.xAxes, xsecondaryAxis)
             Collections.addAll(binding.trendFirstDynamicsChart.yAxes, yAxis)
             Collections.addAll(binding.trendFirstDynamicsChart.renderableSeries, rs2)
         }
 
     }
 
-    private fun initSecondGraph(listSize: Double) {
+    private fun initSecondGraph(list: List<String>) {
 
         val sciChartBuilder: SciChartBuilder = SciChartBuilder.instance()
-        modifierSpontRR = CustomRolloverModifier()
         //For the initial graphs the xprimary Axis and the XSecondary Axis will be updated.
-        val xPRimaryAxis: IAxis = sciChartBuilder.newNumericAxis()
-            .withVisibleRange(DoubleRange(0.0, listSize))
-            .withMaxAutoTicks(dataSeries1Second?.count ?: 0)
-            .withTickLabelStyle(titleXStyle)
+        val xPRimaryAxis = sciChartBuilder.newNumericAxis()
+            .withVisibleRange(DoubleRange(0.0, list.size.toDouble()))
+            .withMaxAutoTicks(list.size)
+            .withTickLabelStyle(titleStyle)
             .withAxisId("OLD")
             .withAutoRangeMode(AutoRange.Never)
             .build()
 
-        val xsecondaryAxis: IAxis = sciChartBuilder.newNumericAxis()
-            .withVisibleRange(DoubleRange(0.0, listSize))
-            .withTickLabelStyle(titleXStyle)
-            .withMaxAutoTicks(dataSeries1Second?.count ?: 0)
-            .withAxisId("HiddenXAxis")
-            .withAutoRangeMode(AutoRange.Never)
-            .build()
+        xPRimaryAxis.majorTickLineStyle = SolidPenStyle(Color.WHITE, false, 1f, null)
+        xPRimaryAxis.minorTickLineStyle = SolidPenStyle(Color.WHITE, false, 1f, null)
+        xPRimaryAxis.labelProvider = StringLabelProvider(spontRRTimeList)
 
         // modified at 20 jan 2023
 
@@ -190,14 +161,12 @@ class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
         binding.trendSecondDynamicsChart.renderableSeriesAreaBorderStyle =
             sciChartBuilder.newPen().withColor(ColorUtil.Transparent).build();
 
-        xPRimaryAxis.visibility = View.GONE
-        xsecondaryAxis.visibility = View.VISIBLE
 
         xPRimaryAxis.drawMajorGridLines = false
         xPRimaryAxis.drawMinorGridLines = false
         xPRimaryAxis.drawMajorBands = false
-        xPRimaryAxis.drawMajorTicks = false
-        xPRimaryAxis.drawMinorTicks = false
+        xPRimaryAxis.drawMajorTicks = true
+        xPRimaryAxis.drawMinorTicks = true
 
         yAxis.drawMajorGridLines = false
         yAxis.drawMinorGridLines = false
@@ -221,31 +190,24 @@ class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
 
         UpdateSuspender.using(binding.trendSecondDynamicsChart) {
             Collections.addAll(binding.trendSecondDynamicsChart.xAxes, xPRimaryAxis)
-            Collections.addAll(binding.trendSecondDynamicsChart.xAxes, xsecondaryAxis)
             Collections.addAll(binding.trendSecondDynamicsChart.yAxes, yAxis)
             Collections.addAll(binding.trendSecondDynamicsChart.renderableSeries, rs2)
         }
     }
 
-    private fun initThirdGraph(listSize: Double) {
+    private fun initThirdGraph(list: List<String>) {
         val sciChartBuilder: SciChartBuilder = SciChartBuilder.instance()
-        modifierSpontVT = CustomRolloverModifier()
         //For the initial graphs the xprimary Axis and the XSecondary Axis will be updated.
-        val xPRimaryAxis: IAxis = sciChartBuilder.newNumericAxis()
-            .withVisibleRange(DoubleRange(0.0, listSize))
-            .withMaxAutoTicks(dataSeries1Third?.count ?: 0)
-            .withTickLabelStyle(titleXStyle)
+        val xPRimaryAxis = sciChartBuilder.newNumericAxis()
+            .withVisibleRange(DoubleRange(0.0, list.size.toDouble()))
+            .withMaxAutoTicks(list.size)
+            .withTickLabelStyle(titleStyle)
             .withAxisId("OLD")
             .withAutoRangeMode(AutoRange.Never)
             .build()
-
-        val xsecondaryAxis: IAxis = sciChartBuilder.newNumericAxis()
-            .withVisibleRange(DoubleRange(0.0, listSize))
-            .withTickLabelStyle(titleXStyle)
-            .withMaxAutoTicks(dataSeries1Third?.count ?: 0)
-            .withAxisId("HiddenXAxis")
-            .withAutoRangeMode(AutoRange.Never)
-            .build()
+        xPRimaryAxis.majorTickLineStyle = SolidPenStyle(Color.WHITE, false, 1f, null)
+        xPRimaryAxis.minorTickLineStyle = SolidPenStyle(Color.WHITE, false, 1f, null)
+        xPRimaryAxis.labelProvider = StringLabelProvider(spontVTTimeList)
 
         // modified at 20 jan 2023
 
@@ -267,14 +229,12 @@ class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
         binding.trendThirdDynamicsChart.renderableSeriesAreaBorderStyle =
             sciChartBuilder.newPen().withColor(ColorUtil.Transparent).build();
 
-        xPRimaryAxis.visibility = View.GONE
-        xsecondaryAxis.visibility = View.VISIBLE
 
         xPRimaryAxis.drawMajorGridLines = false
         xPRimaryAxis.drawMinorGridLines = false
         xPRimaryAxis.drawMajorBands = false
-        xPRimaryAxis.drawMajorTicks = false
-        xPRimaryAxis.drawMinorTicks = false
+        xPRimaryAxis.drawMajorTicks = true
+        xPRimaryAxis.drawMinorTicks = true
 
         yAxis.drawMajorGridLines = false
         yAxis.drawMinorGridLines = false
@@ -298,7 +258,6 @@ class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
 
         UpdateSuspender.using(binding.trendThirdDynamicsChart) {
             Collections.addAll(binding.trendThirdDynamicsChart.xAxes, xPRimaryAxis)
-            Collections.addAll(binding.trendThirdDynamicsChart.xAxes, xsecondaryAxis)
             Collections.addAll(binding.trendThirdDynamicsChart.yAxes, yAxis)
             Collections.addAll(binding.trendThirdDynamicsChart.renderableSeries, rs2)
         }
@@ -339,8 +298,8 @@ class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
             if (dataFirstChart != FileLogger.dataNotFound) {
                 val list = dataFirstChart.split("|").asReversed()
                 withContext(Dispatchers.Main) {
-                    initFirstGraph(list.size.toDouble())
                     dynCompTimeList.clear()
+                    initFirstGraph(list)
                     dataSeries1First?.clear()
                     for (i in list.indices) {
                         dynCompTimeList.add(list[i].split("~")[0])
@@ -354,8 +313,8 @@ class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
             if (dataSecondChart != FileLogger.dataNotFound) {
                 val list = dataSecondChart.split("|").asReversed()
                 withContext(Dispatchers.Main) {
-                    initSecondGraph(list.size.toDouble())
                     spontRRTimeList.clear()
+                    initSecondGraph(list)
                     dataSeries1Second?.clear()
                     for (i in list.indices){
                         spontRRTimeList.add(list[i].split("~")[0])
@@ -369,8 +328,8 @@ class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
             if (dataThirdChart != FileLogger.dataNotFound) {
                 val list = dataThirdChart.split("|")
                 withContext(Dispatchers.Main) {
-                    initThirdGraph(list.size.toDouble())
                     spontVTTimeList.clear()
+                    initThirdGraph(list)
                     dataSeries1Third?.clear()
                     for (i in list.indices){
                         spontVTTimeList.add(list[i].split("~")[0])
@@ -386,15 +345,9 @@ class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
 
     // RM scichart
     fun setRollOver(){
-        modifierDynComp?.setRolloverAt(currentXValue, currentYValue)
-        modifierSpontRR?.setRolloverAt(currentXValue, currentYValue)
-        modifierSpontVT?.setRolloverAt(currentXValue, currentYValue)
     }
 
     fun removeRollover(){
-        modifierDynComp?.removeRolloverAt(currentXValue, currentYValue)
-        modifierSpontRR?.removeRolloverAt(currentXValue, currentYValue)
-        modifierSpontVT?.removeRolloverAt(currentXValue, currentYValue)
     }
 
 }

@@ -120,15 +120,6 @@ class PressureChartFragment : GraphFragment() {
             this.xAxisId = "OLD"
         }
 
-//        annotationLabel = AnnotationLabel(requireContext())?.apply {
-//            this.labelPlacement = LabelPlacement.TopLeft
-//          this.text = "Pplat"
-//            this.fontStyle = FontStyle(15.0f, ColorUtil.Grey)
-//        }
-//        horizontalLineAnnotation1 = HorizontalLineAnnotation(requireContext()).apply {
-//            this.xAxisId = "OLD"
-//        }
-
         initGraph()
 
 

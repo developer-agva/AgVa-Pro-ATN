@@ -178,7 +178,6 @@ abstract class FileLogger {
                                 fileOutPutStream.write(if (data.contains("|")) data.toByteArray() else "$data|".toByteArray() )
                                 fileOutPutStream.close()
                             } else {
-
                                 // create temp file
                                 val tempFile = File(path, "temp_$fileName")
                                 for (i in fileData.indices) {
@@ -196,7 +195,6 @@ abstract class FileLogger {
                                         }
                                     }
                                 }
-
                                 file.delete()
                                 tempFile.renameTo(file)
                                 writeTrendGraphFile(fileName, data)
@@ -383,6 +381,7 @@ abstract class FileLogger {
         ): String {
 
             var requiredHours = 0
+            var steps = 0
 
             var filePath = File(
                 Environment.getExternalStorageDirectory(),
@@ -396,6 +395,14 @@ abstract class FileLogger {
                 "24 hours" -> requiredHours = 144
             }
 
+            when (duration) {
+                "1 hour" -> steps = 1
+                "8 hours" -> steps = 6
+                "12 hours" -> steps = 6
+                "24 hours" -> steps = 6
+            }
+
+
             filePath = File(filePath, fileName)
             try {
 
@@ -407,10 +414,36 @@ abstract class FileLogger {
                     fileData.reverse()
                     var count = 0
                     // get data as per duration
-                    for (i in 0 until fileData.size) {
-                        if (count++ < requiredHours) data += fileData[i].split(",")[0].split(" ")[1] + "~" + fileData[i].split(
-                            ","
-                        )[paramIndex] + "|"
+
+                    // case : for 1 hour don't need to calculate the average for hour we only print every 10 min data
+                    if (requiredHours == 6){
+                        for (i in 0 until fileData.size) {
+                            if (count++ < requiredHours) data += fileData[i].split(",")[0].split(" ")[1] + "~" + fileData[i].split(
+                                ","
+                            )[paramIndex] + "|"
+                        }
+                    }else{
+                        for (i in 0 until requiredHours step steps){
+                            var value = 0
+                            var date = ""
+
+                            // case : when we don't have enough data
+                            if (i+steps > fileData.size){
+                                for (j in i until fileData.size) {
+                                    value += fileData[j].split(",")[paramIndex].toFloat().toInt()
+                                    date = fileData[j].split(",")[0].split(" ")[1]
+                                }
+                            }
+                            // case : when we have enough data
+                            else {
+                                for (j in i until i + steps) {
+                                    value += fileData[j].split(",")[paramIndex].toFloat().toInt()
+                                    date = fileData[j].split(",")[0].split(" ")[1]
+                                }
+                            }
+                            data += date + "~" + (value/steps) + "|"
+//                            Log.i("SALIMTESTING", data)
+                        }
                     }
 
                     if (data != "") {

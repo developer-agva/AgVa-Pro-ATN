@@ -42,7 +42,7 @@ class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
     private var dataSeries1First: IXyDataSeries<Int, Float>? = null
     private var dataSeries1Second: IXyDataSeries<Int, Float>? = null
     private var dataSeries1Third: IXyDataSeries<Int, Float>? = null
-    val titleStyle = FontStyle(12.0f, ColorUtil.White)
+    val titleStyle = FontStyle(14.0f, ColorUtil.White)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,8 +65,8 @@ class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
             .withAutoRangeMode(AutoRange.Never)
             .build()
 
-        xPRimaryAxis.majorTickLineStyle = SolidPenStyle(Color.WHITE, false, 1f, null)
-        xPRimaryAxis.minorTickLineStyle = SolidPenStyle(Color.WHITE, false, 1f, null)
+        xPRimaryAxis.majorTickLineStyle = SolidPenStyle(Color.WHITE, false, 0.5f, null)
+        xPRimaryAxis.minorTickLineStyle = SolidPenStyle(Color.WHITE, false, 0.5f, null)
         xPRimaryAxis.labelProvider = StringLabelProvider(dynCompTimeList)
         // modified at 20 jan 2023
 
@@ -137,8 +137,8 @@ class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
             .withAutoRangeMode(AutoRange.Never)
             .build()
 
-        xPRimaryAxis.majorTickLineStyle = SolidPenStyle(Color.WHITE, false, 1f, null)
-        xPRimaryAxis.minorTickLineStyle = SolidPenStyle(Color.WHITE, false, 1f, null)
+        xPRimaryAxis.majorTickLineStyle = SolidPenStyle(Color.WHITE, false, 0.5f, null)
+        xPRimaryAxis.minorTickLineStyle = SolidPenStyle(Color.WHITE, false, 0.5f, null)
         xPRimaryAxis.labelProvider = StringLabelProvider(spontRRTimeList)
 
         // modified at 20 jan 2023
@@ -205,8 +205,8 @@ class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
             .withAxisId("OLD")
             .withAutoRangeMode(AutoRange.Never)
             .build()
-        xPRimaryAxis.majorTickLineStyle = SolidPenStyle(Color.WHITE, false, 1f, null)
-        xPRimaryAxis.minorTickLineStyle = SolidPenStyle(Color.WHITE, false, 1f, null)
+        xPRimaryAxis.majorTickLineStyle = SolidPenStyle(Color.WHITE, false, 0.5f, null)
+        xPRimaryAxis.minorTickLineStyle = SolidPenStyle(Color.WHITE, false, 0.5f, null)
         xPRimaryAxis.labelProvider = StringLabelProvider(spontVTTimeList)
 
         // modified at 20 jan 2023

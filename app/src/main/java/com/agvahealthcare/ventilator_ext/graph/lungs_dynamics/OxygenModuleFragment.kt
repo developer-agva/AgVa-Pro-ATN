@@ -35,7 +35,6 @@ import java.util.Collections
 
 
 class CustomTickProvider(var s: String) : TickProvider() {
-
     override fun updateTicks(majorTicks: DoubleValues?, minorTicks: DoubleValues?) {
 
         when (s) {
@@ -84,38 +83,6 @@ class CustomTickProvider(var s: String) : TickProvider() {
     }
 }
 
-class FixedTickProvider(private val ticks: List<String>) : TickProvider() {
-
-    override fun updateTicks(majorTicks: DoubleValues?, minorTicks: DoubleValues?) {
-        majorTicks?.apply {
-            clear()
-            add(0.0)
-            add(1.0)
-            add(2.0)
-            add(3.0)
-            add(4.0)
-            add(5.0)
-            add(9.0)
-            add(12.0)
-            add(15.0)
-            add(17.0)
-            add(19.0)
-            add(21.0)
-        }
-
-        minorTicks?.apply {
-            clear()
-            add(0.0)
-            add(1.0)
-            add(2.0)
-            add(3.0)
-            add(4.0)
-            add(5.0)
-            // No minor ticks in this implementation
-        }
-    }
-}
-
 class StringLabelProvider(private val labels: List<String>) : LabelProviderBase<IAxisCore>(IAxisCore::class.java) {
     override fun formatLabel(p0: Comparable<Nothing>?): CharSequence {
         return ""
@@ -148,7 +115,7 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
     private var dataSeries1Second: IXyDataSeries<Int, Float>? = null
     private var dataSeries1Third: IXyDataSeries<Int, Float>? = null
 
-    val titleStyle = FontStyle(12.0f, ColorUtil.White)
+    val titleStyle = FontStyle(14.0f, ColorUtil.White)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -170,8 +137,8 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
             .withAutoRangeMode(AutoRange.Never)
             .build()
 
-        xPRimaryAxis.majorTickLineStyle = SolidPenStyle(Color.WHITE, false, 1f, null)
-        xPRimaryAxis.minorTickLineStyle = SolidPenStyle(Color.WHITE, false, 1f, null)
+        xPRimaryAxis.majorTickLineStyle = SolidPenStyle(Color.WHITE, false, 0.5f, null)
+        xPRimaryAxis.minorTickLineStyle = SolidPenStyle(Color.WHITE, false, 0.5f, null)
         xPRimaryAxis.labelProvider = StringLabelProvider(spo2TimeList)
 
         val yAxis: IAxis = sciChartBuilder.newNumericAxis()
@@ -237,8 +204,8 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
             .withAxisId("OLD")
             .withAutoRangeMode(AutoRange.Never)
             .build()
-        xPRimaryAxis.majorTickLineStyle = SolidPenStyle(Color.WHITE, false, 1f, null)
-        xPRimaryAxis.minorTickLineStyle = SolidPenStyle(Color.WHITE, false, 1f, null)
+        xPRimaryAxis.majorTickLineStyle = SolidPenStyle(Color.WHITE, false, 0.5f, null)
+        xPRimaryAxis.minorTickLineStyle = SolidPenStyle(Color.WHITE, false, 0.5f, null)
         xPRimaryAxis.labelProvider = StringLabelProvider(prTimeList)
         // modified at 20 jan 2023
 
@@ -306,8 +273,8 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
             .withAutoRangeMode(AutoRange.Never)
             .build()
 
-        xPRimaryAxis.majorTickLineStyle = SolidPenStyle(Color.WHITE, false, 1f, null)
-        xPRimaryAxis.minorTickLineStyle = SolidPenStyle(Color.WHITE, false, 1f, null)
+        xPRimaryAxis.majorTickLineStyle = SolidPenStyle(Color.WHITE, false, 0.5f, null)
+        xPRimaryAxis.minorTickLineStyle = SolidPenStyle(Color.WHITE, false, 0.5f, null)
         xPRimaryAxis.labelProvider = StringLabelProvider(fio2TimeList)
 
         // modified at 20 jan 2023

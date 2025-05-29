@@ -17,6 +17,7 @@ import com.scichart.charting.numerics.labelProviders.LabelProviderBase
 import com.scichart.charting.numerics.tickProviders.TickProvider
 import com.scichart.charting.visuals.axes.AutoRange
 import com.scichart.charting.visuals.axes.AxisAlignment
+import com.scichart.charting.visuals.axes.AxisTickLabelStyle
 import com.scichart.charting.visuals.axes.IAxis
 import com.scichart.charting.visuals.axes.IAxisCore
 import com.scichart.core.framework.UpdateSuspender
@@ -32,6 +33,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Collections
+import androidx.core.graphics.toColorInt
 
 
 class CustomTickProvider(var s: String) : TickProvider() {
@@ -115,7 +117,8 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
     private var dataSeries1Second: IXyDataSeries<Int, Float>? = null
     private var dataSeries1Third: IXyDataSeries<Int, Float>? = null
 
-    val titleStyle = FontStyle(14.0f, ColorUtil.White)
+    val titleStyle = FontStyle(14.0f, Color.parseColor("#CCFFFFFF"))
+    private val titleXStyle = FontStyle(14.0f, Color.parseColor("#CCFFFFFF"))
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -132,13 +135,13 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
         val xPRimaryAxis = sciChartBuilder.newNumericAxis()
             .withVisibleRange(DoubleRange(0.0, list.size.toDouble()))
             .withMaxAutoTicks(list.size)
-            .withTickLabelStyle(titleStyle)
+            .withTickLabelStyle(titleXStyle)
             .withAxisId("OLD")
             .withAutoRangeMode(AutoRange.Never)
             .build()
 
         xPRimaryAxis.majorTickLineStyle = SolidPenStyle(Color.WHITE, false, 0.5f, null)
-        xPRimaryAxis.minorTickLineStyle = SolidPenStyle(Color.WHITE, false, 0.5f, null)
+        xPRimaryAxis.minorTickLineStyle = SolidPenStyle(Color.BLACK, false, 0.5f, null)
         xPRimaryAxis.labelProvider = StringLabelProvider(spo2TimeList)
 
         val yAxis: IAxis = sciChartBuilder.newNumericAxis()
@@ -200,12 +203,12 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
         val xPRimaryAxis = sciChartBuilder.newNumericAxis()
             .withVisibleRange(DoubleRange(0.0, list.size.toDouble()))
             .withMaxAutoTicks(list.size)
-            .withTickLabelStyle(titleStyle)
+            .withTickLabelStyle(titleXStyle)
             .withAxisId("OLD")
             .withAutoRangeMode(AutoRange.Never)
             .build()
         xPRimaryAxis.majorTickLineStyle = SolidPenStyle(Color.WHITE, false, 0.5f, null)
-        xPRimaryAxis.minorTickLineStyle = SolidPenStyle(Color.WHITE, false, 0.5f, null)
+        xPRimaryAxis.minorTickLineStyle = SolidPenStyle(Color.BLACK, false, 0.5f, null)
         xPRimaryAxis.labelProvider = StringLabelProvider(prTimeList)
         // modified at 20 jan 2023
 
@@ -268,13 +271,13 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
         val xPRimaryAxis = sciChartBuilder.newNumericAxis()
             .withVisibleRange(DoubleRange(0.0, list.size.toDouble()))
             .withMaxAutoTicks(list.size)
-            .withTickLabelStyle(titleStyle)
+            .withTickLabelStyle(titleXStyle)
             .withAxisId("OLD")
             .withAutoRangeMode(AutoRange.Never)
             .build()
 
         xPRimaryAxis.majorTickLineStyle = SolidPenStyle(Color.WHITE, false, 0.5f, null)
-        xPRimaryAxis.minorTickLineStyle = SolidPenStyle(Color.WHITE, false, 0.5f, null)
+        xPRimaryAxis.minorTickLineStyle = SolidPenStyle(Color.BLACK, false, 0.5f, null)
         xPRimaryAxis.labelProvider = StringLabelProvider(fio2TimeList)
 
         // modified at 20 jan 2023

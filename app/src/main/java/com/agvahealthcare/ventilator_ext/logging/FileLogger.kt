@@ -171,11 +171,11 @@ abstract class FileLogger {
                         fileData.removeAt(fileData.size - 1)
 
                         // handle for duplicates
-                        if (fileData[fileData.size-1].split(",")[0] != data.split(",")[0]) {
+                        if (fileData[fileData.size - 1].split(",")[0] != data.split(",")[0]) {
                             if (fileData.size <= 144) {
                                 isSuccess = true
                                 val fileOutPutStream = FileOutputStream(file, true)
-                                fileOutPutStream.write(if (data.contains("|")) data.toByteArray() else "$data|".toByteArray() )
+                                fileOutPutStream.write(if (data.contains("|")) data.toByteArray() else "$data|".toByteArray())
                                 fileOutPutStream.close()
                             } else {
                                 // create temp file
@@ -209,8 +209,7 @@ abstract class FileLogger {
                             fileOutPutStream.close()
                         }
                     }
-                }
-                catch (e: Exception) {
+                } catch (e: Exception) {
                     e.printStackTrace()
                     Log.i("MasoomTesting", e.message.toString())
                 }
@@ -225,7 +224,8 @@ abstract class FileLogger {
                 set(Calendar.MILLISECOND, 0) // Optional, to clean up milliseconds
             }
 
-            val ansForCurrentTime = formatter.format(calendar.time).toString().split(" ")[1].split(":")[1].toInt() % 10
+            val ansForCurrentTime =
+                formatter.format(calendar.time).toString().split(" ")[1].split(":")[1].toInt() % 10
             if (ansForCurrentTime != 0) calendar.add(Calendar.MINUTE, -ansForCurrentTime)
 
             val timeLabels = ArrayList<String>()
@@ -242,7 +242,7 @@ abstract class FileLogger {
         fun readTrendFileAndUpdateMissings(
             fileName: String,
             prefManager: PreferenceManager
-        ) : Boolean{
+        ): Boolean {
             var filePath = File(
                 Environment.getExternalStorageDirectory(),
                 AppUtils.PATH_FOLDER_AGVA + File.separator + "trend"
@@ -251,7 +251,7 @@ abstract class FileLogger {
             try {
                 if (filePath.exists()) {
 
-                    Log.i("FILEDATA",filePath.readText())
+                    Log.i("FILEDATA", filePath.readText())
                     val fileData = filePath.readText().split("|") as ArrayList<String>
 
                     fileData.removeAt(fileData.size - 1)
@@ -261,9 +261,12 @@ abstract class FileLogger {
                     var t = 0
                     var d = 0
 
-                    while (t < timeFrames.size && d < fileData.size){
+                    while (t < timeFrames.size && d < fileData.size) {
 
-                        Log.i("MasoomTesting", "${timeFrames[t]} - ${fileData[d].split(",")[0]} | ${fileData.size} - ${timeFrames.size}")
+                        Log.i(
+                            "MasoomTesting",
+                            "${timeFrames[t]} - ${fileData[d].split(",")[0]} | ${fileData.size} - ${timeFrames.size}"
+                        )
                         val dateFormat = SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault())
                         val date1 = dateFormat.parse(timeFrames[t])
                         val date2 = dateFormat.parse(fileData[d].split(",")[0])
@@ -271,24 +274,25 @@ abstract class FileLogger {
                         val calendar1 = Calendar.getInstance().apply { time = date1!! }
                         val calendar2 = Calendar.getInstance().apply { time = date2!! }
 
-                        if (calendar1.before(calendar2)){
-                            val zeroTrends = "${timeFrames[t]},NA,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,${prefManager.readUHID()}|"
+                        if (calendar1.before(calendar2)) {
+                            val zeroTrends =
+                                "${timeFrames[t]},NA,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,${prefManager.readUHID()}|"
                             writeTrendGraphFile("trends_timeframes_demo", zeroTrends)
                             t++
-                        }
-                        else{
+                        } else {
                             writeTrendGraphFile("trends_timeframes_demo", fileData[d] + "|")
                             d++
                         }
                     }
 
-                    while (t < timeFrames.size){
-                        val zeroTrends = "${timeFrames[t]},NA,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,${prefManager.readUHID()}|"
+                    while (t < timeFrames.size) {
+                        val zeroTrends =
+                            "${timeFrames[t]},NA,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,${prefManager.readUHID()}|"
                         writeTrendGraphFile("trends_timeframes_demo", zeroTrends)
                         t++
                     }
 
-                    while (d < fileData.size){
+                    while (d < fileData.size) {
                         writeTrendGraphFile("trends_timeframes_demo", fileData[d] + "|")
                         d++
                     }
@@ -364,7 +368,7 @@ abstract class FileLogger {
                     // since data not added
                     else data = dataNotFound
 
-                   return data
+                    return data
                 }
 
             } catch (e: Exception) {
@@ -402,7 +406,6 @@ abstract class FileLogger {
                 "24 hours" -> steps = 6
             }
 
-
             filePath = File(filePath, fileName)
             try {
 
@@ -416,36 +419,30 @@ abstract class FileLogger {
                     // get data as per duration
 
                     // case : for 1 hour don't need to calculate the average for hour we only print every 10 min data
-                    if (requiredHours == 6){
+                    if (requiredHours == 6) {
                         for (i in 0 until fileData.size) {
                             if (count++ < requiredHours) data += fileData[i].split(",")[0].split(" ")[1] + "~" + fileData[i].split(
                                 ","
                             )[paramIndex] + "|"
                         }
-                    }else{
-                        for (i in 0 until requiredHours step steps){
-                            var value = 0
-                            var date = ""
+                    } else {
+                        var currentHours = AppUtils.getTimeForTrendsTime().split(":")[0].toInt()
 
-                            // case : when we don't have enough data
-                            if (i+steps > fileData.size){
-                                for (j in i until fileData.size) {
-                                    value += fileData[j].split(",")[paramIndex].toFloat().toInt()
-                                    date = fileData[j].split(",")[0].split(" ")[1]
-                                }
+                        for (i in 0 until if (requiredHours <= fileData.size) requiredHours else fileData.size) {
+                            var value = 0
+
+                            val time = fileData[i].split(",")[0].split(" ")[1]
+
+                            if (time != (if (currentHours in 0.. 9) "0$currentHours:00" else "$currentHours:00")){
+                                value += fileData[i].split(",")[paramIndex].toFloat().toInt()
+                                value /= 2
+                            }else{
+                                if (currentHours == 0) currentHours = 23 else currentHours-- // to get the previous hour data
+                                data += "$time~$value|"
                             }
-                            // case : when we have enough data
-                            else {
-                                for (j in i until i + steps) {
-                                    value += fileData[j].split(",")[paramIndex].toFloat().toInt()
-                                    date = fileData[j].split(",")[0].split(" ")[1]
-                                }
-                            }
-                            data += date + "~" + (value/steps) + "|"
-//                            Log.i("SALIMTESTING", data)
+                            Log.i("SALIMTESTING", data)
                         }
                     }
-
                     if (data != "") {
                         val newData = data.substring(0, data.length - 1)
                         Log.i("testing_build", "What We Get : $newData")

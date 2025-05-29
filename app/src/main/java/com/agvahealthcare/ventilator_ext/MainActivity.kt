@@ -110,6 +110,7 @@ interface ActivateVentilatorListener {
     fun activateVentilatorListener()
 }
 
+
 class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpdateCheckListener,
     UpdateHelper.OnUpdateBaseUrlListener,
     View.OnClickListener,

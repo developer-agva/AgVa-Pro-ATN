@@ -1,6 +1,7 @@
 package com.agvahealthcare.ventilator_ext.graph.lungs_dynamics
 
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -42,7 +43,8 @@ class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
     private var dataSeries1First: IXyDataSeries<Int, Float>? = null
     private var dataSeries1Second: IXyDataSeries<Int, Float>? = null
     private var dataSeries1Third: IXyDataSeries<Int, Float>? = null
-    val titleStyle = FontStyle(14.0f, ColorUtil.White)
+    val titleStyle = FontStyle(14.0f, Color.parseColor("#CCFFFFFF"))
+    val titleXStyle = FontStyle(14.0f, Color.parseColor("#CCFFFFFF"))
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,13 +62,13 @@ class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
         val xPRimaryAxis = sciChartBuilder.newNumericAxis()
             .withVisibleRange(DoubleRange(0.0, list.size.toDouble()))
             .withMaxAutoTicks(list.size)
-            .withTickLabelStyle(titleStyle)
+            .withTickLabelStyle(titleXStyle)
             .withAxisId("OLD")
             .withAutoRangeMode(AutoRange.Never)
             .build()
 
         xPRimaryAxis.majorTickLineStyle = SolidPenStyle(Color.WHITE, false, 0.5f, null)
-        xPRimaryAxis.minorTickLineStyle = SolidPenStyle(Color.WHITE, false, 0.5f, null)
+        xPRimaryAxis.minorTickLineStyle = SolidPenStyle(Color.BLACK, false, 0.5f, null)
         xPRimaryAxis.labelProvider = StringLabelProvider(dynCompTimeList)
         // modified at 20 jan 2023
 
@@ -132,13 +134,13 @@ class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
         val xPRimaryAxis = sciChartBuilder.newNumericAxis()
             .withVisibleRange(DoubleRange(0.0, list.size.toDouble()))
             .withMaxAutoTicks(list.size)
-            .withTickLabelStyle(titleStyle)
+            .withTickLabelStyle(titleXStyle)
             .withAxisId("OLD")
             .withAutoRangeMode(AutoRange.Never)
             .build()
 
         xPRimaryAxis.majorTickLineStyle = SolidPenStyle(Color.WHITE, false, 0.5f, null)
-        xPRimaryAxis.minorTickLineStyle = SolidPenStyle(Color.WHITE, false, 0.5f, null)
+        xPRimaryAxis.minorTickLineStyle = SolidPenStyle(Color.BLACK, false, 0.5f, null)
         xPRimaryAxis.labelProvider = StringLabelProvider(spontRRTimeList)
 
         // modified at 20 jan 2023
@@ -201,12 +203,12 @@ class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
         val xPRimaryAxis = sciChartBuilder.newNumericAxis()
             .withVisibleRange(DoubleRange(0.0, list.size.toDouble()))
             .withMaxAutoTicks(list.size)
-            .withTickLabelStyle(titleStyle)
+            .withTickLabelStyle(titleXStyle)
             .withAxisId("OLD")
             .withAutoRangeMode(AutoRange.Never)
             .build()
         xPRimaryAxis.majorTickLineStyle = SolidPenStyle(Color.WHITE, false, 0.5f, null)
-        xPRimaryAxis.minorTickLineStyle = SolidPenStyle(Color.WHITE, false, 0.5f, null)
+        xPRimaryAxis.minorTickLineStyle = SolidPenStyle(Color.BLACK, false, 0.5f, null)
         xPRimaryAxis.labelProvider = StringLabelProvider(spontVTTimeList)
 
         // modified at 20 jan 2023

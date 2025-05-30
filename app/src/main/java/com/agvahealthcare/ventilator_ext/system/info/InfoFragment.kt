@@ -201,7 +201,7 @@ class InfoFragment(private var communicationService: CommunicationService?) : Fr
             val version = pInfo.versionName
             Log.i("version name", version + "  " + pInfo.versionCode)
             binding.textViewVersionData.text = version
-            binding.textViewModelData.text = "AGVAC Pro".uppercase()
+            binding.textViewModelData.text = "D&D Healthcare".uppercase()
         } catch (e: PackageManager.NameNotFoundException) {
             Toast.makeText(requireContext(), "" + e.printStackTrace(), Toast.LENGTH_LONG).show()
         }

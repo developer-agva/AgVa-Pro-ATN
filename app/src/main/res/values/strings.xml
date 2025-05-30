@@ -15,8 +15,8 @@
     <string name="press_switch_onn" translatable="false">Press the button to switch on the ventilator</string>
     <string name="hint_version" translatable="false">Version</string>
     <string name="hint_agva" translatable="false">AgVa</string>
-    <string name="hint_pro" translatable="false">Pro</string>
-    <string name="hint_agvac" translatable="false">AGVAC</string>
+    <string name="hint_pro" translatable="false">Healthcare</string>
+    <string name="hint_agvac" translatable="false">D&amp;D</string>
     <string name="hint_intelli" translatable="false">Intelli</string>
     <string name="hint_oxy_plus" translatable="false">Oxy +</string>
     <string name="hint_previous_mode" translatable="false">Previous Mode :</string>

@@ -425,11 +425,11 @@ abstract class FileLogger {
                                 ","
                             )[paramIndex] + "|"
                         }
-                    } else {
+                    }
+                    else {
                         var currentHours = AppUtils.getTimeForTrendsTime().split(":")[0].toInt()
-
+                        var value = 0
                         for (i in 0 until if (requiredHours <= fileData.size) requiredHours else fileData.size) {
-                            var value = 0
 
                             val time = fileData[i].split(",")[0].split(" ")[1]
 
@@ -439,6 +439,7 @@ abstract class FileLogger {
                             }else{
                                 if (currentHours == 0) currentHours = 23 else currentHours-- // to get the previous hour data
                                 data += "$time~$value|"
+                                value = 0
                             }
                             Log.i("SALIMTESTING", data)
                         }

@@ -786,7 +786,6 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
         @Override
         public void onReceive(Context context, Intent intent) {
 
-
             if (intent == null || intent.getAction() == null) return;
             switch (intent.getAction()) {
                 case IntentFactory.ACTION_USB_PERMISSION_VENTILATOR:

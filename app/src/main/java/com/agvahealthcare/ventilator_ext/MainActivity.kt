@@ -3077,6 +3077,20 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             }
         }
 
+        mSocket?.on("AndroidReceivingService"){ it2 ->
+            if (deviceId == it2[0].toString().split("^")[0]) {
+                val serviceStatus = it2[0].toString().split("^")[1].toString()
+                val serviceMessage = it2[0].toString().split("^")[2].toString()
+
+                try {
+                    DialogBoxFactory.dismissDialogs()
+                }catch (e:Exception){
+                    e.printStackTrace()
+                }
+                if (serviceStatus == "true") DialogBoxFactory.showServiceDueDialog(this@MainActivity,serviceMessage)
+            }
+        }
+
         mSocket?.on("AndroidReceivingRange") { it1 ->
             if (deviceId == it1[0].toString().split("^")[0]) {
                 val ranges = it1[0].toString().split("^")[1]
@@ -3154,7 +3168,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         }
 
         mSocket?.on("AndroidNodeStart") {
-
             if (deviceId == it[0].toString().split(",")[0]) {
                 connectedDevicesLive += 1
                 isSocketStop = false

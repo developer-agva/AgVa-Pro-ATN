@@ -109,6 +109,27 @@ public class DialogBoxFactory {
         return dialog;
     }
 
+    public static AlertDialog showServiceDueDialog(Context ctx,String msg) {
+
+        View view = LayoutInflater.from(ctx).inflate(R.layout.layout_service_due_dialog, null, false);
+
+        TextView deviceIdText = view.findViewById(R.id.deviceIdText);
+        TextView txtDescription = view.findViewById(R.id.txtDescription);
+        AlertDialog dialog = new AlertDialog.Builder(ctx).setView(view).create();
+        dialog.setCancelable(true);
+
+        txtDescription.setText(msg);
+
+        deviceIdText.setText("Device Id : " + Settings.Secure.getString(
+                ctx.getContentResolver(), Settings.Secure.ANDROID_ID
+        ));
+
+        setShutDownDialogView(dialog, true);
+        dialog.show();
+
+        return dialog;
+    }
+
     public static void showSystemLockDialog(Context ctx) {
         View view = LayoutInflater.from(ctx).inflate(R.layout.system_lock_dialog_layout, null, false);
         TextView tvMsg = view.findViewById(R.id.tvSystemLockDesc);

@@ -421,25 +421,42 @@ abstract class FileLogger {
                     // case : for 1 hour don't need to calculate the average for hour we only print every 10 min data
                     if (requiredHours == 6) {
                         for (i in 0 until fileData.size) {
-                            if (count++ < requiredHours) data += fileData[i].split(",")[0].split(" ")[1] + "~" + fileData[i].split(
-                                ","
-                            )[paramIndex] + "|"
+
+                            try {
+                                if (count++ < requiredHours) data += fileData[i].split(",")[0].split(" ")[1] + "~" + fileData[i].split(
+                                    ","
+                                )[paramIndex] + "|"
+                            }catch (e:Exception){
+                                if (count++ < requiredHours) data += fileData[i].split(",")[0].split(" ")[1] + "~" + 0f + "|"
+                            }
                         }
                     }
                     else {
                         var currentHours = AppUtils.getTimeForTrendsTime().split(":")[0].toInt()
-                        var value = 0
+                        var value = 0.0
                         for (i in 0 until if (requiredHours <= fileData.size) requiredHours else fileData.size) {
 
                             val time = fileData[i].split(",")[0].split(" ")[1]
 
                             if (time != (if (currentHours in 0.. 9) "0$currentHours:00" else "$currentHours:00")){
-                                value += fileData[i].split(",")[paramIndex].toFloat().toInt()
-                                value /= 2
+
+                                var valueFromFile = 0
+
+                                // handle for case: if old data is not cleared
+                                try {
+                                    valueFromFile = fileData[i].split(",")[paramIndex].toFloat().toInt()
+                                }catch (e:Exception){
+                                    e.printStackTrace()
+                                }
+
+                                if (valueFromFile > 0) {
+                                    value += valueFromFile
+                                    value /= 2
+                                }
                             }else{
                                 if (currentHours == 0) currentHours = 23 else currentHours-- // to get the previous hour data
                                 data += "$time~$value|"
-                                value = 0
+                                value = 0.0
                             }
                             Log.i("SALIMTESTING", data)
                         }

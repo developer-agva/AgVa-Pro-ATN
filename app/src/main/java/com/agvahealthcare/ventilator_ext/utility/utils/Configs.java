@@ -3253,9 +3253,7 @@ public interface Configs {
                 switch (prefManager.readCurrentUid()) {
 
 //                    case TYPE_PED:
-//
 //                    case TYPE_ADULT:
-//
 //                        if (fio2 != null) basicParameters.add(fio2);
 //                        //   if (tInsp != null) basicParameters.add(tInsp);
 //                        if (triggerFlow != null) basicParameters.add(triggerFlow);
@@ -3269,7 +3267,6 @@ public interface Configs {
 //                        if (tExp != null) advancedParameters.add(tExp);
 //                        if (supportPressure != null) basicParameters.add(supportPressure);
 //                        if (slope != null) advancedParameters.add(slope);
-
 //                        apneaParameters.add(rrApnea);
 //                        apneaParameters.add(tApnea);
 //                        apneaParameters.add(vtApnea);

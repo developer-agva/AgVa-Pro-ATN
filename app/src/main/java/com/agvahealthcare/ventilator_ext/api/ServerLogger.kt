@@ -416,7 +416,6 @@ class ServerLogger {
                 .client(okHttpClient)
                 .build()
 
-
             return try {
                 val response =
                     retrofit.create(LoggerApiService::class.java).getVentiDetailsRequest(deviceId)

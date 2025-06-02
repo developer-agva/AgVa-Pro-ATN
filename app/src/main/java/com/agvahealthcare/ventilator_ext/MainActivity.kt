@@ -3183,6 +3183,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             }
         }
 
+
         // listeners for handle UI online
         mSocket?.on("AndroidReceiveCommand") { it1 ->
 
@@ -3201,9 +3202,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                                     it.switchBetweenDebugAndDiagnosticWindow("Diagnostic")
                                 } else {
                                     highlightButton(binding.buttonPreopCheck)
-
+                                    
                                     systemDialogFragment = SystemDialogFragment.newInstance(
-
                                         heightSize,
                                         widthSize,
                                         false,

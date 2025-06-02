@@ -46,11 +46,9 @@ class LungsDynamicsFragment : Fragment() {
         mDashBoardViewModel = ViewModelProvider(requireActivity())[DashBoardViewModel::class.java]
         readTrendsViaParamAndDuration()
 
-        if (prefManager.readGender() == Configs.Gender.TYPE_MALE) binding.imgMaleBody.visibility =
-            View.VISIBLE else binding.imgFemaleBody.visibility = View.VISIBLE
+        if (prefManager.readGender() == Configs.Gender.TYPE_MALE) binding.imgMaleBody.visibility = View.VISIBLE else binding.imgFemaleBody.visibility = View.VISIBLE
 
         mDashBoardViewModel?.graphPeekValue?.observe(viewLifecycleOwner) { peekValue ->
-
 
             if (apneaActive) {
                 mDashBoardViewModel?.vtiValue?.value?.let {
@@ -141,43 +139,29 @@ class LungsDynamicsFragment : Fragment() {
     // change lungs color as per dynamic compliance value
     private fun changeLungsAsPerCompliance(dynamicCompliance: Int) {
 
-        // not valid
-        if (dynamicCompliance <= 0) binding.imgLungs.setImageResource(R.drawable.lungs_grey)
-        // extremely low
-        else if (dynamicCompliance < 20) binding.imgLungs.setImageResource(R.drawable.lungs_red)
-        // low
-        else if (dynamicCompliance in 20..39) binding.imgLungs.setImageResource(R.drawable.lungs_amber)
-        // normal
-        else if (dynamicCompliance in 40..60) binding.imgLungs.setImageResource(R.drawable.lungs_green)
-        // high
-        else binding.imgLungs.setImageResource(R.drawable.lungs_blue)
+        if (dynamicCompliance <= 0) binding.imgLungs.setImageResource(R.drawable.lungs_grey) // not valid
+        else if (dynamicCompliance < 20) binding.imgLungs.setImageResource(R.drawable.lungs_red) // extremely low
+        else if (dynamicCompliance in 20..39) binding.imgLungs.setImageResource(R.drawable.lungs_amber) // low
+        else if (dynamicCompliance in 40..60) binding.imgLungs.setImageResource(R.drawable.lungs_green) // normal
+        else binding.imgLungs.setImageResource(R.drawable.lungs_blue) // high
     }
 
     // change veins and trachea color as per resistance value
     private fun changeVeinsAsPerResistance(resistance: Int) {
 
-        // not valid
-        if (resistance <= 0) {
+        if (resistance <= 0) { // not valid
             binding.imgVeins.setImageResource(R.drawable.veins_grey)
             binding.imgTrachea.setImageResource(R.drawable.trachea_grey)
-        }
-        // low
-        else if (resistance < 5) {
+        } else if (resistance < 5) { // low
             binding.imgVeins.setImageResource(R.drawable.veins_blue)
             binding.imgTrachea.setImageResource(R.drawable.trachea_blue)
-        }
-        // normal
-        else if (resistance in 5..15) {
+        } else if (resistance in 5..15) { // normal
             binding.imgVeins.setImageResource(R.drawable.veins_green)
             binding.imgTrachea.setImageResource(R.drawable.trachea_green)
-        }
-        // high
-        else if (resistance in 15..25) {
+        } else if (resistance in 15..25) { // high
             binding.imgVeins.setImageResource(R.drawable.veins_amber)
             binding.imgTrachea.setImageResource(R.drawable.trachea_amber)
-        }
-        // extremely high
-        else {
+        } else { // extremely high
             binding.imgVeins.setImageResource(R.drawable.veins_red)
             binding.imgTrachea.setImageResource(R.drawable.trachea_red)
         }

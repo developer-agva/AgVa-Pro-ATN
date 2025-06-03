@@ -81,11 +81,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 class CustomProber {
-
     static UsbSerialProber getCustomProber() {
         ProbeTable customTable = new ProbeTable();
-        customTable.addProduct(0x1234, 0xabcd, FtdiSerialDriver.class); // e.g. device with custom VID+PID
-//        customTable.addProduct(0x1a86, 0x7523, Ch34xSerialDriver.class); // e.g. device with custom VID+PID
+//        customTable.addProduct(0x1234, 0xabcd, FtdiSerialDriver.class); // e.g. device with custom VID+PID
+        customTable.addProduct(0x1a86, 0x7523, Ch34xSerialDriver.class); // e.g. device with custom VID+PID
         return new UsbSerialProber(customTable);
     }
 }
@@ -95,8 +94,8 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
     private static final String CHANNEL_ID = "ventilatorApp";
     //For the Main PCB 9025 is the Vendor ID
 
-    private static final int ARDUINO_VENDOR_ID_VENTILATOR = 9025;
-//        private static final int ARDUINO_VENDOR_ID_VENTILATOR = 6790;
+//    private static final int ARDUINO_VENDOR_ID_VENTILATOR = 9025;
+        private static final int ARDUINO_VENDOR_ID_VENTILATOR = 6790;
     private static final int DEFAULT_BAUD_RATE_VENTILATOR = 9600;
 
     private static final int READ_DELAY = 11;
@@ -408,7 +407,63 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
 //                            }
 
 
-                        } else if (buffData.contains(Configs.LIMITER_HARDWARE_SERIAL_NUMBER)) {
+                        }else if(buffData.contains(Configs.PREFIX_KNOB_DATA)){
+                            String knobData = "";
+                            try{
+                                int knobDataStartindex = buffData.indexOf(Configs.PREFIX_KNOB_DATA) + 2;
+                                int knobDataEndIndex = buffData.indexOf(Configs.KNOB_TERMINAL_INDEX);
+
+
+                                if (knobDataEndIndex == -1) {
+                                    Log.e("KNOB_VENT_DATA_ERROR", "KNOB_TERMINAL_INDEX not found.");
+                                    return;
+                                }
+
+                                if(knobDataStartindex < knobDataEndIndex){
+                                    knobData = buffData.substring(knobDataStartindex,knobDataEndIndex);
+                                    Log.i("KNOB_VENT_DATA",knobData);
+
+                                    broadcastKnobResponse(knobData);
+                                    dataBufferVentilator.delete(knobDataStartindex,knobDataEndIndex);
+                                }else{
+                                    Log.e("KNOB_VENT_DATA_ERROR", "Invalid indices: start index is greater than or equal to end index.");
+
+                                }
+
+                            }catch (Exception e){
+                                Log.e("KNOB_VENT_DATA_ERROR", e.toString() );
+                            }
+                        }else if(buffData.contains(Configs.PREFIX_KNOB_KEYPAD)){
+
+                            String knobKeypadData = "";
+                            try{
+                                int knobDataStartindex = buffData.indexOf(Configs.PREFIX_KNOB_KEYPAD) + 2;
+                                int knobDataEndIndex = buffData.indexOf(Configs.KNOB_KEYPAD_TERMINAL_INDEX);
+
+
+                                if (knobDataEndIndex == -1) {
+                                    Log.e("KNOB_KEYPAD_VENT_DATA_ERROR", "KNOB_TERMINAL_INDEX not found.");
+                                    return;
+                                }
+
+                                if(knobDataStartindex < knobDataEndIndex){
+                                    knobKeypadData = buffData.substring(knobDataStartindex,knobDataEndIndex);
+                                    Log.i("KNOB_KEYPAD_VENT_DATA",knobKeypadData);
+                                    broadcastKnobResponse(knobKeypadData);
+                                    dataBufferVentilator.delete(knobDataStartindex,knobDataEndIndex);
+                                }else{
+                                    Log.e("KNOB_KEYPAD_VENT_DATA_ERROR", "Invalid indices: start index is greater than or equal to end index.");
+
+                                }
+
+                            }catch (Exception e){
+                                Log.e("KNOB_VENT_DATA_ERROR", e.toString() );
+                            }
+
+
+                        }
+
+                        else if (buffData.contains(Configs.LIMITER_HARDWARE_SERIAL_NUMBER)) {
 //                            try {
                             Log.i("check_serial_number_value", buffData);
                             int serialNumberStartIndex = buffData.indexOf(Configs.LIMITER_HARDWARE_SERIAL_NUMBER);

@@ -3313,6 +3313,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 }
             }
 
+            // max second installation
+
             CoroutineScope(Dispatchers.IO).launch {
                 FileLogger.writeServiceFile(
                     prefManager?.readDashBoardRunningTimeForService().toString()
@@ -3461,21 +3463,17 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
         builder.setPositiveButton("Install",
             DialogInterface.OnClickListener { dialog: DialogInterface, which: Int ->
-                // When the user click yes button dialog box also be cancelled
-                // check storage permission granted if yes then start downloading file
                 DownloadController(this@MainActivity, "", false).installApk(destination)
                 dialog.cancel()
             } as DialogInterface.OnClickListener)
 
         builder.setNegativeButton("Cancel",
             DialogInterface.OnClickListener { dialog: DialogInterface, which: Int ->
-                // If user click no then dialog box is cancelled.
                 dialog.cancel()
             } as DialogInterface.OnClickListener)
 
         val alertDialog: AlertDialog = builder.create()
 
-        // Show the Alert Dialog box
         alertDialog.show()
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
             .setTextColor(resources.getColor(R.color.white))
@@ -3642,12 +3640,9 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     private fun initView() {
 
         includeButtonCalibrate.buttonView.text = "Here"
-        includeProgressHeight.param_progress_bar.background =
-            AppCompatResources.getDrawable(this, R.drawable.progresscircle)
-        includeProgressWeight.param_progress_bar.background =
-            AppCompatResources.getDrawable(this, R.drawable.progresscircle)
-        includeProgressAge.param_progress_bar.background =
-            AppCompatResources.getDrawable(this, R.drawable.progresscircle)
+        includeProgressHeight.param_progress_bar.background = AppCompatResources.getDrawable(this, R.drawable.progresscircle)
+        includeProgressWeight.param_progress_bar.background = AppCompatResources.getDrawable(this, R.drawable.progresscircle)
+        includeProgressAge.param_progress_bar.background = AppCompatResources.getDrawable(this, R.drawable.progresscircle)
 
         initViewViaPreferences()
 
@@ -3955,13 +3950,11 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         buttonStartNewVentilation.setOnClickListener(this)
 
 //        serviceLayout.setOnClickListener {
-//
 //            try {
 //                DialogBoxFactory.dismissDialogs()
 //            }catch (e:Exception){
 //                e.printStackTrace()
 //            }
-//
 //            prefManager?.apply {
 //                if (readDashBoardRunningTimeForService() > SERVICE_HOUR_LIMIT){
 //                    DialogBoxFactory.showBatteryFailureStatusDialog(this@MainActivity, "Please Contact Customer Support.")

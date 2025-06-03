@@ -151,6 +151,12 @@ public interface Configs {
     String PREFIX_ACK = "ACK";
     String SUFFIX_ACK = "}";
 
+    String PREFIX_KNOB_DATA = "N@";
+    String KNOB_TERMINAL_INDEX = "#";
+
+    String PREFIX_KNOB_KEYPAD = "Y@";
+    String KNOB_KEYPAD_TERMINAL_INDEX = "#";
+
     String LIMITER_GRAPH_LIMIT = "GR@";
     String DELIMITER_GRAPH_LIMIT = "!";
     String LIMITER_HARDWARE_SERIAL_NUMBER = "RP@";

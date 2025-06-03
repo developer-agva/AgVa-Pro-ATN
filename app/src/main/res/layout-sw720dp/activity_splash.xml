@@ -395,9 +395,21 @@
             android:layout_width="@dimen/_5sdp"
             android:layout_height="@dimen/_5sdp"
             android:src="@color/red"
+            android:visibility="gone"
             android:layout_marginHorizontal="@dimen/_7sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/cvVentilatorConnection"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_ventistatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="true"
+            android:text="Ventilator Connection"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
@@ -408,7 +420,7 @@
             android:layout_height="@dimen/_5sdp"
             android:src="@color/red"
             android:layout_marginHorizontal="@dimen/_7sdp"
-            app:layout_constraintStart_toEndOf="@id/cvHideConnection"
+            app:layout_constraintStart_toEndOf="@id/tv_ventistatus"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>

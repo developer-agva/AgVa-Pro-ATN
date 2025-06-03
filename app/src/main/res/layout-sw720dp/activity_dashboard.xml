@@ -532,6 +532,7 @@
             android:id="@+id/cvHideConnectionDash"
             android:layout_width="@dimen/_4sdp"
             android:layout_height="@dimen/_4sdp"
+            android:visibility="gone"
             android:layout_marginHorizontal="@dimen/_3sdp"
             android:layout_weight="0.5"
             android:src="@color/red" />

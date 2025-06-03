@@ -2733,7 +2733,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
         when (data) {
             PREFIX_PLUS -> {
-                if (highlightedIndex < 16) highlightedIndex++
+                if (highlightedIndex < 14) highlightedIndex++
                 else highlightedIndex = 1
 
                 getViewForFocus(false)?.let { changeConstraintsOfFocusLayout(it) }
@@ -2741,7 +2741,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
             PREFIX_MINUS -> {
                 if (highlightedIndex > 1) highlightedIndex--
-                else highlightedIndex = 16
+                else highlightedIndex = 14
 
                 getViewForFocus(true)?.let { changeConstraintsOfFocusLayout(it) }
             }
@@ -2835,8 +2835,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             12 -> buttonStartNewVentilation
             13 -> batteryLayout
             14 -> buttonAdult
-            15 -> buttonPediatric
-            16 -> buttonNeonatal
+//            15 -> buttonPediatric
+//            16 -> buttonNeonatal
 
             else -> null
         }
@@ -2908,7 +2908,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             e.printStackTrace()
         }
 
-        // connect hote hi device id bhejo backend ko
+
+
         mSocket?.emit("AndroidStartUp", deviceId)
 
         mSocket?.on("AndroidReceivingRange") { it1 ->
@@ -3806,32 +3807,32 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             readCurrentUid()?.let {
                 when (it) {
 
-                    PatientProfile.TYPE_ADULT -> {
-                        highlightProfiles(buttonAdult)
-                        currentPatientType = PatientProfile.TYPE_ADULT.toString()
-                        checkPatientTypeAndHightlightSEV()
-                        if (isExistingVentilationModeAvailable() && currentPatientType == prefManager?.readCurrentUid()
-                                .toString()
-                        ) View.VISIBLE else View.INVISIBLE
-                        includeProgressHeight.param_progress_bar.maxProgress =
-                            PATIENT_ADULT_HEIGHT_UPPER.toDouble()
-                        includeProgressAge.param_progress_bar.maxProgress =
-                            PATIENT_AGE_UPPER.toDouble()
-                        includeProgressWeight.param_progress_bar.maxProgress =
-                            PATIENT_ADULT_WEIGHT_UPPER.toDouble()
-                    }
-
-                    PatientProfile.TYPE_PED -> {
-                        highlightProfiles(buttonPediatric)
-                        currentPatientType = PatientProfile.TYPE_PED.toString()
-                        checkPatientTypeAndHightlightSEV()
-                        includeProgressHeight.param_progress_bar.maxProgress =
-                            PED_HEIGHT_UPPER.toDouble()
-                        includeProgressAge.param_progress_bar.maxProgress =
-                            PATIENT_AGE_UPPER.toDouble()
-                        includeProgressWeight.param_progress_bar.maxProgress =
-                            PED_WEIGHT_UPPER.toDouble()
-                    }
+//                    PatientProfile.TYPE_ADULT -> {
+//                        highlightProfiles(buttonAdult)
+//                        currentPatientType = PatientProfile.TYPE_ADULT.toString()
+//                        checkPatientTypeAndHightlightSEV()
+//                        if (isExistingVentilationModeAvailable() && currentPatientType == prefManager?.readCurrentUid()
+//                                .toString()
+//                        ) View.VISIBLE else View.INVISIBLE
+//                        includeProgressHeight.param_progress_bar.maxProgress =
+//                            PATIENT_ADULT_HEIGHT_UPPER.toDouble()
+//                        includeProgressAge.param_progress_bar.maxProgress =
+//                            PATIENT_AGE_UPPER.toDouble()
+//                        includeProgressWeight.param_progress_bar.maxProgress =
+//                            PATIENT_ADULT_WEIGHT_UPPER.toDouble()
+//                    }
+//
+//                    PatientProfile.TYPE_PED -> {
+//                        highlightProfiles(buttonPediatric)
+//                        currentPatientType = PatientProfile.TYPE_PED.toString()
+//                        checkPatientTypeAndHightlightSEV()
+//                        includeProgressHeight.param_progress_bar.maxProgress =
+//                            PED_HEIGHT_UPPER.toDouble()
+//                        includeProgressAge.param_progress_bar.maxProgress =
+//                            PATIENT_AGE_UPPER.toDouble()
+//                        includeProgressWeight.param_progress_bar.maxProgress =
+//                            PED_WEIGHT_UPPER.toDouble()
+//                    }
 
                     PatientProfile.TYPE_NEONAT -> {
                         if (readNeoNateActiveStatus()) highlightProfiles(buttonNeonatal)

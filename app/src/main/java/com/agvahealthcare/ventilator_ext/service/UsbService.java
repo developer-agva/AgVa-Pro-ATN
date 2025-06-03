@@ -314,7 +314,9 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
 //                            } catch (Exception e) {
 //                                dataBufferVentilator.delete(0, dataBufferVentilator.length());
 //                            }
-                        } else if (buffData.contains(Configs.PREFIX_MOTOR_LIFE)) {
+                        }
+
+                        else if (buffData.contains(Configs.PREFIX_MOTOR_LIFE)) {
                             // +1 for BATTERY STATUS code number (Don't remove -1 +1 this is for understanding)
                             int motorLifeStartIndex = buffData.indexOf(Configs.PREFIX_MOTOR_LIFE);
                             int motorLifeTerminalIndex = buffData.indexOf(Configs.PREFIX_MOTOR_LIFE) + Configs.PREFIX_MOTOR_LIFE.length() + Configs.MOTOR_LIFE_CODE_LENGTH - 1;
@@ -325,7 +327,10 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
 //                            } catch (Exception e) {
 //                                dataBufferVentilator.delete(0, dataBufferVentilator.length());
 //                            }
-                        } else if (buffData.contains(Configs.PREFIX_STANDBY)) {
+
+                        }
+
+                        else if (buffData.contains(Configs.PREFIX_STANDBY)) {
 //                            try {
                             // +1 for STANDBY STATUS code number (Don't remove -1 +1 this is for understanding)
                             int standbyResponseStartIndex = buffData.indexOf(Configs.PREFIX_STANDBY);

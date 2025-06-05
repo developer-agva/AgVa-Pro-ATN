@@ -12,6 +12,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     }
 
     val connectivityStatus = MutableLiveData<Boolean>()
+    val isSocketConnected = MutableLiveData<Boolean>()
 
     //Operational hours in hours and minutes.
     val OPHours= MutableLiveData<String>()

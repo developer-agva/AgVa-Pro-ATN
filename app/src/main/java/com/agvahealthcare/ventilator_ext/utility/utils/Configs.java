@@ -1032,6 +1032,10 @@ public interface Configs {
 
     String RUNNING_STATUS_ACTIVE = "ACTIVE";
     String RUNNING_STATUS_INACTIVE = "INACTIVE";
+    String ACTIVITY_SPLASH = "SPLASH";
+    String ACTIVITY_STANDBY = "STANDBY";
+    String ACTIVITY_SHUTDOWN = "SHUTDOWN";
+    String ACTIVITY_VENTILATION = "VENTILATION";
 
     // created by masoom on 04 jan 2023
     enum ChartType {

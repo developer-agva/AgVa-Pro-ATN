@@ -111,12 +111,16 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
+interface ActivateVentilatorListener {
+    fun activateVentilatorListener()
+}
+
 
 class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpdateCheckListener,
     UpdateHelper.OnUpdateBaseUrlListener,
     View.OnClickListener,
     ControlParameterClickListener,
-    OnLoudnessAdjustmentListener {
+    OnLoudnessAdjustmentListener,ActivateVentilatorListener {
     private val ctx = this@MainActivity
     private val TAG = MainActivity::class.java.simpleName
     private var handshakingTask: HandshakingTask? = null
@@ -1088,8 +1092,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                                     Log.i("KNOB_DATADASH", DialogBoxFactory.dialogView.toString())
                                 } else if (progressDialog?.isVisible == true) {
                                     progressDialog?.updateWithTimeoutDebounce(data)
-                                } else if (systemDialogFragment?.isVisible == true) {
-                                    systemDialogFragment?.highlightViewWithFocus(data)
                                 } else if (standbyControlFragment?.isVisible == true) {
                                     standbyControlFragment?.highlightViewWithFocus(data)
                                 } else if (modeDialogFragment?.isVisible == true) {
@@ -2574,7 +2576,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             etCuffControlParameterList = it
         }
 //Inspiratory Termination Tile change
-        if(VentilatorApp.selectedOptions == SELECTED_OPTIONS.NON_INVASIVE_NAME){
+        if (VentilatorApp.selectedOptions == SELECTED_OPTIONS.NON_INVASIVE_NAME) {
             if (requestedModeCode == MODE_NIV_BPAP || requestedModeCode == MODE_NIV_CPAP) {
                 advancedControlParameterList?.filter {
                     it.ventKey == LBL_TEXP
@@ -2593,7 +2595,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 }
             }
 
-        }else{
+        } else {
             if (requestedModeCode == MODE_NIV_BPAP || requestedModeCode == MODE_NIV_CPAP) {
                 advancedControlParameterList?.filter {
                     it.ventKey == LBL_TEXP
@@ -2834,7 +2836,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
             12 -> buttonStartNewVentilation
             13 -> batteryLayout
-            14 -> buttonAdult
+            14 -> buttonNeonatal
 //            15 -> buttonPediatric
 //            16 -> buttonNeonatal
 
@@ -2847,8 +2849,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         cancelTimeout()
 
         visibilityTimeout = object : CountDownTimer(10000, 2000) {
-            override fun onTick(millisUntilFinished: Long) {
-            }
+            override fun onTick(millisUntilFinished: Long) {}
 
             override fun onFinish() {
                 clearPreviousConstraints()
@@ -2868,7 +2869,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     // knob highlight logic ends here
     private var connectedDevicesLive = 0
     private var mSocket: Socket? = null
-    var deviceId = ""
     var isSocketStop = false
 
     fun returnCommandsToSocket(command: String) {
@@ -2894,6 +2894,27 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             if (isLiveDataRequest) mSocket?.emit("DataSendingAndroidDebug", "$deviceId^$debugData")
         }
     }
+    var deviceId = ""
+    private var isVentiLocked = false
+
+    override fun activateVentilatorListener() {
+        DialogBoxFactory.dismissDialogs()
+
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(2000L)
+            systemDialogFragment = SystemDialogFragment.newInstance(
+                heightSize,
+                widthSize,
+                false,
+                fragmentDismissListener,
+                this@MainActivity,
+                this@MainActivity,
+                communicationService
+            ).apply { show(supportFragmentManager, "Activate_Ventilator") }
+
+            systemDialogFragment?.isCancelable = false
+        }
+    }
 
     private fun sendDiagnosticDataToSocket() {
 
@@ -2908,9 +2929,51 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             e.printStackTrace()
         }
 
-
-
         mSocket?.emit("AndroidStartUp", deviceId)
+
+        mSocket?.on("AndroidReceivingPaymentStatus") {
+            CoroutineScope(Dispatchers.Main).launch {
+                if (deviceId == it[0].toString().split("^")[0]) {
+                    if (it[0].toString().split("^")[1] == "false") {
+                        Log.i("Payment_Status", "if ${it[0]}")
+
+                        if (prefManager?.readLockedStatus() == "Unlocked") DialogBoxFactory.showServicePaymentDialog(
+                            this@MainActivity,
+                            this@MainActivity
+                        )
+
+                        isVentiLocked = true
+                        prefManager?.saveLockedStatus("Locked")
+                        val lockedStatusData = "$deviceId,false,true,${prefManager?.readLockedStatus()}"
+                        mSocket?.emit("NodeReceivingLockedStatus", lockedStatusData)
+
+                        if (it[0].toString().split("^")[2].trim().toInt() >= 100) prefManager?.setVentilatorNeedToLock(false) else prefManager?.setVentilatorNeedToLock(true)
+
+                    } else {
+                        Log.i("Payment_Status", "else ${it[0]}")
+
+                        if (isVentiLocked) {
+                            isVentiLocked = false
+                            val calendar = Calendar.getInstance()
+                            val dayOfYear = calendar.get(Calendar.DAY_OF_YEAR)
+                            FileLogger.writeDispatchDate(this@MainActivity, dayOfYear.toString())
+                        }
+
+                        try {
+                            DialogBoxFactory.dismissDialogs()
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+
+                        prefManager?.saveLockedStatus("Unlocked")
+                        if (it[0].toString().split("^")[2].toInt() >= 100) prefManager?.setVentilatorNeedToLock(false) else prefManager?.setVentilatorNeedToLock(true)
+
+                        val lockedStatusData = "$deviceId,true,false,${prefManager?.readLockedStatus()}"
+                        mSocket?.emit("NodeReceivingLockedStatus", lockedStatusData)
+                    }
+                }
+            }
+        }
 
         mSocket?.on("AndroidReceivingRange") { it1 ->
             if (deviceId == it1[0].toString().split("^")[0]) {
@@ -3075,18 +3138,16 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         }
     }
 
-
     @SuppressLint("HardwareIds")
     override fun onCreate(savedInstanceState: Bundle?) {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         super.onCreate(savedInstanceState)
 
-        // init preference manager
-
         prefManager = PreferenceManager(this@MainActivity)
         dataStoreManager = DataStoreManager(this)
         mEventViewModel = ViewModelProvider(this)[EventViewModel::class.java]
         mDebugViewModel = ViewModelProvider(this)[DebugViewModel::class.java]
+        mMainActivityViewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
 
         prefManager?.setRebootStatusForHandshake(false)
 
@@ -3097,14 +3158,19 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
         addEvents("Standby process success", prefManager?.readUHID().toString())
 
+        mMainActivityViewModel.isSocketConnected.distinctUntilChanged()
+            .observe(this, Observer { it ->
+                it?.let {
+                    if (it) mSocket?.emit("DeviceRequestForPaymentStatus", deviceId)
+                }
+            })
+
         // status api call
-        callRunningStatusApi(RUNNING_STATUS_INACTIVE)
+        callRunningStatusApi(RUNNING_STATUS_INACTIVE, ACTIVITY_STANDBY)
         getVentilatorDetailsApi()
         CoroutineScope(Dispatchers.IO).launch {
-
             FileLogger.readCrashFile().let {
                 if (it != dataNotFound) {
-
                     val result = ServerLogger.d(
                         this@MainActivity,
                         it,
@@ -3117,7 +3183,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
         sendDiagnosticDataToSocket()
         VentilatorApp.isNebuliserActive = true
-        mMainActivityViewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
         mDiagnosticCheckViewModel =
             ViewModelProvider(this)[DiagnosticCheckViewModel::class.java]
         mO2RegulationCheckViewModel =
@@ -3163,7 +3228,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 }
             })
 
-
         lastUhidEvents = prefManager?.readUHID().toString()
         lastUhid = prefManager?.readUHID().toString()
 
@@ -3196,21 +3260,18 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         Log.i("check_location", locationClient.toString())
 
         locationClient.getLocationUpdates(5000L)
-            .catch {
-
-                    e ->
-                {
-                    e.printStackTrace()
-                    Log.i("check_location", e.toString())
-                }
+            .catch { e->
+                e.printStackTrace()
+                Log.i("check_location", e.toString())
             }
             .onEach { location ->
                 location.extras
 
                 latitude = location.latitude
                 logitude = location.longitude
-                Log.i("check_location", latitude.toString() + " " + logitude.toString())
+                Log.i("check_location", "$latitude $logitude")
                 serviceScope.cancel()
+
                 CoroutineScope(Dispatchers.IO).launch {
 
                     if (ServerLogger.sendLocationRequest(
@@ -3235,7 +3296,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
         val updateHelper = UpdateHelper(this, this, this)
         updateHelper.checkForUpdates(this)
-
 
         if (!prefManager?.readUHID()
                 .equals(FIRST_FILTER_NAME)
@@ -3315,9 +3375,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             }
 
             CoroutineScope(Dispatchers.IO).launch {
-                FileLogger.writeServiceFile(
-                    prefManager?.readDashBoardRunningTimeForService().toString()
-                )
+                FileLogger.writeServiceFile(prefManager?.readDashBoardRunningTimeForService().toString())
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -3327,42 +3385,26 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     @SuppressLint("HardwareIds")
     private fun getVentilatorDetailsApi() {
         CoroutineScope(Dispatchers.IO).launch {
-            val response = ServerLogger.getVentiDetailsRequest(
-                Settings.Secure.getString(
-                    this@MainActivity.contentResolver,
-                    Settings.Secure.ANDROID_ID
-                )
+
+            val deviceId = Settings.Secure.getString(
+                this@MainActivity.contentResolver,
+                Settings.Secure.ANDROID_ID
             )
+
+            val response = ServerLogger.getVentiDetailsRequest(deviceId)
             response?.let {
-                Log.i("DATA_OTA_CHECK", "${it.statusCode},${it.data.isPaymentDone}")
                 prefManager?.saveVentiDetails("${it.data.Ward_No},${it.data.Hospital_Name},${it.data.Department_Name}")
-                if (it.statusCode == 200) {
-                    if (!it.data.isPaymentDone) {
-                        val request = PaymentStatusRequestModel(
-                            Settings.Secure.getString(
-                                this@MainActivity.contentResolver,
-                                Settings.Secure.ANDROID_ID
-                            ), "false", true
-                        )
-
-                        ServerLogger.sendPaymentStatus(request)
-
-                        withContext(Dispatchers.Main) {
-                            DialogBoxFactory.dismissDialogs()
-                            DialogBoxFactory.showServicePaymentDialog(this@MainActivity)
-                        }
-                    } else {
-                        val request = PaymentStatusRequestModel(
-                            Settings.Secure.getString(
-                                this@MainActivity.contentResolver,
-                                Settings.Secure.ANDROID_ID
-                            ), "true", false
-                        )
-
-                        ServerLogger.sendPaymentStatus(request)
-                    }
-                }
             }
+        }
+
+        if (prefManager?.readLockedStatus() != "Unlocked") {
+            DialogBoxFactory.showServicePaymentDialog(this@MainActivity, this@MainActivity)
+
+            isVentiLocked = true
+            val lockedStatusData = "$deviceId,false,true,${prefManager?.readLockedStatus()}"
+            mSocket?.emit("NodeReceivingLockedStatus", lockedStatusData)
+
+            prefManager?.saveLockedStatus(prefManager?.readLockedStatus())
         }
     }
 
@@ -3384,7 +3426,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         }
     }
 
-    private fun callRunningStatusApi(status: String) {
+    private fun callRunningStatusApi(status: String,deviceStatus:String) {
 
         CoroutineScope(Dispatchers.IO).launch {
             val request = StatusRequestModel()
@@ -3394,6 +3436,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         this@MainActivity.contentResolver,
                         Settings.Secure.ANDROID_ID
                     )
+                    this.deviceStatus = deviceStatus
                     this.message = status
                     this.last_hours = calculateTotalAndLastHours(getLastHours().first().toLong())
                     this.total_hours = calculateTotalAndLastHours(getTotalHours().first().toLong())
@@ -3448,6 +3491,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 SplashActivity.PERMISSION_REQUEST_STORAGE
             )
         }
+
     }
 
     @SuppressLint("ResourceAsColor")
@@ -3460,28 +3504,21 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         builder.setIcon(R.drawable.ic_info_param)
         builder.setCancelable(false)
 
-        builder.setPositiveButton("Install",
+        builder.setPositiveButton(
+            "Install",
             DialogInterface.OnClickListener { dialog: DialogInterface, which: Int ->
-                // When the user click yes button dialog box also be cancelled
-                // check storage permission granted if yes then start downloading file
                 DownloadController(this@MainActivity, "", false).installApk(destination)
                 dialog.cancel()
             } as DialogInterface.OnClickListener)
 
-        builder.setNegativeButton("Cancel",
-            DialogInterface.OnClickListener { dialog: DialogInterface, which: Int ->
-                // If user click no then dialog box is cancelled.
-                dialog.cancel()
-            } as DialogInterface.OnClickListener)
+        builder.setNegativeButton("Cancel", DialogInterface.OnClickListener { dialog: DialogInterface, which: Int -> dialog.cancel() } as DialogInterface.OnClickListener)
 
         val alertDialog: AlertDialog = builder.create()
 
         // Show the Alert Dialog box
         alertDialog.show()
-        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
-            .setTextColor(resources.getColor(R.color.white))
-        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
-            .setTextColor(resources.getColor(R.color.white))
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(resources.getColor(R.color.white))
+        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(resources.getColor(R.color.white))
     }
 
     override fun onRequestPermissionsResult(
@@ -3503,7 +3540,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
     //Service hours in hours and minutes.
     private fun calculateServiceHourInTime(): String {
-        val totalRunningTime = prefManager?.readDashBoardRunningTimeForService()?.toLong() ?: 0L
+        val totalRunningTime = prefManager?.readDashBoardRunningTimeForService() ?: 0L
         val hr = TimeUnit.MILLISECONDS.toHours(totalRunningTime)
         val min = TimeUnit.MILLISECONDS.toMinutes(totalRunningTime) - TimeUnit.HOURS.toMinutes(
             TimeUnit.MILLISECONDS.toHours(totalRunningTime)
@@ -3516,7 +3553,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
     //Operational hours in hours and minutes.
     private fun calculateOperationalHourInTime(): String {
-        val totalRunningTime = prefManager?.readDashBoardRunningTime()?.toLong() ?: 0L
+        val totalRunningTime = prefManager?.readDashBoardRunningTime() ?: 0L
         val hr = TimeUnit.MILLISECONDS.toHours(totalRunningTime)
         val min = TimeUnit.MILLISECONDS.toMinutes(totalRunningTime) - TimeUnit.HOURS.toMinutes(
             TimeUnit.MILLISECONDS.toHours(totalRunningTime)
@@ -3555,7 +3592,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     private fun disablePresence() {
         listOf<AppCompatButton>(
             buttonControls,
-
             ).forEach {
             it.setBackgroundResource(R.drawable.background_light_grey_disable)
             it.setTextColor(ContextCompat.getColor(this, R.color.black))
@@ -3574,7 +3610,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
         if (calibrationConfirmDialog?.isShowing == true) return
 
-        //     dialogDisplayMessage = this.getString(R.string.calibration_error)
         calibrationConfirmDialog =
             DialogBoxFactory.showCalibrationErrorDialog(
                 dialogDisplayMessage,
@@ -3643,12 +3678,9 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     private fun initView() {
 
         includeButtonCalibrate.buttonView.text = "Here"
-        includeProgressHeight.param_progress_bar.background =
-            AppCompatResources.getDrawable(this, R.drawable.progresscircle)
-        includeProgressWeight.param_progress_bar.background =
-            AppCompatResources.getDrawable(this, R.drawable.progresscircle)
-        includeProgressAge.param_progress_bar.background =
-            AppCompatResources.getDrawable(this, R.drawable.progresscircle)
+        includeProgressHeight.param_progress_bar.background = AppCompatResources.getDrawable(this, R.drawable.progresscircle)
+        includeProgressWeight.param_progress_bar.background = AppCompatResources.getDrawable(this, R.drawable.progresscircle)
+        includeProgressAge.param_progress_bar.background = AppCompatResources.getDrawable(this, R.drawable.progresscircle)
 
         initViewViaPreferences()
 
@@ -3688,7 +3720,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         )
 
         initViewStandByTime()
-
     }
 
     private fun initViewStandByTime() {
@@ -3706,8 +3737,46 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
             mDebugViewModel.ackOccurenceLiveData.postValue(ack756Visibility)
 
-            mDebugViewModel.ventiLiveData.value?.let {
+            mMainActivityViewModel.isSocketConnected.postValue(mSocket?.connected())
 
+            // lock ventilator manually as per 10 days policy
+            val dispatchData = FileLogger.readDispatchDate()
+
+            if (dispatchData != dataNotFound) {
+                val calendar = Calendar.getInstance()
+                val dayOfYear = calendar.get(Calendar.DAY_OF_YEAR)
+
+                androidx.media3.common.util.Log.i(
+                    "data_Date",
+                    "continues check - $isVentiLocked ,${prefManager?.readVentilatorNeedToLock()}" +
+                            ",$dayOfYear, $dispatchData"
+                )
+                if (( (dayOfYear - dispatchData.toInt()) >= 10 && !isVentiLocked) && prefManager?.readVentilatorNeedToLock() == true) {
+
+                    prefManager?.saveLockedStatus("Auto Locked")
+                    isVentiLocked = true
+
+                    if (mSocket?.connected() == true) {
+                        mSocket?.emit(
+                            "DeviceRequestForPaymentStatus",
+                            deviceId
+                        )
+                    } else {
+                        try {
+                            DialogBoxFactory.dismissDialogs()
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                        DialogBoxFactory.showServicePaymentDialog(
+                            this@MainActivity,
+                            this@MainActivity
+                        )
+                    }
+                }
+            }
+
+
+            mDebugViewModel.ventiLiveData.value?.let {
                 val dataList = it
                 if (dataList.size < 17) {
                     dataList.add(VentilatorApp.ventiData)
@@ -3724,7 +3793,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             }
 
             mDebugViewModel.hidLiveData.value?.let {
-
                 val dataList = it
                 if (dataList.size < 17) {
                     dataList.add(hidData)
@@ -3745,7 +3813,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     if (countBatteryData == 10 && dataStoreManager?.getDashRebootStatusFlag()
                             ?.first() == true
                     ) {
-
                         dataStoreManager?.saveDashRebootStatusFlag(false)
                         addEventsForDevelopers(
                             "Re-Initiate Handshake Due to Battery Data Not Available during ventilation",
@@ -3753,7 +3820,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         )
                         isForKnob = false
                         onDeviceConnect()
-
                     } else if (countBatteryData == 10 && dataStoreManager?.getDashRebootStatusFlag()
                             ?.first() == false
                     ) {
@@ -5363,7 +5429,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
         //Inspiratory Termination tile Change
         prefManager?.apply {
-            if(VentilatorApp.selectedOptions == SELECTED_OPTIONS.NON_INVASIVE_NAME){
+            if (VentilatorApp.selectedOptions == SELECTED_OPTIONS.NON_INVASIVE_NAME) {
                 if (requestedModeCode == MODE_NIV_CPAP || requestedModeCode == MODE_NIV_BPAP) {
                     // note : we only need to handle first tym value because every time it receives value from preferences
                     if (isKnobPressedForControlTile) updateParameter(
@@ -5384,7 +5450,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         75.0f.toInt().toString()
                     )
                 }
-            }else{
+            } else {
                 if (requestedModeCode == MODE_NIV_CPAP || requestedModeCode == MODE_NIV_BPAP) {
                     // note : we only need to handle first tym value because every time it receives value from preferences
                     if (isKnobPressedForControlTile) updateParameter(

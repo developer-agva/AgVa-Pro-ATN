@@ -17,6 +17,8 @@ import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.utility.DialogBoxFactory
 import com.agvahealthcare.ventilator_ext.utility.ToastFactory
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs
+import com.agvahealthcare.ventilator_ext.utility.utils.Configs.ACTIVITY_SHUTDOWN
+import com.agvahealthcare.ventilator_ext.utility.utils.Configs.ACTIVITY_STANDBY
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.RUNNING_STATUS_INACTIVE
 import com.agvahealthcare.ventilator_ext.utility.utils.LocationFilter
 import kotlinx.android.synthetic.main.activity_splash.*
@@ -46,7 +48,7 @@ class ShutDownActivity : BaseActivity() {
         addEvents("Initiating Shutdown Process",prefManager?.readUHID().toString())
 
         // status api call
-        callRunningStatusApi(RUNNING_STATUS_INACTIVE)
+        callRunningStatusApi(RUNNING_STATUS_INACTIVE, ACTIVITY_SHUTDOWN)
 
         VentilatorApp.currentActivityName = "Shutdown"
         CoroutineScope(Dispatchers.Main).launch {
@@ -79,7 +81,7 @@ class ShutDownActivity : BaseActivity() {
         )
     }
 
-    private fun callRunningStatusApi(status: String) {
+    private fun callRunningStatusApi(status: String,deviceStatus:String) {
 
         CoroutineScope(Dispatchers.IO).launch {
             val request = StatusRequestModel()
@@ -89,6 +91,7 @@ class ShutDownActivity : BaseActivity() {
                         this@ShutDownActivity.contentResolver,
                         Settings.Secure.ANDROID_ID
                     )
+                    this.deviceStatus = deviceStatus
                     this.message = status
                     this.last_hours = calculateTotalAndLastHours(getLastHours().first().toLong())
                     this.total_hours = calculateTotalAndLastHours(getTotalHours().first().toLong())

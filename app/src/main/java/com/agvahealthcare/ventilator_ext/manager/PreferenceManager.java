@@ -378,7 +378,8 @@ public class PreferenceManager {
     private static final String PREF_UPDATE_STATUS = "pref_update_status";
     private static final String PREF_UPDATE_TIME = "pref_update_time";
     private static final String PREF_UPDATE_TYPE = "pref_update_type";
-
+    private static final String PREF_PAYMENT_STATUS = "pref_payment_status";
+    private static final String PREF_VENTI_NEED_LOCK = "PREF_VENTI_NEED_LOCK";
 
     private Context context;
     private SharedPreferences sp;
@@ -388,6 +389,20 @@ public class PreferenceManager {
         this.context = context;
         this.sp = context.getSharedPreferences(CONFIGURATION_SHARED_PREFERENCES, Context.MODE_PRIVATE);
         this.gson = new Gson();
+    }
+
+    public void saveLockedStatus(String val) {
+        updateData(PREF_PAYMENT_STATUS, val);
+    }
+    public String readLockedStatus() {
+        return sp.getString(PREF_PAYMENT_STATUS, "Unlocked");
+    }
+
+    public void setVentilatorNeedToLock(Boolean val) {
+        updateData(PREF_VENTI_NEED_LOCK, val);
+    }
+    public Boolean readVentilatorNeedToLock() {
+        return sp.getBoolean(PREF_VENTI_NEED_LOCK, true);
     }
 
     // start for ota side embedded

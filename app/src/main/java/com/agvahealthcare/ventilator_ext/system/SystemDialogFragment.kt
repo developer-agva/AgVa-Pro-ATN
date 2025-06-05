@@ -1,6 +1,7 @@
 package com.agvahealthcare.ventilator_ext.system
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
@@ -8,10 +9,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatButton
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.callback.*
 import com.agvahealthcare.ventilator_ext.hl7comm.HL7CommunicationFragment
@@ -36,11 +39,39 @@ import com.agvahealthcare.ventilator_ext.utility.setHeightWidthPercent
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_AND
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_MINUS
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_PLUS
-import kotlinx.android.synthetic.main.content_button_layout.view.buttonView
-import kotlinx.android.synthetic.main.fragment_system_dialog.*
+import kotlinx.android.synthetic.main.fragment_system_dialog.imageViewCrossSystem
+import kotlinx.android.synthetic.main.fragment_system_dialog.recyclerViewSystem
 
-class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleCallbackListener {
+enum class SystemFragmentButtonTypes {
+    Info,
+    Startup,
+    Settings,
+    Test_Calibrations,
+    Tube,
+    Service,
+    HL7,
+    Advanced_Calibrations,
+    Device_Update,
+    Ota,
+    Wifi,
+    Debug,
+    Diagnos,
+    O2_Reg,
+    Network_Info
+}
 
+data class SystemButtonModelClass(
+    var title: String,
+    var types: SystemFragmentButtonTypes
+)
+
+interface SystemFragmentButtonListener {
+    fun doSystemButtonClick(buttonType: SystemFragmentButtonTypes)
+    fun doSystemButtonLongClick(buttonType: SystemFragmentButtonTypes)
+}
+
+class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleCallbackListener,
+    SystemFragmentButtonListener {
     private var preferenceManager: PreferenceManager? = null
 
     companion object {
@@ -72,17 +103,17 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         }
     }
 
+    private var dataListSystemItems = ArrayList<SystemButtonModelClass>()
     private var passWord = ""
-
     private var closeListener: OnDismissDialogListener? = null
     private var communicationService: CommunicationService? = null
     private var calibrationOxygen: OnCalibrationOxygen? = null
-    var onLoudnessAdjustmentListener: OnLoudnessAdjustmentListener? = null
+    private var onLoudnessAdjustmentListener: OnLoudnessAdjustmentListener? = null
     private var infoFragment: InfoFragment? = null
     private var testCalibrationFragment: TestCalibrationFragment? = null
     private var advancedCalibrationFragment: AdvancedCalibrationFragment? = null
+    private var hL7CommunicationFragment: HL7CommunicationFragment? = null
     private var startupCheckFragment: StartupCheckFragment? = null
-    private var hL7CommunicationFragment:HL7CommunicationFragment? = null
     private var networkFragment: NetworkFragment? = null
     private var tubeDiaFragment: TubeDiaFragment? = null
     private var debugFragment: DebugFragment? = null
@@ -93,11 +124,10 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
     private var updateDeviceFragment: DeviceUpdateFragment? = null
     private var otaFragment: OTAFragment? = null
     private var wifiFragment: WiFiFragment? = null
-
+    private var systemAdapter: SystemDesignAdapter? = null
     fun getTestCalibFragment(): TestCalibrationFragment? = testCalibrationFragment
     fun getaAdvancedFragment(): AdvancedCalibrationFragment? = advancedCalibrationFragment
     fun getUpdateDeviceFragment(): DeviceUpdateFragment? = updateDeviceFragment
-
 
     // knob highlight logic starts here
     var sizeOfCurrentArray = 0
@@ -130,7 +160,6 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
             highlightedIndex,
             data
         )
-
     }
 
     private fun handleAdaptersClick(highlightedIndex: Int) {
@@ -164,371 +193,403 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         hL7CommunicationFragment = null
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun highlightViewWithFocus(data: String) {
+    private fun showhl7CommunicationFragment() {
+        makeAllFragmentsNull()
+        sizeOfCurrentArray = 0
+        if (hL7CommunicationFragment == null)
+            hL7CommunicationFragment = HL7CommunicationFragment()
 
-        Log.i("value_check_bonds", "index : $highlightedIndex ,size : $sizeOfCurrentArray")
-
-        if (diagnosticCheckFragment?.buttonState != null) {
-            diagnosticCheckFragment?.updateValueOnKnobChange(data)
-        } else if (o2RegulationFragment?.customProgressDialog?.isVisible == true) {
-            o2RegulationFragment?.updateValueOnKnobChange(data)
-        } else if (settingFragment?.customProgressDialog != null) {
-            settingFragment?.updateKnobSetting(data)
-        } else if (settingFragment?.clickedTile != null) {
-            settingFragment?.updateKnobSetting(data)
-        } else {
-
-            clearPreviousConstraints()
-            startTimeoutWithDebounce()
-
-            when (data) {
-                PREFIX_PLUS -> {
-                    if (highlightedIndex < (sizeOfCurrentArray + 14)) highlightedIndex++
-                    else {
-                        highlightedIndex = 0
-                    }
-
-                    getViewForFocus(false)?.let {
-                        highlightAdapters(-1, data)
-                        changeConstraintsOfFocusLayout(it)
-                    } ?: kotlin.run {
-                        highlightAdapters(highlightedIndex, data)
-                    }
-                }
-
-                PREFIX_MINUS -> {
-
-                    if (highlightedIndex > 0) highlightedIndex--
-                    else {
-                        highlightedIndex = (sizeOfCurrentArray + 14)
-                    }
-
-                    getViewForFocus(true)?.let {
-                        highlightAdapters(-1, data)
-                        changeConstraintsOfFocusLayout(it)
-                    } ?: kotlin.run {
-                        highlightAdapters(highlightedIndex, data)
-                    }
-                }
-
-                PREFIX_AND -> {
-                    getViewForFocus(null)?.let {
-                        if (highlightedIndex == sizeOfCurrentArray + 1) {
-                            it.callOnClick()
-                        } else {
-                            it.buttonView.callOnClick()
-
-                            // reset highlight index to starting position after clicking on any fragments
-                            highlightedIndex = -1
-                        }
-                    } ?: kotlin.run {
-                        handleAdaptersClick(highlightedIndex)
-                    }
-
-                    clearPreviousConstraints()
-                }
-            }
-        }
-    }
-
-    private fun clearPreviousConstraints() {
-        try {
-            val constraintSet = ConstraintSet()
-            constraintSet.clone(mainViewPanelSystem)
-            constraintSet.clear(focusLayoutSystem.id, ConstraintSet.TOP)
-            constraintSet.clear(focusLayoutSystem.id, ConstraintSet.BOTTOM)
-            constraintSet.clear(focusLayoutSystem.id, ConstraintSet.LEFT)
-            constraintSet.clear(focusLayoutSystem.id, ConstraintSet.RIGHT)
-            constraintSet.applyTo(mainViewPanelSystem)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-    private fun changeConstraintsOfFocusLayout(view: View) {
-        val constraintSet = ConstraintSet()
-        constraintSet.clone(mainViewPanelSystem)
-        constraintSet.connect(
-            focusLayoutSystem.id,
-            ConstraintSet.RIGHT,
-            view.id,
-            ConstraintSet.RIGHT,
-            0
-        )
-        constraintSet.connect(
-            focusLayoutSystem.id,
-            ConstraintSet.TOP,
-            view.id,
-            ConstraintSet.TOP,
-            0
-        )
-        constraintSet.connect(
-            focusLayoutSystem.id,
-            ConstraintSet.BOTTOM,
-            view.id,
-            ConstraintSet.BOTTOM,
-            0
-        )
-        constraintSet.connect(
-            focusLayoutSystem.id,
-            ConstraintSet.LEFT,
-            view.id,
-            ConstraintSet.LEFT,
-            0
-        )
-        constraintSet.applyTo(mainViewPanelSystem)
-    }
-
-    private fun getViewForFocus(isMinus: Boolean?): View? {
-
-        return when (highlightedIndex) {
-
-            in 0..sizeOfCurrentArray -> {
-                if (sizeOfCurrentArray == 0) {
-                    isMinus?.let {
-                        if (isMinus) highlightedIndex-- else highlightedIndex++
-                        getViewForFocus(isMinus)
-                    }
-                } else null
-            }
-
-            sizeOfCurrentArray + 1 -> imageViewCrossSystem
-            sizeOfCurrentArray + 2 -> includeButtonInfo
-            sizeOfCurrentArray + 3 -> includeButtonStartup
-            sizeOfCurrentArray + 4 -> includeButtonTestCalib
-            sizeOfCurrentArray + 5 -> includeButtonSettings
-            sizeOfCurrentArray + 6 -> includeButtonTube
-            sizeOfCurrentArray + 7 -> includeButtonService
-            sizeOfCurrentArray + 8 -> {
-                if (includeButtonDiagchk.isVisible) {
-                    includeButtonDiagchk
-                } else {
-                    isMinus?.let {
-                        if (isMinus) highlightedIndex-- else highlightedIndex++
-                        getViewForFocus(isMinus)
-                    }
-                }
-            }
-
-            sizeOfCurrentArray + 9 -> {
-                if (includeButtonO2Regulate.isVisible) {
-                    includeButtonO2Regulate
-                } else {
-                    isMinus?.let {
-                        if (isMinus) highlightedIndex-- else highlightedIndex++
-                        getViewForFocus(isMinus)
-                    }
-                }
-            }
-
-            sizeOfCurrentArray + 10 -> {
-                if (includeButtonAdvancedCalibration.isVisible) {
-                    includeButtonAdvancedCalibration
-                } else {
-                    isMinus?.let {
-                        if (isMinus) highlightedIndex-- else highlightedIndex++
-                        getViewForFocus(isMinus)
-                    }
-                }
-            }
-
-            sizeOfCurrentArray + 11 -> {
-                if (includeButtondeviceUpdate.isVisible) {
-                    includeButtondeviceUpdate
-                } else {
-                    isMinus?.let {
-                        if (isMinus) highlightedIndex-- else highlightedIndex++
-                        getViewForFocus(isMinus)
-                    }
-                }
-            }
-
-            sizeOfCurrentArray + 12 -> {
-                if (includeButtonNetworkInfo.isVisible) {
-                    includeButtonNetworkInfo
-                } else {
-                    isMinus?.let {
-                        if (isMinus) highlightedIndex-- else highlightedIndex++
-                        getViewForFocus(isMinus)
-                    }
-                }
-            }
-
-            sizeOfCurrentArray + 13 -> {
-                if (includeButtonDebug.isVisible) {
-                    includeButtonDebug
-                } else {
-                    isMinus?.let {
-                        if (isMinus) highlightedIndex-- else highlightedIndex++
-                        getViewForFocus(isMinus)
-                    }
-                }
-            }
-
-            sizeOfCurrentArray + 14 -> {
-                if (includeButtonOTA.isVisible) {
-                    includeButtonOTA
-                } else {
-                    isMinus?.let {
-                        if (isMinus) highlightViewWithFocus("-") else highlightViewWithFocus("+")
-                        null
-                    }
-                }
-            }
-
-            else -> null
-        }
-    }
-
-    fun startTimeoutWithDebounce() {
-
-        cancelTimeout()
-
-        visibilityTimeout = object : CountDownTimer(10000, 2000) {
-            override fun onTick(millisUntilFinished: Long) {}
-
-            override fun onFinish() {
-                highlightAdapters(-1, null)
-                clearPreviousConstraints()
-                cancelTimeout()
-            }
-        }
-        visibilityTimeout?.start()
-    }
-
-    fun cancelTimeout() {
-        if (visibilityTimeout != null) {
-            visibilityTimeout?.cancel()
-            visibilityTimeout = null
+        hL7CommunicationFragment?.apply {
+            replaceFragment(this, TAG, R.id.system_nav_container)
         }
     }
 
     // knob highlight logic ends here
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_system_dialog, container, false)
+
+        val view =  inflater.inflate(R.layout.fragment_system_dialog, container, false)
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         super.onViewCreated(view, savedInstanceState)
 
         preferenceManager = PreferenceManager(requireContext())
         TAG = tag.toString()
+
+        Log.i("given_tag",tag.toString())
+
         setStyle(STYLE_NO_TITLE, R.style.CustomDialog)
-
         setUpNavigation()
+    }
 
-        includeButtonService.visibility = View.VISIBLE
+    // click events handling
+    override fun doSystemButtonClick(buttonType: SystemFragmentButtonTypes) {
+        when (buttonType) {
+            SystemFragmentButtonTypes.Info -> {
+                showInfoFragment(communicationService)
+            }
 
-        includeButtonDebug.buttonView.setOnClickListener {
-            setupDebugFragment()
+            SystemFragmentButtonTypes.Startup -> {
+                setupStartupFragment()
+            }
+
+            SystemFragmentButtonTypes.Settings -> {
+                setupSettingsFragment()
+            }
+
+            SystemFragmentButtonTypes.Test_Calibrations -> {
+                setupTestCalibFragment()
+            }
+
+            SystemFragmentButtonTypes.Tube -> {
+                setupTubeFragment()
+            }
+
+            SystemFragmentButtonTypes.Service -> {
+                showServiceFragment()
+            }
+
+            SystemFragmentButtonTypes.HL7 -> {
+                showhl7CommunicationFragment()
+            }
+
+            SystemFragmentButtonTypes.Diagnos -> {
+                showDiagnosticFragment()
+            }
+
+            SystemFragmentButtonTypes.O2_Reg -> {
+                showO2RegulationFragment()
+            }
+
+            SystemFragmentButtonTypes.Advanced_Calibrations -> {
+                setupAdvancedFragment()
+            }
+
+            SystemFragmentButtonTypes.Device_Update -> {
+                showDeviceUpdateFragment()
+            }
+
+            SystemFragmentButtonTypes.Network_Info -> {
+                showNetworkInfoFragment()
+            }
+
+            SystemFragmentButtonTypes.Ota -> {
+                setupOtaFragment()
+            }
+
+            SystemFragmentButtonTypes.Wifi -> {
+                showWifiFragment()
+            }
+
+            SystemFragmentButtonTypes.Debug -> {
+                setupDebugFragment()
+            }
         }
+        systemAdapter?.notifyDataSetChanged()
+    }
 
-        includeButtonOTA.buttonView.setOnClickListener {
-            setupOtaFragment()
-        }
+    override fun doSystemButtonLongClick(buttonType: SystemFragmentButtonTypes) {
 
-        includeButtonStartup.buttonView.setOnLongClickListener {
-            passWord = "8000"
-            DialogBoxFactory.dismissDialogs()
-            DialogBoxFactory.showNetworkInfoDialog(
-                requireContext(),
-                this,
-                this,
-                passWord,
-                "Enter password to unlock system configuration window"
-            )
-            return@setOnLongClickListener true
-        }
+        when (buttonType) {
 
-        includeButtonInfo.buttonView.setOnLongClickListener {
-            if (tag == "FromDashboard") {
-//                includeButtonService.visibility = View.VISIBLE
-            } else {
-                passWord = "8085"
+            SystemFragmentButtonTypes.Startup -> {
+                passWord = "8000"
                 DialogBoxFactory.dismissDialogs()
-                DialogBoxFactory.showInfoResetDialog(
+                DialogBoxFactory.showNetworkInfoDialog(
                     requireContext(),
                     this,
                     this,
                     passWord,
-                    "Enter password to unlock advanced window"
+                    "Enter password to unlock system configuration window"
                 )
             }
-            return@setOnLongClickListener true
+
+            SystemFragmentButtonTypes.Info -> {
+                if (tag != "FromDashboard") {
+                    passWord = "8085"
+                    DialogBoxFactory.dismissDialogs()
+                    DialogBoxFactory.showInfoResetDialog(
+                        requireContext(),
+                        this,
+                        this,
+                        passWord,
+                        "Enter password to unlock advanced window"
+                    )
+                }
+            }
+
+            else -> {}
         }
     }
 
-    fun switchBetweenDebugAndDiagnosticWindow(tag : String){
-        if (tag == "Diagnostic"){
+    private fun setupAdapter() {
+        systemAdapter = SystemDesignAdapter(requireContext(), dataListSystemItems, this)
+        recyclerViewSystem.layoutManager = LinearLayoutManager(requireContext())
+        recyclerViewSystem.adapter = systemAdapter
+    }
+
+    fun switchBetweenDebugAndDiagnosticWindow(tag: String) {
+        if (tag == "Diagnostic") {
             showDiagnosticFragment()
 
-            includeButtonDiagchk.visibility = View.VISIBLE
-            includeButtonO2Regulate.visibility = View.VISIBLE
-            includeButtondeviceUpdate.visibility = View.VISIBLE
-            includeButtonAdvancedCalibration.visibility = View.VISIBLE
-            includeButtonNetworkInfo.visibility = View.GONE
-            includeButtonDebug.visibility = View.GONE
-            includeButtonWifi.visibility = View.GONE
-            includeButtonOTA.visibility = View.GONE
-            enableAllTabs(true)
-        }
+            if (!dataListSystemItems.contains(
+                    SystemButtonModelClass(
+                        getString(R.string.hint_diagnos),
+                        SystemFragmentButtonTypes.Diagnos
+                    )
+                )
+            ) dataListSystemItems.contains(
+                SystemButtonModelClass(
+                    getString(R.string.hint_diagnos),
+                    SystemFragmentButtonTypes.Diagnos
+                )
+            )
 
-        else{
+            if (!dataListSystemItems.contains(
+                    SystemButtonModelClass(
+                        getString(R.string.hint_reg_o2),
+                        SystemFragmentButtonTypes.O2_Reg
+                    )
+                )
+            ) dataListSystemItems.contains(
+                SystemButtonModelClass(
+                    getString(R.string.hint_reg_o2),
+                    SystemFragmentButtonTypes.O2_Reg
+                )
+            )
+
+            if (!dataListSystemItems.contains(
+                    SystemButtonModelClass(
+                        getString(R.string.hint_advanced_calib),
+                        SystemFragmentButtonTypes.Advanced_Calibrations
+                    )
+                )
+            ) dataListSystemItems.contains(
+                SystemButtonModelClass(
+                    getString(R.string.hint_advanced_calib),
+                    SystemFragmentButtonTypes.Advanced_Calibrations
+                )
+            )
+
+            if (!dataListSystemItems.contains(
+                    SystemButtonModelClass(
+                        getString(R.string.hint_update),
+                        SystemFragmentButtonTypes.Device_Update
+                    )
+                )
+            ) dataListSystemItems.contains(
+                SystemButtonModelClass(
+                    getString(R.string.hint_update),
+                    SystemFragmentButtonTypes.Device_Update
+                )
+            )
+
+            systemAdapter?.isEnable = true
+            systemAdapter?.selectedIndexType = SystemFragmentButtonTypes.Diagnos
+            systemAdapter?.updateList(dataListSystemItems)
+        } else {
             setupDebugFragment()
-            includeButtonDiagchk.visibility = View.GONE
-            includeButtonO2Regulate.visibility = View.GONE
-            includeButtondeviceUpdate.visibility = View.GONE
-            includeButtonAdvancedCalibration.visibility = View.GONE
-            includeButtonNetworkInfo.visibility = View.VISIBLE
-            includeButtonDebug.visibility = View.VISIBLE
-            includeButtonWifi.visibility = View.VISIBLE
-            includeButtonOTA.visibility = View.VISIBLE
-            enableAllTabs(true)
+
+            if (!dataListSystemItems.contains(
+                    SystemButtonModelClass(
+                        getString(R.string.network_info),
+                        SystemFragmentButtonTypes.Network_Info
+                    )
+                )
+            ) dataListSystemItems.contains(
+                SystemButtonModelClass(
+                    getString(R.string.network_info),
+                    SystemFragmentButtonTypes.Network_Info
+                )
+            )
+            if (!dataListSystemItems.contains(
+                    SystemButtonModelClass(
+                        getString(R.string.hint_debug),
+                        SystemFragmentButtonTypes.Debug
+                    )
+                )
+            ) dataListSystemItems.contains(
+                SystemButtonModelClass(
+                    getString(R.string.hint_debug),
+                    SystemFragmentButtonTypes.Debug
+                )
+            )
+            if (!dataListSystemItems.contains(
+                    SystemButtonModelClass(
+                        getString(R.string.wifi),
+                        SystemFragmentButtonTypes.Wifi
+                    )
+                )
+            ) dataListSystemItems.contains(
+                SystemButtonModelClass(
+                    getString(R.string.wifi),
+                    SystemFragmentButtonTypes.Wifi
+                )
+            )
+            if (!dataListSystemItems.contains(
+                    SystemButtonModelClass(
+                        getString(R.string.hint_ota),
+                        SystemFragmentButtonTypes.Ota
+                    )
+                )
+            ) dataListSystemItems.contains(
+                SystemButtonModelClass(
+                    getString(R.string.hint_ota),
+                    SystemFragmentButtonTypes.Ota
+                )
+            )
+            systemAdapter?.isEnable = true
+
+            systemAdapter?.selectedIndexType = SystemFragmentButtonTypes.Debug
+            systemAdapter?.updateList(dataListSystemItems)
         }
     }
 
     private fun setUpNavigation() {
 
+        setupAdapter()
+        dataListSystemItems.clear()
+        dataListSystemItems.add(
+            SystemButtonModelClass(
+                getString(R.string.hint_info),
+                SystemFragmentButtonTypes.Info
+            )
+        )
+        dataListSystemItems.add(
+            SystemButtonModelClass(
+                getString(R.string.startup),
+                SystemFragmentButtonTypes.Startup
+            )
+        )
+        dataListSystemItems.add(
+            SystemButtonModelClass(
+                getString(R.string.hint_settings),
+                SystemFragmentButtonTypes.Settings
+            )
+        )
+        dataListSystemItems.add(
+            SystemButtonModelClass(
+                getString(R.string.hint_test_calib),
+                SystemFragmentButtonTypes.Test_Calibrations
+            )
+        )
+        dataListSystemItems.add(
+            SystemButtonModelClass(
+                getString(R.string.hint_tube),
+                SystemFragmentButtonTypes.Tube
+            )
+        )
+        dataListSystemItems.add(
+            SystemButtonModelClass(
+                getString(R.string.hint_service),
+                SystemFragmentButtonTypes.Service
+            )
+        )
+//        dataListSystemItems.add(
+//            SystemButtonModelClass(
+//                getString(R.string.hl7),
+//                SystemFragmentButtonTypes.HL7
+//            )
+//        )
+
+//        if (tag == "FromDashboard") dataListSystemItems.removeAt(dataListSystemItems.lastIndex)
+
         if (tag == "FromSplash") {
+            systemAdapter?.selectedIndexType = SystemFragmentButtonTypes.Service
             showServiceFragment()
+            systemAdapter?.isEnable = false
 
-            enableAllTabs(false)
-
-        }
-        else if (tag == "Diagnostic"){
+        } else if (tag == "Diagnostic") {
+            systemAdapter?.selectedIndexType = SystemFragmentButtonTypes.Diagnos
             showDiagnosticFragment()
+            dataListSystemItems.add(
+                SystemButtonModelClass(
+                    getString(R.string.hint_diagnos),
+                    SystemFragmentButtonTypes.Diagnos
+                )
+            )
+            dataListSystemItems.add(
+                SystemButtonModelClass(
+                    getString(R.string.hint_reg_o2),
+                    SystemFragmentButtonTypes.O2_Reg
+                )
+            )
+            dataListSystemItems.add(
+                SystemButtonModelClass(
+                    getString(R.string.hint_advanced_calib),
+                    SystemFragmentButtonTypes.Advanced_Calibrations
+                )
+            )
+            dataListSystemItems.add(
+                SystemButtonModelClass(
+                    getString(R.string.hint_update),
+                    SystemFragmentButtonTypes.Device_Update
+                )
+            )
+            systemAdapter?.isEnable = true
 
-            includeButtonDiagchk.visibility = View.VISIBLE
-            includeButtonO2Regulate.visibility = View.VISIBLE
-            includeButtondeviceUpdate.visibility = View.VISIBLE
-            includeButtonAdvancedCalibration.visibility = View.VISIBLE
-            enableAllTabs(true)
-        }
-
-        else if (tag == "Debug"){
+        } else if (tag == "Debug") {
+            systemAdapter?.selectedIndexType = SystemFragmentButtonTypes.Debug
             setupDebugFragment()
-
-            includeButtonNetworkInfo.visibility = View.VISIBLE
-            includeButtonDebug.visibility = View.VISIBLE
-            includeButtonWifi.visibility = View.VISIBLE
-            includeButtonOTA.visibility = View.VISIBLE
-            enableAllTabs(true)
+            dataListSystemItems.add(
+                SystemButtonModelClass(
+                    getString(R.string.network_info),
+                    SystemFragmentButtonTypes.Network_Info
+                )
+            )
+            dataListSystemItems.add(
+                SystemButtonModelClass(
+                    getString(R.string.hint_debug),
+                    SystemFragmentButtonTypes.Debug
+                )
+            )
+            dataListSystemItems.add(
+                SystemButtonModelClass(
+                    getString(R.string.wifi),
+                    SystemFragmentButtonTypes.Wifi
+                )
+            )
+            dataListSystemItems.add(
+                SystemButtonModelClass(
+                    getString(R.string.hint_ota),
+                    SystemFragmentButtonTypes.Ota
+                )
+            )
+            systemAdapter?.isEnable = true
         }
+        else if (tag == "Activate_Ventilator"){
 
+            dataListSystemItems.add(
+                SystemButtonModelClass(
+                    getString(R.string.wifi),
+                    SystemFragmentButtonTypes.Wifi
+                )
+            )
+            systemAdapter?.isEnable = false
+            systemAdapter?.selectedIndexType = SystemFragmentButtonTypes.Wifi
+            showWifiFragment()
+        }
         else {
-            if (arguments?.getString("CALIBRATE_CIRCUIT") == "TouchHere") setupTubeFragment()
-            else showInfoFragment(communicationService)
-
-            enableAllTabs(true)
+            if (arguments?.getString("CALIBRATE_CIRCUIT") == "TouchHere") {
+                systemAdapter?.selectedIndexType = SystemFragmentButtonTypes.Tube
+                setupTubeFragment()
+            } else {
+                systemAdapter?.selectedIndexType = SystemFragmentButtonTypes.Info
+                showInfoFragment(communicationService)
+            }
+            systemAdapter?.isEnable = true
         }
-        setupClickListener()
+
+        systemAdapter?.updateList(dataListSystemItems)
+
+        imageViewCrossSystem.setOnClickListener {
+            closeFragment()
+        }
     }
 
     fun updateSensorTubeComplianceCalibrationViaPreference() {
@@ -545,108 +606,19 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
             }
     }
 
-    fun enableAllTabs(value: Boolean) {
-        includeButtonStartup.buttonView.isEnabled = value
-        includeButtonTube.buttonView.isEnabled = value
-        includeButtonAdvancedCalibration.buttonView.isEnabled = value
-        includeButtonSettings.buttonView.isEnabled = value
-        includeButtonO2Regulate.buttonView.isEnabled = value
-        includeButtonAdvancedCalibration.buttonView.isEnabled = value
-        includeButtonTestCalib.buttonView.isEnabled = value
-        includeButtonInfo.buttonView.isEnabled = value
-        includeButtonNetworkInfo.buttonView.isEnabled = value
-        includeButtonService.buttonView.isEnabled = value
-        includeButtonDebug.buttonView.isEnabled = value
-        includeButtonOTA.buttonView.isEnabled = value
-        includeButtondeviceUpdate.buttonView.isEnabled = value
-        includeButtonWifi.buttonView.isEnabled = value
-    }
-
-    // showing fragments
-    private fun setupClickListener() {
-
-        includeButtonInfo.buttonView.text = getString(R.string.hint_info)
-        includeButtonTestCalib.buttonView.text = getString(R.string.hint_test_calib)
-        includeButtonStartup.buttonView.text = getString(R.string.hint_sensors)
-        includeButtonSettings.buttonView.text = getString(R.string.hint_settings)
-        includeButtonTube.buttonView.text = getString(R.string.hint_tube)
-        includeButtonDebug.buttonView.text = getString(R.string.hint_debug)
-        includeButtonOTA.buttonView.text = getString(R.string.hint_ota)
-        includeButtonDiagchk.buttonView.text = getString(R.string.hint_diagnos)
-        includeButtonO2Regulate.buttonView.text = getString(R.string.hint_reg_o2)
-        includeButtonAdvancedCalibration.buttonView.text = getString(R.string.hint_advanced_calib)
-        includeButtonService.buttonView.text = getString(R.string.hint_service)
-        includeButtonStartup.buttonView.text = getString(R.string.startup)
-        includeButtondeviceUpdate.buttonView.text = getString(R.string.hint_update)
-        includeButtonNetworkInfo.buttonView.text = getString(R.string.network_info)
-        includeButtonWifi.buttonView.text = getString(R.string.wifi)
-        includeButtonTransfer.buttonView.text = getString(R.string.hl7Transfer)
-
-        imageViewCrossSystem.setOnClickListener {
-
-            closeFragment()
-        }
-
-        includeButtonInfo.buttonView.setOnClickListener {
-            showInfoFragment(communicationService)
-        }
-
-        includeButtonNetworkInfo.buttonView.setOnClickListener {
-            showNetworkInfoFragment()
-        }
-
-        includeButtonTube.buttonView.setOnClickListener {
-            setupTubeFragment()
-        }
-        includeButtondeviceUpdate.buttonView.setOnClickListener {
-            showDeviceUpdateFragment()
-        }
-
-        includeButtonTestCalib.buttonView.setOnClickListener {
-            setupTestCalibFragment()
-        }
-
-        includeButtonSettings.buttonView.setOnClickListener {
-            setupSettingsFragment()
-        }
-
-        includeButtonDiagchk.buttonView.setOnClickListener {
-            showDiagnosticFragment()
-        }
-        includeButtonO2Regulate.buttonView.setOnClickListener {
-            showO2RegulationFragment()
-        }
-
-        includeButtonAdvancedCalibration.buttonView.setOnClickListener {
-            setupAdvancedFragment()
-        }
-
-        includeButtonStartup.buttonView.setOnClickListener {
-            setupStartupFragment()
-        }
-
-        includeButtonService.buttonView.setOnClickListener {
-            showServiceFragment()
-        }
-        includeButtonWifi.buttonView.setOnClickListener {
-            showWifiFragment()
-        }
-        includeButtonTransfer.buttonView.setOnClickListener {
-            showhl7CommunicationFragment()
-        }
+    fun updateEnableStatus(status: Boolean) {
+        systemAdapter?.isEnable = status
+        systemAdapter?.notifyDataSetChanged()
     }
 
     private fun setupTestCalibFragment() {
         makeAllFragmentsNull()
-        sizeOfCurrentArray = 2
+        sizeOfCurrentArray = 1
         if (testCalibrationFragment == null)
-            testCalibrationFragment =
-                TestCalibrationFragment(communicationService)
+            testCalibrationFragment = TestCalibrationFragment(communicationService)
         testCalibrationFragment?.apply {
             replaceFragment(this, TAG, R.id.system_nav_container)
         }
-
-        highlightButton(includeButtonTestCalib)
     }
 
     private fun setupStartupFragment() {
@@ -661,13 +633,11 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                 R.id.system_nav_container
             )
         }
-
-        highlightButton(includeButtonStartup)
     }
 
     private fun setupAdvancedFragment() {
         makeAllFragmentsNull()
-        sizeOfCurrentArray = 2
+        sizeOfCurrentArray = 3
         if (advancedCalibrationFragment == null)
             advancedCalibrationFragment = AdvancedCalibrationFragment(communicationService)
         advancedCalibrationFragment?.apply {
@@ -677,14 +647,14 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                 R.id.system_nav_container
             )
         }
-        highlightButton(includeButtonAdvancedCalibration)
     }
 
     private fun setupSettingsFragment() {
         makeAllFragmentsNull()
         sizeOfCurrentArray = 4
         if (settingFragment == null)
-            settingFragment = SettingFragment.newInstance(onLoudnessAdjustmentListener)
+            settingFragment =
+                SettingFragment.newInstance(onLoudnessAdjustmentListener)
         settingFragment?.apply {
             replaceFragment(
                 this,
@@ -692,7 +662,6 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                 R.id.system_nav_container
             )
         }
-        highlightButton(includeButtonSettings)
     }
 
     private fun setupOtaFragment() {
@@ -702,7 +671,6 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         otaFragment?.apply {
             replaceFragment(this, TAG, R.id.system_nav_container)
         }
-        highlightButton(includeButtonOTA)
     }
 
     private fun setupDebugFragment() {
@@ -712,7 +680,6 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         debugFragment?.apply {
             replaceFragment(this, TAG, R.id.system_nav_container)
         }
-        highlightButton(includeButtonDebug)
     }
 
     private fun setupTubeFragment() {
@@ -722,7 +689,6 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         tubeDiaFragment?.apply {
             replaceFragment(this, TAG, R.id.system_nav_container)
         }
-        highlightButton(includeButtonTube)
     }
 
     private fun showNetworkInfoFragment() {
@@ -737,8 +703,6 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                 R.id.system_nav_container
             )
         }
-
-        highlightButton(includeButtonNetworkInfo)
     }
 
     private fun showO2RegulationFragment() {
@@ -753,11 +717,9 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                 R.id.system_nav_container
             )
         }
-        highlightButton(includeButtonO2Regulate)
     }
 
-
-    fun closeFragment(){
+    fun closeFragment() {
         requireActivity().supportFragmentManager
             .beginTransaction()
             .remove(this)
@@ -777,22 +739,21 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                 R.id.system_nav_container
             )
         }
-        highlightButton(includeButtonDiagchk)
     }
 
-    fun sendCommandInDiagnostic(command:String){
+    fun sendCommandInDiagnostic(command: String) {
         diagnosticCheckFragment?.takeIf { it.isVisible }?.apply {
             getCommandsFromLiveWindow(command)
         }
     }
 
-    fun sendDebugCommandInDebug(command:String){
+    fun sendDebugCommandInDebug(command: String) {
         debugFragment?.takeIf { it.isVisible }?.apply {
             getCommandsFromLiveWindow(command)
         }
     }
 
-    fun sendRangesInDiagnostic(ranges:String){
+    fun sendRangesInDiagnostic(ranges: String) {
         diagnosticCheckFragment?.takeIf { it.isVisible }?.apply {
             getRangesFromLiveWindow(ranges)
         }
@@ -810,7 +771,6 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                 R.id.system_nav_container
             )
         }
-        highlightButton(includeButtonService)
     }
 
     private fun showDeviceUpdateFragment() {
@@ -825,7 +785,6 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                 R.id.system_nav_container
             )
         }
-        highlightButton(includeButtondeviceUpdate)
     }
 
     private fun showInfoFragment(communicationService: CommunicationService?) {
@@ -836,9 +795,8 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         infoFragment?.apply {
             replaceFragment(this, TAG, R.id.system_nav_container)
         }
-
-        highlightButton(includeButtonInfo)
     }
+
     private fun showWifiFragment() {
         makeAllFragmentsNull()
         sizeOfCurrentArray = 0
@@ -847,130 +805,6 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         wifiFragment?.apply {
             replaceFragment(this, TAG, R.id.system_nav_container)
         }
-
-        highlightButton(includeButtonWifi)
-    }
-
-    private fun showhl7CommunicationFragment(){
-        makeAllFragmentsNull()
-        sizeOfCurrentArray = 0
-        if(hL7CommunicationFragment == null)
-            hL7CommunicationFragment = HL7CommunicationFragment()
-
-        hL7CommunicationFragment?.apply {
-            replaceFragment(this,TAG,R.id.system_nav_container)
-        }
-    }
-
-    // handling fragments selections
-    private fun highlightButton(view: View) {
-
-        // adding bg colors
-        includeButtonInfo.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
-        includeButtonTestCalib.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
-        includeButtonStartup.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
-        includeButtonTube.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
-        includeButtonSettings.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
-        includeButtonDiagchk.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
-        includeButtonO2Regulate.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
-        includeButtondeviceUpdate.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
-        includeButtonNetworkInfo.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
-        includeButtonAdvancedCalibration.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
-        includeButtonService.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
-        includeButtonDebug.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
-        includeButtonOTA.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
-        includeButtonWifi.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
-
-        // adding text colors
-        includeButtonInfo.buttonView.setTextColor(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.black
-            )
-        )
-        includeButtonOTA.buttonView.setTextColor(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.black
-            )
-        )
-        includeButtondeviceUpdate.buttonView.setTextColor(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.black
-            )
-        )
-        includeButtonNetworkInfo.buttonView.setTextColor(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.black
-            )
-        )
-        includeButtonTestCalib.buttonView.setTextColor(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.black
-            )
-        )
-        includeButtonStartup.buttonView.setTextColor(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.black
-            )
-        )
-        includeButtonSettings.buttonView.setTextColor(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.black
-            )
-        )
-        includeButtonTube.buttonView.setTextColor(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.black
-            )
-        )
-        includeButtonDiagchk.buttonView.setTextColor(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.black
-            )
-        )
-        includeButtonO2Regulate.buttonView.setTextColor(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.black
-            )
-        )
-        includeButtonAdvancedCalibration.buttonView.setTextColor(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.black
-            )
-        )
-        includeButtonService.buttonView.setTextColor(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.black
-            )
-        )
-        includeButtonDebug.buttonView.setTextColor(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.black
-            )
-        )
-        includeButtonWifi.buttonView.setTextColor(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.black
-            )
-        )
-
-        // added on current fragment
-        view.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
-        view.buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-
     }
 
     override fun onStart() {
@@ -978,7 +812,6 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         val heightDialog = arguments?.getInt(KEY_HEIGHT)
         val widthDialog = arguments?.getInt(KEY_WIDTH)
         val isCheck = arguments?.getBoolean(KEY_STATUS)
-
         setHeightWidthPercent(heightDialog, widthDialog, isCheck)
     }
 
@@ -993,8 +826,11 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
             }
     }
 
-    fun updateOxygenCalibrateProgressStatus(progress: Int, msg: String, textAlignment: Int) {
-
+    fun updateOxygenCalibrateProgressStatus(
+        progress: Int,
+        msg: String,
+        textAlignment: Int
+    ) {
         testCalibrationFragment?.takeIf { it.isVisible }?.apply {
             updateOxygenCalibrateProgressStatus(
                 progress,
@@ -1014,59 +850,214 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         settingFragment?.takeIf { it.isVisible }?.apply {
             updateKnobSetting(data.toString())
         }
-
         networkFragment?.takeIf { it.isVisible }?.apply {
             updateKnobRawData(data.toString())
         }
-
         diagnosticCheckFragment?.takeIf { it.isVisible }?.apply {
             updateValueOnKnobChange(data)
         }
-
         advancedCalibrationFragment?.takeIf { it.isVisible }?.apply {
             updateValueOnKnobChange(data)
         }
-
         o2RegulationFragment?.takeIf { it.isVisible }?.apply {
             updateValueOnKnobChange(data)
         }
-
         serviceFragment?.takeIf { it.isVisible }?.apply {
             updateValueOnKnobChange(data)
         }
     }
 
-    override fun closeDialog() {
-
-        if (passWord == "8000") {
-            includeButtonStartup.buttonView.apply {
-                setBackgroundResource(R.drawable.background_grey_border_white)
-                setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
-            }
-        } else {
-            includeButtonInfo.buttonView.apply {
-                setBackgroundResource(R.drawable.background_grey_border_white)
-                setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
-            }
-        }
-    }
+    override fun closeDialog() {}
 
     override fun doAction() {
         if (passWord == "8000") {
-            includeButtonNetworkInfo.visibility = View.VISIBLE
-            includeButtonDebug.visibility = View.VISIBLE
 
-            if (tag == "FromDashboard") includeButtonOTA.visibility = View.GONE
-            else {
-                includeButtonWifi.visibility = View.VISIBLE
-                includeButtonOTA.visibility = View.VISIBLE
+            if (!dataListSystemItems.contains(
+                    SystemButtonModelClass(
+                        getString(R.string.network_info),
+                        SystemFragmentButtonTypes.Network_Info
+                    )
+                )
+            ) dataListSystemItems.add(
+                SystemButtonModelClass(
+                    getString(R.string.network_info),
+                    SystemFragmentButtonTypes.Network_Info
+                )
+            )
+            if (!dataListSystemItems.contains(
+                    SystemButtonModelClass(
+                        getString(R.string.hint_debug),
+                        SystemFragmentButtonTypes.Debug
+                    )
+                )
+            ) dataListSystemItems.add(
+                SystemButtonModelClass(
+                    getString(R.string.hint_debug),
+                    SystemFragmentButtonTypes.Debug
+                )
+            )
+
+            if (tag == "FromDashboard") {
+                if (!dataListSystemItems.contains(
+                        SystemButtonModelClass(
+                            getString(R.string.hint_ota),
+                            SystemFragmentButtonTypes.Ota
+                        )
+                    )
+                ) dataListSystemItems.add(
+                    SystemButtonModelClass(
+                        getString(R.string.hint_ota),
+                        SystemFragmentButtonTypes.Ota
+                    )
+                )
+            } else {
+                if (!dataListSystemItems.contains(
+                        SystemButtonModelClass(
+                            getString(R.string.wifi),
+                            SystemFragmentButtonTypes.Wifi
+                        )
+                    )
+                ) dataListSystemItems.add(
+                    SystemButtonModelClass(
+                        getString(R.string.wifi),
+                        SystemFragmentButtonTypes.Wifi
+                    )
+                )
+                if (!dataListSystemItems.contains(
+                        SystemButtonModelClass(
+                            getString(R.string.hint_ota),
+                            SystemFragmentButtonTypes.Ota
+                        )
+                    )
+                ) dataListSystemItems.add(
+                    SystemButtonModelClass(
+                        getString(R.string.hint_ota),
+                        SystemFragmentButtonTypes.Ota
+                    )
+                )
             }
         } else {
-            includeButtonDiagchk.visibility = View.VISIBLE
-            includeButtonO2Regulate.visibility = View.VISIBLE
-            includeButtondeviceUpdate.visibility = View.VISIBLE
-            includeButtonAdvancedCalibration.visibility = View.VISIBLE
+            if (!dataListSystemItems.contains(
+                    SystemButtonModelClass(
+                        getString(R.string.hint_diagnos),
+                        SystemFragmentButtonTypes.Diagnos
+                    )
+                )
+            ) dataListSystemItems.add(
+                SystemButtonModelClass(
+                    getString(R.string.hint_diagnos),
+                    SystemFragmentButtonTypes.Diagnos
+                )
+            )
+            if (!dataListSystemItems.contains(
+                    SystemButtonModelClass(
+                        getString(R.string.hint_reg_o2),
+                        SystemFragmentButtonTypes.O2_Reg
+                    )
+                )
+            ) dataListSystemItems.add(
+                SystemButtonModelClass(
+                    getString(R.string.hint_reg_o2),
+                    SystemFragmentButtonTypes.O2_Reg
+                )
+            )
+            if (!dataListSystemItems.contains(
+                    SystemButtonModelClass(
+                        getString(R.string.hint_update),
+                        SystemFragmentButtonTypes.Device_Update
+                    )
+                )
+            ) dataListSystemItems.add(
+                SystemButtonModelClass(
+                    getString(R.string.hint_update),
+                    SystemFragmentButtonTypes.Device_Update
+                )
+            )
+            if (!dataListSystemItems.contains(
+                    SystemButtonModelClass(
+                        getString(R.string.hint_advanced_calib),
+                        SystemFragmentButtonTypes.Advanced_Calibrations
+                    )
+                )
+            ) dataListSystemItems.add(
+                SystemButtonModelClass(
+                    getString(R.string.hint_advanced_calib),
+                    SystemFragmentButtonTypes.Advanced_Calibrations
+                )
+            )
+        }
+        systemAdapter?.updateList(dataListSystemItems)
+    }
+}
+
+class SystemDesignAdapter(
+    private var ctx: Context,
+    private var dataList: ArrayList<SystemButtonModelClass>,
+    private var onClick: SystemFragmentButtonListener
+) : RecyclerView.Adapter<SystemDesignAdapter.SystemDesignViewHolder>() {
+
+    var selectedIndexType: SystemFragmentButtonTypes? = null
+    var highlightedIndex = -1
+    var isEnable = true
+
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): SystemDesignViewHolder {
+        val itemView = LayoutInflater.from(parent.context)
+            .inflate(R.layout.system_design_single_layout, parent, false)
+        return SystemDesignViewHolder(itemView)
+    }
+
+    fun updateList(newList: ArrayList<SystemButtonModelClass>) {
+        dataList = newList
+        notifyDataSetChanged()
+    }
+
+    override fun onBindViewHolder(holder: SystemDesignViewHolder, position: Int) {
+        val data = dataList[position]
+        holder.buttonView?.text = data.title
+
+        if (selectedIndexType == data.types) {
+            if (highlightedIndex != -1 && highlightedIndex == position) {
+                holder.buttonView?.setBackgroundResource(R.drawable.background_transparent_border_yellow)
+                holder.buttonView?.setTextColor(ContextCompat.getColor(ctx, R.color.white))
+            } else {
+                holder.buttonView?.setBackgroundResource(R.drawable.background_primary_btn_rounded_selected_green)
+                holder.buttonView?.setTextColor(ContextCompat.getColor(ctx, R.color.white))
+            }
+        } else {
+            if (highlightedIndex != -1 && highlightedIndex == position) {
+                holder.buttonView?.setBackgroundResource(R.drawable.background_transparent_border_yellow)
+                holder.buttonView?.setTextColor(ContextCompat.getColor(ctx, R.color.white))
+            } else {
+                holder.buttonView?.setBackgroundResource(R.drawable.background_grey_border_white)
+                holder.buttonView?.setTextColor(ContextCompat.getColor(ctx, R.color.black))
+            }
+        }
+
+        holder.buttonView?.setOnClickListener {
+            selectedIndexType = data.types
+            if (isEnable) onClick.doSystemButtonClick(data.types)
+        }
+
+        holder.buttonView?.setOnLongClickListener {
+            if (isEnable) onClick.doSystemButtonLongClick(data.types)
+            return@setOnLongClickListener true
         }
     }
 
+    override fun getItemCount(): Int {
+        return dataList.size
+    }
+
+    inner class SystemDesignViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        var buttonLayout: ConstraintLayout? = null
+        var buttonView: AppCompatButton? = null
+
+        init {
+            buttonLayout = view.findViewById(R.id.buttonLayout)
+            buttonView = view.findViewById(R.id.buttonView)
+        }
+    }
 }

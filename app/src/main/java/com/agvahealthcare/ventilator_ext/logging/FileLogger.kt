@@ -85,6 +85,62 @@ abstract class FileLogger {
             return dataNotFound
         }
 
+        // write dispatch date
+        fun writeDispatchDate(ctx: Context, data: String): Boolean {
+            var isSuccess = false
+
+            val path = File(
+                Environment.getExternalStorageDirectory(),
+                AppUtils.PATH_FOLDER_AGVA + File.separator + AppUtils.PATH_FOLDER_LOGS
+            )
+            val isPathAccessible = path.exists() || path.mkdirs()
+            if (isPathAccessible) {
+                Log.i(TAG, "Creating folder for AgVa")
+
+                val file = File(path, "dispatch_date")
+                try {
+                    if (file.exists()) {
+
+                        isSuccess = true
+                        val fileOutPutStream = FileOutputStream(file)
+                        fileOutPutStream.write(data.toByteArray())
+                        fileOutPutStream.close()
+
+                    } else {
+                        if (file.createNewFile()) {
+                            isSuccess = true
+                            val fileOutPutStream = FileOutputStream(file)
+                            fileOutPutStream.write(data.toByteArray())
+                            fileOutPutStream.close()
+                        }
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+            return isSuccess
+        }
+
+        fun readDispatchDate(): String {
+            val filePath = Environment.getExternalStorageDirectory()
+                .toString() + File.separator + AppUtils.PATH_FOLDER_AGVA + File.separator + AppUtils.PATH_FOLDER_LOGS + File.separator
+
+            val file = File(filePath, "dispatch_date")
+            try {
+                if (file.exists()) {
+
+                    val data = file.readText()
+                    return data
+                }
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Log.i("dataClearAlarm", e.message.toString())
+            }
+
+            return dataNotFound
+        }
+
 
         // save service hours
         fun writeServiceFile(

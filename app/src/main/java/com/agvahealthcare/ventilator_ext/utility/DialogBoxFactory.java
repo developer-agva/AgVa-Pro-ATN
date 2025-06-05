@@ -40,6 +40,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.cardview.widget.CardView;
 
+import com.agvahealthcare.ventilator_ext.ActivateVentilatorListener;
 import com.agvahealthcare.ventilator_ext.R;
 import com.agvahealthcare.ventilator_ext.VentilatorApp;
 import com.agvahealthcare.ventilator_ext.api.model.serviceDataModel.Data;
@@ -88,11 +89,12 @@ public class DialogBoxFactory {
         }
     }
 
-    public static AlertDialog showServicePaymentDialog(Context ctx) {
+    public static AlertDialog showServicePaymentDialog(Context ctx, ActivateVentilatorListener onClickActivate) {
 
         View view = LayoutInflater.from(ctx).inflate(R.layout.layout_payment_service_dialog, null, false);
 
         TextView deviceIdText = view.findViewById(R.id.deviceIdText);
+        Button btnActivate = view.findViewById(R.id.btnActivate);
         AlertDialog dialog = new AlertDialog.Builder(ctx).setView(view).create();
         dialog.setCancelable(false);
 
@@ -100,12 +102,17 @@ public class DialogBoxFactory {
                 ctx.getContentResolver(), Settings.Secure.ANDROID_ID
         ));
 
+        btnActivate.setOnClickListener(v ->{
+            onClickActivate.activateVentilatorListener();
+        });
+
         setShutDownDialogView(dialog, true);
 
         dialog.show();
 
         return dialog;
     }
+
 
     public static void showSystemLockDialog(Context ctx) {
         View view = LayoutInflater.from(ctx).inflate(R.layout.system_lock_dialog_layout, null, false);

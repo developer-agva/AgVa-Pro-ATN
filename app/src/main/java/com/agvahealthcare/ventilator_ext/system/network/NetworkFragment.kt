@@ -91,11 +91,12 @@ class NetworkFragment(private var communicationService: CommunicationService?) :
         }
 
         btnResetVenti.setOnClickListener {
-            prefManager?.setVentiConfigSetupStatus(false)
-            Intent(requireActivity(),SetupActivity::class.java).also {
-                startActivity(it)
-                requireActivity().finish()
-            }
+            val calendar = Calendar.getInstance()
+            val dayOfYear = calendar.get(Calendar.DAY_OF_YEAR)
+
+            FileLogger.writeDispatchDate(requireContext(), dayOfYear.toString())
+
+            btnResetVenti.text = "Dispatching..."
         }
 
         btnClearHours.setOnClickListener {

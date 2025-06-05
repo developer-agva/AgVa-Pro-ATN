@@ -57,14 +57,14 @@ class TubeDiaFragment(private var communicationService: CommunicationService?) :
 
             0 -> if (topBarTube.isVisible) backBtnTube.callOnClick() else includeButtonCompliance.buttonView.callOnClick()
 
-            1 -> if (topBarTube.isVisible) includeButtonAdultProfile.buttonView.callOnClick() else includeButtonResistance.buttonView.callOnClick()
+            1 -> if (topBarTube.isVisible) includeButtonNeonatalProfile.buttonView.callOnClick() else includeButtonResistance.buttonView.callOnClick()
 
-            2 -> includeButtonPediatricProfile.buttonView.callOnClick()
-            3 -> includeButtonNeonatalProfile.buttonView.callOnClick()
-            4 -> includetubeAdult.buttonView.callOnClick()
-            5 -> includetubePediatric.buttonView.callOnClick()
-            6 -> includetubeNeoNate.buttonView.callOnClick()
-            7 -> includeButtoncmdSend.buttonView.callOnClick()
+//            2 -> includeButtonPediatricProfile.buttonView.callOnClick()
+//            3 -> includeButtonNeonatalProfile.buttonView.callOnClick()
+            2 -> includetubeAdult.buttonView.callOnClick()
+            3 -> includetubePediatric.buttonView.callOnClick()
+            4 -> includetubeNeoNate.buttonView.callOnClick()
+            5 -> includeButtoncmdSend.buttonView.callOnClick()
         }
     }
 
@@ -133,13 +133,13 @@ class TubeDiaFragment(private var communicationService: CommunicationService?) :
             return when (highlightedIndex) {
 
                 0 -> if (topBarTube.isVisible) backBtnTube else includeButtonCompliance
-                1 -> if (topBarTube.isVisible) includeButtonAdultProfile else includeButtonResistance
-                2 -> includeButtonPediatricProfile
-                3 -> includeButtonNeonatalProfile
-                4 -> includetubeAdult
-                5 -> includetubePediatric
-                6 -> includetubeNeoNate
-                7 -> includeButtoncmdSend
+                1 -> if (topBarTube.isVisible) includeButtonNeonatalProfile else includeButtonResistance
+//                2 -> includeButtonPediatricProfile
+//                3 -> includeButtonNeonatalProfile
+                2 -> includetubeAdult
+                3 -> includetubePediatric
+                4 -> includetubeNeoNate
+                5 -> includeButtoncmdSend
 
                 else -> null
             }
@@ -185,8 +185,8 @@ class TubeDiaFragment(private var communicationService: CommunicationService?) :
             topBarTube.visibility = View.VISIBLE
             backBtnTube.visibility = View.VISIBLE
             tvMainTitleTube.visibility = View.VISIBLE
-            includeButtonAdultProfile.visibility = View.VISIBLE
-            includeButtonPediatricProfile.visibility = View.VISIBLE
+            includeButtonAdultProfile.visibility = View.GONE
+            includeButtonPediatricProfile.visibility = View.GONE
             includeButtonNeonatalProfile.visibility = View.VISIBLE
             tvtubelength.visibility = View.VISIBLE
             tvtextHeadingTube.visibility = View.VISIBLE
@@ -404,7 +404,7 @@ class TubeDiaFragment(private var communicationService: CommunicationService?) :
 
             includeButtonCompliance.buttonView -> {
                 (parentFragment as SystemDialogFragment).highlightedIndex = -1
-                (parentFragment as SystemDialogFragment).sizeOfCurrentArray = 7
+                (parentFragment as SystemDialogFragment).sizeOfCurrentArray = 5
                 currentTag = "Compliance"
                 hideGoneFunction(false)
                 highlightProfileButton()
@@ -419,7 +419,7 @@ class TubeDiaFragment(private var communicationService: CommunicationService?) :
 
             includeButtonResistance.buttonView -> {
                 (parentFragment as SystemDialogFragment).highlightedIndex = -1
-                (parentFragment as SystemDialogFragment).sizeOfCurrentArray = 7
+                (parentFragment as SystemDialogFragment).sizeOfCurrentArray = 5
                 currentTag = "Resistance"
                 hideGoneFunction(false)
                 highlightProfileButton()

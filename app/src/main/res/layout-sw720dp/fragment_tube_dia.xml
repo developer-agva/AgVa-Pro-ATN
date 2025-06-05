@@ -216,6 +216,7 @@
         android:layout_gravity="end"
         android:visibility="gone"
         android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
         android:foreground="?attr/selectableItemBackgroundBorderless"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/includeButtonPediatricProfile"

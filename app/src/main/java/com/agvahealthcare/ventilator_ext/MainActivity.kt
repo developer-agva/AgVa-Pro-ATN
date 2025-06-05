@@ -2735,7 +2735,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
         when (data) {
             PREFIX_PLUS -> {
-                if (highlightedIndex < 16) highlightedIndex++
+                if (highlightedIndex < 14) highlightedIndex++
                 else highlightedIndex = 1
 
                 getViewForFocus(false)?.let { changeConstraintsOfFocusLayout(it) }
@@ -2743,7 +2743,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
             PREFIX_MINUS -> {
                 if (highlightedIndex > 1) highlightedIndex--
-                else highlightedIndex = 16
+                else highlightedIndex = 14
 
                 getViewForFocus(true)?.let { changeConstraintsOfFocusLayout(it) }
             }
@@ -2836,9 +2836,9 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
             12 -> buttonStartNewVentilation
             13 -> batteryLayout
-            14 -> buttonAdult
-            15 -> buttonPediatric
-            16 -> buttonNeonatal
+            14 -> buttonNeonatal
+//            15 -> buttonPediatric
+//            16 -> buttonNeonatal
 
             else -> null
         }

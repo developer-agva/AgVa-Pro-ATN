@@ -39,7 +39,8 @@ class LimitOneFragment(
     companion object {
         val TAG = "LimitOneFragment"
     }
-    private lateinit var binding : FragmentLimitOneBinding
+
+    private lateinit var binding: FragmentLimitOneBinding
     private var prefManager: PreferenceManager? = null
     private var presserUpperLimit: Float? = null
     private var presserLowerLimit: Float? = null
@@ -67,16 +68,12 @@ class LimitOneFragment(
     private var default_respiratoryLowerLimit: Float? = null
     private var default_mveUpperLimit: Float? = null
     private var default_mveLowerLimit: Float? = null
-
     var customProgressDialog: KnobDialog? = null
-
     private lateinit var mEventViewModel: EventViewModel
-
     private var labelViewHolderMap: MutableMap<String, ViewHolder> = LinkedHashMap()
     private var parameterModel: KnobParameterModel? = null
     private var encoderOption: ControlParameterLimit? = null
     private var encoderValue: EncoderValue? = null
-
     private var currentView: View? = null
     private var currentKey: String? = null
     private var limitOneObserver: LimitOneObserver? = null
@@ -89,13 +86,10 @@ class LimitOneFragment(
         }
     }
 
-
     // logic knob highlight starts here
-
     fun handleClick(highlightedIndex: Int) {
 
         when (highlightedIndex) {
-
             0 -> binding.includePressureUpperLimit.root.callOnClick()
             1 -> binding.includePressureLoweLimit.root.callOnClick()
             2 -> binding.includeVTeUpperLimit.root.callOnClick()
@@ -107,9 +101,7 @@ class LimitOneFragment(
             8 -> binding.includeMVEUpperLimit.root.callOnClick()
             9 -> binding.includeMVELowerLimit.root.callOnClick()
         }
-
     }
-
 
     fun highlightAdapterPosition(highlightedIndex: Int) {
 
@@ -118,7 +110,6 @@ class LimitOneFragment(
         } ?: run {
             clearPreviousConstraints()
         }
-
     }
 
     fun clearPreviousConstraints() {
@@ -203,7 +194,6 @@ class LimitOneFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.i("ACTIVITY_LIFECYCLE", "ON_VIEW_CREATE $javaClass")
-
     }
 
     override fun onStart() {
@@ -224,9 +214,7 @@ class LimitOneFragment(
             binding.rrToggle.isOn = readRRLimitState()
             binding.mveToggle.isOn = readMveLimitState()
         }
-
     }
-
 
     private fun createViewBindingMap() {
         createViewHolderMapping()
@@ -250,7 +238,6 @@ class LimitOneFragment(
             vteLowerLimit,
             vteUpperLimit
         )
-
         labelViewHolderMap[LBL_PEEP] = ViewHolder(
             default_peepLowerLimit,
             default_peepUpperLimit,
@@ -263,9 +250,12 @@ class LimitOneFragment(
             respiratoryLowerLimit,
             respiratoryUpperLimit
         )
-        labelViewHolderMap[LBL_MVE] =
-            ViewHolder(default_mveLowerLimit, default_mveUpperLimit, mveLowerLimit, mveUpperLimit)
-
+        labelViewHolderMap[LBL_MVE] = ViewHolder(
+            default_mveLowerLimit,
+            default_mveUpperLimit,
+            mveLowerLimit,
+            mveUpperLimit
+        )
 
     }
 
@@ -510,43 +500,53 @@ class LimitOneFragment(
     private fun setValueOnProgressView(activeView: View, lowerLimit: Float, upperLimit: Float) {
         when (activeView) {
             binding.includePressureUpperLimit.root -> {
-                binding.includePressureUpperLimit.paramProgressBar.maxProgress = upperLimit.toInt().toDouble()
+                binding.includePressureUpperLimit.paramProgressBar.maxProgress =
+                    upperLimit.toInt().toDouble()
             }
 
             binding.includePressureLoweLimit.root -> {
-                binding.includePressureLoweLimit.paramProgressBar.maxProgress = upperLimit.toInt().toDouble()
+                binding.includePressureLoweLimit.paramProgressBar.maxProgress =
+                    upperLimit.toInt().toDouble()
             }
 
             binding.includeVTeUpperLimit.root -> {
-                binding.includeVTeUpperLimit.paramProgressBar.maxProgress = upperLimit.toInt().toDouble()
+                binding.includeVTeUpperLimit.paramProgressBar.maxProgress =
+                    upperLimit.toInt().toDouble()
             }
 
             binding.includeVTeLowerLimit.root -> {
-                binding.includeVTeLowerLimit.paramProgressBar.maxProgress = upperLimit.toInt().toDouble()
+                binding.includeVTeLowerLimit.paramProgressBar.maxProgress =
+                    upperLimit.toInt().toDouble()
             }
 
             binding.includePeepUpperLimit.root -> {
-                binding.includePeepUpperLimit.paramProgressBar.maxProgress = upperLimit.toInt().toDouble()
+                binding.includePeepUpperLimit.paramProgressBar.maxProgress =
+                    upperLimit.toInt().toDouble()
             }
 
             binding.includePeepLowerLimit.root -> {
-                binding.includePeepLowerLimit.paramProgressBar.maxProgress = upperLimit.toInt().toDouble()
+                binding.includePeepLowerLimit.paramProgressBar.maxProgress =
+                    upperLimit.toInt().toDouble()
             }
 
             binding.includeRRUpperLimit.root -> {
-                binding.includeRRUpperLimit.paramProgressBar.maxProgress = upperLimit.toInt().toDouble()
+                binding.includeRRUpperLimit.paramProgressBar.maxProgress =
+                    upperLimit.toInt().toDouble()
             }
 
             binding.includeRRLowerLimit.root -> {
-                binding.includeRRLowerLimit.paramProgressBar.maxProgress = upperLimit.toInt().toDouble()
+                binding.includeRRLowerLimit.paramProgressBar.maxProgress =
+                    upperLimit.toInt().toDouble()
             }
 
             binding.includeMVEUpperLimit.root -> {
-                binding.includeMVEUpperLimit.paramProgressBar.maxProgress = upperLimit.toInt().toDouble()
+                binding.includeMVEUpperLimit.paramProgressBar.maxProgress =
+                    upperLimit.toInt().toDouble()
             }
 
             binding.includeMVELowerLimit.root -> {
-                binding.includeMVELowerLimit.paramProgressBar.maxProgress = upperLimit.toInt().toDouble()
+                binding.includeMVELowerLimit.paramProgressBar.maxProgress =
+                    upperLimit.toInt().toDouble()
             }
         }
     }
@@ -557,62 +557,92 @@ class LimitOneFragment(
         when (activeView) {
             binding.includePressureUpperLimit.root -> {
                 presserUpperLimit = newValue
-                binding.includePressureUpperLimit.paramProgressBar.setCurrentProgress(newValue.toInt().toDouble())
-                binding.includePressureUpperLimit.textView.text = supportPrecision(activeView, newValue.toString())
+                binding.includePressureUpperLimit.paramProgressBar.setCurrentProgress(
+                    newValue.toInt().toDouble()
+                )
+                binding.includePressureUpperLimit.textView.text =
+                    supportPrecision(activeView, newValue.toString())
             }
 
             binding.includePressureLoweLimit.root -> {
                 presserLowerLimit = newValue
-                binding.includePressureLoweLimit.paramProgressBar.setCurrentProgress(newValue.toInt().toDouble())
-                binding.includePressureLoweLimit.textView.text = supportPrecision(activeView, newValue.toString())
+                binding.includePressureLoweLimit.paramProgressBar.setCurrentProgress(
+                    newValue.toInt().toDouble()
+                )
+                binding.includePressureLoweLimit.textView.text =
+                    supportPrecision(activeView, newValue.toString())
             }
 
             binding.includeVTeUpperLimit.root -> {
                 vteUpperLimit = newValue
-                binding.includeVTeUpperLimit.paramProgressBar.setCurrentProgress(newValue.toInt().toDouble())
-                binding.includeVTeUpperLimit.textView.text = supportPrecision(activeView, newValue.toString())
+                binding.includeVTeUpperLimit.paramProgressBar.setCurrentProgress(
+                    newValue.toInt().toDouble()
+                )
+                binding.includeVTeUpperLimit.textView.text =
+                    supportPrecision(activeView, newValue.toString())
             }
 
             binding.includeVTeLowerLimit.root -> {
                 vteLowerLimit = newValue
-                binding.includeVTeLowerLimit.paramProgressBar.setCurrentProgress(newValue.toInt().toDouble())
-                binding.includeVTeLowerLimit.textView.text = supportPrecision(activeView, newValue.toString())
+                binding.includeVTeLowerLimit.paramProgressBar.setCurrentProgress(
+                    newValue.toInt().toDouble()
+                )
+                binding.includeVTeLowerLimit.textView.text =
+                    supportPrecision(activeView, newValue.toString())
             }
 
             binding.includePeepUpperLimit.root -> {
                 peepUpperLimit = newValue
-                binding.includePeepUpperLimit.paramProgressBar.setCurrentProgress(newValue.toInt().toDouble())
-                binding.includePeepUpperLimit.textView.text = supportPrecision(activeView, newValue.toString())
+                binding.includePeepUpperLimit.paramProgressBar.setCurrentProgress(
+                    newValue.toInt().toDouble()
+                )
+                binding.includePeepUpperLimit.textView.text =
+                    supportPrecision(activeView, newValue.toString())
             }
 
             binding.includePeepLowerLimit.root -> {
                 peepLowerLimit = newValue
-                binding.includePeepLowerLimit.paramProgressBar.setCurrentProgress(newValue.toInt().toDouble())
-                binding.includePeepLowerLimit.textView.text = supportPrecision(activeView, newValue.toString())
+                binding.includePeepLowerLimit.paramProgressBar.setCurrentProgress(
+                    newValue.toInt().toDouble()
+                )
+                binding.includePeepLowerLimit.textView.text =
+                    supportPrecision(activeView, newValue.toString())
             }
 
             binding.includeRRUpperLimit.root -> {
                 respiratoryUpperLimit = newValue
-                binding.includeRRUpperLimit.paramProgressBar.setCurrentProgress(newValue.toInt().toDouble())
-                binding.includeRRUpperLimit.textView.text = supportPrecision(activeView, newValue.toString())
+                binding.includeRRUpperLimit.paramProgressBar.setCurrentProgress(
+                    newValue.toInt().toDouble()
+                )
+                binding.includeRRUpperLimit.textView.text =
+                    supportPrecision(activeView, newValue.toString())
             }
 
             binding.includeRRLowerLimit.root -> {
                 respiratoryLowerLimit = newValue
-                binding.includeRRLowerLimit.paramProgressBar.setCurrentProgress(newValue.toInt().toDouble())
-                binding.includeRRLowerLimit.textView.text = supportPrecision(activeView, newValue.toString())
+                binding.includeRRLowerLimit.paramProgressBar.setCurrentProgress(
+                    newValue.toInt().toDouble()
+                )
+                binding.includeRRLowerLimit.textView.text =
+                    supportPrecision(activeView, newValue.toString())
             }
 
             binding.includeMVEUpperLimit.root -> {
                 mveUpperLimit = newValue
-                binding.includeMVEUpperLimit.paramProgressBar.setCurrentProgress(newValue.toInt().toDouble())
-                binding.includeMVEUpperLimit.textView.text = supportPrecision(activeView, newValue.toString())
+                binding.includeMVEUpperLimit.paramProgressBar.setCurrentProgress(
+                    newValue.toInt().toDouble()
+                )
+                binding.includeMVEUpperLimit.textView.text =
+                    supportPrecision(activeView, newValue.toString())
             }
 
             binding.includeMVELowerLimit.root -> {
                 mveLowerLimit = newValue
-                binding.includeMVELowerLimit.paramProgressBar.setCurrentProgress(newValue.toInt().toDouble())
-                binding.includeMVELowerLimit.textView.text = supportPrecision(activeView, newValue.toString())
+                binding.includeMVELowerLimit.paramProgressBar.setCurrentProgress(
+                    newValue.toInt().toDouble()
+                )
+                binding.includeMVELowerLimit.textView.text =
+                    supportPrecision(activeView, newValue.toString())
             }
         }
     }
@@ -638,62 +668,132 @@ class LimitOneFragment(
         context?.let {
             when (limitView) {
                 binding.includePressureUpperLimit.root -> {
-                    setValueOnLimitView(limitView, binding.includePressureUpperLimit.paramProgressBar.progress.toFloat())
-                    binding.includePressureUpperLimit.paramProgressBar.background = ContextCompat.getDrawable(it, R.drawable.progresscircle_with_selection_yellow)
+                    setValueOnLimitView(
+                        limitView,
+                        binding.includePressureUpperLimit.paramProgressBar.progress.toFloat()
+                    )
+                    binding.includePressureUpperLimit.paramProgressBar.background =
+                        ContextCompat.getDrawable(
+                            it,
+                            R.drawable.progresscircle_with_selection_yellow
+                        )
                     binding.includePressureUpperLimit.textView.setTextColor(Color.BLACK)
                 }
 
                 binding.includePressureLoweLimit.root -> {
-                    setValueOnLimitView(limitView, binding.includePressureLoweLimit.paramProgressBar.progress.toFloat())
-                    binding.includePressureLoweLimit.paramProgressBar.background = ContextCompat.getDrawable(it, R.drawable.progresscircle_with_selection_yellow)
+                    setValueOnLimitView(
+                        limitView,
+                        binding.includePressureLoweLimit.paramProgressBar.progress.toFloat()
+                    )
+                    binding.includePressureLoweLimit.paramProgressBar.background =
+                        ContextCompat.getDrawable(
+                            it,
+                            R.drawable.progresscircle_with_selection_yellow
+                        )
                     binding.includePressureLoweLimit.textView.setTextColor(Color.BLACK)
                 }
 
                 binding.includeVTeUpperLimit.root -> {
-                    setValueOnLimitView(limitView, binding.includeVTeUpperLimit.paramProgressBar.progress.toFloat())
-                    binding.includeVTeUpperLimit.paramProgressBar.background = ContextCompat.getDrawable(it, R.drawable.progresscircle_with_selection_yellow)
+                    setValueOnLimitView(
+                        limitView,
+                        binding.includeVTeUpperLimit.paramProgressBar.progress.toFloat()
+                    )
+                    binding.includeVTeUpperLimit.paramProgressBar.background =
+                        ContextCompat.getDrawable(
+                            it,
+                            R.drawable.progresscircle_with_selection_yellow
+                        )
                     binding.includeVTeUpperLimit.textView.setTextColor(Color.BLACK)
                 }
 
                 binding.includeVTeLowerLimit.root -> {
-                    setValueOnLimitView(limitView, binding.includeVTeLowerLimit.paramProgressBar.progress.toFloat())
-                    binding.includeVTeLowerLimit.paramProgressBar.background = ContextCompat.getDrawable(it, R.drawable.progresscircle_with_selection_yellow)
+                    setValueOnLimitView(
+                        limitView,
+                        binding.includeVTeLowerLimit.paramProgressBar.progress.toFloat()
+                    )
+                    binding.includeVTeLowerLimit.paramProgressBar.background =
+                        ContextCompat.getDrawable(
+                            it,
+                            R.drawable.progresscircle_with_selection_yellow
+                        )
                     binding.includeVTeLowerLimit.textView.setTextColor(Color.BLACK)
                 }
 
                 binding.includePeepUpperLimit.root -> {
-                    setValueOnLimitView(limitView, binding.includePeepUpperLimit.paramProgressBar.progress.toFloat())
-                    binding.includePeepUpperLimit.paramProgressBar.background = ContextCompat.getDrawable(it, R.drawable.progresscircle_with_selection_yellow)
+                    setValueOnLimitView(
+                        limitView,
+                        binding.includePeepUpperLimit.paramProgressBar.progress.toFloat()
+                    )
+                    binding.includePeepUpperLimit.paramProgressBar.background =
+                        ContextCompat.getDrawable(
+                            it,
+                            R.drawable.progresscircle_with_selection_yellow
+                        )
                     binding.includePeepUpperLimit.textView.setTextColor(Color.BLACK)
                 }
 
                 binding.includePeepLowerLimit.root -> {
-                    setValueOnLimitView(limitView, binding.includePeepLowerLimit.paramProgressBar.progress.toFloat())
-                    binding.includePeepLowerLimit.paramProgressBar.background = ContextCompat.getDrawable(it, R.drawable.progresscircle_with_selection_yellow)
+                    setValueOnLimitView(
+                        limitView,
+                        binding.includePeepLowerLimit.paramProgressBar.progress.toFloat()
+                    )
+                    binding.includePeepLowerLimit.paramProgressBar.background =
+                        ContextCompat.getDrawable(
+                            it,
+                            R.drawable.progresscircle_with_selection_yellow
+                        )
                     binding.includePeepLowerLimit.textView.setTextColor(Color.BLACK)
                 }
 
                 binding.includeRRUpperLimit.root -> {
-                    setValueOnLimitView(limitView, binding.includeRRUpperLimit.paramProgressBar.progress.toFloat())
-                    binding.includeRRUpperLimit.paramProgressBar.background = ContextCompat.getDrawable(it, R.drawable.progresscircle_with_selection_yellow)
+                    setValueOnLimitView(
+                        limitView,
+                        binding.includeRRUpperLimit.paramProgressBar.progress.toFloat()
+                    )
+                    binding.includeRRUpperLimit.paramProgressBar.background =
+                        ContextCompat.getDrawable(
+                            it,
+                            R.drawable.progresscircle_with_selection_yellow
+                        )
                     binding.includeRRUpperLimit.textView.setTextColor(Color.BLACK)
                 }
 
                 binding.includeRRLowerLimit.root -> {
-                    setValueOnLimitView(limitView, binding.includeRRLowerLimit.paramProgressBar.progress.toFloat())
-                    binding.includeRRLowerLimit.paramProgressBar.background = ContextCompat.getDrawable(it, R.drawable.progresscircle_with_selection_yellow)
+                    setValueOnLimitView(
+                        limitView,
+                        binding.includeRRLowerLimit.paramProgressBar.progress.toFloat()
+                    )
+                    binding.includeRRLowerLimit.paramProgressBar.background =
+                        ContextCompat.getDrawable(
+                            it,
+                            R.drawable.progresscircle_with_selection_yellow
+                        )
                     binding.includeRRLowerLimit.textView.setTextColor(Color.BLACK)
                 }
 
                 binding.includeMVEUpperLimit.root -> {
-                    setValueOnLimitView(limitView, binding.includeMVEUpperLimit.paramProgressBar.progress.toFloat())
-                    binding.includeMVEUpperLimit.paramProgressBar.background = ContextCompat.getDrawable(it, R.drawable.progresscircle_with_selection_yellow)
+                    setValueOnLimitView(
+                        limitView,
+                        binding.includeMVEUpperLimit.paramProgressBar.progress.toFloat()
+                    )
+                    binding.includeMVEUpperLimit.paramProgressBar.background =
+                        ContextCompat.getDrawable(
+                            it,
+                            R.drawable.progresscircle_with_selection_yellow
+                        )
                     binding.includeMVEUpperLimit.textView.setTextColor(Color.BLACK)
                 }
 
                 binding.includeMVELowerLimit.root -> {
-                    setValueOnLimitView(limitView, binding.includeMVELowerLimit.paramProgressBar.progress.toFloat())
-                    binding.includeMVELowerLimit.paramProgressBar.background = ContextCompat.getDrawable(it, R.drawable.progresscircle_with_selection_yellow)
+                    setValueOnLimitView(
+                        limitView,
+                        binding.includeMVELowerLimit.paramProgressBar.progress.toFloat()
+                    )
+                    binding.includeMVELowerLimit.paramProgressBar.background =
+                        ContextCompat.getDrawable(
+                            it,
+                            R.drawable.progresscircle_with_selection_yellow
+                        )
                     binding.includeMVELowerLimit.textView.setTextColor(Color.BLACK)
                 }
             }
@@ -853,7 +953,6 @@ class LimitOneFragment(
                             it1.toFloat()
                         )
                     }
-
                 }
             } else {
                 value?.let {
@@ -1061,10 +1160,7 @@ class LimitOneFragment(
             default_respiratoryLowerLimit = null
             default_mveUpperLimit = null
             default_mveLowerLimit = null
-
             currentView = null
-
-
             presserUpperLimit = null
             presserLowerLimit = null
             vtiUpperLimit = null

@@ -251,7 +251,6 @@ abstract class FileLogger {
             try {
                 if (filePath.exists()) {
 
-                    Log.i("FILEDATA", filePath.readText())
                     val fileData = filePath.readText().split("|") as ArrayList<String>
 
                     fileData.removeAt(fileData.size - 1)
@@ -275,8 +274,7 @@ abstract class FileLogger {
                         val calendar2 = Calendar.getInstance().apply { time = date2!! }
 
                         if (calendar1.before(calendar2)) {
-                            val zeroTrends =
-                                "${timeFrames[t]},NA,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,${prefManager.readUHID()}|"
+                            val zeroTrends = "${timeFrames[t]},NA,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,${prefManager.readUHID()}|"
                             writeTrendGraphFile("trends_timeframes_demo", zeroTrends)
                             t++
                         } else {
@@ -286,8 +284,7 @@ abstract class FileLogger {
                     }
 
                     while (t < timeFrames.size) {
-                        val zeroTrends =
-                            "${timeFrames[t]},NA,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,${prefManager.readUHID()}|"
+                        val zeroTrends = "${timeFrames[t]},NA,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,${prefManager.readUHID()}|"
                         writeTrendGraphFile("trends_timeframes_demo", zeroTrends)
                         t++
                     }
@@ -385,7 +382,6 @@ abstract class FileLogger {
         ): String {
 
             var requiredHours = 0
-            var steps = 0
 
             var filePath = File(
                 Environment.getExternalStorageDirectory(),
@@ -397,13 +393,6 @@ abstract class FileLogger {
                 "8 hours" -> requiredHours = 48
                 "12 hours" -> requiredHours = 72
                 "24 hours" -> requiredHours = 144
-            }
-
-            when (duration) {
-                "1 hour" -> steps = 1
-                "8 hours" -> steps = 6
-                "12 hours" -> steps = 6
-                "24 hours" -> steps = 6
             }
 
             filePath = File(filePath, fileName)
@@ -442,7 +431,7 @@ abstract class FileLogger {
 
                                 var valueFromFile = 0
 
-                                // handle for case: if old data is not cleared
+                                // handle the case: if old data is not cleared
                                 try {
                                     valueFromFile = fileData[i].split(",")[paramIndex].toFloat().toInt()
                                 }catch (e:Exception){
@@ -522,6 +511,7 @@ abstract class FileLogger {
                                     }
                                 }
                             }
+
                             file.delete()
                             tempFile.renameTo(file)
                             writeTrendLungsDynamicsFile(ctx, fileName, data)
@@ -585,7 +575,6 @@ abstract class FileLogger {
                     if (file.exists()) {
 
                         val fileData = file.readLines()
-
                         if (fileData.size <= 500) {
                             isSuccess = true
                             val fileOutPutStream = FileOutputStream(file, true)

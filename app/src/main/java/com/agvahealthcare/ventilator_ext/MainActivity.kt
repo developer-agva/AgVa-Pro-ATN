@@ -3062,11 +3062,13 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                             val dayOfYear = calendar.get(Calendar.DAY_OF_YEAR)
                             FileLogger.writeDispatchDate(this@MainActivity, dayOfYear.toString())
                         }
+
                         try {
                             DialogBoxFactory.dismissDialogs()
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }
+
                         prefManager?.saveLockedStatus("Unlocked")
                         if (it[0].toString().split("^")[2].toInt() >= 100) prefManager?.setVentilatorNeedToLock(false) else prefManager?.setVentilatorNeedToLock(true)
 
@@ -3079,8 +3081,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
         mSocket?.on("AndroidReceivingService"){ it2 ->
             if (deviceId == it2[0].toString().split("^")[0]) {
-                val serviceStatus = it2[0].toString().split("^")[1].toString()
-                val serviceMessage = it2[0].toString().split("^")[2].toString()
+                val serviceStatus = it2[0].toString().split("^")[1]
+                val serviceMessage = it2[0].toString().split("^")[2]
 
                 try {
                     DialogBoxFactory.dismissDialogs()
@@ -3183,7 +3185,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             }
         }
 
-
         // listeners for handle UI online
         mSocket?.on("AndroidReceiveCommand") { it1 ->
 
@@ -3197,12 +3198,11 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         "Start Diagnostic" -> {
 
                             systemDialogFragment?.let {
-
                                 if (it.isVisible) {
                                     it.switchBetweenDebugAndDiagnosticWindow("Diagnostic")
                                 } else {
                                     highlightButton(binding.buttonPreopCheck)
-                                    
+
                                     systemDialogFragment = SystemDialogFragment.newInstance(
                                         heightSize,
                                         widthSize,
@@ -3212,10 +3212,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                                         this@MainActivity,
                                         communicationService
                                     ).apply { show(supportFragmentManager, "Diagnostic") }
-
                                     systemDialogFragment?.isCancelable = false
                                 }
-
                             } ?: kotlin.run {
                                 highlightButton(binding.buttonPreopCheck)
 

@@ -419,6 +419,14 @@ public class PreferenceManager {
         return sp.getString(PREF_PAYMENT_STATUS, "Unlocked");
     }
 
+    public void setVentilatorNeedToLock(Boolean val) {
+        updateData(PREF_VENTI_NEED_LOCK, val);
+    }
+    public Boolean readVentilatorNeedToLock() {
+        return sp.getBoolean(PREF_VENTI_NEED_LOCK, true);
+    }
+
+
     public void setAdmitDate(String key,String val) {
         updateData(key + PREF_ADMIT_DATE, val);
     }
@@ -426,12 +434,6 @@ public class PreferenceManager {
         return sp.getString(key + PREF_ADMIT_DATE, "");
     }
 
-    public void setVentilatorNeedToLock(Boolean val) {
-        updateData(PREF_VENTI_NEED_LOCK, val);
-    }
-    public Boolean readVentilatorNeedToLock() {
-        return sp.getBoolean(PREF_VENTI_NEED_LOCK, true);
-    }
 
     public void setDischargeDate(String key,String val) {
         updateData(key + PREF_DISCHARGE_DATE, val);

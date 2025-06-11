@@ -122,6 +122,8 @@ public abstract class CommunicationService extends Service {
      * Broadcast Ventilator battery status throughout app receivers
      */
 
+    abstract protected void broadcastVentiLiveData(String data);
+
 
     abstract protected void broadcastBatteryStatus(String brtyLevel, String btryHealth, String remainingTime);
 

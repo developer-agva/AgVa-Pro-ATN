@@ -161,6 +161,9 @@ public interface Configs {
     String LIMITER_BATTERY = "@";
     String DELIMITER_BATTERY = "`";
 
+    String LIMITER_VENTI_LIVE = "M-";
+    String DELIMITER_VENTI_LIVE = "!";
+
     String PREFIX_HEATSENSE = "HEAT";
     int HEATSENSE_CODE_LENGTH = 3 * 4; // 4 sensors with 3 digit value
 

@@ -2,8 +2,11 @@ package com.agvahealthcare.ventilator_ext.utility.utils
 
 import android.net.Uri
 import com.agvahealthcare.ventilator_ext.R
+import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 
 class AlarmConfiguration {
+
+    private val preferenceManager:PreferenceManager? = null
     companion object{
 
         private val cycleCheckedAcks = listOf<String>(
@@ -165,6 +168,12 @@ class AlarmConfiguration {
             else {
                 if(alarm in controlLimitAlarms) return Configs.AlarmType.ALARM_MEDIUM_LEVEL
             }
+//            else if(PreferenceManager(ApplicationProvider.getApplicationContext()).readSelectedOptions() == Configs.SELECTED_OPTIONS.NON_INVASIVE_NAME){
+//                if(alarm == Configs.ALARM_RESPIRATORY_RATE) return Configs.AlarmType.ALARM_MEDIUM_LEVEL
+//                if(alarm == Configs.ALARM_TIDAL_VOLUME) return Configs.AlarmType.ALARM_MEDIUM_LEVEL
+//                if(alarm == Configs.ALARM_INSPIRATORY_PRESSURE) return Configs.AlarmType.ALARM_MEDIUM_LEVEL
+//                if(alarm == Configs.ALARM_EXPIRATORY_PRESSURE) return Configs.AlarmType.ALARM_MEDIUM_LEVEL
+//            }
 
 
             return Configs.AlarmType.ALARM_NO_LEVEL

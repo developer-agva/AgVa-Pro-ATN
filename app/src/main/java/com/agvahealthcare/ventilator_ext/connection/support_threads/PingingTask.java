@@ -35,7 +35,7 @@ public class PingingTask
         @Override
         public void onFinish() {
             Log.w(TAG, "Pinging thread rebooted itself");
-            this.start();
+//            this.start();
         }
     };
 

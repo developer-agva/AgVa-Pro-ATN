@@ -445,6 +445,17 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
 //                            }
 
                         }
+
+                        else if(buffData.contains(Configs.LIMITER_VENTI_LIVE)){
+                            int liveDataStartIndex = buffData.indexOf(Configs.LIMITER_VENTI_LIVE);
+                            int liveDataTerminalIndex = buffData.indexOf(Configs.DELIMITER_VENTI_LIVE);
+                            if (liveDataStartIndex < liveDataTerminalIndex) {
+                                String liveData = buffData.substring(liveDataStartIndex + 2, liveDataTerminalIndex);
+                                Log.i("CHECK_LIVE_DATA", liveData.toString());
+                                broadcastVentiLiveData(liveData);
+                                dataBufferVentilator.delete(liveDataStartIndex, liveDataTerminalIndex + 1);
+                            }
+                        }
 //                        else if (buffData.contains(Configs.PREFIX_HFNC)) {
 //                            try {
 //                                int hfncStartIndex = buffData.indexOf(Configs.PREFIX_HFNC);
@@ -648,6 +659,7 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
             }
         }
     }
+
 
     private class ReadingRunnableHID implements Runnable {
         @Override
@@ -917,6 +929,11 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
         Intent i = new Intent(IntentFactory.ACTION_ACK_AVAILABLE);
         i.putExtra(VENTILATOR_ACK, ack);
         sendBroadcast(i);
+    }
+
+    @Override
+    protected void broadcastVentiLiveData(String data) {
+
     }
 
     @Override

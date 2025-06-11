@@ -56,7 +56,6 @@ class ShutDownActivity : BaseActivity() {
             dataStoreManager?.saveCurrentActivity("Shutdown")
         }
 
-        prefManager?.setAcitivityTrack(Configs.ACTIVITY_TRACK.SHUTDOWN)
         shutdownTimer = object : CountDownTimer(30000,1000){
             override fun onTick(millisUntilFinished: Long) {
                 Log.i("shutdown clock tick",millisUntilFinished.toString())

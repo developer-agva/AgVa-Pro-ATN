@@ -920,35 +920,15 @@ public class PreferenceManager {
         return sp.getBoolean(PREF_OXYGEN_LEVEL, false);
 //        return (readFiO2().intValue() > Configs.THRESHOLD_OXYGEN_VARIATION_VALUE);
     }
-
     private void setOxygenLevelStatus(boolean isHigh) {
         updateData(PREF_OXYGEN_LEVEL, isHigh);
     }
-
-
     public void setCurrentUid(PatientProfile uid) {
         updateData(PREF_CURRENT_UID, uid.toString());
     }
-
-    public void setAcitivityTrack(Configs.ACTIVITY_TRACK currentActivity) {
-        updateData(PREF_ACTIVITY_TRACK, currentActivity.toString());
-    }
-
-    public Configs.ACTIVITY_TRACK readActivityTrack() {
-        try {
-            Log.i("valueasdawd", "2");
-            return Configs.ACTIVITY_TRACK.valueOf(sp.getString(PREF_ACTIVITY_TRACK, String.valueOf(Configs.ACTIVITY_TRACK.SPLASH)));
-        } catch (Exception e) {
-            Log.i("valueasdawd", "3");
-            e.printStackTrace();
-            return Configs.ACTIVITY_TRACK.SPLASH;
-        }
-    }
-
     public void setSelectedOptions(Configs.SELECTED_OPTIONS selectedOptions) {
         updateData(PREF_SELECTED_OPTION, selectedOptions.toString());
     }
-
     public Configs.SELECTED_OPTIONS readSelectedOptions() {
         try {
             return Configs.SELECTED_OPTIONS.valueOf(sp.getString(PREF_SELECTED_OPTION, String.valueOf(Configs.SELECTED_OPTIONS.INVASIVE_NAME)));
@@ -990,6 +970,7 @@ public class PreferenceManager {
             return TYPE_ADULT;
         }
     }
+
 
     public parentType readGraphParentType() {
         try {

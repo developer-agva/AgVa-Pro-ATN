@@ -83,7 +83,6 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
         clearPreviousConstraints()
 
         when (highlightedIndex) {
-
             0 -> btnTurbineRanges.callOnClick()
             1 -> btnExhaleValveRanges.callOnClick()
             2 -> btnOxygenValveRanges.callOnClick()
@@ -97,7 +96,6 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
         }
     }
 
-    //
     fun highlightAdapterPosition(highlightedIndex: Int, data: String?) {
 
         getViewForFocus(highlightedIndex, data)?.let {
@@ -106,7 +104,6 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
             clearPreviousConstraints()
         }
     }
-
 
     fun clearPreviousConstraints() {
         try {
@@ -121,7 +118,6 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
             e.printStackTrace()
         }
     }
-
 
     private fun changeConstraintsOfFocusLayout(view: View) {
         val constraintSet = ConstraintSet()
@@ -232,7 +228,6 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
             "Start Turbine" -> {
                 includeButtonTurbine.buttonView.callOnClick()
             }
-
             "Stop Turbine" -> {
                 includeButtonTurbine.buttonView.callOnClick()
             }
@@ -240,7 +235,6 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
             "Start Oxygen" -> {
                 includeButtonOxyValve.buttonView.callOnClick()
             }
-
             "Stop Oxygen" -> {
                 includeButtonOxyValve.buttonView.callOnClick()
             }
@@ -248,7 +242,6 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
             "Start Exhale" -> {
                 includeButtonExhaleValve.buttonView.callOnClick()
             }
-
             "Stop Exhale" -> {
                 includeButtonExhaleValve.buttonView.callOnClick()
             }
@@ -256,7 +249,6 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
             "Start Nebulizer" -> {
                 includeButtonNebulizer.buttonView.callOnClick()
             }
-
             "Stop Nebulizer" -> {
                 includeButtonNebulizer.buttonView.callOnClick()
             }
@@ -264,7 +256,6 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
             "Start Purge" -> {
                 includeButtonPurge.buttonView.callOnClick()
             }
-
             "Stop Purge" -> {
                 includeButtonPurge.buttonView.callOnClick()
             }
@@ -272,7 +263,6 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
             "Start Red LED" -> {
                 includeButtonRedLED.buttonView.callOnClick()
             }
-
             "Stop Red LED" -> {
                 includeButtonRedLED.buttonView.callOnClick()
             }
@@ -280,7 +270,6 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
             "Start Amber LED" -> {
                 includeButtonAmberLED.buttonView.callOnClick()
             }
-
             "Stop Amber LED" -> {
                 includeButtonAmberLED.buttonView.callOnClick()
             }
@@ -313,14 +302,6 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
             }
         }.start()
     }
-
-//    private fun setBatteryLevelUpdate(btryLevel: Int) {
-//        if (btryLevel < 0 || btryLevel > 100) {
-//            txtBatteryValue.text = "-"
-//        } else {
-//            txtBatteryValue.text = "$btryLevel %"
-//        }
-//    }
 
     private fun observeData() {
 
@@ -496,7 +477,6 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
                 requireContext(), R.color.black
             )
         )
-
         btnExhaleValveRanges.setBackgroundResource(R.drawable.background_grey_border_white)
         textViewExhaleValveRangesValue.setTextColor(
             ContextCompat.getColor(

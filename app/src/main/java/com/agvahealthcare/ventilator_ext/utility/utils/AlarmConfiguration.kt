@@ -157,14 +157,14 @@ class AlarmConfiguration {
                       }*/
                 }
 
-            }else if(alarm in lowLimitAlarms){
-                return Configs.AlarmType.ALARM_LOW_LEVEL
-            }
+            }else if(alarm in lowLimitAlarms) return Configs.AlarmType.ALARM_LOW_LEVEL
+
             else if(alarm == Configs.ALARM_VENTILATOR_FAILURE) return Configs.AlarmType.ALARM_HIGH_LEVEL
             else if(alarm == Configs.ALARM_KNOB_FAILURE) return Configs.AlarmType.ALARM_LOW_LEVEL
 
             else if (alarm == Configs.ALARM_FIO2_LEAK) return Configs.AlarmType.ALARM_MEDIUM_LEVEL
             else if (alarm == Configs.ALARM_AUTO_PEEP) return Configs.AlarmType.ALARM_LOW_LEVEL
+            else if (alarm == Configs.ALARM_WRONG_PEEP) return Configs.AlarmType.ALARM_HIGH_LEVEL
             else {
                 if(alarm in controlLimitAlarms) return Configs.AlarmType.ALARM_MEDIUM_LEVEL
             }

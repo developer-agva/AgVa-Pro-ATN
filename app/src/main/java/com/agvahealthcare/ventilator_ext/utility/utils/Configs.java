@@ -250,6 +250,7 @@ public interface Configs {
 
     String ALARM_FIO2_LEAK = "Fio2 low Leakage";
     String ALARM_AUTO_PEEP = "Auto Peep";
+    String ALARM_WRONG_PEEP = "Wrong Peep";
     String LBL_LEAK = "Leak";
     String LBL_PRESSURE = "P";
     String LBL_VOLUME = "V";

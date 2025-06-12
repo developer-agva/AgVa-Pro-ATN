@@ -104,43 +104,15 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
     private Thread bufferReadingThreadVentilator;
     private Thread bufferReadingThreadHID;
     private PreferenceManager preferenceManager;
-    /*
-     * Reading thread : Constantly monitors the data buffer and reads the data frames
-     * intercept the data into acknowledgements and vent data etc
-     */
-    // Callback for the Ventilator to control the data for write and read operations
     @Override
     public void onNewData(byte[] data) {
         readBytesDataVentilator(new String(data));
     }
-    //Callback for the HID to control the data for write and read operations
     @Override
     public void onNewHIDData(byte[] data) {
         Log.i("USB_CHECK", "hid raw data coming");
         readBytesDataHID(new String((data)));
     }
-
-//    @Override
-//    public void onNewHIDData(byte[] data) {
-//        String stringFromByteByEncoding = Base64.getEncoder().encodeToString(data);
-////        byte[] byteFromStringByDecoding = Base64.getDecoder().decode(stringFromByteByEncoding);
-//        Log.i("DataRawKnob", stringFromByteByEncoding);
-//
-//        switch (stringFromByteByEncoding) {
-//            case "qvIBAQs=":
-//                readBytesDataHID("&");
-//                break;
-//            case "qvIBBAg=":
-//                readBytesDataHID("+");
-//                break;
-//            case "qvIBAwk=":
-//                readBytesDataHID("-");
-//                break;
-////            default:
-////                readBytesDataHID(new String(data));
-//        }
-//    }
-
     @Override
     public void onRunError(Exception e) {
         Log.i("USB_CHECK", "venti raw data error");
@@ -149,27 +121,20 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
     public void onRunErrorHID(Exception e) {
         Log.i("USB_CHECK", "hid raw data error");
     }
-    //Runnable implementation for the continuous data flow
+
     private class ReadingRunnableVentilator implements Runnable {
         private volatile boolean isProcessingData = false;
         private long startTime = 0;
+
         @Override
         public void run() {
             Log.i("USB_CHECK", "venti reading thread started");
-            // reading and interception of received ventilator data
+
             if (dataBufferVentilator.length() > 0)
                 sendBroadcast(new Intent(IntentFactory.ACTION_VENTILATOR_FAILURE_GENERATED));
             else sendBroadcast(new Intent(IntentFactory.ACTION_VENTILATOR_FAILURE_REMOVED));
             while (true) {
-//                if(checkEthernetConnectivity(getApplicationContext())){
-//                    Log.d("EthernetConnection", "run: Connected");
-//                    isEthernetConnected = true;
-////                    broadcastEthernetConnected(true);
-//                } else {
-//                    Log.d("EthernetConnection", "run: Not Connected");
-//                    isEthernetConnected = false;
-////                    broadcastEthernetDisConnected(false);
-//                }
+
                 if (!isProcessingData) {
                     startTime = System.currentTimeMillis();
                 }
@@ -508,9 +473,9 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
                             dataBufferHID.delete(muteOptionStartIndex, muteOptionStartIndex + Configs.QB_ALARM_MUTE_UNMUTE.length());
 
                         } else if (buffData2.contains(Configs.QB_NEBULISER)) {
-                            int nubliserStartIndex = buffData2.indexOf(Configs.QB_NEBULISER);
+                            int nebuliserStartIndex = buffData2.indexOf(Configs.QB_NEBULISER);
                             broadcastNebuliserResponse();
-                            dataBufferHID.delete(nubliserStartIndex, nubliserStartIndex + Configs.QB_NEBULISER.length());
+                            dataBufferHID.delete(nebuliserStartIndex, nebuliserStartIndex + Configs.QB_NEBULISER.length());
 
                         } else if (buffData2.contains(Configs.QB_OXYGEN)) {
                             int oxygenStartIndex = buffData2.indexOf(Configs.QB_OXYGEN);

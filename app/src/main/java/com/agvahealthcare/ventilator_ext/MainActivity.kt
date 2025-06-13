@@ -1096,6 +1096,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                                     standbyControlFragment?.highlightViewWithFocus(data)
                                 } else if (modeDialogFragment?.isVisible == true) {
                                     // modeDialogFragment?.highlightViewWithFocus(data)
+                                } else if (systemDialogFragment?.isVisible == true) {
+                                     systemDialogFragment?.updateKnob(data)
                                 } else {
                                     highlightViewWithFocus(data)
                                 }
@@ -1103,7 +1105,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                                 if (DialogBoxFactory.dialogView != null && DialogBoxFactory.dialogView.isShowing) {
                                     Log.i("KNOB_DATADASH", DialogBoxFactory.dialogView.toString())
                                 } else if (systemDialogFragment?.isVisible == true) {
-                                    systemDialogFragment?.updateKnob(data)
+                                    systemDialogFragment?.updateXValue(data)
                                 }
                             }
                         }

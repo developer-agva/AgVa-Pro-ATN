@@ -983,11 +983,11 @@ public class PreferenceManager {
 
     public PatientProfile readCurrentUid() {
         try {
-            return PatientProfile.valueOf(sp.getString(PREF_CURRENT_UID, TYPE_ADULT.toString()));
+            return PatientProfile.valueOf(sp.getString(PREF_CURRENT_UID, TYPE_NEONAT.toString()));
 
         } catch (Exception e) {
             e.printStackTrace();
-            return TYPE_ADULT;
+            return TYPE_NEONAT;
         }
     }
 

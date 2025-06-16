@@ -846,6 +846,12 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         }
     }
 
+    fun updateXValueKnob(data: String?){
+        networkFragment?.takeIf { it.isVisible }?.apply {
+            updateKnobRawData(data.toString())
+        }
+    }
+
     fun updateKnob(data: String?) {
         settingFragment?.takeIf { it.isVisible }?.apply {
             updateKnobSetting(data.toString())

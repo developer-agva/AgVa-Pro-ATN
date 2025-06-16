@@ -1094,6 +1094,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                                     progressDialog?.updateWithTimeoutDebounce(data)
                                 } else if (standbyControlFragment?.isVisible == true) {
                                     standbyControlFragment?.highlightViewWithFocus(data)
+                                } else if (systemDialogFragment?.isVisible == true) {
+                                    systemDialogFragment?.updateKnob(data)
                                 } else if (modeDialogFragment?.isVisible == true) {
                                     // modeDialogFragment?.highlightViewWithFocus(data)
                                 } else {
@@ -1103,7 +1105,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                                 if (DialogBoxFactory.dialogView != null && DialogBoxFactory.dialogView.isShowing) {
                                     Log.i("KNOB_DATADASH", DialogBoxFactory.dialogView.toString())
                                 } else if (systemDialogFragment?.isVisible == true) {
-                                    systemDialogFragment?.updateKnob(data)
+                                    systemDialogFragment?.updateXValueKnob(data)
                                 }
                             }
                         }
@@ -3242,10 +3244,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         normaliseButtons()
         disablePresence()
 
-        val deviceId =
-            Settings.Secure.getString(this@MainActivity.contentResolver, Settings.Secure.ANDROID_ID)
-        val input =
-            "https://wa.me/7330405060?text=Hi, i need support for this ventilator id - +${deviceId}"
+        val deviceId = Settings.Secure.getString(this@MainActivity.contentResolver, Settings.Secure.ANDROID_ID)
+        val input = "https://wa.me/7330405060?text=Hi, i need support for this ventilator id - +${deviceId}"
 
         val qrCodeBitmap = qrCode(input)
         qrCodeStandby.setImageBitmap(qrCodeBitmap)
@@ -4996,8 +4996,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
                         modeDialogFragment?.show(supportFragmentManager, "MainActivity")
                         modeDialogFragment?.isCancelable = false
-
-
                     }
 
 

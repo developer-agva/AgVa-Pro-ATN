@@ -474,12 +474,12 @@
     <!-- Suffix PED : Pediatric limits    -->
     <string name="default_inhale_time_auto">1.4</string>
 
-    <string name="default_inhale_time">1.2</string>
-    <string name="min_inhale_time">0.5</string>
-    <string name="max_inhale_time">3.5</string>
+    <string name="default_inhale_time">1.200</string>
+    <string name="min_inhale_time">0.500</string>
+    <string name="max_inhale_time">3.500</string>
 
-    <string name="min_inhale_time_ped">0.3</string>
-    <string name="max_inhale_time_ped">3.5</string>
+    <string name="min_inhale_time_ped">0.300</string>
+    <string name="max_inhale_time_ped">3.500</string>
 
     <string name="default_inhale_time_neonate">0.5</string>
     <string name="min_inhale_time_neonat">0.3</string>

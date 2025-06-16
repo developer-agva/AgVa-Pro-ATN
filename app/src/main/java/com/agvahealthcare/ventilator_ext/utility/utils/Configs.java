@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-
 /**
  * Created by MOHIT MALHOTRA on 12-09-2018.
  */
@@ -1609,7 +1608,7 @@ public interface Configs {
         paramsScaleBindingMap.put(LBL_PEEP, new ControlParameterLimit(minPeep, maxPeep, 1));
         paramsScaleBindingMap.put(LBL_PPLAT, new ControlParameterLimit(minPplat, maxPplat, 1));
         paramsScaleBindingMap.put(LBL_RR, new ControlParameterLimit(minRR, maxRR, 1));
-        paramsScaleBindingMap.put(LBL_TINSP, new ControlParameterLimit(minInhaleTime, maxInhaleTime, 0.1f));
+        paramsScaleBindingMap.put(LBL_TINSP, new ControlParameterLimit(minInhaleTime, maxInhaleTime, 0.001f));
         paramsScaleBindingMap.put(LBL_IE_RATIO, new ControlParameterLimit(minIERatio, maxIERatio, 1));  // Inhale time mapped to IE Ratio
         paramsScaleBindingMap.put(LBL_PEAK_FLOW, new ControlParameterLimit(minPeakFlow, maxPeakFlow, 1));
         paramsScaleBindingMap.put(LBL_TRIG_FLOW, new ControlParameterLimit(minTrigFlow, maxTrigFlow, triggerFlowStep));
@@ -3668,12 +3667,15 @@ static Float calculateTidalVolume(float height,String gender){
 
     static String calculateIERatio(int rr, Float tinsp) {
         if (rr == 0 || tinsp == null) return null;
-
+        
         float cycleTime = 60f / rr;
         float texp = cycleTime - tinsp;
-        float eiRatio = (texp * 100) / (tinsp * 100);
+        float eiRatio = (texp) / (tinsp);
+
+        Log.i("EI Ratio", "RR: " + rr + ", TInsp: " + String.format("%.3f",tinsp) + ", CycleTime: " + cycleTime + ", Texp: " + String.format("%.3f",texp) + ", EI Ratio: " + eiRatio);
 
         return 1 + " : " + String.format("%.1f", eiRatio);
+
     }
 
     static Float calculateInspTimeFromIERatio(int rr, String ratio) {

@@ -61,7 +61,6 @@ import com.agvahealthcare.ventilator_ext.utility.utils.GenericTextWatcher;
 import com.google.android.material.textfield.TextInputLayout;
 import com.uk.tastytoasty.TastyToasty;
 
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;

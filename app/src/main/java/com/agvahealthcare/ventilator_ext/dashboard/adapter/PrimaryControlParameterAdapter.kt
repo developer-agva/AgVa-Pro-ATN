@@ -90,18 +90,14 @@ class PrimaryControlParameterAdapter(
                 val read: Float = tile.reading.toFloat()
                 holder.tvReading?.text = String.format("%.1f", read)
 
-                if (tile.ventKey.equals(Configs.LBL_TINSP) && preferenceManager!!.readIETileStatus()){
+                Log.i("CHECK_HERE_READING", "READING = ${tile.reading} , KEY = ${tile.ventKey} , FIO2 = ${VentilatorApp.fio2ChangeFlag}")
+
+                if (tile.ventKey.equals(Configs.LBL_TINSP) && preferenceManager.readIETileStatus()){
                     holder.tvReading?.text = Configs.calculateIERatio(
-                        VentilatorApp.testingConditonMap[Configs.LBL_RR]?.let {
-                            it.toInt()
-                        } ?: kotlin.run {
+                        VentilatorApp.testingConditonMap[Configs.LBL_RR]?.toInt() ?: kotlin.run {
                             preferenceManager.readRR().toInt()
                         },
-                        VentilatorApp.testingConditonMap[Configs.LBL_TINSP]?.let {
-                            it
-                        } ?: kotlin.run {
-                            tile.reading.toFloat()
-                        }
+                        read
                     )
                 }
             } catch (e: Exception){

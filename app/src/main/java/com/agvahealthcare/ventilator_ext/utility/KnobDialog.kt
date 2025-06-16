@@ -267,7 +267,16 @@ class KnobDialog : DialogFragment() {
 
     private fun addition() {
         startTimeoutWithDebounce()
-        val newValue = floatingPointFix(currentValue + encoderValue.step)
+
+        var steps = 0f
+        if (parameterModel.key == LBL_TINSP){
+            if (currentValue < 1.0f) steps = 0.01f
+            else steps = 0.05f
+        }else steps = encoderValue.step
+
+        Log.i("EncoderValue", "step: ${encoderValue.step}, currentValue: $currentValue, steps: $steps")
+
+        val newValue = currentValue + steps
         var isNewValueValid = newValue <= encoderValue.upperLimit
         if (parameterModel.key == LBL_TINSP || parameterModel.key == LBL_RR) {
             val rr = if (parameterModel.key == LBL_RR) newValue.toInt() else {
@@ -515,7 +524,16 @@ class KnobDialog : DialogFragment() {
 
     private fun subtraction() {
         startTimeoutWithDebounce()
-        val newValue = floatingPointFix(currentValue - encoderValue.step)
+
+        var steps = 0f
+        if (parameterModel.key == LBL_TINSP){
+            if (currentValue < 1.0f) steps = 0.01f
+            else steps = 0.05f
+        }else steps = encoderValue.step
+
+        Log.i("EncoderValue", "step: ${encoderValue.step}, currentValue: $currentValue, steps: $steps")
+
+        val newValue = currentValue - steps
         var isNewValueValid = newValue >= encoderValue.lowerLimit
         if (parameterModel.key == LBL_TINSP || parameterModel.key == LBL_RR) {
             val rr = if (parameterModel.key == LBL_RR) newValue.toInt() else {

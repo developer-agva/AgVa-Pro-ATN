@@ -39,13 +39,13 @@ public interface Configs {
         DOWN
     }
 
-    enum BodyParamsType{
+    enum BodyParamsType {
         AGE,
         WEIGHT,
         HEIGHT
     }
 
-    enum ACTIVITY_TRACK{
+    enum ACTIVITY_TRACK {
         SPLASH,
         STANDBY,
         DASHBOARD,
@@ -86,12 +86,17 @@ public interface Configs {
     int CONNECTION_MODE = WIRED;
     String TILE_NO_SET_VALUE = "N/A";
 
-    enum PatientProfile { TYPE_ADULT, TYPE_PED, TYPE_NEONAT,}
-    enum SELECTED_OPTIONS { PRONGS_NAME, INVASIVE_NAME, NON_INVASIVE_NAME }
-    enum CurrentActivity { TYPE_SPLASH, TYPE_MAINACTIVITY, TYPE_DASHBOARDACTIVITY }
-    enum GraphType { TYPE_PRESSURE, TYPE_FLOW, TYPE_VOLUME, TYPE_PRESSURE_VOLUME, TYPE_FLOW_PRESSURE }
-    enum Gender { TYPE_MALE, TYPE_FEMALE }
-    enum BatteryLevelType { FULLY_CHARGED, CRITICALLY_LOW, CHARGING, ON_BATTERY }
+    enum PatientProfile {TYPE_ADULT, TYPE_PED, TYPE_NEONAT,}
+
+    enum SELECTED_OPTIONS {PRONGS_NAME, INVASIVE_NAME, NON_INVASIVE_NAME}
+
+    enum CurrentActivity {TYPE_SPLASH, TYPE_MAINACTIVITY, TYPE_DASHBOARDACTIVITY}
+
+    enum GraphType {TYPE_PRESSURE, TYPE_FLOW, TYPE_VOLUME, TYPE_PRESSURE_VOLUME, TYPE_FLOW_PRESSURE}
+
+    enum Gender {TYPE_MALE, TYPE_FEMALE}
+
+    enum BatteryLevelType {FULLY_CHARGED, CRITICALLY_LOW, CHARGING, ON_BATTERY}
 
     // SENSOR AVAILABILITY
     int SENSOR_AVAILABLE = 1;
@@ -1402,7 +1407,7 @@ public interface Configs {
                 maxFlow = Integer.parseInt(ctx.getResources().getString(R.string.max_flow_ped));
                 minFiO2Dev = Integer.parseInt(ctx.getResources().getString(R.string.min_fio2_dev));
                 maxFiO2Dev = Integer.parseInt(ctx.getResources().getString(R.string.max_fio2_dev));
-                minTexp =  VentilatorApp.Companion.getSelectedOptions() == SELECTED_OPTIONS.NON_INVASIVE_NAME ?  Integer.parseInt(ctx.getResources().getString(R.string.min_texp_non_inv)) : Integer.parseInt(ctx.getResources().getString(R.string.min_texp));
+                minTexp = VentilatorApp.Companion.getSelectedOptions() == SELECTED_OPTIONS.NON_INVASIVE_NAME ? Integer.parseInt(ctx.getResources().getString(R.string.min_texp_non_inv)) : Integer.parseInt(ctx.getResources().getString(R.string.min_texp));
                 maxTexp = Integer.parseInt(ctx.getResources().getString(R.string.max_texp));
                 minVti = Integer.valueOf(ctx.getResources().getString(R.string.min_vti_ped));
                 maxVti = Integer.valueOf(ctx.getResources().getString(R.string.max_vti_ped));
@@ -1454,14 +1459,13 @@ public interface Configs {
                 minPip = Integer.valueOf(ctx.getResources().getString(R.string.min_pip));
                 maxPip = Integer.valueOf(ctx.getResources().getString(R.string.max_pip));
                 minPeep = Integer.valueOf(ctx.getResources().getString(R.string.min_peep));
-                if( VentilatorApp.Companion.getSelectedOptions() == SELECTED_OPTIONS.INVASIVE_NAME)
-                {
+                if (VentilatorApp.Companion.getSelectedOptions() == SELECTED_OPTIONS.INVASIVE_NAME) {
                     maxPeep = Integer.valueOf(ctx.getResources().getString(R.string.max_peep_invasive));
-                    Log.i("CHECK_MAX_PEEP",String.valueOf(maxPeep));
-                }else{
+                    Log.i("CHECK_MAX_PEEP", String.valueOf(maxPeep));
+                } else {
 
                     maxPeep = Integer.valueOf(ctx.getResources().getString(R.string.max_peep_nonInvasive));
-                    Log.i("CHECK_MAX_PEEP",String.valueOf(maxPeep));
+                    Log.i("CHECK_MAX_PEEP", String.valueOf(maxPeep));
                 }
 //                maxPeep = Integer.valueOf(ctx.getResources().getString(R.string.max_peep));
                 minPplat = Integer.valueOf(ctx.getResources().getString(R.string.min_pplat));
@@ -1608,7 +1612,7 @@ public interface Configs {
         paramsScaleBindingMap.put(LBL_PEEP, new ControlParameterLimit(minPeep, maxPeep, 1));
         paramsScaleBindingMap.put(LBL_PPLAT, new ControlParameterLimit(minPplat, maxPplat, 1));
         paramsScaleBindingMap.put(LBL_RR, new ControlParameterLimit(minRR, maxRR, 1));
-        paramsScaleBindingMap.put(LBL_TINSP, new ControlParameterLimit(minInhaleTime, maxInhaleTime, 0.001f));
+        paramsScaleBindingMap.put(LBL_TINSP, new ControlParameterLimit(minInhaleTime, maxInhaleTime, 0.01f));
         paramsScaleBindingMap.put(LBL_IE_RATIO, new ControlParameterLimit(minIERatio, maxIERatio, 1));  // Inhale time mapped to IE Ratio
         paramsScaleBindingMap.put(LBL_PEAK_FLOW, new ControlParameterLimit(minPeakFlow, maxPeakFlow, 1));
         paramsScaleBindingMap.put(LBL_TRIG_FLOW, new ControlParameterLimit(minTrigFlow, maxTrigFlow, triggerFlowStep));
@@ -1659,7 +1663,8 @@ public interface Configs {
 
     static List<List<ControlParameterModel>> getAllControlParameterLists(Context ctx, final int modeCode) throws InvalidModeException {
         Log.i("MODECHECK", String.valueOf(modeCode));
-        if (!isValidVentilatorMode(ctx, modeCode) && !isValidVentilatorMode(ctx,Integer.parseInt(FileLogger.Companion.readModeFile()))) throw new InvalidModeException();
+        if (!isValidVentilatorMode(ctx, modeCode) && !isValidVentilatorMode(ctx, Integer.parseInt(FileLogger.Companion.readModeFile())))
+            throw new InvalidModeException();
 
         PreferenceManager prefs = new PreferenceManager(ctx);
 
@@ -1669,7 +1674,6 @@ public interface Configs {
         List<ControlParameterModel> vTasParameters = new ArrayList<>();
         List<ControlParameterModel> apneaParameters = new ArrayList<>();
         List<ControlParameterModel> etCuffParameters = new ArrayList<>();
-
 
 
         boolean isAIVent = modeCode == 24;
@@ -2329,7 +2333,8 @@ public interface Configs {
 
         final PreferenceManager prefManager = new PreferenceManager(ctx);
 
-        if (!isValidVentilatorMode(ctx, modeCode) && !isValidVentilatorMode(ctx,Integer.parseInt(FileLogger.Companion.readModeFile()))) throw new InvalidModeException();
+        if (!isValidVentilatorMode(ctx, modeCode) && !isValidVentilatorMode(ctx, Integer.parseInt(FileLogger.Companion.readModeFile())))
+            throw new InvalidModeException();
         boolean isNonApneaMode = ((modeCode == MODE_PC_CMV || modeCode == MODE_PC_SIMV) || modeCode == MODE_PC_AC);
 
         ControlParameterModel peep = null;
@@ -3264,8 +3269,6 @@ public interface Configs {
         }
 
 
-
-
         Map<ControlSettingType, List<ControlParameterModel>> parameters = new HashMap<ControlSettingType, List<ControlParameterModel>>();
 
         if (!basicParameters.isEmpty()) parameters.put(ControlSettingType.BASIC, basicParameters);
@@ -3667,16 +3670,27 @@ static Float calculateTidalVolume(float height,String gender){
 
     static String calculateIERatio(int rr, Float tinsp) {
         if (rr == 0 || tinsp == null) return null;
-        
+
         float cycleTime = 60f / rr;
         float texp = cycleTime - tinsp;
         float eiRatio = (texp) / (tinsp);
 
-        Log.i("EI Ratio", "RR: " + rr + ", TInsp: " + String.format("%.3f",tinsp) + ", CycleTime: " + cycleTime + ", Texp: " + String.format("%.3f",texp) + ", EI Ratio: " + eiRatio);
+        Log.i("EI Ratio", "RR: " + rr + ", TInsp: " + String.format("%.2f", tinsp) + ", CycleTime: " + cycleTime + ", Texp: " + String.format("%.3f", texp) + ", EI Ratio: " + eiRatio);
 
         return 1 + " : " + String.format("%.1f", eiRatio);
-
     }
+
+//    static Float calculateTiFromIERatio(int rr) {
+//        if (rr == 0) return 0f;
+//        float cycleTime = 60f / 25;
+//
+//        for (Float i=1.0f; i<=30.0f; i+= 0.1f) {
+//            float tinsp = cycleTime * (1f / (1f + i));
+//            Log.i("EI Ratio",tinsp + " " + i + " " + cycleTime + " " + rr);
+//        }
+////      float texp = cycleTime - tinsp;
+//        return 1f;
+//    }
 
     static Float calculateInspTimeFromIERatio(int rr, String ratio) {
         if (ratio != null && ratio.contains(":") && rr > 0) {
@@ -4234,8 +4248,10 @@ static Float calculateTidalVolume(float height,String gender){
                     return ctx.getResources().getString(R.string.ack_426);
                 case ACK_CODE_427:
                     return ctx.getResources().getString(R.string.ack_427);
-                case ACK_CODE_428: return ctx.getResources().getString(R.string.ack_428);
-                case ACK_CODE_429: return ctx.getResources().getString(R.string.ack_429);
+                case ACK_CODE_428:
+                    return ctx.getResources().getString(R.string.ack_428);
+                case ACK_CODE_429:
+                    return ctx.getResources().getString(R.string.ack_429);
 
 
                 case ACK_CODE_441:
@@ -4260,7 +4276,8 @@ static Float calculateTidalVolume(float height,String gender){
                     return ctx.getResources().getString(R.string.ack_437);
                 case ACK_CODE_438:
                     return ctx.getResources().getString(R.string.ack_438);
-                case ACK_CODE_439: return ctx.getResources().getString(R.string.ack_439);
+                case ACK_CODE_439:
+                    return ctx.getResources().getString(R.string.ack_439);
                 case ACK_CODE_640:
                     return ctx.getResources().getString(R.string.ack_640);
                 case ACK_CODE_641:
@@ -4623,10 +4640,14 @@ static Float calculateTidalVolume(float height,String gender){
                 case ACK_CODE_823:
                     return ctx.getResources().getString(R.string.ack_823);
 
-                case ACK_CODE_824: return ctx.getResources().getString(R.string.ack_824);
-                case ACK_CODE_825: return ctx.getResources().getString(R.string.ack_825);
-                case ACK_CODE_826: return ctx.getResources().getString(R.string.ack_826);
-                case ACK_CODE_827: return ctx.getResources().getString(R.string.ack_827);
+                case ACK_CODE_824:
+                    return ctx.getResources().getString(R.string.ack_824);
+                case ACK_CODE_825:
+                    return ctx.getResources().getString(R.string.ack_825);
+                case ACK_CODE_826:
+                    return ctx.getResources().getString(R.string.ack_826);
+                case ACK_CODE_827:
+                    return ctx.getResources().getString(R.string.ack_827);
 
 
                 case ACK_CODE_831:
@@ -4640,9 +4661,12 @@ static Float calculateTidalVolume(float height,String gender){
                 case ACK_CODE_834:
                     return ctx.getResources().getString(R.string.ack_834);
 
-                case ACK_CODE_835: return ctx.getResources().getString(R.string.ack_835);
-                case ACK_CODE_836: return ctx.getResources().getString(R.string.ack_836);
-                case ACK_CODE_837: return ctx.getResources().getString(R.string.ack_837);
+                case ACK_CODE_835:
+                    return ctx.getResources().getString(R.string.ack_835);
+                case ACK_CODE_836:
+                    return ctx.getResources().getString(R.string.ack_836);
+                case ACK_CODE_837:
+                    return ctx.getResources().getString(R.string.ack_837);
                 default:
                     return "ERROR " + code;
             }

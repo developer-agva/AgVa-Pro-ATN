@@ -123,16 +123,16 @@ class GeneralGraphicalToolTipFragment : GraphicTooltipFragment("SettingPcv") {
         preferenceManager?.apply {
 
             val buff = "${getString(R.string.ti)} = ${readTinsp()} ${getString(R.string.hint_s)}"
-            textViewTinsp.text = "${getString(R.string.ti)} = ${
+            textViewTinsp.text = "${getString(R.string.ti)} = ${String.format("%.2f",
                 VentilatorApp.testingConditonMap.get(Configs.LBL_TINSP)?.let {
                     it
                 } ?: kotlin.run {
                     readTinsp()
                 }
-            } ${getString(R.string.hint_s)}"
+            )} ${getString(R.string.hint_s)}"
 
             val setTexp = Configs.calculateTexp(readRR().toInt(), readTinsp())
-            textViewTexp.text = "${getString(R.string.te)} = $setTexp ${getString(R.string.hint_s)}"
+            textViewTexp.text = "${getString(R.string.te)} = ${String.format("%.2f",setTexp.toFloat())} ${getString(R.string.hint_s)}"
 
             textViewPeepPi.text =
                 "${getString(R.string.peep)} = ${readPEEP().toInt()} ${getString(R.string.hint_cmH2o)}"
@@ -166,7 +166,6 @@ class GeneralGraphicalToolTipFragment : GraphicTooltipFragment("SettingPcv") {
                             } ?: kotlin.run {
                                 readTinsp()
                             }
-
                         )
             }"
         }
@@ -203,7 +202,7 @@ class GeneralGraphicalToolTipFragment : GraphicTooltipFragment("SettingPcv") {
                             }, parameter.reading.toFloat()
                         )
                         textViewTexp.text =
-                            "${getString(R.string.te)} = $setTexp ${getString(R.string.hint_s)}"
+                            "${getString(R.string.te)} = ${String.format("%.2f",setTexp.toFloat())} ${getString(R.string.hint_s)}"
 
                     } catch (e: Exception) {
                         e.printStackTrace()
@@ -225,9 +224,10 @@ class GeneralGraphicalToolTipFragment : GraphicTooltipFragment("SettingPcv") {
 
                     textViewIERatio.text =
                         "${getString(R.string.ieratio) + " "} = ${" " + calculatedValue}"
+
                     textViewTinsp.text = "${getString(R.string.ti)} = ${
                         String.format(
-                            "%.1f",
+                            "%.2f",
                             parameter.reading.toFloat()
                         )
                     } ${getString(R.string.hint_s)}"

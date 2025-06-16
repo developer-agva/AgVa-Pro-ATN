@@ -1190,6 +1190,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         Log.i("HERE", "CHECK SENSOR VALUE RECEIVED")
                         mMainActivityViewModel.setNeoNatalSensorConnectedFlag(true)
                         prefManager?.setNeoNateActiveStatus(true)
+                        buttonNeonatal.callOnClick()
                         neonateIconLayout.visibility = View.VISIBLE
                     }
 
@@ -1198,7 +1199,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         mMainActivityViewModel.setNeoNatalSensorConnectedFlag(false)
                         neonateIconLayout.visibility = View.INVISIBLE
                     }
-
 
                     IntentFactory.ACTION_BATTERY_CONNECTED -> {
                         mMainActivityViewModel.setBAtteryConnectedFlag(true)

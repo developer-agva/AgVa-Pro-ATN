@@ -201,13 +201,12 @@ class GeneralGraphicalToolTipFragment : GraphicTooltipFragment("SettingPcv") {
                                 readRR().toInt()
                             }, parameter.reading.toFloat()
                         )
-                        textViewTexp.text =
-                            "${getString(R.string.te)} = ${String.format("%.2f",setTexp.toFloat())} ${getString(R.string.hint_s)}"
+                        textViewTexp.text = "${getString(R.string.te)} = ${String.format("%.2f",setTexp.toFloat())} ${getString(R.string.hint_s)}"
 
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
-                    var calculatedValue = Configs.calculateIERatio(
+                    val calculatedValue = Configs.calculateIERatio(
                         VentilatorApp.testingConditonMap.get(Configs.LBL_RR)?.let {
                             it.toInt()
                         } ?: kotlin.run {
@@ -217,7 +216,6 @@ class GeneralGraphicalToolTipFragment : GraphicTooltipFragment("SettingPcv") {
 
                     if (calculatedValue.split(":")[1].toFloat() < 1.0f) {
                         ieRatioBack.setBackgroundResource(R.drawable.red_rect)
-
                     } else {
                         ieRatioBack.setBackgroundResource(R.drawable.rectangle)
                     }
@@ -231,7 +229,6 @@ class GeneralGraphicalToolTipFragment : GraphicTooltipFragment("SettingPcv") {
                             parameter.reading.toFloat()
                         )
                     } ${getString(R.string.hint_s)}"
-
                 }
 
                 Configs.LBL_RR -> {
@@ -244,11 +241,11 @@ class GeneralGraphicalToolTipFragment : GraphicTooltipFragment("SettingPcv") {
                             } ?: kotlin.run {
                                 readTinsp()
                             })
-                        textViewTexp.text =
-                            "${getString(R.string.te)} = $setTexp ${getString(R.string.hint_s)}"
+
+                        textViewTexp.text = "${getString(R.string.te)} = $setTexp ${getString(R.string.hint_s)}"
                         val setTot = Configs.calculateTtot(parameter.reading.toInt())
                         textViewTtot.text = "${getString(R.string.titot)} = $setTot"
-                        var calculatedValue = Configs.calculateIERatio(
+                        val calculatedValue = calculateIERatio(
                             parameter.reading.toInt(),
                             VentilatorApp.testingConditonMap.get(Configs.LBL_TINSP)?.let {
                                 it
@@ -258,7 +255,6 @@ class GeneralGraphicalToolTipFragment : GraphicTooltipFragment("SettingPcv") {
 
                         if (calculatedValue.split(":")[1].toFloat() < 1.0f) {
                             ieRatioBack.setBackgroundResource(R.drawable.red_rect)
-
                         } else {
                             ieRatioBack.setBackgroundResource(R.drawable.rectangle)
                         }

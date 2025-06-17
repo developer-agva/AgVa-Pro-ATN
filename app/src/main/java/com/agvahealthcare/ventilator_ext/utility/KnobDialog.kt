@@ -105,7 +105,6 @@ class KnobDialog : DialogFragment() {
 
     override fun onDestroy() {
         cancelTimeout()
-
         if (!isCloseListenerAvoided) onCloseListener?.handleDialogClose()
         super.onDestroy()
     }
@@ -197,7 +196,6 @@ class KnobDialog : DialogFragment() {
             PREFIX_AND -> ok()
 
         }
-
     }
 
     fun startTimeoutWithDebounce() {
@@ -248,7 +246,6 @@ class KnobDialog : DialogFragment() {
 
         return Pair<Float, Float>(min, max);
     }
-
     private fun isIERatioValid(rr: Int?, tinsp: Float?): Boolean {
 
         if (rr != null && tinsp != null) {
@@ -325,7 +322,6 @@ class KnobDialog : DialogFragment() {
         if (isDecimalSupported(parameterModel.key)) view?.seekBarId?.changeProgress(currentValue * 10)
         else view?.seekBarId?.changeProgress(currentValue)
     }
-
     private fun additionForLimitOne() {
         startTimeoutWithDebounce()
         if (prefManager?.readCurrentUid() == PatientProfile.TYPE_NEONAT) {
@@ -365,7 +361,6 @@ class KnobDialog : DialogFragment() {
         else view?.seekBarId?.changeProgress(currentValue)
 
     }
-
     private fun additionForTwoTiles() {
         startTimeoutWithDebounce()
 
@@ -544,7 +539,6 @@ class KnobDialog : DialogFragment() {
                     prefManager?.readRR()
                         ?.toInt()
                 }
-
             }
             val tinsp = if (parameterModel.key == LBL_TINSP) newValue else {
 
@@ -553,7 +547,6 @@ class KnobDialog : DialogFragment() {
                 } ?: kotlin.run {
                     prefManager?.readTinsp()
                 }
-
             }
 
             isNewValueValid = isNewValueValid && isIERatioValid(rr, tinsp)
@@ -564,11 +557,6 @@ class KnobDialog : DialogFragment() {
             countOfMaxLimit = 1
         } else {
             if (countOfMaxLimit == 1) {
-                /* TastyToasty.orange(
-                     requireContext(),
-                     "${parameterModel.key} lower limit reached",
-                     R.drawable.ic_info_small
-                 ).show();*/
                 countOfMaxLimit = 0
             }
         }
@@ -580,11 +568,9 @@ class KnobDialog : DialogFragment() {
         // notify change in value
         onLimitChangeListener?.onLimitChange(parameterModel.reading, currentValue)
 
-
         if (isDecimalSupported(parameterModel.key)) view?.seekBarId?.changeProgress(currentValue * 10)
         else view?.seekBarId?.changeProgress(currentValue)
     }
-
     private fun subtractionForLimitOne() {
         startTimeoutWithDebounce()
         if (prefManager?.readCurrentUid() == PatientProfile.TYPE_NEONAT) {
@@ -620,7 +606,6 @@ class KnobDialog : DialogFragment() {
         else view?.seekBarId?.changeProgress(currentValue)
     }
 
-    // integrated here
     private fun ok() {
 
         isCloseListenerAvoided = true
@@ -635,28 +620,20 @@ fun KnobDialog.setHeightWidth(prefManager: PreferenceManager?, tag: String?) {
         isCancelable = cancelableStatus
         decorView.apply {
             val params: WindowManager.LayoutParams = attributes
-
             params.x = 600
             params.y = 102
             params.dimAmount = 0.0F
-            // params.screenBrightness = 5.0F
 
             if (prefManager?.readKnobStatus() == false){
                 params.width = 0
                 params.height = 0
             }
             else {
-
                 params.width = 500
                 params.height = 200
             }
-            /*      params.width = resources.getDimension(R.dimen.knob_width).toInt()
-                  params.height = resources.getDimension(R.dimen.knob_height).toInt()*/
-
             attributes = params
         }
     }
-
-
     hideSystemUI()
 }

@@ -2439,7 +2439,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             setRRApnea(tempPrefMapForExistingVentilationFloat["$userid.pref_apnea_rr"])
             setTrigFlowApnea(tempPrefMapForExistingVentilationFloat["$userid.pref_apnea_trig_flow"])
             setEtPressure(tempPrefMapForExistingVentilationFloat["$userid.pref_et_pressure"])
-
         }
     }
 

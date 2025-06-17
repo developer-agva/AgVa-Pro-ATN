@@ -47,6 +47,7 @@
         <activity
             android:name="com.agvahealthcare.ventilator_ext.ShutDownActivity"
             android:exported="false" />
+
         <activity
             android:name="com.agvahealthcare.ventilator_ext.SplashActivity"
             android:exported="false">
@@ -54,12 +55,13 @@
                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
             </intent-filter>
         </activity>
+
         <activity
             android:name="com.agvahealthcare.ventilator_ext.utility.utils.CircleProgressView"
             android:exported="false" />
 
         <activity
-            android:name="com.agvahealthcare.ventilator_ext.dashboard.DashBoardActivity"
+            android:name="com.agvahealthcare.ventilator_ext.SetupActivity"
             android:exported="true"
             android:launchMode="singleTop">
             <intent-filter>
@@ -71,7 +73,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.agvahealthcare.ventilator_ext.SetupActivity" />
+        <activity android:name="com.agvahealthcare.ventilator_ext.dashboard.DashBoardActivity"/>
 
         <activity
             android:name="com.agvahealthcare.ventilator_ext.MainActivity"
@@ -81,6 +83,7 @@
             android:name="com.agvahealthcare.ventilator_ext.service.UsbService"
             android:enabled="true"
             android:exported="true" />
+
         <service
             android:name="com.agvahealthcare.ventilator_ext.service.CommunicationService"
             android:enabled="true"

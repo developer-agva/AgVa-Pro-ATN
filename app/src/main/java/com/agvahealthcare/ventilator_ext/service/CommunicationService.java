@@ -298,22 +298,15 @@ public abstract class CommunicationService extends Service {
         String data = prefix + settings + ",#";
         send(data);
         Log.i("ALARMSETTINGCHECK", "Sent -> " + data);
-
     }
 
-
     public void sendConfigurationToVentilator(ConfigurationMiddleware middleware) {
-//        int moduleIndex = 1;
 
-        final ConfigurationArrayList settings = (middleware != null) ? middleware.modify(
-                getControlSettingsList()) : getControlSettingsList();
-
-
+        final ConfigurationArrayList settings = (middleware != null) ? middleware.modify(getControlSettingsList()) : getControlSettingsList();
         String prefix = "S,";
         String data = prefix + settings.toString() + ",#";
         send(data);
         Log.i("CONFIGCHECK", "Sent -> " + data);
-
     }
 
     private ConfigurationArrayList getAlarmSettingsList() {
@@ -352,24 +345,15 @@ public abstract class CommunicationService extends Service {
         String vti = String.valueOf(prefManager.readVti().intValue());
         String peep = String.valueOf(prefManager.readPEEP().intValue());
         String trigFlow = String.valueOf(prefManager.readTrigFlow());
-
-        // support pressure is delta only in SPONt and PSV modes
         final boolean isPplatDeltaRequired = Configs.getModeCategory(prefManager.readVentilationMode()) != Configs.MODE_NIV;
-//        float pplatReading = isPplatDeltaRequired ? (prefManager.readPplat().intValue()) : prefManager.readPplat().intValue();
         int pplatReading = isPplatDeltaRequired ? (prefManager.readPplat().intValue() + prefManager.readPEEP().intValue()) : prefManager.readPEEP().intValue() + prefManager.readPplat().intValue();
-//        if(prefManager.readLastVentMode() == Configs.MODE_PC_PRVC){
-//            pPlatValue = String.valueOf(prefManager.readPEEP().intValue() + 3);
-//        }else{
         pPlatValue = String.valueOf(pplatReading);
-//        }
-
         String inhaleTime = String.format("%.1f", prefManager.readTinsp());
         String peakFlow = String.valueOf(prefManager.readPeakFlow().intValue());
         String fio2 = String.valueOf(prefManager.readFiO2().intValue());
         Log.i("vlaue_off_fio2", String.valueOf(fio2));
         String supportPressure = String.valueOf(prefManager.readSupportPressure().intValue() + prefManager.readPEEP().intValue()); // SP = SP + PEEP
         int compensatedSlopeValue = prefManager.readSlope().intValue() * 10; // slope value 2 means 20 on the backend
-
 
         //Doing it reverse as per embedded Team instruction..
         String slope = "";
@@ -381,26 +365,12 @@ public abstract class CommunicationService extends Service {
             slope = String.valueOf(compensatedSlopeValue);
         }
 
-
-//        String inspPause = String.valueOf(prefManager.readInspiratoryPause());
-        //Asked to change this
         String inspPause = String.valueOf(0);
         String flow = String.valueOf(prefManager.readFlow());
-
         String peepValve = String.valueOf(prefManager.readPeepValve() / 10);
-        // modify RR to reduces the error
-
-        // mapping is done by best fit polynomial equation
-//        final int rawRR = prefManager.readRR().intValue();
-
-        //    String rr = String.valueOf((rawRR >= 30) ? Configs.getCompensateInputRR(prefManager.readRR().intValue()) : rawRR);
-
         String rr = String.valueOf(prefManager.readRR().intValue());
         String targetVolume = String.valueOf(prefManager.readTargetVolume().intValue());
         String frequency = String.valueOf(prefManager.readFrequency());
-
-        // tlow is now changed to non-invasive status as per embedded team concern
-//        String tlow = String.format("%.1f", prefManager.readTlow());
         String tlow = "";
         if (VentilatorApp.Companion.getSelectedOptions() == null){
             switch (prefManager.readSelectedOptions()) {
@@ -429,8 +399,6 @@ public abstract class CommunicationService extends Service {
         }
 
         String texp = String.valueOf(prefManager.readTexp().intValue());
-
-        // backup ventilation
         String statusApnea = String.valueOf(prefManager.readApneaSettingsStatus() ? 1 : 0);
         String rrApnea = String.valueOf(prefManager.readRRApnea().intValue());
         String tApnea = String.valueOf(prefManager.readTApnea().intValue());
@@ -441,12 +409,10 @@ public abstract class CommunicationService extends Service {
         String statusNeoNate = String.valueOf(prefManager.readCurrentUid() == Configs.PatientProfile.TYPE_NEONAT && prefManager.readNeoNateActiveStatus() ? 1 : 0);
 
         String autoFlow = String.valueOf(prefManager.readAutoFlow());
-        Log.i("CHECK_NEONATE", String.valueOf(prefManager.readNeoNateActiveStatus()));
         if (prefManager.readLastVentMode() == Configs.MODE_PC_PRVC) prefManager.setVGVStatus(true);
         statusVGV = String.valueOf(prefManager.readVGVStatus() ? 1 : 0);
 
         String circuitOptions = "";
-
         switch (prefManager.readSelectedOptions()) {
             case PRONGS_NAME:
                 circuitOptions = "0";
@@ -458,11 +424,7 @@ public abstract class CommunicationService extends Service {
                 circuitOptions = "2";
                 break;
         }
-        Log.i("circuitOptions", circuitOptions);
 
-        /*String tubeDia = String.valueOf(prefManager.readTubeDia());*/
-
-        // IMPORTANT : Order should be preserved
         ConfigurationArrayList configs = new ConfigurationArrayList();
         configs.add(pip);
         if (prefManager.readModeType() == Configs.ModeType.TYPE_Pressure) {
@@ -488,10 +450,8 @@ public abstract class CommunicationService extends Service {
         configs.add(trigFlowApnea);
         configs.add(inspPause);
         configs.add(peepValve);
-//        configs.add(tubeDia);
         configs.add(statusNeoNate);
         configs.add(statusVGV);
-//        configs.add(frequency);`1
         return configs;
     }
 

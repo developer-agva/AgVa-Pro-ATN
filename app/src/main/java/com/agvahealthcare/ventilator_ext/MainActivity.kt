@@ -945,6 +945,10 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                                 prefManager?.setComplianceTubeCalibration(data)
                                 systemDialogFragment?.takeIf { it.isVisible }
                                     ?.updateSensorTubeComplianceCalibrationViaPreference()
+
+                                if(systemDialogFragment?.isVisible == true) {
+                                    systemDialogFragment?.updateAck()
+                                }
                             }
                         }
                     }
@@ -980,6 +984,10 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                                 prefManager?.setResistanceTubeCalibration(data)
                                 systemDialogFragment?.takeIf { it.isVisible }
                                     ?.updateSensorTubeResistanceCalibrationViaPreference()
+
+                                if(systemDialogFragment?.isVisible == true) {
+                                    systemDialogFragment?.updateAck()
+                                }
                             }
                         }
 

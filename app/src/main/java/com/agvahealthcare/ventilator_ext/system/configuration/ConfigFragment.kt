@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
+import com.agvahealthcare.ventilator_ext.utility.TUBE_COMPLIANCE_CALIBRATION
+import com.agvahealthcare.ventilator_ext.utility.TUBE_RESISTANCE_CALIBRATION
 import com.agvahealthcare.ventilator_ext.utility.VENTILATOR_ACK
 import com.agvahealthcare.ventilator_ext.utility.utils.IntentFactory
 import kotlinx.android.synthetic.main.fragment_config.btnATN
@@ -82,10 +84,10 @@ class ConfigFragment : Fragment() {
         }
 
         btnTubeComp.setOnClickListener {
-            broadcastAcknowledgement("ACK5039")
+            broadcastTubeComplianceResponse("0.22")
         }
         btnTubeResistance.setOnClickListener {
-            broadcastAcknowledgement("ACK5049")
+            broadcastTubeResistanceResponse("0.22")
         }
     }
 
@@ -93,6 +95,20 @@ class ConfigFragment : Fragment() {
         Log.w("ACK CHECK", ack)
         val i = Intent(IntentFactory.ACTION_ACK_AVAILABLE)
         i.putExtra(VENTILATOR_ACK, ack)
+        requireActivity().sendBroadcast(i)
+    }
+
+    private fun broadcastTubeComplianceResponse(tubeComplianceResponse: String) {
+        Log.i("testingCompliance", "DATA : $tubeComplianceResponse")
+        val i = Intent(IntentFactory.ACTION_COMPLIANCE_CALIBRATION_RESPONSE)
+        i.putExtra(TUBE_COMPLIANCE_CALIBRATION, tubeComplianceResponse)
+        requireActivity().sendBroadcast(i)
+    }
+
+    private fun broadcastTubeResistanceResponse(tubeResistanceResponse: String) {
+        Log.i("testingResistance", "DATA : $tubeResistanceResponse")
+        val i = Intent(IntentFactory.ACTION_RESISTANCE_CALIBRATION_RESPONSE)
+        i.putExtra(TUBE_RESISTANCE_CALIBRATION, tubeResistanceResponse)
         requireActivity().sendBroadcast(i)
     }
 

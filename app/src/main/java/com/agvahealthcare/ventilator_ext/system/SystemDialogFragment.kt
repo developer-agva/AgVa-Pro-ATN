@@ -21,6 +21,7 @@ import com.agvahealthcare.ventilator_ext.hl7comm.HL7CommunicationFragment
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.service.CommunicationService
 import com.agvahealthcare.ventilator_ext.system.advanced.AdvancedCalibrationFragment
+import com.agvahealthcare.ventilator_ext.system.configuration.ConfigFragment
 import com.agvahealthcare.ventilator_ext.system.debug.DebugFragment
 import com.agvahealthcare.ventilator_ext.system.device_update.DeviceUpdateFragment
 import com.agvahealthcare.ventilator_ext.system.diagnosticCheck.DiagnosticCheckFragment
@@ -57,7 +58,8 @@ enum class SystemFragmentButtonTypes {
     Debug,
     Diagnos,
     O2_Reg,
-    Network_Info
+    Network_Info,
+    Config
 }
 
 data class SystemButtonModelClass(
@@ -110,6 +112,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
     private var calibrationOxygen: OnCalibrationOxygen? = null
     private var onLoudnessAdjustmentListener: OnLoudnessAdjustmentListener? = null
     private var infoFragment: InfoFragment? = null
+    private var configFragment: ConfigFragment? = null
     private var testCalibrationFragment: TestCalibrationFragment? = null
     private var advancedCalibrationFragment: AdvancedCalibrationFragment? = null
     private var hL7CommunicationFragment: HL7CommunicationFragment? = null
@@ -177,6 +180,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
 
     private fun makeAllFragmentsNull() {
         infoFragment = null
+        configFragment = null
         settingFragment = null
         startupCheckFragment = null
         testCalibrationFragment = null
@@ -232,6 +236,10 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         when (buttonType) {
             SystemFragmentButtonTypes.Info -> {
                 showInfoFragment(communicationService)
+            }
+
+            SystemFragmentButtonTypes.Config ->{
+                showConfigFragment()
             }
 
             SystemFragmentButtonTypes.Startup -> {
@@ -321,6 +329,18 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                         "Enter password to unlock advanced window"
                     )
                 }
+            }
+
+            SystemFragmentButtonTypes.Settings -> {
+                passWord = "2018"
+                DialogBoxFactory.dismissDialogs()
+                DialogBoxFactory.showNetworkInfoDialog(
+                    requireContext(),
+                    this,
+                    this,
+                    passWord,
+                    "Enter password to unlock system configuration window"
+                )
             }
 
             else -> {}
@@ -797,6 +817,16 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         }
     }
 
+    private fun showConfigFragment() {
+        makeAllFragmentsNull()
+        sizeOfCurrentArray = 0
+        if (configFragment == null)
+            configFragment = ConfigFragment()
+        configFragment?.apply {
+            replaceFragment(this, TAG, R.id.system_nav_container)
+        }
+    }
+
     private fun showWifiFragment() {
         makeAllFragmentsNull()
         sizeOfCurrentArray = 0
@@ -873,6 +903,12 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         }
     }
 
+    fun updateAck(){
+        configFragment?.takeIf { it.isVisible }?.apply {
+            initCalibrationFromPreferences()
+        }
+    }
+
     override fun closeDialog() {}
 
     override fun doAction() {
@@ -942,7 +978,24 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                     )
                 )
             }
-        } else {
+        }
+        if (passWord == "2018") {
+            if (tag != "FromDashboard") {
+                if (!dataListSystemItems.contains(
+                        SystemButtonModelClass(
+                            getString(R.string.config),
+                            SystemFragmentButtonTypes.Config
+                        )
+                    )
+                ) dataListSystemItems.add(
+                    SystemButtonModelClass(
+                        getString(R.string.config),
+                        SystemFragmentButtonTypes.Config
+                    )
+                )
+            }
+        }
+        else {
             if (!dataListSystemItems.contains(
                     SystemButtonModelClass(
                         getString(R.string.hint_diagnos),
@@ -1019,6 +1072,7 @@ class SystemDesignAdapter(
         dataList = newList
         notifyDataSetChanged()
     }
+
 
     override fun onBindViewHolder(holder: SystemDesignViewHolder, position: Int) {
         val data = dataList[position]

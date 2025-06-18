@@ -232,8 +232,7 @@ class KnobDialog : DialogFragment() {
             max =
                 requireContext().getString(if (isIRVActive()) R.string.max_ie_ratio_irv else R.string.max_ie_ratio)
                     .toFloat();
-            min =
-                requireContext().getString(if (isIRVActive()) R.string.min_ie_ratio_irv else R.string.min_ie_ratio)
+            min = requireContext().getString(if (isIRVActive()) R.string.min_ie_ratio_irv else R.string.min_ie_ratio)
                     .toFloat();
         } else {
             max =

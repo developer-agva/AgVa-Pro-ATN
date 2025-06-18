@@ -51,11 +51,14 @@ import androidx.annotation.StringRes;
 import com.agvahealthcare.ventilator_ext.R;
 import com.agvahealthcare.ventilator_ext.dashboard.chart.parentType;
 import com.agvahealthcare.ventilator_ext.model.SensorCalibration;
+import com.agvahealthcare.ventilator_ext.system.configuration.VentilatorType;
 import com.agvahealthcare.ventilator_ext.utility.utils.AppUtils;
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.scichart.drawing.utility.ColorUtil;
+
+import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -85,7 +88,7 @@ public class PreferenceManager {
     private static final String PREF_OXY_CONCENTRATOR = "PREF_OXY_CONCENTRATOR";
     private static final String PREF_VENTI_CONFIG_STATUS = "PREF_VENTI_CONFIG_STATUS";
 
-
+    private static final String PREF_VENTI_TYPE_STATUS = "pref_venti_type_status";
 
 
     private static final String PREF_AUTO_FLOW = "pref_auto_flow";
@@ -969,6 +972,20 @@ public class PreferenceManager {
             e.printStackTrace();
             return TYPE_ADULT;
         }
+    }
+
+    public VentilatorType readVentilatorType() {
+        try {
+            return VentilatorType.valueOf(sp.getString(PREF_VENTI_TYPE_STATUS, VentilatorType.ATN.toString()));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return VentilatorType.ATN;
+        }
+    }
+
+    public void setVentilatorType(VentilatorType ventilatorType) {
+        updateData(PREF_VENTI_TYPE_STATUS, ventilatorType.toString());
     }
 
 
@@ -3276,6 +3293,5 @@ public class PreferenceManager {
 
         editor.apply();
     }
-
 
 }

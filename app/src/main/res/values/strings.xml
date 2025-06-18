@@ -1620,6 +1620,7 @@
     <string name="service_option_4">Repair</string>
     <string name="service_option_5">Other</string>
     <string name="network_info">Network Info</string>
+    <string name="config">Config</string>
 
     <string name="sensor_check_string">Sensors check success, ventilation can be started</string>
 

@@ -351,11 +351,10 @@ public abstract class CommunicationService extends Service {
         String inhaleTime = String.format("%.1f", prefManager.readTinsp());
         String peakFlow = String.valueOf(prefManager.readPeakFlow().intValue());
         String fio2 = String.valueOf(prefManager.readFiO2().intValue());
-        Log.i("vlaue_off_fio2", String.valueOf(fio2));
         String supportPressure = String.valueOf(prefManager.readSupportPressure().intValue() + prefManager.readPEEP().intValue()); // SP = SP + PEEP
         int compensatedSlopeValue = prefManager.readSlope().intValue() * 10; // slope value 2 means 20 on the backend
 
-        //Doing it reverse as per embedded Team instruction..
+        // Doing it reverse as per embedded Team instruction..
         String slope = "";
         if(compensatedSlopeValue == 20){
             slope = "0";

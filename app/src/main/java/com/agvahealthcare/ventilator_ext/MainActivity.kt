@@ -1142,6 +1142,9 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 //                            )
                         )
                             handleAcknowledgements(ackValue)
+                        if(systemDialogFragment?.isVisible == true) {
+                            systemDialogFragment?.updateAck()
+                        }
                     }
 
                     IntentFactory.ACTION_MODE_SET -> {

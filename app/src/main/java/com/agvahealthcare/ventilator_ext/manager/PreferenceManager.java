@@ -89,6 +89,7 @@ public class PreferenceManager {
     private static final String PREF_VENTI_CONFIG_STATUS = "PREF_VENTI_CONFIG_STATUS";
 
     private static final String PREF_VENTI_TYPE_STATUS = "pref_venti_type_status";
+    private static final String PREF_PEEP_ALARM_STATUS = "pref_peep_alarm_status";
 
 
     private static final String PREF_AUTO_FLOW = "pref_auto_flow";
@@ -383,6 +384,8 @@ public class PreferenceManager {
     private static final String PREF_UPDATE_TYPE = "pref_update_type";
     private static final String PREF_PAYMENT_STATUS = "pref_payment_status";
     private static final String PREF_VENTI_NEED_LOCK = "PREF_VENTI_NEED_LOCK";
+    private static final String PREF_DYN_LUNG_MODULE = "PREF_DYN_LUNG_MODULE";
+    private static final String PREF_DEBUG_PARAMS_STATUS = "PREF_DEBUG_PARAMS_STATUS";
 
     private Context context;
     private SharedPreferences sp;
@@ -392,6 +395,29 @@ public class PreferenceManager {
         this.context = context;
         this.sp = context.getSharedPreferences(CONFIGURATION_SHARED_PREFERENCES, Context.MODE_PRIVATE);
         this.gson = new Gson();
+    }
+
+    public void saveDebugParamsStatus(Boolean value) {
+        updateData(PREF_DEBUG_PARAMS_STATUS, value);
+    }
+    public Boolean readDebugParamsStatus() {
+        return sp.getBoolean(PREF_DEBUG_PARAMS_STATUS, false);
+    }
+
+    public void savePeepAlarmStatus(Boolean value) {
+        updateData(PREF_PEEP_ALARM_STATUS, value);
+    }
+
+    public Boolean readPeepAlarmStatus() {
+        return sp.getBoolean(PREF_PEEP_ALARM_STATUS, false);
+    }
+
+    public void saveDynamicLungsModuleStatus(Boolean value) {
+        updateData(PREF_DYN_LUNG_MODULE, value);
+    }
+
+    public Boolean readDynamicLungsModuleStatus() {
+        return sp.getBoolean(PREF_DYN_LUNG_MODULE, false);
     }
 
     public void saveLockedStatus(String val) {

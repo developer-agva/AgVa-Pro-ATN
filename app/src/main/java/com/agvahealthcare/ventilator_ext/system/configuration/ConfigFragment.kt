@@ -15,12 +15,15 @@ import com.agvahealthcare.ventilator_ext.utility.VENTILATOR_ACK
 import com.agvahealthcare.ventilator_ext.utility.utils.IntentFactory
 import kotlinx.android.synthetic.main.fragment_config.btnATN
 import kotlinx.android.synthetic.main.fragment_config.btnATP
+import kotlinx.android.synthetic.main.fragment_config.btnEnableDynamicLungsModule
+import kotlinx.android.synthetic.main.fragment_config.btnEnableTestingParams
 import kotlinx.android.synthetic.main.fragment_config.btnExhaleValve
 import kotlinx.android.synthetic.main.fragment_config.btnExpFlow
 import kotlinx.android.synthetic.main.fragment_config.btnInspFlow
 import kotlinx.android.synthetic.main.fragment_config.btnLeakTest
 import kotlinx.android.synthetic.main.fragment_config.btnNeo
 import kotlinx.android.synthetic.main.fragment_config.btnOxygen
+import kotlinx.android.synthetic.main.fragment_config.btnPeepAlarm
 import kotlinx.android.synthetic.main.fragment_config.btnTubeComp
 import kotlinx.android.synthetic.main.fragment_config.btnTubeResistance
 import kotlinx.android.synthetic.main.fragment_config.btnTurbine
@@ -48,6 +51,7 @@ class ConfigFragment : Fragment() {
         preferenceManager = PreferenceManager(requireContext())
         initTypeFromPreferences()
         initCalibrationFromPreferences()
+        initOthersFromPreferences()
 
         btnATN.setOnClickListener {
             preferenceManager?.setVentilatorType(VentilatorType.ATN)
@@ -89,6 +93,21 @@ class ConfigFragment : Fragment() {
         btnTubeResistance.setOnClickListener {
             broadcastTubeResistanceResponse("0.22")
         }
+
+        btnPeepAlarm.setOnClickListener {
+            preferenceManager?.savePeepAlarmStatus(!preferenceManager?.readPeepAlarmStatus()!!)
+            initOthersFromPreferences()
+        }
+        
+        btnEnableDynamicLungsModule.setOnClickListener { 
+            preferenceManager?.saveDynamicLungsModuleStatus(!preferenceManager?.readDynamicLungsModuleStatus()!!)
+            initOthersFromPreferences()
+        }
+        
+        btnEnableTestingParams.setOnClickListener {
+            preferenceManager?.saveDebugParamsStatus(!preferenceManager?.readDebugParamsStatus()!!)
+            initOthersFromPreferences()
+        }
     }
 
     private fun broadcastAcknowledgement(ack: String) {
@@ -110,6 +129,36 @@ class ConfigFragment : Fragment() {
         val i = Intent(IntentFactory.ACTION_RESISTANCE_CALIBRATION_RESPONSE)
         i.putExtra(TUBE_RESISTANCE_CALIBRATION, tubeResistanceResponse)
         requireActivity().sendBroadcast(i)
+    }
+
+    private fun initOthersFromPreferences() {
+        preferenceManager?.apply {
+
+            if (readLeakTestCalibrationStatus()) {
+                btnPeepAlarm.setBackgroundColor(resources.getColor(R.color.racing_green))
+                btnPeepAlarm.text = "Disable PEEP Alarm"
+            } else {
+                btnPeepAlarm.setBackgroundColor(resources.getColor(R.color.light_grey))
+                btnPeepAlarm.text = "Enable PEEP Alarm"
+            }
+
+            if (readDynamicLungsModuleStatus()){
+                btnEnableDynamicLungsModule.setBackgroundColor(resources.getColor(R.color.racing_green))
+                btnEnableDynamicLungsModule.text = "Disable Dynamic Lungs"
+            } else {
+                btnEnableDynamicLungsModule.setBackgroundColor(resources.getColor(R.color.light_grey))
+                btnEnableDynamicLungsModule.text = "Enable Dynamic Lungs"
+            }
+            
+            if (readDebugParamsStatus()){
+                btnEnableTestingParams.setBackgroundColor(resources.getColor(R.color.racing_green))
+                btnEnableTestingParams.text = "Disable Debug Params"
+            } else {
+                btnEnableTestingParams.setBackgroundColor(resources.getColor(R.color.light_grey))
+                btnEnableTestingParams.text = "Enable Debug Params"
+            }
+
+        }
     }
 
     private fun initTypeFromPreferences() {
@@ -139,38 +188,38 @@ class ConfigFragment : Fragment() {
         preferenceManager?.apply {
 
             if (readOxygenCalibrationStatus()) btnOxygen.setBackgroundColor(resources.getColor(R.color.racing_green))
-            else btnOxygen.setBackgroundColor(resources.getColor(R.color.ack_red))
+            else btnOxygen.setBackgroundColor(resources.getColor(R.color.light_grey))
 
             if (readExhaleValveCalibrationStatus()) btnExhaleValve.setBackgroundColor(
                 resources.getColor(
                     R.color.racing_green
                 )
             )
-            else btnExhaleValve.setBackgroundColor(resources.getColor(R.color.ack_red))
+            else btnExhaleValve.setBackgroundColor(resources.getColor(R.color.light_grey))
 
             if (readExpFlowCalibrationStatus()) btnExpFlow.setBackgroundColor(resources.getColor(R.color.racing_green))
-            else btnExpFlow.setBackgroundColor(resources.getColor(R.color.ack_red))
+            else btnExpFlow.setBackgroundColor(resources.getColor(R.color.light_grey))
 
             if (readTurbineCalibrationStatus()) btnTurbine.setBackgroundColor(resources.getColor(R.color.racing_green))
-            else btnTurbine.setBackgroundColor(resources.getColor(R.color.ack_red))
+            else btnTurbine.setBackgroundColor(resources.getColor(R.color.light_grey))
 
             if (readInspFlowCalibrationStatus()) btnInspFlow.setBackgroundColor(resources.getColor(R.color.racing_green))
-            else btnInspFlow.setBackgroundColor(resources.getColor(R.color.ack_red))
+            else btnInspFlow.setBackgroundColor(resources.getColor(R.color.light_grey))
 
             if (readLeakTestCalibrationStatus()) btnLeakTest.setBackgroundColor(resources.getColor(R.color.racing_green))
-            else btnLeakTest.setBackgroundColor(resources.getColor(R.color.ack_red))
+            else btnLeakTest.setBackgroundColor(resources.getColor(R.color.light_grey))
 
             if (readComplianceTubeCalibrationStatus()) btnTubeComp.setBackgroundColor(
                 resources.getColor(
                     R.color.racing_green
                 )
             )
-            else btnTubeComp.setBackgroundColor(resources.getColor(R.color.ack_red))
+            else btnTubeComp.setBackgroundColor(resources.getColor(R.color.light_grey))
 
             if (readResistanceTubeCalibrationStatus()) btnTubeResistance.setBackgroundColor(
                 resources.getColor(R.color.racing_green)
             )
-            else btnTubeResistance.setBackgroundColor(resources.getColor(R.color.ack_red))
+            else btnTubeResistance.setBackgroundColor(resources.getColor(R.color.light_grey))
         }
     }
 

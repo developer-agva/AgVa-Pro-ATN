@@ -3246,10 +3246,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
         sendDiagnosticDataToSocket()
         VentilatorApp.isNebuliserActive = true
-        mDiagnosticCheckViewModel =
-            ViewModelProvider(this)[DiagnosticCheckViewModel::class.java]
-        mO2RegulationCheckViewModel =
-            ViewModelProvider(this)[O2RegulationCheckViewModel::class.java]
+        mDiagnosticCheckViewModel = ViewModelProvider(this)[DiagnosticCheckViewModel::class.java]
+        mO2RegulationCheckViewModel = ViewModelProvider(this)[O2RegulationCheckViewModel::class.java]
 
         mMainActivityViewModel.setBAtteryConnectedFlag(false)
 
@@ -3305,10 +3303,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         normaliseButtons()
         disablePresence()
 
-        val deviceId =
-            Settings.Secure.getString(this@MainActivity.contentResolver, Settings.Secure.ANDROID_ID)
-        val input =
-            "https://wa.me/7330405060?text=Hi, i need support for this ventilator id - +${deviceId}"
+        val deviceId = Settings.Secure.getString(this@MainActivity.contentResolver, Settings.Secure.ANDROID_ID)
+        val input = "https://wa.me/7330405060?text=Hi, i need support for this ventilator id - +${deviceId}"
 
         val qrCodeBitmap = qrCode(input)
         qrCodeStandby.setImageBitmap(qrCodeBitmap)
@@ -3328,7 +3324,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 Log.i("check_location", e.toString())
             }
             .onEach { location ->
-                location.extras
 
                 latitude = location.latitude
                 logitude = location.longitude
@@ -3360,9 +3355,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         val updateHelper = UpdateHelper(this, this, this)
         updateHelper.checkForUpdates(this)
 
-        if (!prefManager?.readUHID()
-                .equals(FIRST_FILTER_NAME)
-        ) et_uhid.setText(prefManager?.readUHID())
+        if (!prefManager?.readUHID().equals(FIRST_FILTER_NAME)) et_uhid.setText(prefManager?.readUHID())
 
         et_uhid.setOnClickListener { it ->
             et_uhid.isCursorVisible = true
@@ -3400,11 +3393,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         normalizeProgressBars()
 
         val am = getSystemService(AUDIO_SERVICE) as AudioManager
-        am.setStreamVolume(
-            AudioManager.STREAM_ALARM,
-            am.getStreamMaxVolume(AudioManager.STREAM_ALARM),
-            0
-        )
+        am.setStreamVolume(AudioManager.STREAM_ALARM, am.getStreamMaxVolume(AudioManager.STREAM_ALARM), 0)
         mMainActivityViewModel.OPHours.value = calculateOperationalHourInTime()
         mMainActivityViewModel.serviceHours.value = calculateServiceHourInTime()
     }
@@ -3513,6 +3502,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 if (!ServerLogger.sendStatusRequest(request)) ServerLogger.sendStatusRequest(request)
             }
         }
+
     }
 
     override fun onUpdateCheckListener(urlApp: String) {

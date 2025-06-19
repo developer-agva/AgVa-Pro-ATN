@@ -182,6 +182,15 @@
 
 
     <!--    profile layout-->
+    
+    <androidx.constraintlayout.widget.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.80"
+        android:orientation="vertical"
+        android:id="@+id/guideline1"/>
+    
+    
     <include
         android:id="@+id/includeButtonAdultProfile"
         layout="@layout/content_button_center_layout"

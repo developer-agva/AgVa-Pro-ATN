@@ -588,16 +588,17 @@
         android:foreground="?attr/selectableItemBackgroundBorderless"
         android:text="@string/hint_adult"
         android:textSize="@dimen/_8sdp"
+        android:visibility="visible"
         android:theme="@style/subheading_text_style_unit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/mainVertical4"
-        app:layout_constraintTop_toBottomOf="@id/mainHorizontal3" />
+        app:layout_constraintBottom_toBottomOf="@id/buttonModes"
+        app:layout_constraintTop_toTopOf="@id/buttonModes" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonPediatric"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_2sdp"
         android:background="@color/light_grey"
         android:foreground="?attr/selectableItemBackgroundBorderless"
         android:text="@string/hint_ped"
@@ -605,14 +606,14 @@
         android:visibility="visible"
         android:theme="@style/subheading_text_style_unit"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/buttonAdult"
-        app:layout_constraintTop_toBottomOf="@id/buttonAdult" />
+        app:layout_constraintStart_toEndOf="@id/mainVertical4"
+        app:layout_constraintTop_toTopOf="@id/buttonControls"
+        app:layout_constraintBottom_toBottomOf="@id/buttonControls"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonNeonatal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_2sdp"
         android:background="@color/light_grey"
         android:visibility="visible"
         android:foreground="?attr/selectableItemBackgroundBorderless"
@@ -620,8 +621,9 @@
         android:textSize="@dimen/_8sdp"
         android:theme="@style/subheading_text_style_unit"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/buttonAdult"
-        app:layout_constraintTop_toBottomOf="@id/buttonPediatric" />
+        app:layout_constraintStart_toEndOf="@id/mainVertical4"
+        app:layout_constraintTop_toTopOf="@id/buttonPreopCheck"
+        app:layout_constraintBottom_toBottomOf="@id/buttonPreopCheck"/>
 
 
     <com.akexorcist.roundcornerprogressbar.indeterminate.IndeterminateRoundCornerProgressBar

@@ -73,6 +73,7 @@ import com.agvahealthcare.ventilator_ext.service.CommunicationService
 import com.agvahealthcare.ventilator_ext.service.UsbService
 import com.agvahealthcare.ventilator_ext.standby.StandbyControlDialogFragment
 import com.agvahealthcare.ventilator_ext.system.SystemDialogFragment
+import com.agvahealthcare.ventilator_ext.system.configuration.VentilatorType
 import com.agvahealthcare.ventilator_ext.system.debug.DebugViewModel
 import com.agvahealthcare.ventilator_ext.system.diagnosticCheck.DiagnosticCheckViewModel
 import com.agvahealthcare.ventilator_ext.system.o2Regulation.O2RegulationCheckViewModel
@@ -943,8 +944,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                                 }
 
                                 prefManager?.setComplianceTubeCalibration(data)
-                                systemDialogFragment?.takeIf { it.isVisible }
-                                    ?.updateSensorTubeComplianceCalibrationViaPreference()
+                                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorTubeComplianceCalibrationViaPreference()
 
                                 if(systemDialogFragment?.isVisible == true) {
                                     systemDialogFragment?.updateAck()
@@ -982,8 +982,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                                 }
 
                                 prefManager?.setResistanceTubeCalibration(data)
-                                systemDialogFragment?.takeIf { it.isVisible }
-                                    ?.updateSensorTubeResistanceCalibrationViaPreference()
+                                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorTubeResistanceCalibrationViaPreference()
 
                                 if(systemDialogFragment?.isVisible == true) {
                                     systemDialogFragment?.updateAck()
@@ -1336,7 +1335,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 systemDialogFragment?.getUpdateDeviceFragment()?.updateSensorCalibrationStatus()
             }
 
-
             ACK_CODE_5311 -> {
                 isOSReboot = false
                 prefManager?.downloadType = "Slow Internet"
@@ -1368,11 +1366,9 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
             ACK_CODE_746 -> {
                 isOSReboot = false
-
                 prefManager?.updateType = "Update Completed"
                 prefManager?.updateStatus = true
                 prefManager?.updateTime = AppUtils.getCurrentDateTime()
-
                 systemDialogFragment?.getUpdateDeviceFragment()?.updateSensorCalibrationStatus()
             }
 
@@ -2848,9 +2844,36 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
             12 -> buttonStartNewVentilation
             13 -> batteryLayout
-            14 -> buttonAdult
-            15 -> buttonPediatric
-            16 -> buttonNeonatal
+            14 ->  {
+                if (prefManager?.readVentilatorType() != VentilatorType.ONLY_NEO) {
+                    buttonAdult
+                } else {
+                    isMinus?.let {
+                        if (isMinus) highlightedIndex-- else highlightedIndex++
+                        getViewForFocus(isMinus)
+                    }
+                }
+            }
+            15 -> {
+                if (prefManager?.readVentilatorType() != VentilatorType.ONLY_NEO) {
+                    buttonPediatric
+                } else {
+                    isMinus?.let {
+                        if (isMinus) highlightedIndex-- else highlightedIndex++
+                        getViewForFocus(isMinus)
+                    }
+                }
+            }
+            16 -> {
+                if (prefManager?.readVentilatorType() != VentilatorType.ATP) {
+                    buttonNeonatal
+                } else {
+                    isMinus?.let {
+                        if (isMinus) highlightedIndex-- else highlightedIndex++
+                        getViewForFocus(isMinus)
+                    }
+                }
+            }
 
             else -> null
         }
@@ -3150,6 +3173,31 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         }
     }
 
+
+    private fun HandleUIChanges(){
+        prefManager?.apply {
+            if (readVentilatorType() == VentilatorType.ONLY_NEO) {
+                buttonNeonatal.visibility = View.VISIBLE
+                buttonAdult.visibility = View.GONE
+                buttonPediatric.visibility = View.GONE
+
+                setCurrentUid(PatientProfile.TYPE_NEONAT)
+            } else if (readVentilatorType() == VentilatorType.ATP) {
+                buttonNeonatal.visibility = View.GONE
+                buttonAdult.visibility = View.VISIBLE
+                buttonPediatric.visibility = View.VISIBLE
+
+                setCurrentUid(PatientProfile.TYPE_ADULT)
+            } else {
+                buttonNeonatal.visibility = View.VISIBLE
+                buttonAdult.visibility = View.VISIBLE
+                buttonPediatric.visibility = View.VISIBLE
+
+                setCurrentUid(PatientProfile.TYPE_ADULT)
+            }
+        }
+    }
+
     @SuppressLint("HardwareIds")
     override fun onCreate(savedInstanceState: Bundle?) {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -3162,6 +3210,9 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         mMainActivityViewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
 
         prefManager?.setRebootStatusForHandshake(false)
+
+        // check ventilator type here and do UI changes as per type
+        HandleUIChanges()
 
         VentilatorApp.currentActivityName = "Main"
         CoroutineScope(Dispatchers.Main).launch {

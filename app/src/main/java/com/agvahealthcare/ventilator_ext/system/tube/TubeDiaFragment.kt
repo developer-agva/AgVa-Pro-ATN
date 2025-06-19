@@ -19,8 +19,13 @@ import com.agvahealthcare.ventilator_ext.logs.event.EventViewModel
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.service.CommunicationService
 import com.agvahealthcare.ventilator_ext.system.SystemDialogFragment
+import com.agvahealthcare.ventilator_ext.system.configuration.VentilatorType
 import com.agvahealthcare.ventilator_ext.utility.DialogBoxFactory
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs
+import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PatientProfile
+import kotlinx.android.synthetic.main.activity_main.buttonAdult
+import kotlinx.android.synthetic.main.activity_main.buttonNeonatal
+import kotlinx.android.synthetic.main.activity_main.buttonPediatric
 import kotlinx.android.synthetic.main.content_button_layout.view.*
 import kotlinx.android.synthetic.main.fragment_tube_dia.*
 import kotlinx.coroutines.CoroutineScope
@@ -46,7 +51,6 @@ class TubeDiaFragment(private var communicationService: CommunicationService?) :
     private lateinit var mEventViewModel: EventViewModel
     private var currentTag: String = "";
     private var tubeDiameter: String? = null
-
 
     // logic knob highlight starts here
 
@@ -208,12 +212,36 @@ class TubeDiaFragment(private var communicationService: CommunicationService?) :
         }
     }
 
+    private fun HandleUIChanges(){
+        prefManager?.apply {
+            if (readVentilatorType() == VentilatorType.ONLY_NEO) {
+                includeButtonNeonatalProfile.visibility = View.VISIBLE
+                includeButtonAdultProfile.visibility = View.GONE
+                includeButtonPediatricProfile.visibility = View.GONE
+
+            } else if (readVentilatorType() == VentilatorType.ATP) {
+                includeButtonNeonatalProfile.visibility = View.GONE
+                includeButtonAdultProfile.visibility = View.VISIBLE
+                includeButtonPediatricProfile.visibility = View.VISIBLE
+
+            } else {
+                includeButtonNeonatalProfile.visibility = View.VISIBLE
+                includeButtonAdultProfile.visibility = View.VISIBLE
+                includeButtonPediatricProfile.visibility = View.VISIBLE
+
+            }
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         prefManager = PreferenceManager(requireContext())
         mEventViewModel = ViewModelProvider(this).get(EventViewModel::class.java)
+
+        // handle UI changes based on the type
+        HandleUIChanges()
+
         setUpOnClickListener()
         setUpView()
         updateTubeCalibrationStatusUI()

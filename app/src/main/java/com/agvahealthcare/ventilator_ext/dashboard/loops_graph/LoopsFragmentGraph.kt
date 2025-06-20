@@ -11,18 +11,18 @@ import com.agvahealthcare.ventilator_ext.VentilatorApp
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardViewModel
 import com.agvahealthcare.ventilator_ext.dashboard.GraphLayoutFragment
 import com.agvahealthcare.ventilator_ext.dashboard.chart.*
+import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.utility.GRAPH_FLOW_MAX
 import com.agvahealthcare.ventilator_ext.utility.GRAPH_FLOW_MIN
 
-class LoopsFragmentGraph: GraphLayoutFragment("LoopsGraphFragment") {
+class LoopsFragmentGraph : GraphLayoutFragment("LoopsGraphFragment") {
     private lateinit var flowChartFragment: FlowChartFragment
     private lateinit var flowVolumeChartFragment: FlowVolumeChartFragment
     private lateinit var flowPressureChartFragment: FlowPressureChartFragment
     private lateinit var pressureVolumeChartFragment: PressureVolumeChartFragment
-    private var mDashBoardViewModel : DashBoardViewModel? = null
+    private var mDashBoardViewModel: DashBoardViewModel? = null
 
-    companion object
-    {
+    companion object {
         const val TAG = "LoopsGraphFragment"
         private const val KEY_GRAPH_DATA = "KEY_GRAPH_DATA"
 
@@ -50,39 +50,41 @@ class LoopsFragmentGraph: GraphLayoutFragment("LoopsGraphFragment") {
         VentilatorApp.testingDashBoardViewModel = mDashBoardViewModel
 
         // RM scichart
-        mDashBoardViewModel?.isTouchGraph?.observe(viewLifecycleOwner){
+        mDashBoardViewModel?.isTouchGraph?.observe(viewLifecycleOwner) {
 
-            if (it){
-                Log.i("swadaw123124124","131234")
-                flowChartFragment.setRollOver()
-            }else{
-                Log.i("swadaw123124124","1565768")
-                flowChartFragment.removeRollover()
+            if (PreferenceManager(requireContext()).readRolloverModifierStatus()) {
+                if (it) {
+                    Log.i("swadaw123124124", "131234")
+                    flowChartFragment.setRollOver()
+                } else {
+                    Log.i("swadaw123124124", "1565768")
+                    flowChartFragment.removeRollover()
+                }
             }
         }
         initData()
     }
 
-    private fun initData()
-    {
+    private fun initData() {
         initLoopsGraph1()
         initLoopsGraph2()
         initLoopsGraph3()
         initLoopsGraph4()
     }
 
-    fun setDataGobally(xMaxRange:Double){
+    fun setDataGobally(xMaxRange: Double) {
         flowChartFragment.addTextOnMaxRange(xMaxRange)
     }
 
     private fun initLoopsGraph1() {
 
-        flowPressureChartFragment= FlowPressureChartFragment.newInstance(GraphType.FLOW_PRESSURE)
+        flowPressureChartFragment = FlowPressureChartFragment.newInstance(GraphType.FLOW_PRESSURE)
         childFragmentManager.beginTransaction()
             .replace(
                 R.id.containerDividePentGraph1,
                 flowPressureChartFragment,
-                flowPressureChartFragment::class.java.javaClass.simpleName)
+                flowPressureChartFragment::class.java.javaClass.simpleName
+            )
             .commit()
     }
 
@@ -90,44 +92,51 @@ class LoopsFragmentGraph: GraphLayoutFragment("LoopsGraphFragment") {
     private fun initLoopsGraph2() {
         flowVolumeChartFragment = FlowVolumeChartFragment.newInstance(GraphType.FLOW_VOLUME)
         childFragmentManager.beginTransaction()
-            .replace(R.id.containerDividePentGraph2, flowVolumeChartFragment, flowVolumeChartFragment::class.java.javaClass.simpleName)
+            .replace(
+                R.id.containerDividePentGraph2,
+                flowVolumeChartFragment,
+                flowVolumeChartFragment::class.java.javaClass.simpleName
+            )
             .commit()
     }
 
     private fun initLoopsGraph3() {
-        flowChartFragment = FlowChartFragment.newInstance(GraphType.FLOW, GRAPH_FLOW_MIN,
+        flowChartFragment = FlowChartFragment.newInstance(
+            GraphType.FLOW, GRAPH_FLOW_MIN,
             GRAPH_FLOW_MAX
         )
         childFragmentManager.beginTransaction()
             .replace(
                 R.id.containerDividePentGraph3,
                 flowChartFragment,
-                flowChartFragment::class.java.javaClass.simpleName)
+                flowChartFragment::class.java.javaClass.simpleName
+            )
             .commit()
     }
 
     private fun initLoopsGraph4() {
-        pressureVolumeChartFragment = PressureVolumeChartFragment.newInstance(GraphType.PRESSURE_VOLUME)
+        pressureVolumeChartFragment =
+            PressureVolumeChartFragment.newInstance(GraphType.PRESSURE_VOLUME)
         childFragmentManager.beginTransaction()
             .replace(
                 R.id.containerDividePentGraph4,
                 pressureVolumeChartFragment,
-                pressureVolumeChartFragment::class.java.javaClass.simpleName)
+                pressureVolumeChartFragment::class.java.javaClass.simpleName
+            )
             .commit()
     }
 
 
-
-    fun addGraphPressureData(x: Int, y: Float, trigger:String?) {
+    fun addGraphPressureData(x: Int, y: Float, trigger: String?) {
     }
 
 
-    fun addGraphVolumeData(x: Int, y: Float ) {
+    fun addGraphVolumeData(x: Int, y: Float) {
 
     }
 
     fun addGraphFlowData(x: Int, y: Float) {
-        flowChartFragment.addEntry(x,y)
+        flowChartFragment.addEntry(x, y)
     }
 
     fun addGraphPressureVolumeData(x: Float?, y: Float?, isRedrawRequired: Boolean) {
@@ -140,21 +149,22 @@ class LoopsFragmentGraph: GraphLayoutFragment("LoopsGraphFragment") {
     }
 
     fun addGraphFlowVolumeData(x: Float?, y: Float?, isRedrawRequired: Boolean) {
-        if(isRedrawRequired) flowVolumeChartFragment.clearSeries()
-        else{
-            if(x != null && y != null) flowVolumeChartFragment.addEntry(x, y)
+        if (isRedrawRequired) flowVolumeChartFragment.clearSeries()
+        else {
+            if (x != null && y != null) flowVolumeChartFragment.addEntry(x, y)
             Log.i("LOOPS_FRAGMENT_GRAPH", "Invalid Value Of x = $x , Y = $y")
         }
     }
 
     fun addGraphFlowPressureData(x: Float?, y: Float?, isRedrawRequired: Boolean) {
 
-        if(isRedrawRequired) flowPressureChartFragment.clearSeries()
-        else{
-            if(x != null && y != null) flowPressureChartFragment.addEntry(x,y)
+        if (isRedrawRequired) flowPressureChartFragment.clearSeries()
+        else {
+            if (x != null && y != null) flowPressureChartFragment.addEntry(x, y)
             Log.i("LOOPS_FRAGMENT_GRAPH", "Invalid Value Of x = $x , Y = $y")
         }
     }
+
     fun clearSeries() {
 
     }

@@ -1,4 +1,3 @@
-
 package com.agvahealthcare.ventilator_ext.dashboard.trio_graph
 
 import android.os.Bundle
@@ -12,6 +11,7 @@ import com.agvahealthcare.ventilator_ext.VentilatorApp
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardViewModel
 import com.agvahealthcare.ventilator_ext.dashboard.GraphLayoutFragment
 import com.agvahealthcare.ventilator_ext.dashboard.chart.*
+import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.utility.GRAPH_PRESSURE_MAX
 import com.agvahealthcare.ventilator_ext.utility.GRAPH_PRESSURE_MIN
 
@@ -23,7 +23,6 @@ class DivideTrioFragmentGraph : GraphLayoutFragment("DivideTrioGraphFragment") {
     //    private lateinit var flowVolumeChartFragment: FlowVolumeChartFragment
     private lateinit var pressureVolumeChartFragment: PressureVolumeChartFragment
     private var mDashBoardViewModel: DashBoardViewModel? = null
-
 
 
     companion object {
@@ -55,27 +54,29 @@ class DivideTrioFragmentGraph : GraphLayoutFragment("DivideTrioGraphFragment") {
         VentilatorApp.testingDashBoardViewModel = mDashBoardViewModel
 
         // RM scichart
-        mDashBoardViewModel?.isTouchGraph?.observe(viewLifecycleOwner){
+        mDashBoardViewModel?.isTouchGraph?.observe(viewLifecycleOwner) {
+            if (PreferenceManager(requireContext()).readRolloverModifierStatus()) {
 
-            if (it){
-                Log.i("swadaw123124124","131234")
-                pressureChartFragment.setRollOver()
-            }else{
-                Log.i("swadaw123124124","1565768")
-                pressureChartFragment.removeRollover()
+
+                if (it) {
+                    Log.i("swadaw123124124", "131234")
+                    pressureChartFragment.setRollOver()
+                } else {
+                    Log.i("swadaw123124124", "1565768")
+                    pressureChartFragment.removeRollover()
+                }
             }
         }
         initData()
     }
 
-    private fun initData()
-    {
+    private fun initData() {
         initDivideTrioGraph1()
         initDivideTrioGraph2()
         initDivideTrioGraph3()
     }
 
-    fun setDataGobally(xMaxRange:Double){
+    fun setDataGobally(xMaxRange: Double) {
         pressureChartFragment.addTextOnMaxRange(xMaxRange)
     }
 
@@ -89,7 +90,11 @@ class DivideTrioFragmentGraph : GraphLayoutFragment("DivideTrioGraphFragment") {
 //                pressureVolumeChartFragment::class.java.javaClass.simpleName)
 //            .commit()
 
-        pressureChartFragment = PressureChartFragment.newInstance(GraphType.PRESSURE, GRAPH_PRESSURE_MIN, GRAPH_PRESSURE_MAX)
+        pressureChartFragment = PressureChartFragment.newInstance(
+            GraphType.PRESSURE,
+            GRAPH_PRESSURE_MIN,
+            GRAPH_PRESSURE_MAX
+        )
         childFragmentManager.beginTransaction()
             .replace(
                 R.id.containerDivideTrioGraph1,
@@ -127,7 +132,8 @@ class DivideTrioFragmentGraph : GraphLayoutFragment("DivideTrioGraphFragment") {
 //            .commit()
     }
 
-    fun addGraphPressureData(x: Int, y: Float,trigger:String?) = pressureChartFragment.addEntry(x, y,trigger)
+    fun addGraphPressureData(x: Int, y: Float, trigger: String?) =
+        pressureChartFragment.addEntry(x, y, trigger)
 
 
     fun addGraphVolumeData(x: Int, y: Float) {}

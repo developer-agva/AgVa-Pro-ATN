@@ -11,16 +11,17 @@ import com.agvahealthcare.ventilator_ext.VentilatorApp
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardViewModel
 import com.agvahealthcare.ventilator_ext.dashboard.GraphLayoutFragment
 import com.agvahealthcare.ventilator_ext.dashboard.chart.*
+import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.utility.*
 
-class QuadFragmentGraph : GraphLayoutFragment("QuadGraphFragment")  {
+class QuadFragmentGraph : GraphLayoutFragment("QuadGraphFragment") {
 
 
     private lateinit var pressureChartFragment: PressureChartFragment
     private lateinit var volumeChartFragment: VolumeChartFragment
     private lateinit var flowChartFragment: FlowChartFragment
     private lateinit var loopChartFragment: FlowVolumeChartFragment
-    private var mDashBoardViewModel : DashBoardViewModel? = null
+    private var mDashBoardViewModel: DashBoardViewModel? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,18 +39,21 @@ class QuadFragmentGraph : GraphLayoutFragment("QuadGraphFragment")  {
         VentilatorApp.testingDashBoardViewModel = mDashBoardViewModel
 
         // RM scichart
-        mDashBoardViewModel?.isTouchGraph?.observe(viewLifecycleOwner){
+        mDashBoardViewModel?.isTouchGraph?.observe(viewLifecycleOwner) {
 
-            if (it){
-                Log.i("swadaw123124124","131234")
-                pressureChartFragment.setRollOver()
-                flowChartFragment.setRollOver()
-                volumeChartFragment.setRollOver()
-            }else{
-                Log.i("swadaw123124124","1565768")
-                pressureChartFragment.removeRollover()
-                flowChartFragment.removeRollover()
-                volumeChartFragment.removeRollover()
+            if (PreferenceManager(requireContext()).readRolloverModifierStatus()) {
+
+                if (it) {
+                    Log.i("swadaw123124124", "131234")
+                    pressureChartFragment.setRollOver()
+                    flowChartFragment.setRollOver()
+                    volumeChartFragment.setRollOver()
+                } else {
+                    Log.i("swadaw123124124", "1565768")
+                    pressureChartFragment.removeRollover()
+                    flowChartFragment.removeRollover()
+                    volumeChartFragment.removeRollover()
+                }
             }
         }
 
@@ -64,7 +68,7 @@ class QuadFragmentGraph : GraphLayoutFragment("QuadGraphFragment")  {
 
     }
 
-    fun setDataGobally(xMaxRange:Double){
+    fun setDataGobally(xMaxRange: Double) {
         volumeChartFragment.addTextOnMaxRange(xMaxRange)
         pressureChartFragment.addTextOnMaxRange(xMaxRange)
         flowChartFragment.addTextOnMaxRange(xMaxRange)
@@ -72,35 +76,58 @@ class QuadFragmentGraph : GraphLayoutFragment("QuadGraphFragment")  {
     }
 
     private fun initQuadGraph1() {
-        pressureChartFragment = PressureChartFragment.newInstance(GraphType.PRESSURE,GRAPH_PRESSURE_MIN, GRAPH_PRESSURE_MAX)
+        pressureChartFragment = PressureChartFragment.newInstance(
+            GraphType.PRESSURE,
+            GRAPH_PRESSURE_MIN,
+            GRAPH_PRESSURE_MAX
+        )
         childFragmentManager.beginTransaction()
-            .replace(R.id.containerQuadGraph1, pressureChartFragment, pressureChartFragment::class.java.javaClass.simpleName)
+            .replace(
+                R.id.containerQuadGraph1,
+                pressureChartFragment,
+                pressureChartFragment::class.java.javaClass.simpleName
+            )
             .commit()
     }
 
     private fun initQuadGraph2() {
-        volumeChartFragment = VolumeChartFragment.newInstance(GraphType.VOLUME,GRAPH_VOLUME_MIN, GRAPH_VOLUME_MAX)
+        volumeChartFragment =
+            VolumeChartFragment.newInstance(GraphType.VOLUME, GRAPH_VOLUME_MIN, GRAPH_VOLUME_MAX)
 
         childFragmentManager.beginTransaction()
-            .replace(R.id.containerQuadGraph2, volumeChartFragment, volumeChartFragment::class.java.javaClass.simpleName)
+            .replace(
+                R.id.containerQuadGraph2,
+                volumeChartFragment,
+                volumeChartFragment::class.java.javaClass.simpleName
+            )
             .commit()
     }
 
     private fun initQuadGraph3() {
-        flowChartFragment = FlowChartFragment.newInstance(GraphType.FLOW,GRAPH_FLOW_MIN, GRAPH_FLOW_MAX)
+        flowChartFragment =
+            FlowChartFragment.newInstance(GraphType.FLOW, GRAPH_FLOW_MIN, GRAPH_FLOW_MAX)
         childFragmentManager.beginTransaction()
-            .replace(R.id.containerQuadGraph3, flowChartFragment, flowChartFragment::class.java.javaClass.simpleName)
-            .commit()
-    }
-    private fun initQuadGraph4() {
-        loopChartFragment = FlowVolumeChartFragment.newInstance(GraphType.FLOW_VOLUME)
-        childFragmentManager.beginTransaction()
-            .replace(R.id.containerQuadGraph4, loopChartFragment, loopChartFragment::class.java.javaClass.simpleName)
+            .replace(
+                R.id.containerQuadGraph3,
+                flowChartFragment,
+                flowChartFragment::class.java.javaClass.simpleName
+            )
             .commit()
     }
 
-    fun addGraphPressureData(x: Int, y: Float,trigger:String?) {
-        pressureChartFragment.addEntry(x, y,trigger)
+    private fun initQuadGraph4() {
+        loopChartFragment = FlowVolumeChartFragment.newInstance(GraphType.FLOW_VOLUME)
+        childFragmentManager.beginTransaction()
+            .replace(
+                R.id.containerQuadGraph4,
+                loopChartFragment,
+                loopChartFragment::class.java.javaClass.simpleName
+            )
+            .commit()
+    }
+
+    fun addGraphPressureData(x: Int, y: Float, trigger: String?) {
+        pressureChartFragment.addEntry(x, y, trigger)
     }
 
     fun addGraphVolumeData(x: Int, y: Float) {
@@ -111,7 +138,7 @@ class QuadFragmentGraph : GraphLayoutFragment("QuadGraphFragment")  {
         flowChartFragment.addEntry(x, y)
     }
 
-    fun clearSeries(){
+    fun clearSeries() {
         loopChartFragment.clearSeries()
     }
 

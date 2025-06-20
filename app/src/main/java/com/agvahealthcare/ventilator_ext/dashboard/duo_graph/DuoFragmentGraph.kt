@@ -11,6 +11,7 @@ import com.agvahealthcare.ventilator_ext.VentilatorApp
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardViewModel
 import com.agvahealthcare.ventilator_ext.dashboard.GraphLayoutFragment
 import com.agvahealthcare.ventilator_ext.dashboard.chart.*
+import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.utility.*
 
 class DuoFragmentGraph : GraphLayoutFragment("DuoGraphFragment") {
@@ -40,12 +41,15 @@ class DuoFragmentGraph : GraphLayoutFragment("DuoGraphFragment") {
         // RM scichart
         mDashBoardViewModel?.isTouchGraph?.observe(viewLifecycleOwner) {
 
-            if (it) {
-                pressureChartFragment.setRollOver()
-                flowChartFragment.setRollOver()
-            } else {
-                pressureChartFragment.removeRollover()
-                flowChartFragment.removeRollover()
+            if (PreferenceManager(requireContext()).readRolloverModifierStatus()) {
+
+                if (it) {
+                    pressureChartFragment.setRollOver()
+                    flowChartFragment.setRollOver()
+                } else {
+                    pressureChartFragment.removeRollover()
+                    flowChartFragment.removeRollover()
+                }
             }
         }
         initData()

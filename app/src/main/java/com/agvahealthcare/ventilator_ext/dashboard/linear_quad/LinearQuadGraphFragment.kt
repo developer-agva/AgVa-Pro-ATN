@@ -11,6 +11,7 @@ import com.agvahealthcare.ventilator_ext.VentilatorApp
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardViewModel
 import com.agvahealthcare.ventilator_ext.dashboard.GraphLayoutFragment
 import com.agvahealthcare.ventilator_ext.dashboard.chart.*
+import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.utility.*
 import kotlinx.android.synthetic.main.fragment_chart.*
 
@@ -54,17 +55,18 @@ class LinearQuadGraphFragment : GraphLayoutFragment("LinearQuadGraphFragment") {
         VentilatorApp.testingDashBoardViewModel = mDashBoardViewModel
 
         // RM scichart
-        mDashBoardViewModel?.isTouchGraph?.observe(viewLifecycleOwner){
-            if (it){
-                pressureChartFragment.setRollOver()
-                flowChartFragment.setRollOver()
-//                volumeChartFragment.setRollOver()
-                etco2ChartFragment.setRollOver()
-            }else{
-                pressureChartFragment.removeRollover()
-                flowChartFragment.removeRollover()
-//                volumeChartFragment.removeRollover()
-                etco2ChartFragment.removeRollover()
+        mDashBoardViewModel?.isTouchGraph?.observe(viewLifecycleOwner) {
+
+            if (PreferenceManager(requireContext()).readRolloverModifierStatus()) {
+                if (it) {
+                    pressureChartFragment.setRollOver()
+                    flowChartFragment.setRollOver()
+                    etco2ChartFragment.setRollOver()
+                } else {
+                    pressureChartFragment.removeRollover()
+                    flowChartFragment.removeRollover()
+                    etco2ChartFragment.removeRollover()
+                }
             }
         }
 
@@ -73,10 +75,10 @@ class LinearQuadGraphFragment : GraphLayoutFragment("LinearQuadGraphFragment") {
 
     // RM scichart
     override fun onPause() {
-        VentilatorApp.xTestingFlow =  IntArray(FIFOCAPACITY_CUSTOM_SIZE){i->0}
-        VentilatorApp.xTestingVolume =  IntArray(FIFOCAPACITY_CUSTOM_SIZE){i->0}
-        VentilatorApp.xTestingPressure =  IntArray(FIFOCAPACITY_CUSTOM_SIZE){i->0}
-        VentilatorApp.xTestingEtCo2 = IntArray(FIFOCAPACITY_CUSTOM_SIZE){i->0}
+        VentilatorApp.xTestingFlow = IntArray(FIFOCAPACITY_CUSTOM_SIZE) { i -> 0 }
+        VentilatorApp.xTestingVolume = IntArray(FIFOCAPACITY_CUSTOM_SIZE) { i -> 0 }
+        VentilatorApp.xTestingPressure = IntArray(FIFOCAPACITY_CUSTOM_SIZE) { i -> 0 }
+        VentilatorApp.xTestingEtCo2 = IntArray(FIFOCAPACITY_CUSTOM_SIZE) { i -> 0 }
 
         super.onPause()
     }
@@ -154,8 +156,6 @@ class LinearQuadGraphFragment : GraphLayoutFragment("LinearQuadGraphFragment") {
     }
 
 
-
-
     fun addGraphPressureData(x: Int, y: Float, trigger: String?) {
         pressureChartFragment.addEntry(x, y, trigger)
     }
@@ -167,8 +167,9 @@ class LinearQuadGraphFragment : GraphLayoutFragment("LinearQuadGraphFragment") {
     fun addGraphFlowData(x: Int, y: Float) {
         flowChartFragment.addEntry(x, y)
     }
-    fun addEtCo2GraphData(x:Int,y:Float){
-        etco2ChartFragment.addEntry(x,y)
+
+    fun addEtCo2GraphData(x: Int, y: Float) {
+        etco2ChartFragment.addEntry(x, y)
     }
 
 

@@ -386,6 +386,7 @@ public class PreferenceManager {
     private static final String PREF_VENTI_NEED_LOCK = "PREF_VENTI_NEED_LOCK";
     private static final String PREF_DYN_LUNG_MODULE = "PREF_DYN_LUNG_MODULE";
     private static final String PREF_DEBUG_PARAMS_STATUS = "PREF_DEBUG_PARAMS_STATUS";
+    private static final String PREF_ROLLOVER_STATUS = "PREF_ROLLOVER_STATUS";
 
     private Context context;
     private SharedPreferences sp;
@@ -395,6 +396,13 @@ public class PreferenceManager {
         this.context = context;
         this.sp = context.getSharedPreferences(CONFIGURATION_SHARED_PREFERENCES, Context.MODE_PRIVATE);
         this.gson = new Gson();
+    }
+
+    public void saveRolloverModifierStatus(Boolean value) {
+        updateData(PREF_ROLLOVER_STATUS, value);
+    }
+    public Boolean readRolloverModifierStatus() {
+        return sp.getBoolean(PREF_ROLLOVER_STATUS, false);
     }
 
     public void saveDebugParamsStatus(Boolean value) {

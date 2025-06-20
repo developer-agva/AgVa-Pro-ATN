@@ -91,9 +91,6 @@ public class RaspiParser extends ParserUtils
 
     public static final String DATA_HARDWARE_VERSION = "DATA_HARDWARE_VERSION";
 
-
-
-
     private Map<String, Map<String, String>> dataMap;{
 
         dataMap = new LinkedHashMap<>();

@@ -61,7 +61,7 @@
             android:exported="false" />
 
         <activity
-            android:name="com.agvahealthcare.ventilator_ext.SetupActivity"
+            android:name="com.agvahealthcare.ventilator_ext.MainActivity"
             android:exported="true"
             android:launchMode="singleTop">
             <intent-filter>
@@ -76,7 +76,7 @@
         <activity android:name="com.agvahealthcare.ventilator_ext.dashboard.DashBoardActivity"/>
 
         <activity
-            android:name="com.agvahealthcare.ventilator_ext.MainActivity"
+            android:name="com.agvahealthcare.ventilator_ext.SetupActivity"
             android:windowSoftInputMode="adjustPan" />
 
         <service

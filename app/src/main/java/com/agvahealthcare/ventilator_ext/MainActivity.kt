@@ -3211,8 +3211,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
         prefManager?.setRebootStatusForHandshake(false)
 
-        // check ventilator type here and do UI changes as per type
-        HandleUIChanges()
 
         VentilatorApp.currentActivityName = "Main"
         CoroutineScope(Dispatchers.Main).launch {
@@ -3292,8 +3290,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         lastUhidEvents = prefManager?.readUHID().toString()
         lastUhid = prefManager?.readUHID().toString()
 
-        hideSystemUI()
         setContentView(R.layout.activity_main)
+        hideSystemUI()
         neoSensorObserve()
         initView()
         setNeoButtonHighlight()
@@ -3502,7 +3500,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 if (!ServerLogger.sendStatusRequest(request)) ServerLogger.sendStatusRequest(request)
             }
         }
-
     }
 
     override fun onUpdateCheckListener(urlApp: String) {

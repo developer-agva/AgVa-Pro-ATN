@@ -11,6 +11,7 @@ import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.currentXValue
 import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.currentYValue
 import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.testingDashBoardViewModel
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardViewModel
+import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.scichart.charting.model.RenderableSeriesCollection
 import com.scichart.charting.modifiers.RolloverModifier
 import com.scichart.charting.visuals.axes.IAxis
@@ -34,7 +35,7 @@ enum class GraphType {
     FLOW_VOLUME
 }
 
-enum class parentType{
+enum class parentType {
     DivideTrioFragmentGraph,
     QuadFragmentGraph,
     TrioFragmentGraph,
@@ -44,42 +45,54 @@ enum class parentType{
     LinearQuadFragmentGraph,
     DefaultFragment
 }
+
 open class GraphFragment() : Fragment() {
     val sciChartBuilder: SciChartBuilder = SciChartBuilder.instance()
     var modifier = CustomRolloverModifier()
 
-    inner class CustomSeriesInfoProvider(private var type: GraphType = GraphType.FLOW_PRESSURE) : DefaultXySeriesInfoProvider() {
-        override fun getSeriesTooltipInternal(context: Context, seriesInfo: XySeriesInfo<*>?, modifierType: Class<*>): ISeriesTooltip {
-            return CustomXySeriesTooltip(context, seriesInfo,type)
+    inner class CustomSeriesInfoProvider(private var type: GraphType = GraphType.FLOW_PRESSURE) :
+        DefaultXySeriesInfoProvider() {
+        override fun getSeriesTooltipInternal(
+            context: Context,
+            seriesInfo: XySeriesInfo<*>?,
+            modifierType: Class<*>
+        ): ISeriesTooltip {
+            return CustomXySeriesTooltip(context, seriesInfo, type)
         }
 
-        inner class CustomXySeriesTooltip(context: Context?, seriesInfo: XySeriesInfo<*>?,type: GraphType) : XySeriesTooltip(context, seriesInfo) {
+        inner class CustomXySeriesTooltip(
+            context: Context?,
+            seriesInfo: XySeriesInfo<*>?,
+            type: GraphType
+        ) : XySeriesTooltip(context, seriesInfo) {
             init {
                 setPadding(10, 10, 10, 10)
             }
 
             override fun internalUpdate(seriesInfo: XySeriesInfo<*>) {
 
-
-                when(type){
+                when (type) {
                     GraphType.PRESSURE -> {
                         text = "Pressure: ${seriesInfo.formattedYValue}"
                     }
+
                     GraphType.VOLUME -> {
                         text = "Volume: ${seriesInfo.formattedYValue}"
                     }
+
                     GraphType.FLOW -> {
                         text = "Flow: ${seriesInfo.formattedYValue}"
                     }
+
                     else -> {
                         text = "Testing: ${seriesInfo.formattedYValue}"
                     }
                 }
 
-
                 setTooltipBackgroundColor(ColorUtil.White)
                 setTooltipStroke(ColorUtil.White)
                 setTooltipTextColor(ColorUtil.Black)
+
             }
         }
     }

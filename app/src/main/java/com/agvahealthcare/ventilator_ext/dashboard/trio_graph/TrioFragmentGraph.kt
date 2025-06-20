@@ -11,6 +11,7 @@ import com.agvahealthcare.ventilator_ext.VentilatorApp
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardViewModel
 import com.agvahealthcare.ventilator_ext.dashboard.GraphLayoutFragment
 import com.agvahealthcare.ventilator_ext.dashboard.chart.*
+import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.utility.*
 import kotlinx.android.synthetic.main.fragment_chart.*
 
@@ -55,16 +56,19 @@ class TrioFragmentGraph : GraphLayoutFragment("TrioGraphFragment") {
         // RM scichart
         mDashBoardViewModel?.isTouchGraph?.observe(viewLifecycleOwner){
 
-            if (it){
-                Log.i("swadaw123124124","131234")
-                pressureChartFragment.setRollOver()
-                flowChartFragment.setRollOver()
+            if (PreferenceManager(requireContext()).readRolloverModifierStatus()) {
+
+                if (it) {
+                    Log.i("swadaw123124124", "131234")
+                    pressureChartFragment.setRollOver()
+                    flowChartFragment.setRollOver()
 //                volumeChartFragment.setRollOver()
-            }else{
-                Log.i("swadaw123124124","1565768")
-                pressureChartFragment.removeRollover()
-                flowChartFragment.removeRollover()
+                } else {
+                    Log.i("swadaw123124124", "1565768")
+                    pressureChartFragment.removeRollover()
+                    flowChartFragment.removeRollover()
 //                volumeChartFragment.removeRollover()
+                }
             }
         }
 

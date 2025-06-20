@@ -16,6 +16,7 @@ import com.agvahealthcare.ventilator_ext.utility.utils.IntentFactory
 import kotlinx.android.synthetic.main.fragment_config.btnATN
 import kotlinx.android.synthetic.main.fragment_config.btnATP
 import kotlinx.android.synthetic.main.fragment_config.btnEnableDynamicLungsModule
+import kotlinx.android.synthetic.main.fragment_config.btnEnableRollOverModifier
 import kotlinx.android.synthetic.main.fragment_config.btnEnableTestingParams
 import kotlinx.android.synthetic.main.fragment_config.btnExhaleValve
 import kotlinx.android.synthetic.main.fragment_config.btnExpFlow
@@ -108,6 +109,11 @@ class ConfigFragment : Fragment() {
             preferenceManager?.saveDebugParamsStatus(!preferenceManager?.readDebugParamsStatus()!!)
             initOthersFromPreferences()
         }
+
+        btnEnableRollOverModifier.setOnClickListener {
+            preferenceManager?.saveRolloverModifierStatus(!preferenceManager?.readRolloverModifierStatus()!!)
+            initOthersFromPreferences()
+        }
     }
 
     private fun broadcastAcknowledgement(ack: String) {
@@ -134,7 +140,7 @@ class ConfigFragment : Fragment() {
     private fun initOthersFromPreferences() {
         preferenceManager?.apply {
 
-            if (readLeakTestCalibrationStatus()) {
+            if (readPeepAlarmStatus()) {
                 btnPeepAlarm.setBackgroundColor(resources.getColor(R.color.racing_green))
                 btnPeepAlarm.text = "Disable PEEP Alarm"
             } else {
@@ -156,6 +162,14 @@ class ConfigFragment : Fragment() {
             } else {
                 btnEnableTestingParams.setBackgroundColor(resources.getColor(R.color.light_grey))
                 btnEnableTestingParams.text = "Enable Debug Params"
+            }
+
+            if (readRolloverModifierStatus()){
+                btnEnableRollOverModifier.setBackgroundColor(resources.getColor(R.color.racing_green))
+                btnEnableRollOverModifier.text = "Disable Rollover Modifier"
+            } else {
+                btnEnableRollOverModifier.setBackgroundColor(resources.getColor(R.color.light_grey))
+                btnEnableRollOverModifier.text = "Enable Rollover Modifier"
             }
 
         }

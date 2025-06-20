@@ -292,6 +292,11 @@ public interface Configs {
     String LBL_SPO2 = LBL_SPO + "\u2082";
     String LBL_HR = "PR";
     String LBL_ETCO2 = "EtCo2";
+    String LBL_RAW_INSP_FLOW = "Raw Insp.";
+    String LBL_RAW_EXP_FLOW = "Raw Exp.";
+    String LBL_RAW_INSP_ZERO = "Raw Insp. Zero";
+    String LBL_RAW_EXP_ZERO = "Raw Exp. Zero";
+    String LBL_RAW_INEXP_DIFF = "Raw IE Diff";
     String LBL_CuffPressure = "Cuff Pressure";
 
     String LBL_VT = "VT";

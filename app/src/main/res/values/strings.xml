@@ -1596,7 +1596,7 @@
 
     <!--Disclaimer for Battery remaining time usage and conditions-->
     <string name="battery_usage_disclaimer">* Battery remaining time is an approximation. It may vary upon usage &amp; conditions</string>
-
+    <string name="hint_litre_perminute">lpm</string>
     // ota
     <string name="downloading">Downloading...</string>
     <string name="title_file_download">APK is downloading</string>

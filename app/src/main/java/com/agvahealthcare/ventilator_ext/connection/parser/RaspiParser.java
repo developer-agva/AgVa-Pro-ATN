@@ -10,8 +10,7 @@ import java.util.Map;
  * Created by MOHIT MALHOTRA on 13-09-2018.
  */
 
-public class RaspiParser extends ParserUtils
-{
+public class RaspiParser extends ParserUtils {
 
 
     public static final String TYPE_INHALATION = "A";
@@ -91,20 +90,30 @@ public class RaspiParser extends ParserUtils
 
     public static final String DATA_HARDWARE_VERSION = "DATA_HARDWARE_VERSION";
 
-    private Map<String, Map<String, String>> dataMap;{
+    public static final String TYPE_RAW_VALUE = "E";
+    public static final String RAW_INSPIRATORY_FLOW = "RawInspiratoryFlow";
+    public static final String RAW_EXPIRATORY_FLOW = "RawExpiratoryFlow";
+    public static final String RAW_INSPIRATORY_ZERO = "RawInspiratoryZero";
+    public static final String RAW_EXPIRATORY_ZERO = "RawExpiratoryZero";
+
+    private Map<String, Map<String, String>> dataMap;
+
+    {
 
         dataMap = new LinkedHashMap<>();
         dataMap.put(TYPE_INHALATION, getConfigMap(DATA_PRESSURE, DATA_FLOW, DATA_VOLUME, DATA_TRIGGER));
-        dataMap.put(TYPE_END_OF_INHALATION, getConfigMap(DATA_PIP, DATA_VTI, DATA_VPEAK_I, DATA_PMEAN, DATA_MVI, DATA_TRIGFLOW, DATA_INSPIRE_TIME, DATA_PLATEAU_PRESSURE, DATA_RISE_TIME ,DATA_HFNC_FLOW, DATA_HFNC_FIO2));
+        dataMap.put(TYPE_END_OF_INHALATION, getConfigMap(DATA_PIP, DATA_VTI, DATA_VPEAK_I, DATA_PMEAN, DATA_MVI, DATA_TRIGFLOW, DATA_INSPIRE_TIME, DATA_PLATEAU_PRESSURE, DATA_RISE_TIME, DATA_HFNC_FLOW, DATA_HFNC_FIO2));
         dataMap.put(TYPE_EXHALATION, getConfigMap(DATA_PRESSURE, DATA_FLOW, DATA_VOLUME, DATA_TITOT));
-        dataMap.put(TYPE_END_OF_EXHALATION, getConfigMap(DATA_PEEP, DATA_RR, DATA_FIO2, DATA_VPEAK_E, DATA_MVE, DATA_LEAK, DATA_MEAN_AIRWAY_PRESSURE, DATA_VTE,DATA_EXPIRE_TIME, DATA_VTI,DATA_RSBI,DATA_SPONT_VT));
-        dataMap.put(TYPE_DIA_FIRST, getConfigMap(DATA_INSP_PRESSURE_RAW,DATA_EXP_PRESSURE_RAW,DATA_OXP_PRESSURE_RAW,DATA_INSP_PRESSURE,DATA_EXP_PRESSURE,DATA_OXP_PRESSURE,DATA_INSP_FLOW_VOLTAGE,DATA_INSP_FLOW,DATA_EXP_DP_RAW,DATA_EXP_FLOW));
-        dataMap.put(TYPE_DIA_MID, getConfigMap(DATA_BTRY_CURRENT,DATA_BTRY_VOLTAGE,DATA_BTRY_SOC,DATA_BTRY_REMAINING_TIME,DATA_BTRY_STATE,DATA_POWER_CONNECTION,DATA_MAIN_SWITCH,DATA_SPO2_STATUS,DATA_HR,DATA_Spo2));
-        dataMap.put(TYPE_DIA_LAST, getConfigMap(DATA_OXYGEN_SENSOR_VOLTAGE,DATA_PI_TEMP,DATA_PI_CPU_LOAD,DATA_HARDWARE_VERSION,"0","0","0","0","0","0"));
+        dataMap.put(TYPE_END_OF_EXHALATION, getConfigMap(DATA_PEEP, DATA_RR, DATA_FIO2, DATA_VPEAK_E, DATA_MVE, DATA_LEAK, DATA_MEAN_AIRWAY_PRESSURE, DATA_VTE, DATA_EXPIRE_TIME, DATA_VTI, DATA_RSBI, DATA_SPONT_VT));
+        dataMap.put(TYPE_DIA_FIRST, getConfigMap(DATA_INSP_PRESSURE_RAW, DATA_EXP_PRESSURE_RAW, DATA_OXP_PRESSURE_RAW, DATA_INSP_PRESSURE, DATA_EXP_PRESSURE, DATA_OXP_PRESSURE, DATA_INSP_FLOW_VOLTAGE, DATA_INSP_FLOW, DATA_EXP_DP_RAW, DATA_EXP_FLOW));
+        dataMap.put(TYPE_DIA_MID, getConfigMap(DATA_BTRY_CURRENT, DATA_BTRY_VOLTAGE, DATA_BTRY_SOC, DATA_BTRY_REMAINING_TIME, DATA_BTRY_STATE, DATA_POWER_CONNECTION, DATA_MAIN_SWITCH, DATA_SPO2_STATUS, DATA_HR, DATA_Spo2));
+        dataMap.put(TYPE_DIA_LAST, getConfigMap(DATA_OXYGEN_SENSOR_VOLTAGE, DATA_PI_TEMP, DATA_PI_CPU_LOAD, DATA_HARDWARE_VERSION, "0", "0", "0", "0", "0", "0"));
+        dataMap.put(TYPE_RAW_VALUE, getConfigMap(RAW_INSPIRATORY_FLOW, RAW_INSPIRATORY_ZERO, RAW_EXPIRATORY_FLOW, RAW_EXPIRATORY_ZERO));
+
     }
 
-    public RaspiParser addExtension(Class<? extends ParserExtension> extClass){
-        if(dataMap != null){
+    public RaspiParser addExtension(Class<? extends ParserExtension> extClass) {
+        if (dataMap != null) {
             try {
                 ParserExtension ext = extClass.newInstance();
                 dataMap.putAll(ext.getDataMap());
@@ -116,41 +125,41 @@ public class RaspiParser extends ParserUtils
         return this;
     }
 
-    public final String getDataType(String msg){
-        String type=msg.substring(0,msg.indexOf("@"));
+    public final String getDataType(String msg) {
+        String type = msg.substring(0, msg.indexOf("@"));
         return type;
     }
 
-    public final Map<String,String> parserForWholeData(String msg){
-        String type = msg.substring(0,msg.indexOf("@"));
-        String returnValue="empty";
-        Map<String, String> selectedMap=null;
-        if (type.equalsIgnoreCase("B") || type.equalsIgnoreCase("D")){
+    public final Map<String, String> parserForWholeData(String msg) {
+        String type = msg.substring(0, msg.indexOf("@"));
+        String returnValue = "empty";
+        Map<String, String> selectedMap = null;
+        if (type.equalsIgnoreCase("B") || type.equalsIgnoreCase("D")) {
             //returnValue=msg;
             selectedMap = dataMap.get(type);
-            Log.d("Thevalueofgetintermediatemap",selectedMap.toString());
-            String rawData= msg.substring(msg.indexOf("@")+1,msg.indexOf("#"));
-            returnValue=rawData;
-        } else  {
-            returnValue="empty";
-            selectedMap=null;
+            Log.d("Thevalueofgetintermediatemap", selectedMap.toString());
+            String rawData = msg.substring(msg.indexOf("@") + 1, msg.indexOf("#"));
+            returnValue = rawData;
+        } else {
+            returnValue = "empty";
+            selectedMap = null;
         }
         return selectedMap;
     }
 
-    public final Map<String, Map<String, String>> diaParser(String msg){
+    public final Map<String, Map<String, String>> diaParser(String msg) {
 
-        if(!msg.contains("~")){
+        if (!msg.contains("~")) {
             Log.i("PARSER EXCEPTION", "Type not defined");
             return null;
         }
 
-        if(!msg.contains(",")){
+        if (!msg.contains(",")) {
             Log.i("PARSER EXCEPTION", "No data present");
             return null;
         }
 
-        if(!msg.contains("{")){
+        if (!msg.contains("{")) {
             Log.i("PARSER EXCEPTION", "Delimiter not found");
             return null;
         }
@@ -163,11 +172,11 @@ public class RaspiParser extends ParserUtils
         Map<String, String> selectedMap = dataMap.get(type);
 
         // NPE safety check return
-        if(selectedMap == null) return null;
+        if (selectedMap == null) return null;
 
         Iterator<String> iterator = selectedMap.keySet().iterator();
-        for(String datum : data){
-            if(iterator.hasNext()){
+        for (String datum : data) {
+            if (iterator.hasNext()) {
                 selectedMap.put(iterator.next(), datum);
             }
         }
@@ -179,19 +188,19 @@ public class RaspiParser extends ParserUtils
     }
 
 
-    public final Map<String, Map<String, String>> parser(String msg){
+    public final Map<String, Map<String, String>> parser(String msg) {
 
-        if(!msg.contains("@")){
+        if (!msg.contains("@")) {
             Log.i("PARSER EXCEPTION", "Type not defined");
             return null;
         }
 
-        if(!msg.contains(",")){
+        if (!msg.contains(",")) {
             Log.i("PARSER EXCEPTION", "No data present");
             return null;
         }
 
-        if(!msg.contains("#")){
+        if (!msg.contains("#")) {
             Log.i("PARSER EXCEPTION", "Delimiter not found");
             return null;
         }
@@ -204,11 +213,11 @@ public class RaspiParser extends ParserUtils
         Map<String, String> selectedMap = dataMap.get(type);
 
         // NPE safety check return
-        if(selectedMap == null) return null;
+        if (selectedMap == null) return null;
 
         Iterator<String> iterator = selectedMap.keySet().iterator();
-        for(String datum : data){
-            if(iterator.hasNext()){
+        for (String datum : data) {
+            if (iterator.hasNext()) {
                 selectedMap.put(iterator.next(), datum);
             }
         }
@@ -218,8 +227,6 @@ public class RaspiParser extends ParserUtils
         return retMap;
 
     }
-
-
 
 
 }

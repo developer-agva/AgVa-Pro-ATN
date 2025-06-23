@@ -72,18 +72,23 @@ class ConfigFragment : Fragment() {
         btnTurbine.setOnClickListener {
             broadcastAcknowledgement("ACK5019")
         }
+
         btnExpFlow.setOnClickListener {
             broadcastAcknowledgement("ACK5029")
         }
+
         btnExhaleValve.setOnClickListener {
             broadcastAcknowledgement("ACK5079")
         }
+
         btnLeakTest.setOnClickListener {
             broadcastAcknowledgement("ACK4022")
         }
+
         btnInspFlow.setOnClickListener {
             broadcastAcknowledgement("ACK5122")
         }
+
         btnOxygen.setOnClickListener {
             broadcastAcknowledgement("ACK5089")
         }
@@ -91,6 +96,7 @@ class ConfigFragment : Fragment() {
         btnTubeComp.setOnClickListener {
             broadcastTubeComplianceResponse("0.22")
         }
+
         btnTubeResistance.setOnClickListener {
             broadcastTubeResistanceResponse("0.22")
         }
@@ -117,7 +123,6 @@ class ConfigFragment : Fragment() {
     }
 
     private fun broadcastAcknowledgement(ack: String) {
-        Log.w("ACK CHECK", ack)
         val i = Intent(IntentFactory.ACTION_ACK_AVAILABLE)
         i.putExtra(VENTILATOR_ACK, ack)
         requireActivity().sendBroadcast(i)

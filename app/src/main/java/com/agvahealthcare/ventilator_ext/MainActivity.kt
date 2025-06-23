@@ -3291,6 +3291,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         lastUhid = prefManager?.readUHID().toString()
 
         setContentView(R.layout.activity_main)
+        HandleUIChanges()
         hideSystemUI()
         neoSensorObserve()
         initView()
@@ -3314,7 +3315,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 applicationContext
             )
         )
-        Log.i("check_location", locationClient.toString())
 
         locationClient.getLocationUpdates(5000L)
             .catch { e->

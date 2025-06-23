@@ -189,9 +189,20 @@ class TubeDiaFragment(private var communicationService: CommunicationService?) :
             topBarTube.visibility = View.VISIBLE
             backBtnTube.visibility = View.VISIBLE
             tvMainTitleTube.visibility = View.VISIBLE
-            includeButtonAdultProfile.visibility = View.VISIBLE
-            includeButtonPediatricProfile.visibility = View.VISIBLE
-            includeButtonNeonatalProfile.visibility = View.VISIBLE
+
+            if (prefManager?.readVentilatorType() == VentilatorType.ONLY_NEO) {
+                includeButtonAdultProfile.visibility = View.GONE
+                includeButtonPediatricProfile.visibility = View.GONE
+                includeButtonNeonatalProfile.visibility = View.VISIBLE
+            } else if (prefManager?.readVentilatorType() == VentilatorType.ATP) {
+                includeButtonAdultProfile.visibility = View.VISIBLE
+                includeButtonPediatricProfile.visibility = View.VISIBLE
+                includeButtonNeonatalProfile.visibility = View.GONE
+            } else {
+                includeButtonAdultProfile.visibility = View.VISIBLE
+                includeButtonPediatricProfile.visibility = View.VISIBLE
+                includeButtonNeonatalProfile.visibility = View.VISIBLE
+            }
             tvtubelength.visibility = View.VISIBLE
             tvtextHeadingTube.visibility = View.VISIBLE
             tvtext1Tube.visibility = View.VISIBLE
@@ -212,7 +223,7 @@ class TubeDiaFragment(private var communicationService: CommunicationService?) :
         }
     }
 
-    private fun HandleUIChanges(){
+    private fun handleUIChanges(){
         prefManager?.apply {
             if (readVentilatorType() == VentilatorType.ONLY_NEO) {
                 includeButtonNeonatalProfile.visibility = View.VISIBLE
@@ -240,7 +251,7 @@ class TubeDiaFragment(private var communicationService: CommunicationService?) :
         mEventViewModel = ViewModelProvider(this).get(EventViewModel::class.java)
 
         // handle UI changes based on the type
-        HandleUIChanges()
+        handleUIChanges()
 
         setUpOnClickListener()
         setUpView()
@@ -442,7 +453,6 @@ class TubeDiaFragment(private var communicationService: CommunicationService?) :
                 tvtext1Tube.text = "1. Make sure the ventilator is connected to mains supply"
                 tvtext2Tube.text = "2. Ensure the patient is not connected to the ventilator"
                 tvtext3Tube.text = "3. Block the patient end of the breathing circuit using your thumb"
-
             }
 
             includeButtonResistance.buttonView -> {

@@ -43,10 +43,11 @@ class VentilatorApp : Application() {
         val android.content.Context.ventiPref: DataStore<Preferences> by preferencesDataStore(
             name = "Ventilator_Pro"
         )
-
+        var choosedHours = "1 hour"
         var defaultOfTurbineRanges = "0"
         var defaultOfExhaleValveRanges = "0"
         var defaultOfOxygenValveRanges = "0"
+        var isPatientDisconnected = false
 
         var currentActivityName = "Splash"
         var currentDownloadProgress = 0

@@ -307,8 +307,8 @@ public abstract class AppUtils {
         return AppUtils.dateFormatter.format(new Date());
     }
 
-    public static String getTimeForTrendsTime(String date) {
-        return AppUtils.timeHourMinuteFormatter.format(date);
+    public static String getTimeForTrendsTime() {
+        return AppUtils.timeHourMinuteFormatter.format(new Date());
     }
 
     public static String[] splitDateTime(String dateTime) {

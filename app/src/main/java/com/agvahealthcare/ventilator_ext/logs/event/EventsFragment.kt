@@ -21,6 +21,7 @@ import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.uhidDataListEve
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardViewModel
 import com.agvahealthcare.ventilator_ext.database.entities.EventDataModel
 import com.agvahealthcare.ventilator_ext.logging.FileLogger
+import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.utility.utils.AppUtils
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.fragment_events.*
@@ -126,7 +127,8 @@ class EventsFragment : Fragment(), View.OnClickListener {
                         if (getSelection() == firstVisibleItemIndex) {
                             startIndex -= 9
                             endIndex -= 9
-                            val data = FileLogger.readEventFile("event",startIndex,endIndex)
+                            val data = FileLogger.readEventFile("event",
+                                PreferenceManager(requireContext()).readUHID(),startIndex,endIndex)
                             if (data != "Data Not Found"){
                                 val listData = data.split("|") as ArrayList<String>
                                 mAdapter?.updateDataList(listData,true)
@@ -154,7 +156,7 @@ class EventsFragment : Fragment(), View.OnClickListener {
                             if (getSelection() == lastVisibleItemIndex) {
                                 startIndex += 9
                                 endIndex += 9
-                                val data = FileLogger.readEventFile("event",startIndex,endIndex)
+                                val data = FileLogger.readEventFile("event",PreferenceManager(requireContext()).readUHID(),startIndex,endIndex)
                                 if (data != "Data Not Found"){
                                     val listData = data.split("|") as ArrayList<String>
                                     mAdapter?.updateDataList(listData,false)
@@ -174,7 +176,7 @@ class EventsFragment : Fragment(), View.OnClickListener {
 
     private fun setupDataDefault(uhid: String) {
 
-        val data = FileLogger.readEventFile("event",startIndex,endIndex)
+        val data = FileLogger.readEventFile("event",PreferenceManager(requireContext()).readUHID(),startIndex,endIndex)
         if (data != "Data Not Found"){
             dataList = data.split("|") as ArrayList<String>
             setDataForEvents()

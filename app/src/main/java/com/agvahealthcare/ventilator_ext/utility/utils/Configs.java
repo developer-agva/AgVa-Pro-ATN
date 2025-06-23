@@ -81,6 +81,31 @@ public interface Configs {
         EXPIRATORY_HOLD
     }
 
+    String trendFiveMin = "trend_five_min";
+    String trendTwoMin = "trend_two_min";
+    String trendTenMin = "trend_ten_min";
+
+    String trendOneHour = "trend_one_hour";
+    String trendEightHour = "trend_eight_hours";
+    String trendTwelveHour = "trend_twelve_hours";
+    String trendTwentyFourHour = "trend_twenty_four_hours";
+
+    public static String getTrendsFileName(PreferenceManager preferenceManager) {
+
+        switch (preferenceManager.readTrendDuration()) {
+
+            case "5 Min":
+                return trendFiveMin;
+            case "2 Min":
+                return trendTwoMin;
+            case "10 Min":
+                return trendTenMin;
+        }
+
+        return trendTenMin;
+    }
+
+
     int BLUETOOTH = 0;
     int WIRED = 1;
     int CONNECTION_MODE = WIRED;

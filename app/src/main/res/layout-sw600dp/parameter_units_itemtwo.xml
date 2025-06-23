@@ -1,7 +1,375 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="@dimen/_40sdp"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
+
+    <!--    <LinearLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:orientation="horizontal"-->
+    <!--        android:visibility="visible">-->
+
+    <!--        <TextView-->
+    <!--            android:id="@+id/tv_time"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:background="#4E4E4E"-->
+    <!--            android:paddingHorizontal="@dimen/_1sdp"-->
+    <!--            android:paddingVertical="@dimen/_2sdp"-->
+    <!--            android:text="10:20"-->
+    <!--            android:textAlignment="center"-->
+    <!--            android:textColor="#FFFFFF"-->
+    <!--            android:textSize="@dimen/_6sdp" />-->
+    <!--    </LinearLayout>-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_pip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:paddingHorizontal="@dimen/_1sdp"
+            android:paddingVertical="@dimen/_2sdp"
+            android:text="MODE"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="@dimen/_6sdp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#BCF3F2F2"
+            android:paddingHorizontal="@dimen/_1sdp"
+            android:paddingVertical="@dimen/_2sdp"
+            android:text="Support Pressure"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="@dimen/_6sdp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_peep"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:paddingHorizontal="@dimen/_1sdp"
+            android:paddingVertical="@dimen/_2sdp"
+            android:text="PEEP"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="@dimen/_6sdp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_ma"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#BCF3F2F2"
+            android:paddingHorizontal="@dimen/_1sdp"
+            android:paddingVertical="@dimen/_2sdp"
+            android:text="Mean Airway"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="@dimen/_6sdp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_vti"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:paddingHorizontal="@dimen/_1sdp"
+            android:paddingVertical="@dimen/_2sdp"
+            android:text="Vti"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="@dimen/_6sdp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_vte"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#BCF3F2F2"
+            android:paddingHorizontal="@dimen/_1sdp"
+            android:paddingVertical="@dimen/_2sdp"
+            android:text="Vte"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="@dimen/_6sdp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_mve"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:paddingHorizontal="@dimen/_1sdp"
+            android:paddingVertical="@dimen/_2sdp"
+            android:text="MVe"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="@dimen/_6sdp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_mvi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#BCF3F2F2"
+            android:paddingHorizontal="@dimen/_1sdp"
+            android:paddingVertical="@dimen/_2sdp"
+            android:text="MVi"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="@dimen/_6sdp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_fio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:paddingHorizontal="@dimen/_1sdp"
+            android:paddingVertical="@dimen/_2sdp"
+            android:text="FiO2"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="@dimen/_6sdp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_rr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#BCF3F2F2"
+            android:paddingHorizontal="@dimen/_1sdp"
+            android:paddingVertical="@dimen/_2sdp"
+            android:text="RR"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="@dimen/_6sdp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_dynamic_compliance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:paddingHorizontal="@dimen/_1sdp"
+            android:paddingVertical="@dimen/_2sdp"
+            android:text="Dyn Comp."
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="@dimen/_6sdp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_tinsp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#BCF3F2F2"
+            android:paddingHorizontal="@dimen/_1sdp"
+            android:paddingVertical="@dimen/_2sdp"
+            android:text="Tinsp"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="@dimen/_6sdp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_texp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:paddingHorizontal="@dimen/_1sdp"
+            android:paddingVertical="@dimen/_2sdp"
+            android:text="Texp"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="@dimen/_6sdp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_leak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#BCF3F2F2"
+            android:paddingHorizontal="@dimen/_1sdp"
+            android:paddingVertical="@dimen/_2sdp"
+            android:text="Leak"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="@dimen/_6sdp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_spo2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:paddingHorizontal="@dimen/_1sdp"
+            android:paddingVertical="@dimen/_2sdp"
+            android:text="Spo2"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="@dimen/_6sdp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_pr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#BCF3F2F2"
+            android:paddingHorizontal="@dimen/_1sdp"
+            android:paddingVertical="@dimen/_2sdp"
+            android:text="PR"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="@dimen/_6sdp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_ie"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:paddingHorizontal="@dimen/_1sdp"
+            android:paddingVertical="@dimen/_2sdp"
+            android:text="I:E"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="@dimen/_6sdp" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_spont_vt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#BCF3F2F2"
+            android:paddingHorizontal="@dimen/_1sdp"
+            android:paddingVertical="@dimen/_2sdp"
+            android:text="Spont VT"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="@dimen/_6sdp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_spont_rr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:paddingHorizontal="@dimen/_1sdp"
+            android:paddingVertical="@dimen/_2sdp"
+            android:text="spont RR"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="@dimen/_6sdp" />
+
+    </LinearLayout>
 
 </LinearLayout>

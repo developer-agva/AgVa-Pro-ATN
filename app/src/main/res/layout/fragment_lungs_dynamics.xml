@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/black"
+    tools:context=".graph.lungs_dynamics.LungsDynamicsFragment"
+    tools:ignore="MissingDefaultResource">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.80"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.07"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.80"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineOne"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.01"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLineSecond"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.99"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/img_male_body"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/human_body"
+        android:padding="10dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/guidelineBottom"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/img_female_body"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/girl_body"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/guidelineBottom"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/img_lungs"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/lungs_grey"
+        android:padding="20dp"
+        app:layout_constraintStart_toEndOf="@id/guidelineOne"
+        app:layout_constraintEnd_toStartOf="@id/guideLineSecond"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/guidelineTop" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/img_veins"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/veins_grey"
+        android:padding="20dp"
+        app:layout_constraintStart_toEndOf="@id/guidelineOne"
+        app:layout_constraintEnd_toStartOf="@id/guideLineSecond"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/guidelineTop" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/img_trachea"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/trachea_grey"
+        android:padding="10dp"
+        app:layout_constraintStart_toEndOf="@id/guidelineOne"
+        app:layout_constraintEnd_toStartOf="@id/guideLineSecond"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/guidelineTop" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/dynamicComplianceLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/background_transparent_stroke_grey"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/spontVtLayout"
+        app:layout_constraintTop_toBottomOf="@id/guidelineBottom"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/dynamicComplianceLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/arialn"
+            android:textSize="@dimen/_5sdp"
+            android:textColor="@color/white"
+            android:alpha="@dimen/parameter_title_alpha"
+            android:text="Dyn Comp."
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginStart="@dimen/_2sdp"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/dynamicComplianceValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/avenir_next_lt_pro_medium"
+            android:textSize="@dimen/_11sdp"
+            android:textColor="@color/white"
+            android:text="-"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dynamicComplianceLabel"/>
+
+        <TextView
+            android:id="@+id/dynamicComplianceUnit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/arialn"
+            android:textSize="@dimen/_5sdp"
+            android:textColor="@color/white"
+            android:text="mL/cmH₂O"
+            android:alpha="@dimen/parameter_title_alpha"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginEnd="@dimen/_2sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/spontVtLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/background_transparent_stroke_grey"
+        app:layout_constraintStart_toEndOf="@id/dynamicComplianceLayout"
+        app:layout_constraintTop_toBottomOf="@id/guidelineBottom"
+        app:layout_constraintEnd_toStartOf="@id/spontRRLayout"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/resistanceLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/arialn"
+            android:textSize="@dimen/_5sdp"
+            android:textColor="@color/white"
+            android:text="Dyn Resistance"
+            android:alpha="@dimen/parameter_title_alpha"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginStart="@dimen/_2sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/resistanceValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/avenir_next_lt_pro_medium"
+            android:textSize="@dimen/_11sdp"
+            android:textColor="@color/white"
+            android:text="-"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/resistanceLabel"/>
+
+        <TextView
+            android:id="@+id/resistanceUnit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/arialn"
+            android:textSize="@dimen/_5sdp"
+            android:textColor="@color/white"
+            android:text="cmH₂O/L/sec"
+            android:alpha="@dimen/parameter_title_alpha"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginEnd="@dimen/_2sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/spontRRLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/background_transparent_stroke_grey"
+        app:layout_constraintStart_toEndOf="@id/spontVtLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guidelineBottom"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/spontRRLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/arialn"
+            android:textSize="@dimen/_5sdp"
+            android:textColor="@color/white"
+            android:text="Spont RR"
+            android:alpha="@dimen/parameter_title_alpha"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginStart="@dimen/_2sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/spontRRValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/avenir_next_lt_pro_medium"
+            android:textSize="@dimen/_11sdp"
+            android:textColor="@color/white"
+            android:text="-"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/spontRRLabel"/>
+
+        <TextView
+            android:id="@+id/spontRRUnit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/arialn"
+            android:textSize="@dimen/_5sdp"
+            android:textColor="@color/white"
+            android:text="BPM"
+            android:alpha="@dimen/parameter_title_alpha"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginEnd="@dimen/_2sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

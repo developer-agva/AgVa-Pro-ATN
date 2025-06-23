@@ -10,6 +10,7 @@ interface OnGraphSelectListener {
     fun onSelectQuadGraph()
     fun onSelectDividePentGraph()
     fun onSelectLoopsGraph()
+    fun onSelectQuadTrendsGraph()
     fun onSelectLinearQuadGraph()
 
 

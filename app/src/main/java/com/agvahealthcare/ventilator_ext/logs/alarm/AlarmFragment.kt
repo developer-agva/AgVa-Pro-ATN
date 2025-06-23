@@ -17,6 +17,7 @@ import com.agvahealthcare.ventilator_ext.VentilatorApp
 import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.uhidDataListAlarm
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardViewModel
 import com.agvahealthcare.ventilator_ext.logging.FileLogger
+import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import kotlinx.android.synthetic.main.fragment_events.*
 import kotlinx.android.synthetic.main.fragment_logs_alarm.*
 
@@ -81,7 +82,7 @@ class AlarmFragment : Fragment(), View.OnClickListener {
 
     private fun setupDataDefault(uhid: String) {
 
-        val data = FileLogger.readAlarmFile("alarm",startIndex,endIndex)
+        val data = FileLogger.readAlarmFile("alarm",PreferenceManager(requireContext()).readUHID(),startIndex,endIndex)
         if (data != "Data Not Found"){
             dataList = data.split("|") as ArrayList<String>
             setUpAlarmsData()
@@ -105,7 +106,7 @@ class AlarmFragment : Fragment(), View.OnClickListener {
                         if (getSelection() == firstVisibleItemIndex) {
                             startIndex -= 9
                             endIndex -= 9
-                            val data = FileLogger.readAlarmFile("alarm",startIndex,endIndex)
+                            val data = FileLogger.readAlarmFile("alarm",PreferenceManager(requireContext()).readUHID(),startIndex,endIndex)
                             if (data != "Data Not Found"){
                                 val listData = data.split("|") as java.util.ArrayList<String>
                                 mAdapter?.updateDataList(listData,true)
@@ -129,7 +130,7 @@ class AlarmFragment : Fragment(), View.OnClickListener {
                             if (getSelection() == lastVisibleItemIndex) {
                                 startIndex += 9
                                 endIndex += 9
-                                val data = FileLogger.readAlarmFile("alarm",startIndex,endIndex)
+                                val data = FileLogger.readAlarmFile("alarm",PreferenceManager(requireContext()).readUHID(),startIndex,endIndex)
                                 if (data != "Data Not Found"){
                                     val listData = data.split("|") as java.util.ArrayList<String>
                                     mAdapter?.updateDataList(listData,false)

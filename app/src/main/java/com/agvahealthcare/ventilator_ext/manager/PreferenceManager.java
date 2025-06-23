@@ -200,7 +200,7 @@ public class PreferenceManager {
 
     private static final String PREF_TEMP_VTAS_STATUS = "pref_temp_Vtas";
     private static final String PREF_GRAPH_PARENT_TYPE = "pref_graph_parent_type";
-
+    private static final String PREF_TREND_DURATION = "pref_trend_duration";
 
     private static final String PREF_BODY_WEIGHT = "pref_body_weight";
     private static final String PREF_MODE_TYPE = "pref_mode_type";
@@ -1022,6 +1022,13 @@ public class PreferenceManager {
         updateData(PREF_VENTI_TYPE_STATUS, ventilatorType.toString());
     }
 
+    public void setTrendDuration(String val) {
+        updateData(PREF_TREND_DURATION, val);
+    }
+
+    public String readTrendDuration() {
+        return sp.getString(PREF_TREND_DURATION, "10 Min");
+    }
 
     public parentType readGraphParentType() {
         try {

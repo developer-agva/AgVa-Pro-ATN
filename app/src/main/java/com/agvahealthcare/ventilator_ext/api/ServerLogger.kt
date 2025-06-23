@@ -327,63 +327,6 @@ class ServerLogger {
         }
 
         @SuppressLint("HardwareIds")
-        private fun sendTrendsRequestFromFile(ctx: Context) {
-
-            try {
-
-                val lastTrendData = FileLogger.readTrendFileLastData()
-
-                if (lastTrendData != FileLogger.dataNotFound) {
-
-                    val list = lastTrendData.split("|") as ArrayList<String>
-
-                    for (i in 0 until list.size - 1) {
-
-                        val request = TrendsRequestBodyModel()
-                        request.apply {
-                            did = Settings.Secure.getString(
-                                ctx.contentResolver, Settings.Secure.ANDROID_ID
-                            )
-                            time = list[i].split(",")[0]
-                            mode = list[i].split(",")[1]
-                            pip = list[i].split(",")[2]
-                            peep = list[i].split(",")[3]
-                            mean_Airway = list[i].split(",")[4]
-                            vti = list[i].split(",")[5]
-                            vte = list[i].split(",")[6]
-                            mve = list[i].split(",")[7]
-                            mvi = list[i].split(",")[8]
-                            fio2 = list[i].split(",")[9]
-                            respiratory_Rate = list[i].split(",")[10]
-                            ie = "1 : " + list[i].split(",")[11]
-                            tinsp = list[i].split(",")[12]
-                            texp = list[i].split(",")[13]
-                            averageLeak = list[i].split(",")[14]
-                            spo2 = list[i].split(",")[15]
-                            pr = list[i].split(",")[16]
-                        }
-
-                        val okHttpClient = OkHttpClient.Builder()
-                            .connectTimeout(100, TimeUnit.SECONDS)
-                            .readTimeout(100, TimeUnit.SECONDS)
-                            .build()
-
-                        val retrofit = Retrofit.Builder()
-                            .baseUrl(FileLogger.readBaseUrl())
-                            .addConverterFactory(GsonConverterFactory.create())
-                            .client(okHttpClient)
-                            .build()
-
-                        Log.i("responseTrendPass", "$request from file")
-
-                        val response = retrofit.create(TrendsApiInterface::class.java)
-                        response.sendTrendsApi(request).execute()
-                    }
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
 
         fun sendPaymentStatus(paymentStatusRequestModel: PaymentStatusRequestModel): Response<LogResponseModel>? {
 

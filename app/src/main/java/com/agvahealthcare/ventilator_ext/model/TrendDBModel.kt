@@ -1,7 +1,7 @@
 package com.agvahealthcare.ventilator_ext.model
 
 data class TrendDBModel(
-    var mode :String = "",
+    var mode: String = "",
     var pip: Float = 0f,
     var peep: Float = 0f,
     var meanAirway: Float = 0f,
@@ -17,5 +17,15 @@ data class TrendDBModel(
     var averageLeak: Float = 0f,
     var spo2: Float = 0f,
     var pr: Float = 0f,
+    var dynamicCompliance: Float = 0f,
+    var spontRR: Float = 0f,
+    var spontVT: Float = 0f
 
     )
+
+data class TrendLungsDynamicsModel(
+    var dynamicCompliance: Float = 0f,
+    var spontRR: Float = 0f,
+    var spontVT: Float = 0f,
+    var resistance: Float = 0f
+)

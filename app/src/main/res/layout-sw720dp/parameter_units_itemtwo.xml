@@ -4,30 +4,24 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="visible"
-        android:orientation="horizontal">
+    <!--    <LinearLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:orientation="horizontal"-->
+    <!--        android:visibility="visible">-->
 
-        <TextView
-            android:id="@+id/tv_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#4E4E4E"
-            android:paddingStart="@dimen/_4sdp"
-            android:paddingEnd="@dimen/_2sdp"
-            android:paddingVertical="@dimen/_2sdp"
-            android:textSize="@dimen/_5sdp"
-            android:text="10:20"
-            android:textColor="#FFFFFF"/>
-
-        <View
-            android:id="@+id/lineViewone"
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="#7A7A7A" />
-    </LinearLayout>
+    <!--        <TextView-->
+    <!--            android:id="@+id/tv_time"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:background="#4E4E4E"-->
+    <!--            android:paddingHorizontal="@dimen/_1sdp"-->
+    <!--            android:paddingVertical="@dimen/_2sdp"-->
+    <!--            android:text="10:20"-->
+    <!--            android:textAlignment="center"-->
+    <!--            android:textColor="#FFFFFF"-->
+    <!--            android:textSize="@dimen/_6sdp" />-->
+    <!--    </LinearLayout>-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -39,18 +33,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#FFFFFF"
-            android:paddingStart="@dimen/_4sdp"
-            android:paddingEnd="@dimen/_2sdp"
+            android:paddingHorizontal="@dimen/_1sdp"
             android:paddingVertical="@dimen/_2sdp"
-            android:textSize="@dimen/_5sdp"
             android:text="MODE"
-            android:textColor="#000000"/>
-
-      <!--  <View
-            android:id="@+id/lineViewTwo"
-            android:layout_width="1dp"
-            android:layout_height="wrap_content"
-            android:background="#7A7A7A" />-->
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="@dimen/_6sdp" />
     </LinearLayout>
 
     <LinearLayout
@@ -63,17 +51,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#BCF3F2F2"
-            android:paddingStart="@dimen/_4sdp"
-            android:paddingEnd="@dimen/_2sdp"
+            android:paddingHorizontal="@dimen/_1sdp"
             android:paddingVertical="@dimen/_2sdp"
             android:text="Support Pressure"
+            android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="@dimen/_5sdp" />
-        <!-- <View
-             android:id="@+id/lineViewThree"
-             android:layout_width="1dp"
-             android:layout_height="wrap_content"
-             android:background="#7A7A7A"/>-->
+            android:textSize="@dimen/_6sdp" />
     </LinearLayout>
 
     <LinearLayout
@@ -86,17 +69,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#FFFFFF"
-            android:paddingStart="@dimen/_4sdp"
-            android:paddingEnd="@dimen/_2sdp"
+            android:paddingHorizontal="@dimen/_1sdp"
             android:paddingVertical="@dimen/_2sdp"
             android:text="PEEP"
+            android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="@dimen/_5sdp" />
-        <!--<View
-            android:id="@+id/lineViewFour"
-            android:layout_width="1dp"
-            android:layout_height="wrap_content"
-            android:background="#7A7A7A"/>-->
+            android:textSize="@dimen/_6sdp" />
     </LinearLayout>
 
     <LinearLayout
@@ -109,17 +87,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#BCF3F2F2"
-            android:paddingStart="@dimen/_4sdp"
-            android:paddingEnd="@dimen/_2sdp"
+            android:paddingHorizontal="@dimen/_1sdp"
             android:paddingVertical="@dimen/_2sdp"
             android:text="Mean Airway"
+            android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="@dimen/_5sdp" />
-        <!--     <View
-                 android:id="@+id/lineViewFive"
-                 android:layout_width="1dp"
-                 android:layout_height="wrap_content"
-                 android:background="#7A7A7A"/>-->
+            android:textSize="@dimen/_6sdp" />
     </LinearLayout>
 
     <LinearLayout
@@ -132,17 +105,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#FFFFFF"
-            android:paddingStart="@dimen/_4sdp"
-            android:paddingEnd="@dimen/_2sdp"
+            android:paddingHorizontal="@dimen/_1sdp"
             android:paddingVertical="@dimen/_2sdp"
             android:text="Vti"
+            android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="@dimen/_5sdp" />
-        <!--     <View
-                 android:id="@+id/lineViewSix"
-                 android:layout_width="1dp"
-                 android:layout_height="wrap_content"
-                 android:background="#7A7A7A"/>-->
+            android:textSize="@dimen/_6sdp" />
     </LinearLayout>
 
     <LinearLayout
@@ -155,17 +123,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#BCF3F2F2"
-            android:paddingStart="@dimen/_4sdp"
-            android:paddingEnd="@dimen/_2sdp"
+            android:paddingHorizontal="@dimen/_1sdp"
             android:paddingVertical="@dimen/_2sdp"
             android:text="Vte"
+            android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="@dimen/_5sdp" />
-        <!-- <View
-             android:id="@+id/lineViewSeven"
-             android:layout_width="1dp"
-             android:layout_height="wrap_content"
-             android:background="#7A7A7A"/>-->
+            android:textSize="@dimen/_6sdp" />
     </LinearLayout>
 
     <LinearLayout
@@ -178,17 +141,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#FFFFFF"
-            android:paddingStart="@dimen/_4sdp"
-            android:paddingEnd="@dimen/_2sdp"
+            android:paddingHorizontal="@dimen/_1sdp"
             android:paddingVertical="@dimen/_2sdp"
             android:text="MVe"
+            android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="@dimen/_5sdp" />
-        <!--     <View
-                 android:id="@+id/lineViewEight"
-                 android:layout_width="1dp"
-                 android:layout_height="wrap_content"
-                 android:background="#7A7A7A"/>-->
+            android:textSize="@dimen/_6sdp" />
     </LinearLayout>
 
     <LinearLayout
@@ -201,17 +159,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#BCF3F2F2"
-            android:paddingStart="@dimen/_4sdp"
-            android:paddingEnd="@dimen/_2sdp"
+            android:paddingHorizontal="@dimen/_1sdp"
             android:paddingVertical="@dimen/_2sdp"
             android:text="MVi"
+            android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="@dimen/_5sdp" />
-        <!--  <View
-              android:id="@+id/lineViewNine"
-              android:layout_width="1dp"
-              android:layout_height="wrap_content"
-              android:background="#7A7A7A"/>-->
+            android:textSize="@dimen/_6sdp" />
     </LinearLayout>
 
     <LinearLayout
@@ -224,17 +177,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#FFFFFF"
-            android:paddingStart="@dimen/_4sdp"
-            android:paddingEnd="@dimen/_2sdp"
+            android:paddingHorizontal="@dimen/_1sdp"
             android:paddingVertical="@dimen/_2sdp"
             android:text="FiO2"
+            android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="@dimen/_5sdp" />
-        <!-- <View
-             android:id="@+id/lineViewTen"
-             android:layout_width="1dp"
-             android:layout_height="wrap_content"
-             android:background="#7A7A7A"/>-->
+            android:textSize="@dimen/_6sdp" />
     </LinearLayout>
 
     <LinearLayout
@@ -247,17 +195,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#BCF3F2F2"
-            android:paddingStart="@dimen/_4sdp"
-            android:paddingEnd="@dimen/_2sdp"
+            android:paddingHorizontal="@dimen/_1sdp"
             android:paddingVertical="@dimen/_2sdp"
-            android:text="Respiratory"
+            android:text="RR"
+            android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="@dimen/_5sdp" />
-        <!--  <View
-              android:id="@+id/lineViewEleven"
-              android:layout_width="1dp"
-              android:layout_height="wrap_content"
-              android:background="#7A7A7A"/>-->
+            android:textSize="@dimen/_6sdp" />
     </LinearLayout>
 
     <LinearLayout
@@ -266,21 +209,17 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/tv_ie"
+            android:id="@+id/tv_dynamic_compliance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#FFFFFF"
-            android:paddingStart="@dimen/_4sdp"
-            android:paddingEnd="@dimen/_2sdp"
+            android:paddingHorizontal="@dimen/_1sdp"
             android:paddingVertical="@dimen/_2sdp"
-            android:text="I:E"
+            android:text="Dyn Comp."
+            android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="@dimen/_5sdp" />
-        <!--     <View
-                 android:id="@+id/lineViewTwelve"
-                 android:layout_width="1dp"
-                 android:layout_height="wrap_content"
-                 android:background="#7A7A7A"/>-->
+            android:textSize="@dimen/_6sdp" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -293,17 +232,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#BCF3F2F2"
-            android:paddingStart="@dimen/_4sdp"
-            android:paddingEnd="@dimen/_2sdp"
+            android:paddingHorizontal="@dimen/_1sdp"
             android:paddingVertical="@dimen/_2sdp"
             android:text="Tinsp"
+            android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="@dimen/_5sdp" />
-        <!-- <View
-             android:id="@+id/lineViewThirteen"
-             android:layout_width="1dp"
-             android:layout_height="wrap_content"
-             android:background="#7A7A7A"/>-->
+            android:textSize="@dimen/_6sdp" />
     </LinearLayout>
 
     <LinearLayout
@@ -316,17 +250,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#FFFFFF"
-            android:paddingStart="@dimen/_4sdp"
-            android:paddingEnd="@dimen/_2sdp"
+            android:paddingHorizontal="@dimen/_1sdp"
             android:paddingVertical="@dimen/_2sdp"
             android:text="Texp"
+            android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="@dimen/_5sdp" />
-        <!--     <View
-                 android:id="@+id/lineViewFourteen"
-                 android:layout_width="1dp"
-                 android:layout_height="wrap_content"
-                 android:background="#7A7A7A"/>-->
+            android:textSize="@dimen/_6sdp" />
     </LinearLayout>
 
     <LinearLayout
@@ -339,16 +268,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#BCF3F2F2"
-            android:paddingStart="@dimen/_4sdp"
-            android:paddingEnd="@dimen/_2sdp"
+            android:paddingHorizontal="@dimen/_1sdp"
             android:paddingVertical="@dimen/_2sdp"
             android:text="Leak"
+            android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="@dimen/_5sdp" />
-        <!--  <View android:id="@+id/lineViewFifteen"
-             android:layout_width="1dp"
-             android:layout_height="wrap_content"
-             android:background="#7A7A7A"/>-->
+            android:textSize="@dimen/_6sdp" />
 
     </LinearLayout>
 
@@ -362,12 +287,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#FFFFFF"
-            android:paddingStart="@dimen/_4sdp"
-            android:paddingEnd="@dimen/_2sdp"
+            android:paddingHorizontal="@dimen/_1sdp"
             android:paddingVertical="@dimen/_2sdp"
             android:text="Spo2"
+            android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="@dimen/_5sdp" />
+            android:textSize="@dimen/_6sdp" />
 
     </LinearLayout>
 
@@ -381,18 +306,70 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#BCF3F2F2"
-            android:paddingStart="@dimen/_4sdp"
-            android:paddingEnd="@dimen/_2sdp"
+            android:paddingHorizontal="@dimen/_1sdp"
             android:paddingVertical="@dimen/_2sdp"
             android:text="PR"
+            android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="@dimen/_5sdp" />
-        <!--  <View android:id="@+id/lineViewFifteen"
-             android:layout_width="1dp"
-             android:layout_height="wrap_content"
-             android:background="#7A7A7A"/>-->
+            android:textSize="@dimen/_6sdp" />
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_ie"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:paddingHorizontal="@dimen/_1sdp"
+            android:paddingVertical="@dimen/_2sdp"
+            android:text="I:E"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="@dimen/_6sdp" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_spont_vt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#BCF3F2F2"
+            android:paddingHorizontal="@dimen/_1sdp"
+            android:paddingVertical="@dimen/_2sdp"
+            android:text="Spont VT"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="@dimen/_6sdp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_spont_rr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:paddingHorizontal="@dimen/_1sdp"
+            android:paddingVertical="@dimen/_2sdp"
+            android:text="spont RR"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="@dimen/_6sdp" />
+
+    </LinearLayout>
 
 </LinearLayout>

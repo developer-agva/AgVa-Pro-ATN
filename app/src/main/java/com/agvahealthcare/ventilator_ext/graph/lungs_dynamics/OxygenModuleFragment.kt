@@ -361,19 +361,13 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
         CoroutineScope(Dispatchers.IO).launch {
 
             val dataFirstChart = FileLogger.readTrendFileAsPerParamAndDuration(
-                Configs.getTrendsFileName(
-                    PreferenceManager(requireContext())
-                ), 15, duration
+                "trends", 15, duration
             )
             val dataSecondChart = FileLogger.readTrendFileAsPerParamAndDuration(
-                Configs.getTrendsFileName(
-                    PreferenceManager(requireContext())
-                ), 16, duration
+                "trends", 16, duration
             )
             val dataThirdChart = FileLogger.readTrendFileAsPerParamAndDuration(
-                Configs.getTrendsFileName(
-                    PreferenceManager(requireContext())
-                ), 9, duration
+                "trends", 9, duration
             )
 
             // list having data like "time~data"

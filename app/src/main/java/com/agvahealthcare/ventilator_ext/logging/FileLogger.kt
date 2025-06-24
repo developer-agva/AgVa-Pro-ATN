@@ -224,8 +224,7 @@ abstract class FileLogger {
                 set(Calendar.MILLISECOND, 0) // Optional, to clean up milliseconds
             }
 
-            val ansForCurrentTime =
-                formatter.format(calendar.time).toString().split(" ")[1].split(":")[1].toInt() % 10
+            val ansForCurrentTime = formatter.format(calendar.time).toString().split(" ")[1].split(":")[1].toInt() % 10
             if (ansForCurrentTime != 0) calendar.add(Calendar.MINUTE, -ansForCurrentTime)
 
             val timeLabels = ArrayList<String>()
@@ -306,10 +305,9 @@ abstract class FileLogger {
                                 Environment.getExternalStorageDirectory(),
                                 AppUtils.PATH_FOLDER_AGVA + File.separator + "trend"
                             ),
-                            Configs.trendTenMin
+                            fileName
                         )
                     )
-
                 }
 
             } catch (e: Exception) {

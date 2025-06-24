@@ -3187,13 +3187,17 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 buttonAdult.visibility = View.VISIBLE
                 buttonPediatric.visibility = View.VISIBLE
 
-                setCurrentUid(PatientProfile.TYPE_ADULT)
+                if (readCurrentUid() != PatientProfile.TYPE_NEONAT) {
+                    setCurrentUid(readCurrentUid())
+                } else {
+                    setCurrentUid(PatientProfile.TYPE_ADULT)
+                }
             } else {
                 buttonNeonatal.visibility = View.VISIBLE
                 buttonAdult.visibility = View.VISIBLE
                 buttonPediatric.visibility = View.VISIBLE
 
-                setCurrentUid(PatientProfile.TYPE_ADULT)
+                setCurrentUid(readCurrentUid())
             }
         }
     }
@@ -5017,12 +5021,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     } else {
 
                         highlightButton(buttonModes)
-                        Log.d("currentsModes", currentPatientType)
-                        /*   if (currentPatientType==PatientProfile.TYPE_ADULT.toString()){
-                               prefManager?.setCurrentUid(PatientProfile.TYPE_ADULT)
-                           } else if (currentPatientType==PatientProfile.TYPE_PED.toString()){
-                               prefManager?.setCurrentUid(PatientProfile.TYPE_PED)
-                           }*/
                         if (isVentilatorInStandby()) {
 
                             Log.i("new_ventilation", "buttonStartNewVentilation click")

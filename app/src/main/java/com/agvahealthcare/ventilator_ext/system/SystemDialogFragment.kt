@@ -979,7 +979,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                 )
             }
         }
-        if (passWord == "2018") {
+        else if (passWord == "2018") {
             if (tag != "FromDashboard") {
                 if (!dataListSystemItems.contains(
                         SystemButtonModelClass(
@@ -995,7 +995,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                 )
             }
         }
-        else {
+        else if (passWord == "8085"){
             if (!dataListSystemItems.contains(
                     SystemButtonModelClass(
                         getString(R.string.hint_diagnos),

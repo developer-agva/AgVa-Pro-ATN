@@ -147,10 +147,10 @@ class ConfigFragment : Fragment() {
 
             if (readPeepAlarmStatus()) {
                 btnPeepAlarm.setBackgroundColor(resources.getColor(R.color.racing_green))
-                btnPeepAlarm.text = "Disable PEEP Alarm"
+                btnPeepAlarm.text = "Disable Check Circuit Alarm"
             } else {
                 btnPeepAlarm.setBackgroundColor(resources.getColor(R.color.light_grey))
-                btnPeepAlarm.text = "Enable PEEP Alarm"
+                btnPeepAlarm.text = "Enable Check Circuit Alarm"
             }
 
             if (readDynamicLungsModuleStatus()){

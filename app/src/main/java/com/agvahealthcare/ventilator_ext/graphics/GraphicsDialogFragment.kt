@@ -22,6 +22,7 @@ import com.agvahealthcare.ventilator_ext.dashboard.trio_graph.DivideTrioFragment
 import com.agvahealthcare.ventilator_ext.dashboard.trio_graph.TrioFragmentGraph
 import com.agvahealthcare.ventilator_ext.graph.divide_trends.QuadTrendsFragment
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
+import com.agvahealthcare.ventilator_ext.utility.ToastFactory
 import com.agvahealthcare.ventilator_ext.utility.setHeightWidthPercent
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_AND
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_MINUS
@@ -209,13 +210,20 @@ class GraphicsDialogFragment(
     }
 
     private fun initView() {
-        includeButtonLayout0.buttonView.text = getString(R.string.hint_layout_1)
-        includeButtonLayout1.buttonView.text = getString(R.string.hint_layout_default)
+
+        if (prefManager?.readDynamicLungsModuleStatus() == true){
+            includeButtonLayout0.buttonView.text = getString(R.string.hint_layout_1)
+            includeButtonLayout1.buttonView.text = getString(R.string.hint_layout_default)
+        }else{
+            includeButtonLayout0.buttonView.text = getString(R.string.hint_layout_default)
+            includeButtonLayout1.buttonView.text = getString(R.string.hint_layout_1)
+        }
         includeButtonLayout2.buttonView.text = getString(R.string.hint_layout_2)
         includeButtonLayout3.buttonView.text = getString(R.string.hint_layout_3)
         includeButtonLayout4.buttonView.text = getString(R.string.hint_layout_4)
         includeButtonLayout5.buttonView.text = getString(R.string.hint_layout_5)
         includeButtonDefault.buttonView.text = getString(R.string.hint_layout_default)
+
 
         includeButtonDefault.buttonView.setPadding(35, 10, 35, 10)
 
@@ -312,10 +320,16 @@ class GraphicsDialogFragment(
         }
 
         layoutPanelQuadTrends.setOnClickListener {
-            prefManager?.setGraphParentType(parentType.QuadTrendsFragment)
-            onGraphSelectListener?.onSelectQuadTrendsGraph()
-            closeListener?.handleDialogClose()
-            closeDialog()
+
+            if (prefManager?.readDynamicLungsModuleStatus() == true) {
+
+                prefManager?.setGraphParentType(parentType.QuadTrendsFragment)
+                onGraphSelectListener?.onSelectQuadTrendsGraph()
+                closeListener?.handleDialogClose()
+                closeDialog()
+            }else{
+                ToastFactory.custom(requireContext(),"Please enable Dynamic Lungs Module to access Quad Trends Graph")
+            }
         }
 
         layoutPanelDividePent.setOnClickListener {
@@ -354,8 +368,13 @@ class GraphicsDialogFragment(
         }
 
         includeButtonDefault.buttonView.setOnClickListener {
-            prefManager?.setGraphParentType(parentType.QuadTrendsFragment)
-            onGraphSelectListener?.onSelectQuadTrendsGraph()
+            if (prefManager?.readDynamicLungsModuleStatus() == true) {
+                prefManager?.setGraphParentType(parentType.QuadTrendsFragment)
+                onGraphSelectListener?.onSelectQuadTrendsGraph()
+            } else {
+                prefManager?.setGraphParentType(parentType.DuoFragmentGraph)
+                onGraphSelectListener?.onSelectDuoGraph()
+            }
             closeListener?.handleDialogClose()
             closeDialog()
         }

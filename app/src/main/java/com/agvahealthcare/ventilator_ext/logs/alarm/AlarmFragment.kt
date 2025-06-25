@@ -152,9 +152,9 @@ class AlarmFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mAlarmViewModel = ViewModelProvider(this).get(AlarmViewModel::class.java)
-        dashBoardViewModel = ViewModelProvider(requireActivity()).get(DashBoardViewModel::class.java)
-        spinnerAlarm = view.findViewById<Spinner>(R.id.spinnerAlarm)
+        mAlarmViewModel = ViewModelProvider(this)[AlarmViewModel::class.java]
+        dashBoardViewModel = ViewModelProvider(requireActivity())[DashBoardViewModel::class.java]
+        spinnerAlarm = view.findViewById(R.id.spinnerAlarm)
         buttonLayout = view.findViewById(R.id.btnLayout)
 
         topButtonAlarm.setOnClickListener(this)
@@ -163,8 +163,6 @@ class AlarmFragment : Fragment(), View.OnClickListener {
         setupAdapter()
         setupDataDefault("")
     }
-
-
 
     private fun setUpAlarmsData() {
         mAdapter = AlarmAdapter(dataList)

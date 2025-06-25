@@ -9,6 +9,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
+import com.agvahealthcare.ventilator_ext.utility.MAX_RANGE_PRESSURE_ADULT_PEDIA
+import com.agvahealthcare.ventilator_ext.utility.MIN_RANGE_PRESSURE_ADULT_PEDIA
+import com.agvahealthcare.ventilator_ext.utility.MIN_RANGE_PRESSURE_ADULT_PEDIA_SECOND
 import com.agvahealthcare.ventilator_ext.utility.TUBE_COMPLIANCE_CALIBRATION
 import com.agvahealthcare.ventilator_ext.utility.TUBE_RESISTANCE_CALIBRATION
 import com.agvahealthcare.ventilator_ext.utility.VENTILATOR_ACK
@@ -28,6 +31,8 @@ import kotlinx.android.synthetic.main.fragment_config.btnPeepAlarm
 import kotlinx.android.synthetic.main.fragment_config.btnTubeComp
 import kotlinx.android.synthetic.main.fragment_config.btnTubeResistance
 import kotlinx.android.synthetic.main.fragment_config.btnTurbine
+import kotlinx.android.synthetic.main.fragment_config.toggle_pressure_padding
+import kotlinx.android.synthetic.main.fragment_config.toggle_pressure_type
 
 enum class VentilatorType {
     ATN,
@@ -53,6 +58,15 @@ class ConfigFragment : Fragment() {
         initTypeFromPreferences()
         initCalibrationFromPreferences()
         initOthersFromPreferences()
+        initGraphsOptionsFromPreferences()
+
+        toggle_pressure_padding.setOnToggledListener { _, isOn ->
+            preferenceManager?.savePressurePaddingStatus(isOn)
+        }
+
+        toggle_pressure_type.setOnToggledListener { _, isOn ->
+            preferenceManager?.savePressureGraphTypeStatus(isOn)
+        }
 
         btnATN.setOnClickListener {
             preferenceManager?.setVentilatorType(VentilatorType.ATN)
@@ -239,6 +253,19 @@ class ConfigFragment : Fragment() {
                 resources.getColor(R.color.racing_green)
             )
             else btnTubeResistance.setBackgroundColor(resources.getColor(R.color.light_grey))
+        }
+    }
+
+    private fun initGraphsOptionsFromPreferences() {
+        preferenceManager?.apply {
+
+            toggle_pressure_padding.labelOn = "$MIN_RANGE_PRESSURE_ADULT_PEDIA_SECOND - $MAX_RANGE_PRESSURE_ADULT_PEDIA"
+            toggle_pressure_padding.labelOff = "$MIN_RANGE_PRESSURE_ADULT_PEDIA - $MAX_RANGE_PRESSURE_ADULT_PEDIA"
+            toggle_pressure_padding.isOn = readPressurePaddingStatus()
+
+            toggle_pressure_type.labelOn = "FILLED"
+            toggle_pressure_type.labelOff = "UNFILLED"
+            toggle_pressure_type.isOn = readPressureGraphTypeStatus()
         }
     }
 

@@ -42,7 +42,6 @@ class ColouredLinePaletteProvider(
                 if (xValuePatientTriggerList.contains(valuesArray[i])){
                     Log.i("color_test","1")
                     colorsArray[i] = prefManager?.readCurrentGraphColor("PRESSURE")!!
-
                 }
                 else if(xValueManualTriggerList.contains(valuesArray[i])){
                     colorsArray[i] = ColorUtil.Brown

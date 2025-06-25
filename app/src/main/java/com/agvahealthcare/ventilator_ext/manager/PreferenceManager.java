@@ -2,6 +2,8 @@ package com.agvahealthcare.ventilator_ext.manager;
 
 
 import static com.agvahealthcare.ventilator_ext.utility.ConstantKt.FIRST_FILTER_NAME;
+import static com.agvahealthcare.ventilator_ext.utility.ConstantKt.MAX_RANGE_PRESSURE_ADULT_PEDIA;
+import static com.agvahealthcare.ventilator_ext.utility.ConstantKt.MIN_RANGE_PRESSURE_ADULT_PEDIA;
 import static com.agvahealthcare.ventilator_ext.utility.utils.Configs.GRAPH_POINTS_MAX;
 import static com.agvahealthcare.ventilator_ext.utility.utils.Configs.Gender;
 import static com.agvahealthcare.ventilator_ext.utility.utils.Configs.Gender.TYPE_MALE;
@@ -45,6 +47,7 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.util.Pair;
 
 import androidx.annotation.StringRes;
 
@@ -387,6 +390,12 @@ public class PreferenceManager {
     private static final String PREF_DYN_LUNG_MODULE = "PREF_DYN_LUNG_MODULE";
     private static final String PREF_DEBUG_PARAMS_STATUS = "PREF_DEBUG_PARAMS_STATUS";
     private static final String PREF_ROLLOVER_STATUS = "PREF_ROLLOVER_STATUS";
+    private static final String PREF_PRESSURE_PADDING_STATUS = "PREF_PRESSURE_PADDING_STATUS";
+    private static final String PREF_VOLUME_PADDING = "PREF_VOLUME_PADDING";
+    private static final String PREF_FLOW_PADDING = "PREF_FLOW_PADDING";
+    private static final String PREF_VOLUME_GRAPH_FILLED_STATUS = "PREF_VOLUME_GRAPH_FILLED_STATUS";
+    private static final String PREF_FLOW_GRAPH_FILLED_STATUS = "PREF_FLOW_GRAPH_FILLED_STATUS";
+    private static final String PREF_PRESSURE_GRAPH_FILLED_STATUS = "PREF_PRESSURE_GRAPH_FILLED_STATUS";
 
     private Context context;
     private SharedPreferences sp;
@@ -398,9 +407,39 @@ public class PreferenceManager {
         this.gson = new Gson();
     }
 
+    public void savePressurePaddingStatus(Boolean value) {
+        updateData(PREF_PRESSURE_PADDING_STATUS , value);
+    }
+    public Boolean readPressurePaddingStatus() {
+        return sp.getBoolean(PREF_PRESSURE_PADDING_STATUS,false);
+    }
+
+    public void savePressureGraphTypeStatus(Boolean value) {
+        updateData(PREF_PRESSURE_GRAPH_FILLED_STATUS, value);
+    }
+    public Boolean readPressureGraphTypeStatus() {
+        return sp.getBoolean(PREF_PRESSURE_GRAPH_FILLED_STATUS, false);
+    }
+
+    public void saveVolumeGraphTypeStatus(Boolean value) {
+        updateData(PREF_VOLUME_GRAPH_FILLED_STATUS, value);
+    }
+    public Boolean readVolumeGraphTypeStatus() {
+        return sp.getBoolean(PREF_VOLUME_GRAPH_FILLED_STATUS, false);
+    }
+
+    public void saveFlowGraphTypeStatus(Boolean value) {
+        updateData(PREF_FLOW_GRAPH_FILLED_STATUS, value);
+    }
+
+    public Boolean readFlowGraphTypeStatus() {
+        return sp.getBoolean(PREF_FLOW_GRAPH_FILLED_STATUS, false);
+    }
+
     public void saveRolloverModifierStatus(Boolean value) {
         updateData(PREF_ROLLOVER_STATUS, value);
     }
+
     public Boolean readRolloverModifierStatus() {
         return sp.getBoolean(PREF_ROLLOVER_STATUS, false);
     }
@@ -408,6 +447,7 @@ public class PreferenceManager {
     public void saveDebugParamsStatus(Boolean value) {
         updateData(PREF_DEBUG_PARAMS_STATUS, value);
     }
+
     public Boolean readDebugParamsStatus() {
         return sp.getBoolean(PREF_DEBUG_PARAMS_STATUS, false);
     }
@@ -431,6 +471,7 @@ public class PreferenceManager {
     public void saveLockedStatus(String val) {
         updateData(PREF_PAYMENT_STATUS, val);
     }
+
     public String readLockedStatus() {
         return sp.getString(PREF_PAYMENT_STATUS, "Unlocked");
     }
@@ -438,6 +479,7 @@ public class PreferenceManager {
     public void setVentilatorNeedToLock(Boolean val) {
         updateData(PREF_VENTI_NEED_LOCK, val);
     }
+
     public Boolean readVentilatorNeedToLock() {
         return sp.getBoolean(PREF_VENTI_NEED_LOCK, true);
     }
@@ -469,7 +511,9 @@ public class PreferenceManager {
         return sp.getBoolean(PREF_RESTORE_STATUS, false);
     }
 
-    public Boolean readIETileStatus() {return sp.getBoolean(PREF_IE_TILE_STATUS, true);}
+    public Boolean readIETileStatus() {
+        return sp.getBoolean(PREF_IE_TILE_STATUS, false);
+    }
 
     public void setIETileStatus(boolean isActive) {
         updateData(PREF_IE_TILE_STATUS, isActive);
@@ -559,104 +603,104 @@ public class PreferenceManager {
 
     //==============Venti configurations Start===================
 
-    public void setPressureSensorOne(String value){
-        updateData(PREF_PRESSURE_SENSOR_ONE,value);
+    public void setPressureSensorOne(String value) {
+        updateData(PREF_PRESSURE_SENSOR_ONE, value);
     }
 
     public String readPressureSensorOne() {
         return sp.getString(PREF_PRESSURE_SENSOR_ONE, "CONSENSIC");
     }
 
-    public void setPressureSensorTwo(String value){
-        updateData(PREF_PRESSURE_SENSOR_TWO,value);
+    public void setPressureSensorTwo(String value) {
+        updateData(PREF_PRESSURE_SENSOR_TWO, value);
     }
 
     public String readPressureSensorTwo() {
         return sp.getString(PREF_PRESSURE_SENSOR_TWO, "CONSENSIC");
     }
 
-    public void setPressureSensorThree(String value){
-        updateData(PREF_PRESSURE_SENSOR_THREE,value);
+    public void setPressureSensorThree(String value) {
+        updateData(PREF_PRESSURE_SENSOR_THREE, value);
     }
 
     public String readPressureSensorThree() {
         return sp.getString(PREF_PRESSURE_SENSOR_THREE, "AMS");
     }
 
-    public void setInspFlowSensor(String value){
-        updateData(PREF_INSP_FLOW_SENSOR,value);
+    public void setInspFlowSensor(String value) {
+        updateData(PREF_INSP_FLOW_SENSOR, value);
     }
 
     public String readInspFlowSensor() {
         return sp.getString(PREF_INSP_FLOW_SENSOR, "HONEYWELL");
     }
 
-    public void setExpFlowSensor(String value){
-        updateData(PREF_EXP_FLOW_SENSOR,value);
+    public void setExpFlowSensor(String value) {
+        updateData(PREF_EXP_FLOW_SENSOR, value);
     }
 
     public String readExpFlowSensor() {
         return sp.getString(PREF_EXP_FLOW_SENSOR, "SFM");
     }
 
-    public void setOxySensor(String value){
-        updateData(PREF_OXYGEN_SENSOR,value);
+    public void setOxySensor(String value) {
+        updateData(PREF_OXYGEN_SENSOR, value);
     }
 
     public String readOxySensor() {
         return sp.getString(PREF_OXYGEN_SENSOR, "ULTRASONIC");
     }
 
-    public void setNeoSensor(String value){
-        updateData(PREF_NEO_SENSOR,value);
+    public void setNeoSensor(String value) {
+        updateData(PREF_NEO_SENSOR, value);
     }
 
     public String readNeoSensor() {
         return sp.getString(PREF_NEO_SENSOR, "IN-2");
     }
 
-    public void setSpo2Sensor(String value){
-        updateData(PREF_SPO2_SENSOR,value);
+    public void setSpo2Sensor(String value) {
+        updateData(PREF_SPO2_SENSOR, value);
     }
 
     public String readSpo2Sensor() {
         return sp.getString(PREF_SPO2_SENSOR, "SP-2");
     }
 
-    public void setPropValve(String value){
-        updateData(PREF_PROP_VALVE,value);
+    public void setPropValve(String value) {
+        updateData(PREF_PROP_VALVE, value);
     }
 
     public String readPropValve() {
         return sp.getString(PREF_PROP_VALVE, "CAMOZZI");
     }
 
-    public void setNeoPCBType(String value){
-        updateData(PREF_NEO_PCB_TYPE,value);
+    public void setNeoPCBType(String value) {
+        updateData(PREF_NEO_PCB_TYPE, value);
     }
 
     public String readNeoPCBType() {
         return sp.getString(PREF_NEO_PCB_TYPE, "GENERIC");
     }
 
-    public void setNebType(String value){
-        updateData(PREF_NEB_TYPE,value);
+    public void setNebType(String value) {
+        updateData(PREF_NEB_TYPE, value);
     }
 
     public String readNebType() {
         return sp.getString(PREF_NEB_TYPE, "PNEUMATIC");
     }
 
-    public void setOxyConcentrator(Boolean value){
-        updateData(PREF_OXY_CONCENTRATOR,value);
+    public void setOxyConcentrator(Boolean value) {
+        updateData(PREF_OXY_CONCENTRATOR, value);
     }
 
     public Boolean readOxyConcentrator() {
         return sp.getBoolean(PREF_OXY_CONCENTRATOR, false);
     }
 
-    public void setVentiConfigSetupStatus(Boolean value){
-        updateData(PREF_VENTI_CONFIG_STATUS,value);
+    public void setVentiConfigSetupStatus(Boolean value) {
+        updateData(PREF_VENTI_CONFIG_STATUS, value);
     }
 
     public Boolean readVentiConfigSetupStatus() {
@@ -957,15 +1001,19 @@ public class PreferenceManager {
         return sp.getBoolean(PREF_OXYGEN_LEVEL, false);
 //        return (readFiO2().intValue() > Configs.THRESHOLD_OXYGEN_VARIATION_VALUE);
     }
+
     private void setOxygenLevelStatus(boolean isHigh) {
         updateData(PREF_OXYGEN_LEVEL, isHigh);
     }
+
     public void setCurrentUid(PatientProfile uid) {
         updateData(PREF_CURRENT_UID, uid.toString());
     }
+
     public void setSelectedOptions(Configs.SELECTED_OPTIONS selectedOptions) {
         updateData(PREF_SELECTED_OPTION, selectedOptions.toString());
     }
+
     public Configs.SELECTED_OPTIONS readSelectedOptions() {
         try {
             return Configs.SELECTED_OPTIONS.valueOf(sp.getString(PREF_SELECTED_OPTION, String.valueOf(Configs.SELECTED_OPTIONS.INVASIVE_NAME)));
@@ -1250,14 +1298,14 @@ public class PreferenceManager {
         updateData(PREF_NEBULISER, val);
     }
 
-    public String readDischargeDateTime(){
-            return sp.getString(readCurrentUid() + "." + PREF_DISCHARGE_DATE,"-") ;
+    public String readDischargeDateTime() {
+        return sp.getString(readCurrentUid() + "." + PREF_DISCHARGE_DATE, "-");
 
     }
 
-    public void setDischargeDateTime(){
+    public void setDischargeDateTime() {
         String dischargeDate = AppUtils.getCurrentDateTime();
-        updateData(PREF_DISCHARGE_DATE,dischargeDate);
+        updateData(PREF_DISCHARGE_DATE, dischargeDate);
 
 
     }
@@ -2405,8 +2453,6 @@ public class PreferenceManager {
     }
 
 
-
-
     public void setVtiLimitState(boolean isActive) {
         updateLimitState(readCurrentUid() + "." + PREF_VTI_ALARM_STATE, isActive);
     }
@@ -2496,12 +2542,13 @@ public class PreferenceManager {
         return sp.getBoolean(PREF_LEAK_COMPENSATE, true);
     }
 
-    public void setPatientDischargeData(boolean isDischared){
+    public void setPatientDischargeData(boolean isDischared) {
 
-        updateData(PREF_PT_DISCHARGE,isDischared);
+        updateData(PREF_PT_DISCHARGE, isDischared);
     }
-    public boolean readPatientDischargeData(){
-        return sp.getBoolean(PREF_PT_DISCHARGE,false);
+
+    public boolean readPatientDischargeData() {
+        return sp.getBoolean(PREF_PT_DISCHARGE, false);
     }
 
     //FILLED GRAPHS TOGGLE STATUS STARTS

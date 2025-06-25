@@ -3214,7 +3214,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         mMainActivityViewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
 
         prefManager?.setRebootStatusForHandshake(false)
-
+        prefManager?.setIETileStatus(false)
 
         VentilatorApp.currentActivityName = "Main"
         CoroutineScope(Dispatchers.Main).launch {

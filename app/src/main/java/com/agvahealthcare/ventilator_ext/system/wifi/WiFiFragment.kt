@@ -85,7 +85,8 @@ class WiFiFragment : Fragment() {
                         }
                     })
                     .start()
-            } else {
+            }
+            else {
                 WifiUtils.withContext(requireContext()).disableWifi()
             }
         }

@@ -233,11 +233,80 @@
             app:layout_constraintStart_toStartOf="@id/btnPeepAlarm"
             app:layout_constraintTop_toBottomOf="@id/btnPeepAlarm" />
 
+        <View
+            android:id="@+id/view3"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_2sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:background="@color/black"
+            app:layout_constraintTop_toBottomOf="@id/btnEnableRollOverModifier" />
+
+
+        <TextView
+            android:id="@+id/txtPressureScale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:fontFamily="@font/arial_bold"
+            android:text="Pressure Graph Scale"
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_10sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view3" />
+
+        <com.github.angads25.toggle.widget.LabeledSwitch
+            android:id="@+id/toggle_pressure_padding"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:visibility="visible"
+            android:textSize="@dimen/_6sdp"
+            app:colorBorder="@color/grey"
+            app:colorOff="@color/white"
+            app:colorOn="@color/light_grey"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:tooltipText="@string/service_title"
+            app:layout_constraintTop_toTopOf="@id/txtPressureScale"
+            app:layout_constraintBottom_toBottomOf="@id/txtPressureScale"
+            app:layout_constraintStart_toEndOf="@id/txtPressureScale"
+            app:on="false" />
+
+        <TextView
+            android:id="@+id/txtPressureType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:fontFamily="@font/arial_bold"
+            android:text="&amp; Type"
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_10sdp"
+            app:layout_constraintStart_toEndOf="@id/toggle_pressure_padding"
+            app:layout_constraintTop_toBottomOf="@id/view3" />
+
+        <com.github.angads25.toggle.widget.LabeledSwitch
+            android:id="@+id/toggle_pressure_type"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:visibility="visible"
+            android:textSize="@dimen/_6sdp"
+            app:colorBorder="@color/grey"
+            app:colorOff="@color/white"
+            app:colorOn="@color/light_grey"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:tooltipText="@string/service_title"
+            app:layout_constraintTop_toTopOf="@id/txtPressureType"
+            app:layout_constraintBottom_toBottomOf="@id/txtPressureType"
+            app:layout_constraintStart_toEndOf="@id/txtPressureType"
+            app:on="false" />
+
         <TextView
             android:id="@+id/desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_15sdp"
             android:fontFamily="@font/avenir_next_lt_pro_medium"
             android:text="NOTE : Please Restart the Ventilator after changing the ventilator type"
             android:textAllCaps="true"
@@ -245,7 +314,7 @@
             android:textSize="@dimen/_5sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btnEnableRollOverModifier" />
+            app:layout_constraintTop_toBottomOf="@id/txtPressureScale" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

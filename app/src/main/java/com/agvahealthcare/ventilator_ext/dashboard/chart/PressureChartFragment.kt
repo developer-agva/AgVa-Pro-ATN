@@ -73,7 +73,7 @@ class PressureChartFragment : GraphFragment() {
     private var maxValue: Int? = 0
     private var prefManager: PreferenceManager? = null
     var horizontalLineAnnotation: HorizontalLineAnnotation? = null
-    var annotationLabel:AnnotationLabel? = null
+    var annotationLabel: AnnotationLabel? = null
     var horizontalLineAnnotation1: HorizontalLineAnnotation? = null
     val titleStyle = FontStyle(14.0f, ColorUtil.White)
     private var mDashBoardViewModel: DashBoardViewModel? = null
@@ -98,7 +98,8 @@ class PressureChartFragment : GraphFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         prefManager = PreferenceManager(requireContext())
-        mDashBoardViewModel = ViewModelProvider(requireActivity()).get(DashBoardViewModel::class.java)
+        mDashBoardViewModel =
+            ViewModelProvider(requireActivity()).get(DashBoardViewModel::class.java)
 
         minValue = arguments?.getInt(KEY_MIN_VALUE_VIEW)
         maxValue = arguments?.getInt(KEY_MAX_VALUE_VIEW)
@@ -110,10 +111,12 @@ class PressureChartFragment : GraphFragment() {
             requireContext(),
             Configs.ChartType.PressureChart_Type
         ).first
-        maxRange = Configs.getRangeOfYAxisChart(
-            requireContext(),
-            Configs.ChartType.PressureChart_Type
-        ).second
+        maxRange =
+            if (prefManager?.readPressurePaddingStatus() == true) MIN_RANGE_PRESSURE_ADULT_PEDIA_SECOND
+            else Configs.getRangeOfYAxisChart(
+                requireContext(),
+                Configs.ChartType.PressureChart_Type
+            ).second
 
         horizontalLineAnnotation = HorizontalLineAnnotation(requireContext()).apply {
             this.xAxisId = "OLD"
@@ -133,7 +136,9 @@ class PressureChartFragment : GraphFragment() {
 
         txtMaxLabel.setOnClickListener {
             Log.i("value_Adawd", xMaxRangeGlobal.toString())
-            if (xMaxRangeGlobal == 12.9) (requireActivity() as DashBoardActivity).sendCommandForChangeXAxisGraph("2")
+            if (xMaxRangeGlobal == 12.9) (requireActivity() as DashBoardActivity).sendCommandForChangeXAxisGraph(
+                "2"
+            )
             else (requireActivity() as DashBoardActivity).sendCommandForChangeXAxisGraph("1")
         }
 
@@ -222,7 +227,9 @@ class PressureChartFragment : GraphFragment() {
 //            .build()
 
         val rs2: IRenderableSeries = sciChartBuilder.newLineSeries()
-            .withStrokeStyle(sciChartBuilder.newPen().withColor(ColorUtil.White).withThickness(3f).build())
+            .withStrokeStyle(
+                sciChartBuilder.newPen().withColor(ColorUtil.White).withThickness(3f).build()
+            )
 //            .withAreaFillColor(ColorUtil.Wheat)
             .withDataSeries(dataSeries1)
             .withSeriesInfoProvider(CustomSeriesInfoProvider(GraphType.PRESSURE))
@@ -241,8 +248,8 @@ class PressureChartFragment : GraphFragment() {
             Collections.addAll(chartSurface.xAxes, xPRimaryAxis)
             Collections.addAll(chartSurface.xAxes, xsecondaryAxis)
             Collections.addAll(chartSurface.yAxes, yAxis)
-            Collections.addAll(chartSurface.renderableSeries,  rs2)
-            Collections.addAll(chartSurface.annotations,horizontalLineAnnotation)
+            Collections.addAll(chartSurface.renderableSeries, rs2)
+            Collections.addAll(chartSurface.annotations, horizontalLineAnnotation)
 //            Collections.addAll(chartSurface.annotations,horizontalLineAnnotation1)
 //            chartSurface.annotations.add(horizontalLineAnnotation)
 //            Collections.addAll(horizontalLineAnnotation?.annotationLabels,annotationLabel)
@@ -264,21 +271,34 @@ class PressureChartFragment : GraphFragment() {
 
                 if (prefManager?.readCurrentUid() != Configs.PatientProfile.TYPE_NEONAT) {
 
-                    if (y < 25.0) {
-                        maxRange = MIN_RANGE_PRESSURE_ADULT_PEDIA
+                    if (prefManager?.readPressurePaddingStatus() == true) {
+                        if (y < 45.0) {
+                            maxRange = MIN_RANGE_PRESSURE_ADULT_PEDIA_SECOND
+                            setTimePeekValue(setXToChangeGraphDown(x))
+                        } else {
+                            maxRange = MAX_RANGE_PRESSURE_ADULT_PEDIA
 
-                        setTimePeekValue(setXToChangeGraphDown(x))
-                    } else {
-                        maxRange = MAX_RANGE_PRESSURE_ADULT_PEDIA
+                            chartSurface.yAxes.default.visibleRange =
+                                DoubleRange(minRange, maxRange)
+                            timePeek = -1
+                        }
+                    }else{
+                        if (y < 25.0) {
+                            maxRange = MIN_RANGE_PRESSURE_ADULT_PEDIA
 
-                        chartSurface.yAxes.default.visibleRange = DoubleRange(minRange, maxRange)
-                        timePeek = -1
+                            setTimePeekValue(setXToChangeGraphDown(x))
+                        } else {
+                            maxRange = MAX_RANGE_PRESSURE_ADULT_PEDIA
+
+                            chartSurface.yAxes.default.visibleRange =
+                                DoubleRange(minRange, maxRange)
+                            timePeek = -1
+                        }
                     }
                 }
             }
         }
     }
-
 
     private fun setXToChangeGraphDown(x: Int): Int {
         if (x + 340 > 350) {
@@ -287,13 +307,11 @@ class PressureChartFragment : GraphFragment() {
         return x + 340
     }
 
-
     private fun setTimePeekValue(value: Int) {
         if (timePeek == -1) {
             timePeek = value
         }
     }
-
 
     // modified at 20 jan 2023
     fun addEntry(x: Int, y: Float, trigger: String?) {
@@ -312,7 +330,7 @@ class PressureChartFragment : GraphFragment() {
         changeGraphRangeAtRunTime(y, xAxis, trigger)
 
 
-        if(xValuePatientTriggerList.contains(xAxis.toDouble())){
+        if (xValuePatientTriggerList.contains(xAxis.toDouble())) {
             xValuePatientTriggerList.remove(xAxis.toDouble())
         }
 
@@ -328,16 +346,16 @@ class PressureChartFragment : GraphFragment() {
         if (isPatientTrigger) xValuePatientTriggerList.add(xAxis.toDouble())
 
         // RM Chart
-            if (whichTrace == TraceArc.TraceA) {
-                if (isFirstTime) dataSeries1.updateXyAt(xAxis,xAxis,Float.NaN)
-                else dataSeries1.append(xAxis, Float.NaN)
+        if (whichTrace == TraceArc.TraceA) {
+            if (isFirstTime) dataSeries1.updateXyAt(xAxis, xAxis, Float.NaN)
+            else dataSeries1.append(xAxis, Float.NaN)
+        } else {
+            if (isFirstTime) {
+                dataSeries1.updateXyAt(xAxis, xAxis, y)
             } else {
-                if (isFirstTime) {
-                    dataSeries1.updateXyAt(xAxis, xAxis, y)
-                } else {
-                    dataSeries1.append(xAxis, y)
-                }
+                dataSeries1.append(xAxis, y)
             }
+        }
 
         if (xAxis % GRAPH_THRESHOLD == 0) {
             whichTrace = if (whichTrace == TraceArc.TraceA) TraceArc.TraceB else TraceArc.TraceA
@@ -345,11 +363,11 @@ class PressureChartFragment : GraphFragment() {
     }
 
     // RM scichart
-    fun setRollOver(){
+    fun setRollOver() {
         modifier.setRolloverAt(currentXValue, currentYValue)
     }
 
-    fun removeRollover(){
+    fun removeRollover() {
         modifier.removeRolloverAt(currentXValue, currentYValue)
     }
 

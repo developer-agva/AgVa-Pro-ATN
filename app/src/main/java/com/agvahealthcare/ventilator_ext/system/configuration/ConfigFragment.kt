@@ -263,8 +263,8 @@ class ConfigFragment : Fragment() {
             toggle_pressure_padding.labelOff = "$MIN_RANGE_PRESSURE_ADULT_PEDIA - $MAX_RANGE_PRESSURE_ADULT_PEDIA"
             toggle_pressure_padding.isOn = readPressurePaddingStatus()
 
-            toggle_pressure_type.labelOn = "FILLED"
-            toggle_pressure_type.labelOff = "UNFILLED"
+            toggle_pressure_type.labelOn = "FILL"
+            toggle_pressure_type.labelOff = "STROKE"
             toggle_pressure_type.isOn = readPressureGraphTypeStatus()
         }
     }

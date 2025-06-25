@@ -18,7 +18,6 @@ import com.agvahealthcare.ventilator_ext.utility.ToastFactory
 import kotlinx.android.synthetic.main.fragment_h_l7_communication.btnSendData
 import kotlinx.android.synthetic.main.fragment_h_l7_communication.etptDOB
 import kotlinx.android.synthetic.main.fragment_h_l7_communication.etptName
-import kotlinx.android.synthetic.main.fragment_h_l7_communication.etptUHID
 import kotlinx.android.synthetic.main.fragment_h_l7_communication.ptGenderValue
 import kotlinx.android.synthetic.main.fragment_h_l7_communication.spHL7CommValue
 import kotlinx.android.synthetic.main.fragment_h_l7_communication.spUHID

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".graph.divide_trends.QuadTrendsFragment"
+    tools:ignore="MissingDefaultResource">
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/containerTrendsQuadGraph1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/guidelineTop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.30" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/containerTrendsQuadGraph3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginEnd="@dimen/_1sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/containerTrendsQuadGraph4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guidelineTop" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/containerTrendsQuadGraph4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/_1sdp"
+        android:layout_marginTop="@dimen/_2sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/containerTrendsQuadGraph3"
+        app:layout_constraintTop_toBottomOf="@id/guidelineTop" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/moduleSwitchLayout"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_14sdp"
+        android:layout_marginTop="@dimen/_1sdp"
+        android:layout_marginStart="@dimen/_1sdp"
+        android:background="@drawable/background_darkgrey_border_none"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/containerTrendsQuadGraph3" />
+
+    <TextView
+        android:id="@+id/moduleSwitchText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/arial_regular"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_6sdp"
+        app:layout_constraintBottom_toBottomOf="@id/moduleSwitchLayout"
+        app:layout_constraintEnd_toEndOf="@id/moduleSwitchLayout"
+        app:layout_constraintStart_toStartOf="@id/moduleSwitchLayout"
+        app:layout_constraintTop_toTopOf="@id/moduleSwitchLayout"
+        android:text="OXYGEN" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/moduleRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/moduleSwitchLayout"
+        app:layout_constraintEnd_toEndOf="@id/moduleSwitchLayout"
+        app:layout_constraintTop_toBottomOf="@id/moduleSwitchLayout" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/trendDurationLayout"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="@dimen/_14sdp"
+        android:layout_marginTop="@dimen/_1sdp"
+        android:layout_marginStart="@dimen/_2sdp"
+        android:background="@drawable/background_darkgrey_border_none"
+        app:layout_constraintStart_toEndOf="@id/moduleSwitchLayout"
+        app:layout_constraintTop_toTopOf="@id/containerTrendsQuadGraph3" />
+
+    <TextView
+        android:id="@+id/trendDurationText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/arial_regular"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_6sdp"
+        app:layout_constraintBottom_toBottomOf="@id/trendDurationLayout"
+        app:layout_constraintEnd_toEndOf="@id/trendDurationLayout"
+        app:layout_constraintStart_toStartOf="@id/trendDurationLayout"
+        app:layout_constraintTop_toTopOf="@id/trendDurationLayout"
+        android:text="1 hour" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/trendsRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/trendDurationLayout"
+        app:layout_constraintEnd_toEndOf="@id/trendDurationLayout"
+        app:layout_constraintTop_toBottomOf="@id/trendDurationLayout" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

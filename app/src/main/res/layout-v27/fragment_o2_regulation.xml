@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".system.o2Regulation.O2RegulationFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mainViewPanelO2"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/focusLayoutO2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/background_transparent_border_yellow"
+            android:translationZ="@dimen/_1sdp"
+            tools:ignore="MissingConstraints" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05" />
+
+        <TextView
+            android:id="@+id/txtHeading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:fontFamily="@font/avenir_next_lt_pro_medium"
+            android:text="@string/oxygen_reg"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_10sdp"
+            app:layout_constraintStart_toStartOf="@id/guideline0"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.35" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.65" />
+
+        <TextView
+            android:id="@+id/txtO2V"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="Process"
+            android:textSize="@dimen/_7sdp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/avenir_next_lt_pro_medium"
+            app:layout_constraintStart_toStartOf="@id/guideline1"
+            app:layout_constraintTop_toBottomOf="@id/txtHeading" />
+
+        <TextView
+            android:id="@+id/txtO2VValue1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_7sdp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/avenir_next_lt_pro_medium"
+            app:layout_constraintBottom_toBottomOf="@id/txtO2V"
+            app:layout_constraintStart_toStartOf="@id/guideline3"
+            app:layout_constraintTop_toTopOf="@+id/txtO2V"
+            android:text="Value" />
+
+        <TextView
+            android:id="@+id/txtO2VValue2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_7sdp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/avenir_next_lt_pro_medium"
+            app:layout_constraintBottom_toBottomOf="@id/txtO2VValue1"
+            app:layout_constraintStart_toStartOf="@id/guideline4"
+            app:layout_constraintTop_toTopOf="@+id/txtO2VValue1"
+            android:text="Unit" />
+
+        <TextView
+            android:id="@+id/txtO2P"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="O₂ PRESSURE"
+            android:theme="@style/subheading_text_style"
+            app:layout_constraintStart_toStartOf="@id/guideline1"
+            app:layout_constraintTop_toBottomOf="@id/txtO2V" />
+
+        <TextView
+            android:id="@+id/txtO2PValue1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/subheading_text_style"
+            app:layout_constraintBottom_toBottomOf="@id/txtO2P"
+            app:layout_constraintStart_toStartOf="@id/guideline3"
+            app:layout_constraintTop_toTopOf="@+id/txtO2P"
+            tools:text="" />
+
+        <TextView
+            android:id="@+id/txtO2PValue2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/subheading_text_style"
+            app:layout_constraintBottom_toBottomOf="@id/txtO2PValue1"
+            app:layout_constraintStart_toStartOf="@id/guideline4"
+            app:layout_constraintTop_toTopOf="@+id/txtO2PValue1"
+            android:text="bar" />
+
+        <TextView
+            android:id="@+id/txtO2DelP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="ΔPRESSURE"
+            android:theme="@style/subheading_text_style"
+            app:layout_constraintStart_toStartOf="@id/guideline1"
+            app:layout_constraintTop_toBottomOf="@id/txtO2P" />
+
+        <TextView
+            android:id="@+id/txtO2DelPValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/subheading_text_style"
+            app:layout_constraintBottom_toBottomOf="@id/txtO2DelP"
+            app:layout_constraintStart_toStartOf="@id/guideline3"
+            app:layout_constraintTop_toTopOf="@+id/txtO2DelP"
+            tools:text="value1" />
+
+        <TextView
+            android:id="@+id/txtDelPValue2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/subheading_text_style"
+            app:layout_constraintBottom_toBottomOf="@id/txtO2DelPValue"
+            app:layout_constraintStart_toStartOf="@id/guideline4"
+            app:layout_constraintTop_toTopOf="@+id/txtO2DelP"
+            android:text="bar" />
+
+        <include
+            android:id="@+id/includeButtonRelease"
+            layout="@layout/content_button_center_layout"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintStart_toStartOf="@id/guideline1"
+            app:layout_constraintTop_toBottomOf="@id/txtO2DelP" />
+
+        <TextView
+            android:id="@+id/txtCheckPoint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/subheading_text_style"
+            android:layout_marginTop="@dimen/_20sdp"
+            app:layout_constraintTop_toBottomOf="@id/includeButtonRelease"
+            app:layout_constraintStart_toStartOf="@id/guideline1"
+            android:text="O2 Calibration Check Point" />
+
+        <include
+            android:id="@+id/includeButtonCheckPoint"
+            layout="@layout/content_button_center_layout"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintStart_toStartOf="@id/guideline1"
+            app:layout_constraintTop_toBottomOf="@id/txtCheckPoint" />
+
+        <include
+            android:id="@+id/includeButtonCheckPointStart"
+            layout="@layout/content_button_center_layout"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintStart_toStartOf="@id/guideline3"
+            app:layout_constraintTop_toBottomOf="@id/txtCheckPoint" />
+
+        <TextView
+            android:id="@+id/txtCheckpointValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/subheading_text_style"
+            app:layout_constraintStart_toStartOf="@id/guideline4"
+            app:layout_constraintTop_toTopOf="@+id/includeButtonCheckPoint"
+            app:layout_constraintBottom_toBottomOf="@+id/includeButtonCheckPoint"
+            android:text="" />
+
+
+        <include
+            android:id="@+id/includeButtonCalibrate"
+            layout="@layout/content_button_center_layout"
+            android:layout_width="@dimen/_33sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintStart_toStartOf="@id/guideline3"
+            app:layout_constraintTop_toTopOf="@id/includeButtonRelease" />
+
+        <include
+            android:id="@+id/includeButtonHold"
+            layout="@layout/content_button_center_layout"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintStart_toStartOf="@id/guideline4"
+            app:layout_constraintTop_toBottomOf="@id/txtO2DelP" />
+
+
+        <LinearLayout
+            android:id="@+id/holdLayout"
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_45sdp"
+            android:background="@color/grey"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/includeButtonCheckPointStart"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/includeButtonCheckPointStart"
+            app:layout_constraintTop_toTopOf="@id/includeButtonCheckPointStart">
+
+            <TextView
+                android:id="@+id/txtTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="ΔPRESSURE"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/_6sdp" />
+
+            <TextView
+                android:id="@+id/txtDelPressureHold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/_15sdp"
+                tools:text="@string/default_leak_factor" />
+
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/txtWait"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_8sdp"
+        android:visibility="gone"
+        android:fontFamily="@font/avenir_next_lt_pro_medium"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Please Wait...." />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -594,16 +594,15 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
         Log.i("USB_CHECK", "usb service onStartCommand Called");
         preferenceManager.setServiceStatus(true);
 
-        Notification notification = new NotificationCompat.Builder(this)
-                .setContentTitle("AgVa Service")
-                .setContentText("Services Started")
-                .build();
-        startForeground(1, notification);
+//        Notification notification = new NotificationCompat.Builder(this)
+//                .setContentTitle("AgVa Service")
+//                .setContentText("Services Started")
+//                .build();
+//        startForeground(1, notification);
 
         Log.i("USB_SERVICE_STATUS", "Started service onStartCommand");
         return START_STICKY;
     }
-
 
     @Override
     public void onDestroy() {

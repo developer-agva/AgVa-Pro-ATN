@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="95dp"
+    android:layout_height="wrap_content"
+    android:id="@+id/toggleLayout"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvBackup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:alpha="0.6"
+        android:text="BACKUP"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_6sdp" />
+
+    <ToggleButton
+        android:id="@+id/toggleButton"
+        style="@style/toggleButton"
+        android:layout_marginTop="@dimen/_3sdp"
+        android:layout_width="match_parent"
+        android:layout_height="95dp"
+        android:background="@drawable/toggle_bg"
+        android:gravity="center" />
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>
+

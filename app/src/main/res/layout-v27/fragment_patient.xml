@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/background_light_grey_border_grey">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/layoutPanelGender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:gravity="center_horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/layoutPanel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <include
+            android:id="@+id/layoutMale"
+            layout="@layout/content_male_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="265dp"
+            android:layout_height="66dp"
+            android:background="@color/light_grey"
+            app:hintTextColor="@color/black"
+            app:prefixText="UHID : "
+            app:prefixTextColor="@color/black"
+            android:hint=""
+            app:prefixTextAppearance="@style/prefix_style"
+            app:hintAnimationEnabled="false"
+            app:hintEnabled="false">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/et_uhid"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@color/uhid_grey"
+                android:cursorVisible="false"
+                android:gravity="top"
+                android:imeOptions="actionDone"
+                android:theme="@style/button_normal_style"
+                android:hint="ENTER UHID"
+                android:inputType="textNoSuggestions|textCapCharacters"
+                android:lines="1"
+                android:maxLength="10"
+                android:maxLines="1"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:textCursorDrawable="@drawable/color_cursor"
+                android:textSize="@dimen/_6sdp"
+                android:textStyle="bold" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <include
+            android:id="@+id/layoutFemale"
+            layout="@layout/content_female_layout"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="@dimen/_2sdp"
+            android:layout_height="wrap_content" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/layoutPanel"
+        app:layout_constraintTop_toBottomOf="@+id/layoutPanelGender">
+
+        <TextView
+            android:id="@+id/patientInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="10dp"
+            android:textColor="@color/black"
+            android:text="Patient Type : "
+            android:textSize="18dp">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/patientType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/avenir_next_lt_pro_medium"
+            android:text="N/A"
+            android:textColor="@color/black"
+            android:textSize="18dp">
+
+        </TextView>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/layoutPanel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/layoutPanelVentilationDetail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutPanelGender">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/layoutPanelPatientHeight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:gravity="center"
+                android:text="@string/hint_patientHeight"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:theme="@style/subheading_text_style" />
+
+            <include
+                android:id="@+id/includeProgressHeight"
+                layout="@layout/text_knob_view"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_minus5sdp"
+                android:gravity="center"
+                android:text="cms"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:theme="@style/subheading_text_style" />
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/layoutPanelPatientAge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="17sp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txtAge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:gravity="center"
+                tools:text="@string/hint_patientAge"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:theme="@style/subheading_text_style" />
+
+
+            <include
+                android:id="@+id/includeProgressAge"
+                layout="@layout/text_knob_view"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txtYears"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_minus5sdp"
+                android:gravity="center"
+                tools:text="years"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:theme="@style/subheading_text_style" />
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/layoutPanelPatientWeight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+
+            android:orientation="vertical">
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:gravity="center"
+                android:text="@string/hint_patientWeight"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:theme="@style/subheading_text_style" />
+
+            <include
+
+                android:id="@+id/includeProgressWeight"
+                layout="@layout/text_knob_view"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_minus5sdp"
+                android:gravity="center"
+                android:text="kg"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:theme="@style/subheading_text_style" />
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/layoutPanelVentilationDetail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutPanel">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewVentilationTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginEnd="40dp"
+            android:text="@string/hint_ventilation_time"
+            android:theme="@style/subheading_text_style" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textViewTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"
+            android:text="00:00:000"
+            android:textSize="@dimen/_6sdp"
+            android:theme="@style/subheading_text_style" />
+        <include
+            android:id="@+id/includeButtonReset"
+            layout="@layout/content_button_layout"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/_15sdp"
+            android:layout_height="wrap_content" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="45dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.constraintlayout.widget.ConstraintLayout>

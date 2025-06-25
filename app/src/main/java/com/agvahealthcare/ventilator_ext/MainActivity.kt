@@ -4120,7 +4120,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             // ContextCompat.getDrawable(this, R.drawable.progresscircle)
             (it.param_progress_bar as? CircularProgressIndicator)?.background =
                 ContextCompat.getDrawable(this, R.drawable.progresscircle)
-            (it?.param_progress_bar as? CircularProgressIndicator)?.progressColor =
+            (it.param_progress_bar as? CircularProgressIndicator)?.progressColor =
                 ContextCompat.getColor(this, R.color.racing_green)
             (it?.param_progress_bar as? CircularProgressIndicator)?.dotColor =
                 ContextCompat.getColor(this, R.color.racing_green)

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".system.debug.DebugFragment">
+
+    <TextView
+        android:id="@+id/testDebugText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:fontFamily="@font/avenir_next_lt_pro_bold"
+        android:text="System Debug"
+        android:textAllCaps="true"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_12sdp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/debugView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:background="@color/light_grey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/testDebugText" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonVenti"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_15sdp"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@drawable/background_green_border"
+        android:fontFamily="@font/avenir_next_lt_pro_regular"
+        android:text="Venti Data"
+        android:textAllCaps="true"
+        android:paddingHorizontal="@dimen/_5sdp"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_7sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/debugView" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonHid"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_15sdp"
+        android:layout_marginStart="@dimen/_7sdp"
+        android:background="@drawable/background_primary_btn_rounded"
+        android:fontFamily="@font/avenir_next_lt_pro_regular"
+        android:text="KNOB DATA"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_7sdp"
+        android:paddingHorizontal="@dimen/_5sdp"
+        app:layout_constraintBottom_toBottomOf="@id/buttonVenti"
+        app:layout_constraintStart_toEndOf="@id/buttonVenti"
+        app:layout_constraintTop_toTopOf="@id/buttonVenti" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonDevelopersEvents"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_15sdp"
+        android:layout_marginStart="@dimen/_7sdp"
+        android:background="@drawable/background_primary_btn_rounded"
+        android:fontFamily="@font/avenir_next_lt_pro_regular"
+        android:text="DEBUG-EVENTS"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_7sdp"
+        android:paddingHorizontal="@dimen/_5sdp"
+        app:layout_constraintBottom_toBottomOf="@id/buttonVenti"
+        app:layout_constraintStart_toEndOf="@id/buttonHid"
+        app:layout_constraintTop_toTopOf="@id/buttonVenti" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonPermissions"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_15sdp"
+        android:layout_marginStart="@dimen/_7sdp"
+        android:paddingHorizontal="@dimen/_5sdp"
+        android:background="@drawable/background_primary_btn_rounded"
+        android:fontFamily="@font/avenir_next_lt_pro_regular"
+        android:text="PERMISSIONS"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_7sdp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/buttonVenti"
+        app:layout_constraintStart_toEndOf="@id/buttonDevelopersEvents"
+        app:layout_constraintTop_toTopOf="@id/buttonVenti" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonToReboot"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_15sdp"
+        android:paddingHorizontal="@dimen/_5sdp"
+        android:background="@drawable/background_primary_btn_rounded_red"
+        android:fontFamily="@font/avenir_next_lt_pro_medium"
+        android:text="Reboot Application"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_7sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        app:layout_constraintBottom_toBottomOf="@id/buttonVenti"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/buttonVenti" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/debugLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/black"
+        android:layout_marginVertical="@dimen/_7sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/buttonVenti"
+        app:layout_constraintTop_toBottomOf="@id/buttonVenti">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/debugRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/_3sdp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

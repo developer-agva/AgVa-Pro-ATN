@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".system.services.ServiceFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/mainLayout">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.04" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.02" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/includeServiccStaticLayout"
+            android:layout_width="0dp"
+            android:layout_marginTop="@dimen/_25sdp"
+            android:layout_height="40dp"
+            app:layout_constraintStart_toStartOf="@id/guideline0"
+            app:layout_constraintTop_toBottomOf="@id/txtHeading"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="#eeeeee">
+
+            <TextView
+                android:id="@+id/txtTicketNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_5sdp"
+                android:text="Ticket No"
+                android:textColor="@color/black"
+                android:fontFamily="@font/arial_regular"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/guideline00"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
+            <TextView
+                android:id="@+id/txtDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_5sdp"
+                android:text="Date"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:textColor="@color/black"
+                android:fontFamily="@font/arial_regular"
+                app:layout_constraintStart_toStartOf="@id/guideline00"
+                app:layout_constraintEnd_toStartOf="@id/guideline01"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/txtIssue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_5sdp"
+                android:text="Issue"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:fontFamily="@font/arial_regular"
+                app:layout_constraintStart_toStartOf="@id/guideline01"
+                app:layout_constraintEnd_toStartOf="@id/guideline02"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/txtStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_5sdp"
+                android:text="Status"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:fontFamily="@font/arial_regular"
+                app:layout_constraintStart_toStartOf="@id/guideline02"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline00"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.13" />
+
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.30" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline02"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.75" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <!--        <include-->
+        <!--            android:id="@+id/includeButtonAddService"-->
+        <!--            layout="@layout/content_button_center_layout"-->
+        <!--            android:layout_width="@dimen/_70sdp"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:foreground="?attr/selectableItemBackgroundBorderless"-->
+        <!--            app:layout_constraintStart_toStartOf="@id/guideline0"-->
+        <!--            app:layout_constraintTop_toBottomOf="@id/guideline1" />-->
+
+        <TextView
+            android:id="@+id/tvAssist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Emergency Helpline : +91 - 73 30 40 50 60 "
+            android:textSize="@dimen/_7sdp"
+            android:textStyle="bold"
+            android:textAllCaps="true"
+            android:textColor="@color/ack_red"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:fontFamily="@font/avenir_next_lt_pro_medium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guideline1"
+            />
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/layoutCall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:layout_marginTop="@dimen/_3sdp"
+            app:layout_constraintStart_toStartOf="@id/tvAssist"
+            app:layout_constraintEnd_toEndOf="@id/tvAssist"
+            app:layout_constraintTop_toBottomOf="@id/tvAssist"
+            >
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:textColor="@color/greybackground"
+                android:textStyle="bold"
+                android:text=" +91 - 73 30 40 50 60"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textSize="@dimen/_5sdp"
+                android:fontFamily="@font/avenir_next_lt_pro_regular"
+                />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/_3sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layoutCall">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Scan QR\nfor \nsupport"
+                android:textAllCaps="true"
+                android:textStyle="bold"
+                android:layout_gravity="center|center_vertical"
+                android:textSize="@dimen/_7sdp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/avenir_next_lt_pro_regular"/>
+            <ImageView
+                android:id="@+id/qrCode"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:visibility="visible"
+                android:layout_marginEnd="10dp"
+                />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/includeButtonAddService"
+            android:layout_width="@dimen/_70sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:background="@color/preCalib_amber"
+            app:layout_constraintStart_toStartOf="@id/guideline0"
+            app:layout_constraintTop_toBottomOf="@id/guideline1">
+
+            <TextView
+                android:id="@+id/txtRaiseButtonName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_6sdp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/avenir_next_lt_pro_medium"
+                android:text="@string/raise_request"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/txtHeading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:fontFamily="@font/avenir_next_lt_pro_medium"
+            android:text="@string/old_services"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_10sdp"
+            app:layout_constraintStart_toStartOf="@id/guideline0"
+            app:layout_constraintTop_toBottomOf="@id/includeButtonAddService" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewService"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:fastScrollEnabled="true"
+            android:scrollbarStyle="insideInset"
+            android:scrollbars="vertical"
+            android:overScrollMode="never"
+            android:splitMotionEvents="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/guideline0"
+            app:layout_constraintTop_toBottomOf="@id/includeServiccStaticLayout"
+            android:verticalScrollbarPosition="right"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/addServiceLayout">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline0Add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.04" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintGuide_percent="0.50"
+            android:orientation="vertical"
+            android:id="@+id/guideLineForIssue"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline1Add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.96" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/issueRecyclerView"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/_8sdp"
+            app:layout_constraintBottom_toBottomOf="@id/DepartmentLayout"
+            app:layout_constraintStart_toStartOf="@id/oulineLayoutService2"
+            app:layout_constraintEnd_toEndOf="@id/oulineLayoutService2"
+            app:layout_constraintTop_toTopOf="@id/oulineLayoutService2"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/oulineLayoutService1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="@dimen/_7sdp"
+            android:layout_marginVertical="@dimen/_10sdp"
+            android:background="@drawable/background_green_stroke"
+            app:layout_constraintBottom_toTopOf="@id/includeButtonRaiseRequest"
+            app:layout_constraintEnd_toStartOf="@id/guideLineForIssue"
+            app:layout_constraintHorizontal_bias="0.474"
+            app:layout_constraintStart_toStartOf="@id/guideline0Add"
+            app:layout_constraintTop_toBottomOf="@id/MainTopBar" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/oulineLayoutService2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="@dimen/_7sdp"
+            android:background="@drawable/background_green_stroke"
+            app:layout_constraintStart_toEndOf="@id/guideLineForIssue"
+            app:layout_constraintEnd_toStartOf="@id/guideline1Add"
+            app:layout_constraintTop_toTopOf="@id/oulineLayoutService1"
+            app:layout_constraintBottom_toBottomOf="@id/oulineLayoutService1"/>
+
+
+        <LinearLayout
+            android:id="@+id/MainTopBar"
+            android:layout_width="match_parent"
+            android:visibility="visible"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            >
+
+            <RelativeLayout
+                android:id="@+id/topBar"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:visibility="visible"
+                android:background="@color/preCalib_amber">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvMainTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="3dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="@string/service_title"
+                    android:textAllCaps="true"
+                    android:textColor="@color/light_grey"
+                    android:textSize="25dp"
+                    android:textStyle="normal" />
+
+                <ImageView
+                    android:id="@+id/backBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    app:srcCompat="@drawable/back_button_calib" />
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/nameLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="wrap_content"
+            app:hintTextColor="@color/green"
+            app:hintTextAppearance="@style/TextAppearance.AppTheme.TextInputLayout.HintTextAlt"
+            app:boxStrokeColor="@color/green"
+            android:layout_marginTop="@dimen/_10sdp"
+            app:layout_constraintStart_toStartOf="@id/oulineLayoutService1"
+            app:layout_constraintEnd_toStartOf="@id/phoneLayout"
+            app:layout_constraintTop_toTopOf="@id/oulineLayoutService1"
+            android:hint="Name">
+
+            <!--this is the actual edit text which takes the input-->
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/nameET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:inputType="textCapWords"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/phoneLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="wrap_content"
+            app:hintTextColor="@color/green"
+            app:hintTextAppearance="@style/TextAppearance.AppTheme.TextInputLayout.HintTextAlt"
+            app:boxStrokeColor="@color/green"
+            app:layout_constraintStart_toEndOf="@id/nameLayout"
+            app:layout_constraintTop_toTopOf="@id/nameLayout"
+            app:layout_constraintBottom_toBottomOf="@id/nameLayout"
+            app:layout_constraintEnd_toEndOf="@id/oulineLayoutService1"
+            android:hint="Contact No">
+
+            <!--this is the actual edit text which takes the input-->
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/contactNoET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:inputType="number"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/emailLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="wrap_content"
+            app:hintTextColor="@color/green"
+            app:hintTextAppearance="@style/TextAppearance.AppTheme.TextInputLayout.HintTextAlt"
+            app:boxStrokeColor="@color/green"
+            android:layout_marginTop="@dimen/_2sdp"
+            app:layout_constraintStart_toStartOf="@id/oulineLayoutService1"
+            app:layout_constraintTop_toBottomOf="@id/phoneLayout"
+            app:layout_constraintEnd_toStartOf="@id/HospitalNameLayout"
+            android:hint="Email">
+
+            <!--this is the actual edit text which takes the input-->
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/emailET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:inputType="textEmailAddress"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/HospitalNameLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="wrap_content"
+            app:hintTextColor="@color/green"
+            app:hintTextAppearance="@style/TextAppearance.AppTheme.TextInputLayout.HintTextAlt"
+            app:boxStrokeColor="@color/green"
+            android:enabled="false"
+            android:clickable="false"
+            app:layout_constraintStart_toEndOf="@id/emailLayout"
+            app:layout_constraintTop_toTopOf="@id/emailLayout"
+            app:layout_constraintEnd_toEndOf="@id/oulineLayoutService1"
+            android:hint="Hospital Name">
+
+            <!--this is the actual edit text which takes the input-->
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/hospitalET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:enabled="false"
+                android:clickable="false"
+                android:textColorHint="@color/black"
+                android:inputType="none"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/WardLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="wrap_content"
+            app:hintTextColor="@color/green"
+            app:hintTextAppearance="@style/TextAppearance.AppTheme.TextInputLayout.HintTextAlt"
+            app:boxStrokeColor="@color/green"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:textColorHint="@color/black"
+            app:layout_constraintStart_toStartOf="@id/oulineLayoutService1"
+            app:layout_constraintTop_toBottomOf="@id/HospitalNameLayout"
+            app:layout_constraintEnd_toStartOf="@id/DepartmentLayout"
+            android:hint="Ward No">
+
+            <!--this is the actual edit text which takes the input-->
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/wardET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:inputType="number"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/DepartmentLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="wrap_content"
+            app:hintTextColor="@color/green"
+            app:hintTextAppearance="@style/TextAppearance.AppTheme.TextInputLayout.HintTextAlt"
+            app:boxStrokeColor="@color/green"
+            android:clickable="false"
+            app:layout_constraintStart_toEndOf="@id/WardLayout"
+            app:layout_constraintTop_toTopOf="@id/WardLayout"
+            app:layout_constraintEnd_toEndOf="@id/oulineLayoutService1"
+            android:hint="Department">
+
+            <!--this is the actual edit text which takes the input-->
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/departmentET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:inputType="textCapWords"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/includeButtonRaiseRequest"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:background="@color/preCalib_amber"
+            app:layout_constraintStart_toStartOf="@id/oulineLayoutService1"
+            app:layout_constraintEnd_toEndOf="@id/oulineLayoutService2"
+            android:layout_marginTop="@dimen/_20sdp"
+            app:layout_constraintTop_toBottomOf="@id/DepartmentLayout">
+
+            <TextView
+                android:id="@+id/txtRaiseServiceButtonName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_6sdp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/avenir_next_lt_pro_medium"
+                android:text="@string/add_service"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

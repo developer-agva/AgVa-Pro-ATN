@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".system.configuration.ConfigFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/titleType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:fontFamily="@font/arial_bold"
+            android:text="Select Ventilator Type :"
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_10sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btnATN"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:backgroundTint="@color/light_grey"
+            android:text="Adult to Neonate"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="@id/titleType"
+            app:layout_constraintTop_toBottomOf="@id/titleType" />
+
+        <Button
+            android:id="@+id/btnATP"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:backgroundTint="@color/light_grey"
+            android:text="Adult to Pediatric"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toEndOf="@id/btnATN"
+            app:layout_constraintTop_toTopOf="@id/btnATN" />
+
+        <Button
+            android:id="@+id/btnNeo"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:backgroundTint="@color/light_grey"
+            android:text="ONLY NEOnate"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toEndOf="@id/btnATP"
+            app:layout_constraintTop_toTopOf="@id/btnATP" />
+
+        <View
+            android:id="@+id/view1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_2sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:background="@color/black"
+            app:layout_constraintTop_toBottomOf="@id/btnNeo" />
+
+        <TextView
+            android:id="@+id/titleCalib"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:fontFamily="@font/arial_bold"
+            android:text="Sensor Calibrations :"
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_10sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view1" />
+
+        <Button
+            android:id="@+id/btnOxygen"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:backgroundTint="@color/light_grey"
+            android:text="Calibrate Oxygen"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="@id/titleCalib"
+            app:layout_constraintTop_toBottomOf="@id/titleCalib" />
+
+        <Button
+            android:id="@+id/btnExhaleValve"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:backgroundTint="@color/light_grey"
+            android:text="Calibrate Exhale Valve"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toEndOf="@id/btnOxygen"
+            app:layout_constraintTop_toTopOf="@id/btnOxygen" />
+
+        <Button
+            android:id="@+id/btnExpFlow"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:backgroundTint="@color/light_grey"
+            android:text="Calibrate Expiratory Flow"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toEndOf="@id/btnExhaleValve"
+            app:layout_constraintTop_toTopOf="@id/btnExhaleValve" />
+
+        <Button
+            android:id="@+id/btnTurbine"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:backgroundTint="@color/light_grey"
+            android:text="Calibrate Turbine"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="@id/titleCalib"
+            app:layout_constraintTop_toBottomOf="@id/btnOxygen" />
+
+        <Button
+            android:id="@+id/btnInspFlow"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:backgroundTint="@color/light_grey"
+            android:text="Calibrate Inspiratory Flow"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toEndOf="@id/btnTurbine"
+            app:layout_constraintTop_toTopOf="@id/btnTurbine" />
+
+        <Button
+            android:id="@+id/btnLeakTest"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:backgroundTint="@color/light_grey"
+            android:text="Leak Test"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toEndOf="@id/btnInspFlow"
+            app:layout_constraintTop_toTopOf="@id/btnInspFlow" />
+
+        <Button
+            android:id="@+id/btnTubeComp"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:backgroundTint="@color/light_grey"
+            android:text="Calibrate Tube Compliance"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="@id/titleCalib"
+            app:layout_constraintTop_toBottomOf="@id/btnTurbine" />
+
+        <Button
+            android:id="@+id/btnTubeResistance"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:backgroundTint="@color/light_grey"
+            android:text="Calibrate Tube Resistance"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toEndOf="@id/btnTubeComp"
+            app:layout_constraintTop_toTopOf="@id/btnTubeComp" />
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_2sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:background="@color/black"
+            app:layout_constraintTop_toBottomOf="@id/btnTubeResistance" />
+
+        <TextView
+            android:id="@+id/titleAlarms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:fontFamily="@font/arial_bold"
+            android:text="Other Options :"
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_10sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view2" />
+
+        <Button
+            android:id="@+id/btnPeepAlarm"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:backgroundTint="@color/light_grey"
+            android:text="Enable Check Circuit Alarm"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="@id/titleAlarms"
+            app:layout_constraintTop_toBottomOf="@id/titleAlarms" />
+
+        <Button
+            android:id="@+id/btnEnableDynamicLungsModule"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:backgroundTint="@color/light_grey"
+            android:text="Enable Dynamic Lungs"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toEndOf="@id/btnPeepAlarm"
+            app:layout_constraintTop_toTopOf="@id/btnPeepAlarm" />
+
+        <Button
+            android:id="@+id/btnEnableTestingParams"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:backgroundTint="@color/light_grey"
+            android:text="Enable Debug Params"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toEndOf="@id/btnEnableDynamicLungsModule"
+            app:layout_constraintTop_toTopOf="@id/btnEnableDynamicLungsModule" />
+
+        <Button
+            android:id="@+id/btnEnableRollOverModifier"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:backgroundTint="@color/light_grey"
+            android:text="Enable Rollover Modifier"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="@id/btnPeepAlarm"
+            app:layout_constraintTop_toBottomOf="@id/btnPeepAlarm" />
+
+        <View
+            android:id="@+id/view3"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_2sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:background="@color/black"
+            app:layout_constraintTop_toBottomOf="@id/btnEnableRollOverModifier" />
+
+
+        <TextView
+            android:id="@+id/txtPressureScale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:fontFamily="@font/arial_bold"
+            android:text="Pressure Graph Scale"
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_10sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view3" />
+
+        <com.github.angads25.toggle.widget.LabeledSwitch
+            android:id="@+id/toggle_pressure_padding"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:visibility="visible"
+            android:textSize="@dimen/_6sdp"
+            app:colorBorder="@color/grey"
+            app:colorOff="@color/white"
+            app:colorOn="@color/light_grey"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:tooltipText="@string/service_title"
+            app:layout_constraintTop_toTopOf="@id/txtPressureScale"
+            app:layout_constraintBottom_toBottomOf="@id/txtPressureScale"
+            app:layout_constraintStart_toEndOf="@id/txtPressureScale"
+            app:on="false" />
+
+        <TextView
+            android:id="@+id/txtPressureType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:fontFamily="@font/arial_bold"
+            android:text="&amp; Type"
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_10sdp"
+            app:layout_constraintStart_toEndOf="@id/toggle_pressure_padding"
+            app:layout_constraintTop_toBottomOf="@id/view3" />
+
+        <com.github.angads25.toggle.widget.LabeledSwitch
+            android:id="@+id/toggle_pressure_type"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:visibility="visible"
+            android:textSize="@dimen/_6sdp"
+            app:colorBorder="@color/grey"
+            app:colorOff="@color/white"
+            app:colorOn="@color/light_grey"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:tooltipText="@string/service_title"
+            app:layout_constraintTop_toTopOf="@id/txtPressureType"
+            app:layout_constraintBottom_toBottomOf="@id/txtPressureType"
+            app:layout_constraintStart_toEndOf="@id/txtPressureType"
+            app:on="false" />
+
+        <TextView
+            android:id="@+id/desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:fontFamily="@font/avenir_next_lt_pro_medium"
+            android:text="NOTE : Please Restart the Ventilator after changing the ventilator type"
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_5sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtPressureScale" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

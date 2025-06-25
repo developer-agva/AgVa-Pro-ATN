@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainViewPanelAlarmDialog"
+    android:background="@color/light_grey">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/focusLayoutAlarmDialog"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/background_transparent_border_yellow"
+        android:translationZ="@dimen/_1sdp"
+        tools:ignore="MissingConstraints" />
+
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imageViewCrossAlarmDialog"
+        android:layout_width="@dimen/_15sdp"
+        android:layout_height="@dimen/_15sdp"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:src="@drawable/ic_cross_grey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/alarm_nav_container"/>
+
+        <include
+            android:id="@+id/includeButtonLimit1"
+            layout="@layout/content_button_layout"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            app:layout_constraintEnd_toEndOf="@id/imageViewCrossAlarmDialog"
+            app:layout_constraintTop_toBottomOf="@id/imageViewCrossAlarmDialog"/>
+
+        <include
+            android:id="@+id/includeButtonLimit2"
+            layout="@layout/content_button_layout"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            app:layout_constraintEnd_toEndOf="@id/imageViewCrossAlarmDialog"
+            app:layout_constraintTop_toBottomOf="@id/includeButtonLimit1"/>
+        <include
+            android:id="@+id/includeButtonBuffer"
+            layout="@layout/content_button_layout"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            app:layout_constraintEnd_toEndOf="@id/imageViewCrossAlarmDialog"
+            app:layout_constraintTop_toBottomOf="@id/includeButtonLimit2"
+            android:layout_marginEnd="@dimen/_5sdp" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/alarm_nav_container"
+        android:layout_width="0dp"
+        android:background="@drawable/background_light_grey_border_grey"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_13sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/includeButtonLimit2"
+        app:layout_constraintHorizontal_bias="0.472"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"  />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

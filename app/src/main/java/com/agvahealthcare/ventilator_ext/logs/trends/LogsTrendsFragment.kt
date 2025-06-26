@@ -219,7 +219,7 @@ class LogsTrendsFragment : Fragment(), View.OnClickListener, onDropDownSelection
     fun setupDataDefault() {
         txtUhid.text = "UHID : $defaultUhid"
         val data = FileLogger.readTrendFile(
-            "trends",
+            "trends_one",
             defaultUhid,
             startIndex,
             endIndex
@@ -238,7 +238,7 @@ class LogsTrendsFragment : Fragment(), View.OnClickListener, onDropDownSelection
         when (view.id) {
             R.id.rightButton -> {
                 val data = FileLogger.readTrendFile(
-                    "trends",
+                    "trends_one",
                     defaultUhid,
                     ++startIndex,
                     ++endIndex
@@ -256,7 +256,7 @@ class LogsTrendsFragment : Fragment(), View.OnClickListener, onDropDownSelection
 
             R.id.leftButton -> {
                 val data = FileLogger.readTrendFile(
-                    "trends",
+                    "trends_one",
                     defaultUhid,
                     --startIndex,
                     --endIndex

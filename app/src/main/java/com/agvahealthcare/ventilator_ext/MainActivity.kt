@@ -4092,9 +4092,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 //                }
 //            }
 //        }
-
     }
-
 
     private fun setPaddingOnButtons() {
 
@@ -4106,7 +4104,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         buttonAdult.setPadding(0, 25, 0, 25)
         buttonPediatric.setPadding(0, 25, 0, 25)
 
-        // put all this in xml
         buttonStartExistingVentilation.setPadding(108, 25, 108, 25)
         buttonStartNewVentilation.setPadding(130, 25, 130, 25)
     }
@@ -4117,13 +4114,9 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             includeProgressWeight,
             includeProgressAge
         ).forEach {
-            // ContextCompat.getDrawable(this, R.drawable.progresscircle)
-            (it.param_progress_bar as? CircularProgressIndicator)?.background =
-                ContextCompat.getDrawable(this, R.drawable.progresscircle)
-            (it.param_progress_bar as? CircularProgressIndicator)?.progressColor =
-                ContextCompat.getColor(this, R.color.racing_green)
-            (it?.param_progress_bar as? CircularProgressIndicator)?.dotColor =
-                ContextCompat.getColor(this, R.color.racing_green)
+            (it.param_progress_bar as? CircularProgressIndicator)?.background = ContextCompat.getDrawable(this, R.drawable.progresscircle)
+            (it.param_progress_bar as? CircularProgressIndicator)?.progressColor = ContextCompat.getColor(this, R.color.racing_green)
+            (it.param_progress_bar as? CircularProgressIndicator)?.dotColor = ContextCompat.getColor(this, R.color.racing_green)
 
             it.textView.setTextColor(Color.WHITE)
         }
@@ -4132,8 +4125,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     private fun highlightProgressBar(view: View?) {
         normalizeProgressBars()
         view.let {
-            (it?.param_progress_bar as? CircularProgressIndicator)?.background =
-                ContextCompat.getDrawable(this, R.drawable.progresscircle_with_selection)
+            (it?.param_progress_bar as? CircularProgressIndicator)?.background = ContextCompat.getDrawable(this, R.drawable.progresscircle_with_selection)
             (it?.textView as? TextView)?.setTextColor(Color.BLACK)
         }
     }

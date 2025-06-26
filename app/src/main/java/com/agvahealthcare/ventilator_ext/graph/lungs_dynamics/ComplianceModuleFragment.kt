@@ -285,13 +285,13 @@ class ComplianceModuleFragment(private var duration: String) : GraphFragment() {
         CoroutineScope(Dispatchers.IO).launch {
 
             val dataFirstChart = FileLogger.readTrendFileAsPerParamAndDuration(
-                    "trends", 17, duration
+                    "trends_one", 17, duration
                 )
             val dataSecondChart = FileLogger.readTrendFileAsPerParamAndDuration(
-                    "trends", 18, duration
+                    "trends_one", 18, duration
                 )
             val dataThirdChart = FileLogger.readTrendFileAsPerParamAndDuration(
-                    "trends", 19, duration
+                    "trends_one", 19, duration
                 )
 
             // list having data like "time~data"

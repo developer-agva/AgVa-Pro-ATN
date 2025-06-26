@@ -906,11 +906,11 @@ abstract class FileLogger {
                     var fileData = filePath.readText().split("|") as ArrayList<String>
                     fileData.removeAt(fileData.size - 1)
                     // adding filter as per UHID
-                    fileData = (fileData.filter { s ->
-                        Log.i("Log.ia", s)
-                        s.split(",")[2] == uhid
-
-                    }) as ArrayList<String>
+//                    fileData = (fileData.filter { s ->
+//                        Log.i("Log.ia", s)
+//                        s.split(",")[2] == uhid
+//
+//                    }) as ArrayList<String>
 
                     fileData.reverse()
 
@@ -986,11 +986,11 @@ abstract class FileLogger {
                     var fileData = filePath.readText().split("|") as ArrayList<String>
                     fileData.removeAt(fileData.size - 1)
                     // adding filter as per UHID
-                    fileData = (fileData.filter { s ->
-                        Log.i("Log.ia", s)
-                        s.split(",")[3] == uhid
-
-                    }) as ArrayList<String>
+//                    fileData = (fileData.filter { s ->
+//                        Log.i("Log.ia", s)
+//                        s.split(",")[3] == uhid
+//
+//                    }) as ArrayList<String>
 
                     fileData.reverse()
 

@@ -582,6 +582,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
             )
             systemAdapter?.isEnable = true
         }
+
         else if (tag == "Activate_Ventilator"){
 
             dataListSystemItems.add(

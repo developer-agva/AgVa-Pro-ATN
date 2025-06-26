@@ -325,7 +325,6 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
             Float::class.javaObjectType
         ).withAcceptsUnsortedData().build()
 
-
         // === Create scatter series ===
         val rs2 = sciChartBuilder.newColumnSeries()
             .withDataSeries(dataSeries1Third)
@@ -333,8 +332,6 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
             .withStrokeStyle(Color.GREEN, 0f)
             .withSeriesInfoProvider(CustomSeriesInfoProvider(GraphType.FIO2_CHART))
             .withXAxisId("OLD").build()
-
-
 
         rs2.dataPointWidth = 0.2
 
@@ -361,13 +358,13 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
         CoroutineScope(Dispatchers.IO).launch {
 
             val dataFirstChart = FileLogger.readTrendFileAsPerParamAndDuration(
-                "trends", 15, duration
+                "trends_one", 15, duration
             )
             val dataSecondChart = FileLogger.readTrendFileAsPerParamAndDuration(
-                "trends", 16, duration
+                "trends_one", 16, duration
             )
             val dataThirdChart = FileLogger.readTrendFileAsPerParamAndDuration(
-                "trends", 9, duration
+                "trends_one", 9, duration
             )
 
             // list having data like "time~data"
@@ -384,7 +381,7 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
                     }
                 }
             }
-            
+
             if (dataSecondChart != FileLogger.dataNotFound) {
                 val list = dataSecondChart.split("|").asReversed()
                 withContext(Dispatchers.Main) {

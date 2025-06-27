@@ -144,6 +144,7 @@ class ConfigFragment : Fragment() {
 
     private fun broadcastTubeComplianceResponse(tubeComplianceResponse: String) {
         Log.i("testingCompliance", "DATA : $tubeComplianceResponse")
+        preferenceManager?.setTubeComplianceCalibrationDate()
         val i = Intent(IntentFactory.ACTION_COMPLIANCE_CALIBRATION_RESPONSE)
         i.putExtra(TUBE_COMPLIANCE_CALIBRATION, tubeComplianceResponse)
         requireActivity().sendBroadcast(i)
@@ -151,6 +152,7 @@ class ConfigFragment : Fragment() {
 
     private fun broadcastTubeResistanceResponse(tubeResistanceResponse: String) {
         Log.i("testingResistance", "DATA : $tubeResistanceResponse")
+        preferenceManager?.setTubeResistanceCalibrationDate()
         val i = Intent(IntentFactory.ACTION_RESISTANCE_CALIBRATION_RESPONSE)
         i.putExtra(TUBE_RESISTANCE_CALIBRATION, tubeResistanceResponse)
         requireActivity().sendBroadcast(i)

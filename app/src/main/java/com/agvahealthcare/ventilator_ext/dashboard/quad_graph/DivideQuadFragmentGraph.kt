@@ -99,9 +99,9 @@ class DivideQuadFragmentGraph : GraphLayoutFragment("DivideQuadGraphFragment"){
 
 
 
-    fun addGraphPressureData(x: Int, y: Float,trigger:String?) {
+    fun addGraphPressureData(x: Int, y: Float) {
         Log.i("PRESSURE_GRAPH", "x = $x , Y = $y")
-        pressureChartFragment.addEntry(x, y,trigger)
+        pressureChartFragment.addEntry(x, y)
     }
 
 

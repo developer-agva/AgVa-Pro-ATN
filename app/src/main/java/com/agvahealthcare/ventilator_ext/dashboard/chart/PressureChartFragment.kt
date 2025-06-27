@@ -141,12 +141,11 @@ class PressureChartFragment : GraphFragment() {
             )
             else (requireActivity() as DashBoardActivity).sendCommandForChangeXAxisGraph("1")
         }
-
     }
 
     private fun initGraph() {
 
-        //For the initial graphs the xprimary Axis and the XSecondary Axis will be updated.
+        // For the initial graphs the xprimary Axis and the XSecondary Axis will be updated.
         val xPRimaryAxis: IAxis = sciChartBuilder.newNumericAxis()
             .withVisibleRange(DoubleRange(0.0, GRAPH_THRESHOLD.toDouble()))
             .withMaxAutoTicks(4)
@@ -174,10 +173,8 @@ class PressureChartFragment : GraphFragment() {
             .withVisibleRange(minRange, maxRange)
             .build()
 
-
         chartSurface.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.black))
-        chartSurface.renderableSeriesAreaBorderStyle =
-            sciChartBuilder.newPen().withColor(ColorUtil.Transparent).build();
+        chartSurface.renderableSeriesAreaBorderStyle = sciChartBuilder.newPen().withColor(ColorUtil.Transparent).build();
 
         xPRimaryAxis.visibility = View.GONE
         xsecondaryAxis.visibility = View.VISIBLE
@@ -188,55 +185,44 @@ class PressureChartFragment : GraphFragment() {
         xPRimaryAxis.drawMajorTicks = false
         xPRimaryAxis.drawMinorTicks = false
 
-
         yAxis.drawMajorGridLines = true
         yAxis.drawMinorGridLines = false
         yAxis.drawMajorBands = false
         yAxis.drawMajorTicks = true
         yAxis.drawMajorTicks = false
 
-        // RM Chart
-//        dataSeries0 = sciChartBuilder.newXyDataSeries(
-//            Int::class.javaObjectType,
-//            Float::class.javaObjectType
-//        ).withFifoCapacity(FIFO_CAPACITY).build()
-
         dataSeries1 = sciChartBuilder.newXyDataSeries(
             Int::class.javaObjectType,
             Float::class.javaObjectType
         ).withAcceptsUnsortedData().build()
 
-        horizontalLineAnnotation?.stroke =
-            SolidPenStyle(ColorUtil.Red, false, 1.0f, floatArrayOf(0f, 0f))
-//        horizontalLineAnnotation1?.stroke = SolidPenStyle(ColorUtil.Grey,false,1.0f, floatArrayOf(50f,50f))
+        horizontalLineAnnotation?.stroke = SolidPenStyle(ColorUtil.Red, false, 1.0f, floatArrayOf(0f, 0f))
 
-        // draw desired border using LineAnnotation
-//        val verticalLine = sciChartBuilder.newLineAnnotation()
-//            .withPosition(0.0, 0.0, 0.0, 1.0)
-//            .withCoordinateMode(AnnotationCoordinateMode.Relative)
-//            .withIsEditable(true)
-//            .withStroke(1f, Color.WHITE)
-//            .build()
+        var rs2: IRenderableSeries? = null
 
-//        val horizontalLine = sciChartBuilder.newLineAnnotation()
-//            .withPosition(0.0, 1.0, 1.0, 1.0)
-//            .withCoordinateMode(AnnotationCoordinateMode.Relative)
-//            .withIsEditable(true)
-//            .withXAxisId("OLD")
-//            .withStroke(1f, Color.WHITE)
-//            .build()
-
-        val rs2: IRenderableSeries = sciChartBuilder.newLineSeries()
+        if (prefManager?.readPressureGraphTypeStatus() == true) {
+            rs2 = sciChartBuilder.newMountainSeries()
+                .withStrokeStyle(
+                    sciChartBuilder.newPen().withColor(ColorUtil.White).withThickness(3f).build()
+                )
+                .withAreaFillColor(ColorUtil.White)
+                .withDataSeries(dataSeries1)
+                .withSeriesInfoProvider(CustomSeriesInfoProvider(GraphType.PRESSURE))
+                .withPaletteProvider(ColouredLinePaletteProvider(prefManager))
+                .withXAxisId("OLD")
+                .build()
+        } else {
+            rs2 = sciChartBuilder.newLineSeries()
             .withStrokeStyle(
                 sciChartBuilder.newPen().withColor(ColorUtil.White).withThickness(3f).build()
             )
 //            .withAreaFillColor(ColorUtil.Wheat)
-            .withDataSeries(dataSeries1)
-            .withSeriesInfoProvider(CustomSeriesInfoProvider(GraphType.PRESSURE))
-            .withPaletteProvider(ColouredLinePaletteProvider(prefManager))
-            .withXAxisId("OLD")
-            .build()
-
+                .withDataSeries(dataSeries1)
+                .withSeriesInfoProvider(CustomSeriesInfoProvider(GraphType.PRESSURE))
+                .withPaletteProvider(ColouredLinePaletteProvider(prefManager))
+                .withXAxisId("OLD")
+                .build()
+        }
         // RM scichart
         modifier.showTooltip = true
         modifier.showAxisLabels = true
@@ -244,28 +230,21 @@ class PressureChartFragment : GraphFragment() {
 
         Collections.addAll(chartSurface.chartModifiers, modifier)
         UpdateSuspender.using(chartSurface) {
-            Log.i("SUSPEND", "")
             Collections.addAll(chartSurface.xAxes, xPRimaryAxis)
             Collections.addAll(chartSurface.xAxes, xsecondaryAxis)
             Collections.addAll(chartSurface.yAxes, yAxis)
             Collections.addAll(chartSurface.renderableSeries, rs2)
             Collections.addAll(chartSurface.annotations, horizontalLineAnnotation)
-//            Collections.addAll(chartSurface.annotations,horizontalLineAnnotation1)
-//            chartSurface.annotations.add(horizontalLineAnnotation)
-//            Collections.addAll(horizontalLineAnnotation?.annotationLabels,annotationLabel)
         }
     }
 
-
     // created at 20 jan 2023
-    private fun changeGraphRangeAtRunTime(y: Float, x: Int, trigger: String?) {
+    private fun changeGraphRangeAtRunTime(y: Float, x: Int) {
 
-        Log.i("timeYValue", y.toString())
         if (x == timePeek) {
             chartSurface.yAxes.default.visibleRange = DoubleRange(minRange, maxRange)
             timePeek = -1
         } else {
-            Log.i("timePeekPressure", maxRange.toString())
 
             if (mDashBoardViewModel?.graphPeekValue?.value == "A") {
 
@@ -282,7 +261,7 @@ class PressureChartFragment : GraphFragment() {
                                 DoubleRange(minRange, maxRange)
                             timePeek = -1
                         }
-                    }else{
+                    } else {
                         if (y < 25.0) {
                             maxRange = MIN_RANGE_PRESSURE_ADULT_PEDIA
 
@@ -314,30 +293,21 @@ class PressureChartFragment : GraphFragment() {
     }
 
     // modified at 20 jan 2023
-    fun addEntry(x: Int, y: Float, trigger: String?) {
+    fun addEntry(x: Int, y: Float) {
         val xAxis = x % (GRAPH_THRESHOLD + 1)
         val limit = prefManager?.readPip()
-//        val limit1 = prefManager?.readPip()
         horizontalLineAnnotation?.x1 = 5.0
-//        horizontalLineAnnotation1?.x1 = 5.0
         horizontalLineAnnotation?.setIsEditable(true)
-//        horizontalLineAnnotation1?.setIsEditable(true)
-//        Log.i("limitValue", "${limit?.get(1)}")
         horizontalLineAnnotation?.y1 = limit
-//        horizontalLineAnnotation1?.y1 = limit1
 
-
-        changeGraphRangeAtRunTime(y, xAxis, trigger)
-
+        changeGraphRangeAtRunTime(y, xAxis)
 
         if (xValuePatientTriggerList.contains(xAxis.toDouble())) {
             xValuePatientTriggerList.remove(xAxis.toDouble())
         }
 
-
         if (xAxis == GRAPH_THRESHOLD) {
             isFirstTime = true
-//            xValuePatientTriggerList.clear()
         }
 
         // RM scichart

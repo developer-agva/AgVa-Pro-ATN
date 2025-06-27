@@ -1222,7 +1222,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         }
     }
 
-
     private fun hideAllDialogFragment() {
         standbyControlFragment?.takeIf { it.isVisible }?.apply {
             dismiss()

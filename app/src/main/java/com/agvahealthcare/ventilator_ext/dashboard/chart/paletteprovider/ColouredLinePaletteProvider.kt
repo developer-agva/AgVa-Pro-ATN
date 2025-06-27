@@ -7,6 +7,7 @@ import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.xValuePatientTr
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.scichart.charting.visuals.renderableSeries.XyRenderableSeriesBase
 import com.scichart.charting.visuals.renderableSeries.data.XyRenderPassData
+import com.scichart.charting.visuals.renderableSeries.paletteProviders.IFillPaletteProvider
 import com.scichart.charting.visuals.renderableSeries.paletteProviders.IStrokePaletteProvider
 import com.scichart.charting.visuals.renderableSeries.paletteProviders.PaletteProviderBase
 import com.scichart.core.model.IntegerValues
@@ -16,12 +17,12 @@ import com.scichart.drawing.utility.ColorUtil
 class ColouredLinePaletteProvider(
     private var prefManager: PreferenceManager?
 ) : PaletteProviderBase<XyRenderableSeriesBase>(XyRenderableSeriesBase::class.java),
-    IStrokePaletteProvider {
+    IStrokePaletteProvider,IFillPaletteProvider {
 
     private val colorValues = IntegerValues()
-//Update function for the Color values of the graph associated with pressure.
+    // Update function for the Color values of the graph associated with pressure.
     override fun update() {
-//to update the data
+        // to update the data
 
         val renderableSeries: XyRenderableSeriesBase = renderableSeries
         val currentRenderPassData = renderableSeries.currentRenderPassData as XyRenderPassData
@@ -35,28 +36,25 @@ class ColouredLinePaletteProvider(
 
             // RM scichart
             if (VentilatorApp.xTestingPressure.contains(valuesArray[i].toInt())){
-                Log.i("color_test","3")
                 colorsArray[i] = ColorUtil.Black
             }else {
 
                 if (xValuePatientTriggerList.contains(valuesArray[i])){
-                    Log.i("color_test","1")
                     colorsArray[i] = prefManager?.readCurrentGraphColor("PRESSURE")!!
                 }
                 else if(xValueManualTriggerList.contains(valuesArray[i])){
                     colorsArray[i] = ColorUtil.Brown
                 }
                 else {
-                    Log.i("color_test","2")
                     colorsArray[i] = ColorUtil.White
                 }
             }
         }
     }
 
-//    override fun getFillColors(): IntegerValues {
-//        return colorValues
-//    }
+    override fun getFillColors(): IntegerValues {
+        return colorValues
+    }
 
     override fun getStrokeColors(): IntegerValues {
         return colorValues

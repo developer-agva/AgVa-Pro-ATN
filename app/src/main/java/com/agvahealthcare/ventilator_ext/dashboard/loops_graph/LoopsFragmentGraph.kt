@@ -127,7 +127,7 @@ class LoopsFragmentGraph : GraphLayoutFragment("LoopsGraphFragment") {
     }
 
 
-    fun addGraphPressureData(x: Int, y: Float, trigger: String?) {
+    fun addGraphPressureData(x: Int, y: Float) {
     }
 
 

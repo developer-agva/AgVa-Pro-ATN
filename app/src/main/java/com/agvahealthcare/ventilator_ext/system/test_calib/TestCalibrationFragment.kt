@@ -116,7 +116,6 @@ class TestCalibrationFragment(private var communicationService: CommunicationSer
         constraintSet.applyTo(mainViewPanelTestCalib)
     }
 
-    //
     private fun getViewForFocus(highlightedIndex: Int, data: String?): View? {
 
         data?.let {
@@ -161,7 +160,6 @@ class TestCalibrationFragment(private var communicationService: CommunicationSer
         hideGoneFunction(true)
     }
 
-
     private fun setUpOnClickListener() {
         if (tag == "FromDashboard") {
             includeButtonExpFlowSensor.buttonView.setOnClickListener {
@@ -200,7 +198,6 @@ class TestCalibrationFragment(private var communicationService: CommunicationSer
 
             hideGoneFunction(true)
         }
-
     }
 
 

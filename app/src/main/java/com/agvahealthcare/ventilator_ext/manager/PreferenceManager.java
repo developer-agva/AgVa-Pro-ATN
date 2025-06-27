@@ -2073,9 +2073,7 @@ public class PreferenceManager {
 
     public void setTubeResistanceCalibrationDate() {
         String date = AppUtils.getCurrentDateTime();
-
         updateData(PREF_TUBE_RESISTANCE_DATE, date);
-        ;
     }
 
     public void setTubeResistanceCalibrationDate(String date) {
@@ -2092,7 +2090,6 @@ public class PreferenceManager {
     public String readTubeResistanceCalibrationDate() {
         return sp.getString(PREF_TUBE_RESISTANCE_DATE, "-");
     }
-
 
     public void setInspFlowCalibration(SensorCalibration sensorCalibration) {
 

@@ -289,7 +289,6 @@ class TubeDiaFragment(private var communicationService: CommunicationService?) :
             includetubePediatric.visibility = View.GONE
             includetubeNeoNate.visibility = View.GONE
         }
-
     }
 
     private fun setUpOnClickListener() {
@@ -598,25 +597,19 @@ class TubeDiaFragment(private var communicationService: CommunicationService?) :
                         ""
                     )
                 ) {
-                    Log.i("DataAvaiasd", "2")
-                    Log.i("CHECK_COMPL", readComplianceTubeCalibration().toString())
                     tvCompensation.text = "${readComplianceTubeCalibration()} mL/cmH₂O"
                     ivCompensationStatus.setImageResource(R.drawable.ic_green_circle_tick)
                     setTubeComplianceCalibrationDate()
                     tvCompensationDate.text = readTubeComplianceCalibrationDate()
 
                 } else {
-                    Log.i("DataAvaiasd", readComplianceTubeCalibration().toString())
                     if (readComplianceTubeCalibration().contains("0.00")) {
                         tvCompensation.text = "-"
                         tvCompensationDate.text = "-"
                         ivCompensationStatus.setImageResource(R.drawable.ic_red_cross)
 
-
                     } else {
-                        Log.i("DataAvaiasd", "5")
-                        tvCompensation.text =
-                            "${readComplianceTubeCalibration().subSequence(0, 4)} mL/cmH₂O"
+                        tvCompensation.text = "${readComplianceTubeCalibration().subSequence(0, 4)} mL/cmH₂O"
                         ivCompensationStatus.setImageResource(R.drawable.ic_green_circle_tick)
                         setTubeComplianceCalibrationDate()
                         tvCompensationDate.text = readTubeComplianceCalibrationDate()
@@ -627,7 +620,6 @@ class TubeDiaFragment(private var communicationService: CommunicationService?) :
                 ivCompensationStatus.setImageResource(R.drawable.ic_red_cross)
                 tvCompensationDate.text = "-"
             }
-
         }
     }
 
@@ -639,7 +631,6 @@ class TubeDiaFragment(private var communicationService: CommunicationService?) :
         prefManager?.apply {
             // tube resistance
             if (readResistanceTubeCalibrationStatus()) {
-
                 if (readResistanceTubeCalibration().length < 5 && readResistanceTubeCalibration().equals(
                         ""
                     )
@@ -647,46 +638,43 @@ class TubeDiaFragment(private var communicationService: CommunicationService?) :
                     tvResistance.text = "${readResistanceTubeCalibration()} cmH₂O/L"
                     ivResistanceStatus.setImageResource(R.drawable.ic_green_circle_tick)
                     setTubeResistanceCalibrationDate()
+                    Log.i("tubeCheck", "Tube resistance calibration date: ${readTubeResistanceCalibrationDate()}")
                     tvResistanceDate.text = readTubeResistanceCalibrationDate()
                 } else {
                     tvResistance.text =
                         "${readResistanceTubeCalibration().subSequence(0, 4)} cmH₂O/L"
                     ivResistanceStatus.setImageResource(R.drawable.ic_green_circle_tick)
                     setTubeResistanceCalibrationDate()
+                    Log.i("tubeCheck", "Tube resistance calibration date: ${readTubeResistanceCalibrationDate()}")
                     tvResistanceDate.text = readTubeResistanceCalibrationDate()
                 }
             } else {
+                Log.i("tubeCheck", "Tube resistance calibration date: ${readTubeResistanceCalibrationDate()}")
                 tvResistance.text = getString(R.string.sensore_not_calibrated)
                 ivResistanceStatus.setImageResource(R.drawable.ic_red_cross)
                 tvResistanceDate.text = "-"
             }
-
         }
     }
 
     private fun updateTubeCalibrationStatusUI() {
         prefManager?.apply {
-            Log.i("tubeCheck", "Sensor data is refreshing on the view......")
 
             if (readComplianceTubeCalibrationStatus()) {
                 if (readComplianceTubeCalibration().length < 5 && readComplianceTubeCalibration().equals(
                         ""
                     )
                 ) {
-                    Log.i("DataAvaiasd", "2")
-                    Log.i("CHECK_COMPL", readComplianceTubeCalibration().toString())
                     tvCompensation.text = "${readComplianceTubeCalibration()} mL/cmH₂O"
                     ivCompensationStatus.setImageResource(R.drawable.ic_green_circle_tick)
                     tvCompensationDate.text = readTubeComplianceCalibrationDate()
 
                 } else {
-                    Log.i("DataAvaiasd", readComplianceTubeCalibration().toString())
                     if (readComplianceTubeCalibration().contains("0.00")) {
                         tvCompensation.text = "-"
                         tvCompensationDate.text = "-"
                         ivCompensationStatus.setImageResource(R.drawable.ic_red_cross)
                     } else {
-                        Log.i("DataAvaiasd", "5")
                         tvCompensation.text =
                             "${readComplianceTubeCalibration().subSequence(0, 4)} mL/cmH₂O"
                         ivCompensationStatus.setImageResource(R.drawable.ic_green_circle_tick)
@@ -701,17 +689,12 @@ class TubeDiaFragment(private var communicationService: CommunicationService?) :
 
             // tube resistance
             if (readResistanceTubeCalibrationStatus()) {
-
-                if (readResistanceTubeCalibration().length < 5 && readResistanceTubeCalibration().equals(
-                        ""
-                    )
-                ) {
+                if (readResistanceTubeCalibration().length < 5 && readResistanceTubeCalibration().equals("")) {
                     tvResistance.text = "${readResistanceTubeCalibration()} cmH₂O/L"
                     ivResistanceStatus.setImageResource(R.drawable.ic_green_circle_tick)
                     tvResistanceDate.text = readTubeResistanceCalibrationDate()
                 } else {
-                    tvResistance.text =
-                        "${readResistanceTubeCalibration().subSequence(0, 4)} cmH₂O/L"
+                    tvResistance.text = "${readResistanceTubeCalibration().subSequence(0, 4)} cmH₂O/L"
                     ivResistanceStatus.setImageResource(R.drawable.ic_green_circle_tick)
                     tvResistanceDate.text = readTubeResistanceCalibrationDate()
                 }

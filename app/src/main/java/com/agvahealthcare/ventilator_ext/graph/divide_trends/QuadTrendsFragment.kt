@@ -245,8 +245,8 @@ class QuadTrendsFragment : GraphLayoutFragment("QuadTrendsGraphFragment"),
     }
 
     fun clearSeries() {}
-    fun addGraphPressureData(x: Int, y: Float, trigger: String?) {
-        pressureChartFragment?.addEntry(x, y, trigger)
+    fun addGraphPressureData(x: Int, y: Float) {
+        pressureChartFragment?.addEntry(x, y)
     }
 
     fun addGraphFlowData(x: Int, y: Float) {

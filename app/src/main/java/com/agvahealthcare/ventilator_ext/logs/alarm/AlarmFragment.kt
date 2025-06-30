@@ -1,5 +1,6 @@
 package com.agvahealthcare.ventilator_ext.logs.alarm
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -33,6 +34,7 @@ class AlarmFragment : Fragment(), View.OnClickListener {
     private var uhid = ""
     private var startIndex = 0
     private var endIndex = 9
+    private var steps = 9
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -104,8 +106,8 @@ class AlarmFragment : Fragment(), View.OnClickListener {
                     mLayoutManager.apply {
                         val firstVisibleItemIndex = findFirstVisibleItemPosition()
                         if (getSelection() == firstVisibleItemIndex) {
-                            startIndex -= 9
-                            endIndex -= 9
+                            startIndex -= steps
+                            endIndex -= steps
                             val data = FileLogger.readAlarmFile("alarm",PreferenceManager(requireContext()).readUHID(),startIndex,endIndex)
                             if (data != "Data Not Found"){
                                 val listData = data.split("|") as java.util.ArrayList<String>
@@ -128,8 +130,8 @@ class AlarmFragment : Fragment(), View.OnClickListener {
 
                         if (getSelection() != dataList.size - 1) {
                             if (getSelection() == lastVisibleItemIndex) {
-                                startIndex += 9
-                                endIndex += 9
+                                startIndex += steps
+                                endIndex += steps
                                 val data = FileLogger.readAlarmFile("alarm",PreferenceManager(requireContext()).readUHID(),startIndex,endIndex)
                                 if (data != "Data Not Found"){
                                     val listData = data.split("|") as java.util.ArrayList<String>
@@ -160,8 +162,19 @@ class AlarmFragment : Fragment(), View.OnClickListener {
         topButtonAlarm.setOnClickListener(this)
         bottomButtonAlarm.setOnClickListener(this)
 
+        steps = if (Build.VERSION.SDK_INT >= 27) {
+            // This is Android 7.0 (API 24) or higher
+            11
+        } else {
+            // Below Android 7.0
+            9
+        }
+
+        endIndex = steps
+
         setupAdapter()
         setupDataDefault("")
+
     }
 
     private fun setUpAlarmsData() {

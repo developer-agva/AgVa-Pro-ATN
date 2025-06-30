@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:text="@string/hint_value_unit"
         android:textColor="@color/white"
-        android:textSize="@dimen/_10sdp"
+        android:textSize="@dimen/_8sdp"
         android:theme="@style/subheading_text_style"
         app:layout_constraintBottom_toTopOf="@id/textViewUnit"
         app:layout_constraintEnd_toEndOf="parent"

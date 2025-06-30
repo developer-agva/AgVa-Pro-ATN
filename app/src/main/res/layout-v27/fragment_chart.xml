@@ -21,7 +21,7 @@
         android:padding="@dimen/_3sdp"
         android:text="Pressure (cmH20)"
         android:textColor="#FFFFFF"
-        android:textSize="@dimen/_6sdp"
+        android:textSize="@dimen/_5sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:theme="@style/subheading_text_style"

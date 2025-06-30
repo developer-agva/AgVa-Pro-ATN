@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/_40sdp"
+    android:layout_width="@dimen/_32sdp"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
@@ -20,7 +20,7 @@
     <!--            android:text="10:20"-->
     <!--            android:textAlignment="center"-->
     <!--            android:textColor="#FFFFFF"-->
-    <!--            android:textSize="@dimen/_6sdp" />-->
+    <!--            android:textSize="@dimen/_5sdp" />-->
     <!--    </LinearLayout>-->
 
     <LinearLayout
@@ -38,7 +38,7 @@
             android:text="MODE"
             android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="@dimen/_6sdp" />
+            android:textSize="@dimen/_5sdp" />
     </LinearLayout>
 
     <LinearLayout
@@ -56,7 +56,7 @@
             android:text="Support Pressure"
             android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="@dimen/_6sdp" />
+            android:textSize="@dimen/_5sdp" />
     </LinearLayout>
 
     <LinearLayout
@@ -74,7 +74,7 @@
             android:text="PEEP"
             android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="@dimen/_6sdp" />
+            android:textSize="@dimen/_5sdp" />
     </LinearLayout>
 
     <LinearLayout
@@ -92,7 +92,7 @@
             android:text="Mean Airway"
             android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="@dimen/_6sdp" />
+            android:textSize="@dimen/_5sdp" />
     </LinearLayout>
 
     <LinearLayout
@@ -110,7 +110,7 @@
             android:text="Vti"
             android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="@dimen/_6sdp" />
+            android:textSize="@dimen/_5sdp" />
     </LinearLayout>
 
     <LinearLayout
@@ -128,7 +128,7 @@
             android:text="Vte"
             android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="@dimen/_6sdp" />
+            android:textSize="@dimen/_5sdp" />
     </LinearLayout>
 
     <LinearLayout
@@ -146,7 +146,7 @@
             android:text="MVe"
             android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="@dimen/_6sdp" />
+            android:textSize="@dimen/_5sdp" />
     </LinearLayout>
 
     <LinearLayout
@@ -164,7 +164,7 @@
             android:text="MVi"
             android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="@dimen/_6sdp" />
+            android:textSize="@dimen/_5sdp" />
     </LinearLayout>
 
     <LinearLayout
@@ -182,7 +182,7 @@
             android:text="FiO2"
             android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="@dimen/_6sdp" />
+            android:textSize="@dimen/_5sdp" />
     </LinearLayout>
 
     <LinearLayout
@@ -200,7 +200,7 @@
             android:text="RR"
             android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="@dimen/_6sdp" />
+            android:textSize="@dimen/_5sdp" />
     </LinearLayout>
 
     <LinearLayout
@@ -218,7 +218,7 @@
             android:text="Dyn Comp."
             android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="@dimen/_6sdp" />
+            android:textSize="@dimen/_5sdp" />
 
     </LinearLayout>
 
@@ -237,7 +237,7 @@
             android:text="Tinsp"
             android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="@dimen/_6sdp" />
+            android:textSize="@dimen/_5sdp" />
     </LinearLayout>
 
     <LinearLayout
@@ -255,7 +255,7 @@
             android:text="Texp"
             android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="@dimen/_6sdp" />
+            android:textSize="@dimen/_5sdp" />
     </LinearLayout>
 
     <LinearLayout
@@ -273,7 +273,7 @@
             android:text="Leak"
             android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="@dimen/_6sdp" />
+            android:textSize="@dimen/_5sdp" />
 
     </LinearLayout>
 
@@ -292,7 +292,7 @@
             android:text="Spo2"
             android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="@dimen/_6sdp" />
+            android:textSize="@dimen/_5sdp" />
 
     </LinearLayout>
 
@@ -311,7 +311,7 @@
             android:text="PR"
             android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="@dimen/_6sdp" />
+            android:textSize="@dimen/_5sdp" />
 
     </LinearLayout>
 
@@ -330,7 +330,7 @@
             android:text="I:E"
             android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="@dimen/_6sdp" />
+            android:textSize="@dimen/_5sdp" />
     </LinearLayout>
 
 
@@ -349,7 +349,7 @@
             android:text="Spont VT"
             android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="@dimen/_6sdp" />
+            android:textSize="@dimen/_5sdp" />
 
     </LinearLayout>
 
@@ -368,7 +368,7 @@
             android:text="spont RR"
             android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="@dimen/_6sdp" />
+            android:textSize="@dimen/_5sdp" />
 
     </LinearLayout>
 

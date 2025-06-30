@@ -2,13 +2,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/mainLayoutPanel"
-    android:layout_width="165dp"
+    android:layout_width="186dp"
     android:layout_height="80dp"
     android:layout_marginTop="4dp"
     android:layout_marginEnd="4.5dp"
     android:background="@color/black"
     android:padding="2dp">
-
 
     <TextView
         android:id="@+id/tv_Label"
@@ -16,15 +15,11 @@
         android:layout_height="wrap_content"
         android:text="I-HOLD"
         android:textAllCaps="true"
-        android:textSize="@dimen/_7sdp"
+        android:textSize="@dimen/_6sdp"
         android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
-
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

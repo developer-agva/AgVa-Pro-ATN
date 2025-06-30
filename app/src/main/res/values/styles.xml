@@ -126,7 +126,6 @@
         <item name="android:fontFamily">@font/avenir_next_lt_pro_regular</item>
     </style>
 
-
     <style name="subheading_text_style" >
         <item name="android:textSize">@dimen/_5sdp</item>
         <item name="android:textColor">@color/black</item>

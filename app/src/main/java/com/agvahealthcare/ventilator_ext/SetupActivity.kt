@@ -9,6 +9,7 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.agvahealthcare.ventilator_ext.api.ServerLogger
 import com.agvahealthcare.ventilator_ext.dashboard.BaseActivity
+import com.agvahealthcare.ventilator_ext.dashboard.DashBoardActivity
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.system.settings.CommonSetupAdapter
 import com.agvahealthcare.ventilator_ext.system.settings.onDropDownSelectionListener
@@ -150,7 +151,7 @@ class SetupActivity : BaseActivity(), onDropDownSelectionListener {
     }
 
     private fun navigateToSplash(dataString: String){
-        Intent(this@SetupActivity,MainActivity::class.java).also {
+        Intent(this@SetupActivity,DashBoardActivity::class.java).also {
             it.putExtra(Configs.CONFIGS_STRING,dataString)
             startActivity(it)
         }
@@ -159,7 +160,6 @@ class SetupActivity : BaseActivity(), onDropDownSelectionListener {
     private fun setOnClickListeners() {
 
         btnFinishSetup.setOnClickListener {
-
             prefManager?.apply {
                 val finalString = "ATP@" +
                         "${Configs.PROJECT_CODE}," +
@@ -270,7 +270,6 @@ class SetupActivity : BaseActivity(), onDropDownSelectionListener {
             ConstraintSet.BOTTOM,
             0
         )
-
         constraintSet.connect(
             setupRecyclerView.id,
             ConstraintSet.LEFT,

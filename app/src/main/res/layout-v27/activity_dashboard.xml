@@ -185,8 +185,7 @@
             android:text="VC-SIMV(PS)"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="@dimen/_12sdp" />
-
+            android:textSize="@dimen/_10sdp" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

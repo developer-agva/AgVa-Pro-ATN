@@ -1,5 +1,6 @@
 package com.agvahealthcare.ventilator_ext.logs.event
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -30,7 +31,6 @@ import java.util.*
 import kotlin.math.abs
 import kotlin.math.max
 
-
 class EventsFragment : Fragment(), View.OnClickListener {
 
     private lateinit var mEventViewModel: EventViewModel
@@ -42,6 +42,7 @@ class EventsFragment : Fragment(), View.OnClickListener {
     private var uhid = ""
     private var startIndex = 0
     private var endIndex = 9
+    private var steps = 9
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,6 +55,16 @@ class EventsFragment : Fragment(), View.OnClickListener {
             ViewModelProvider(requireActivity()).get(DashBoardViewModel::class.java)
         buttonLayout = view.findViewById(R.id.btnLayout)
 
+        steps = if (Build.VERSION.SDK_INT >= 27) {
+            // This is Android 7.0 (API 24) or higher
+            10
+        } else {
+            // Below Android 7.0
+            9
+        }
+
+        endIndex = steps
+        
         return view
     }
 
@@ -81,9 +92,7 @@ class EventsFragment : Fragment(), View.OnClickListener {
                     setupDataDefault(uhid)
                 }
 
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-
-                }
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
         }
     }
@@ -125,8 +134,8 @@ class EventsFragment : Fragment(), View.OnClickListener {
                     mLayoutManager.apply {
                         val firstVisibleItemIndex = findFirstVisibleItemPosition()
                         if (getSelection() == firstVisibleItemIndex) {
-                            startIndex -= 9
-                            endIndex -= 9
+                            startIndex -= steps
+                            endIndex -= steps
                             val data = FileLogger.readEventFile("event",
                                 PreferenceManager(requireContext()).readUHID(),startIndex,endIndex)
                             if (data != "Data Not Found"){
@@ -154,8 +163,8 @@ class EventsFragment : Fragment(), View.OnClickListener {
                         if (getSelection() != dataList.size - 1) {
 
                             if (getSelection() == lastVisibleItemIndex) {
-                                startIndex += 9
-                                endIndex += 9
+                                startIndex += steps
+                                endIndex += steps
                                 val data = FileLogger.readEventFile("event",PreferenceManager(requireContext()).readUHID(),startIndex,endIndex)
                                 if (data != "Data Not Found"){
                                     val listData = data.split("|") as ArrayList<String>

@@ -81,7 +81,7 @@
                 android:text="Parameter"
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
-                android:textSize="@dimen/_6sdp"
+                android:textSize="@dimen/_5sdp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/tv_unit"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -96,7 +96,7 @@
                 android:text="Unit"
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
-                android:textSize="@dimen/_6sdp"
+                android:textSize="@dimen/_5sdp"
                 app:layout_constraintStart_toEndOf="@id/tv_param"
                 app:layout_constraintEnd_toStartOf="@id/tv_time_1"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -111,7 +111,7 @@
                 android:text=""
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
-                android:textSize="@dimen/_6sdp"
+                android:textSize="@dimen/_5sdp"
                 android:visibility="invisible"
                 app:layout_constraintStart_toEndOf="@id/tv_unit"
                 app:layout_constraintEnd_toStartOf="@id/tv_time_2"
@@ -128,7 +128,7 @@
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
                 android:visibility="invisible"
-                android:textSize="@dimen/_6sdp"
+                android:textSize="@dimen/_5sdp"
                 app:layout_constraintStart_toEndOf="@id/tv_time_1"
                 app:layout_constraintEnd_toStartOf="@id/tv_time_3"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -144,7 +144,7 @@
                 android:textAlignment="center"
                 android:visibility="invisible"
                 android:textColor="#FFFFFF"
-                android:textSize="@dimen/_6sdp"
+                android:textSize="@dimen/_5sdp"
                 app:layout_constraintStart_toEndOf="@id/tv_time_2"
                 app:layout_constraintEnd_toStartOf="@id/tv_time_4"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -160,7 +160,7 @@
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
                 android:visibility="invisible"
-                android:textSize="@dimen/_6sdp"
+                android:textSize="@dimen/_5sdp"
                 app:layout_constraintStart_toEndOf="@id/tv_time_3"
                 app:layout_constraintEnd_toStartOf="@id/tv_time_5"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -176,7 +176,7 @@
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
                 android:visibility="invisible"
-                android:textSize="@dimen/_6sdp"
+                android:textSize="@dimen/_5sdp"
                 app:layout_constraintStart_toEndOf="@id/tv_time_4"
                 app:layout_constraintEnd_toStartOf="@id/tv_time_6"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -192,7 +192,7 @@
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
                 android:visibility="invisible"
-                android:textSize="@dimen/_6sdp"
+                android:textSize="@dimen/_5sdp"
                 app:layout_constraintStart_toEndOf="@id/tv_time_5"
                 app:layout_constraintEnd_toStartOf="@id/tv_time_7"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -208,7 +208,7 @@
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
                 android:visibility="invisible"
-                android:textSize="@dimen/_6sdp"
+                android:textSize="@dimen/_5sdp"
                 app:layout_constraintStart_toEndOf="@id/tv_time_6"
                 app:layout_constraintEnd_toStartOf="@id/tv_time_8"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -224,7 +224,7 @@
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
                 android:visibility="invisible"
-                android:textSize="@dimen/_6sdp"
+                android:textSize="@dimen/_5sdp"
                 app:layout_constraintStart_toEndOf="@id/tv_time_7"
                 app:layout_constraintEnd_toStartOf="@id/tv_time_9"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -240,7 +240,7 @@
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
                 android:visibility="invisible"
-                android:textSize="@dimen/_6sdp"
+                android:textSize="@dimen/_5sdp"
                 app:layout_constraintStart_toEndOf="@id/tv_time_8"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

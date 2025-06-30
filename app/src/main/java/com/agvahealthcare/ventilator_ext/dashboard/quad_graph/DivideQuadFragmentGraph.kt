@@ -31,14 +31,12 @@ class DivideQuadFragmentGraph : GraphLayoutFragment("DivideQuadGraphFragment"){
         savedInstanceState: Bundle?,
     ): View {
         return inflater.inflate(R.layout.fragment_divide_quad_graph, container, false)
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         initData()
-
     }
 
     private fun initData() {
@@ -46,7 +44,6 @@ class DivideQuadFragmentGraph : GraphLayoutFragment("DivideQuadGraphFragment"){
         initDivideQuadGraph2()
         initDivideQuadGraph3()
         initDivideQuadGraph4()
-
     }
 
     fun setDataGobally(xMaxRange:Double){
@@ -87,7 +84,6 @@ class DivideQuadFragmentGraph : GraphLayoutFragment("DivideQuadGraphFragment"){
             .commit()
     }
 
-
     private fun initDivideQuadGraph4() {
         flowVolumeChartFragment = FlowVolumeChartFragment.newInstance(GraphType.FLOW_VOLUME)
         childFragmentManager.beginTransaction()
@@ -97,13 +93,10 @@ class DivideQuadFragmentGraph : GraphLayoutFragment("DivideQuadGraphFragment"){
             .commit()
     }
 
-
-
     fun addGraphPressureData(x: Int, y: Float) {
         Log.i("PRESSURE_GRAPH", "x = $x , Y = $y")
         pressureChartFragment.addEntry(x, y)
     }
-
 
     fun addGraphVolumeData(x: Int, y: Float ) {
         Log.i("VOLUME_GRAPH", "x = $x , Y = $y")
@@ -113,20 +106,15 @@ class DivideQuadFragmentGraph : GraphLayoutFragment("DivideQuadGraphFragment"){
     fun addGraphFlowData(x: Int, y: Float) {
         Log.i("FLOW_GRAPH", "x = $x , Y = $y")
         flowChartFragment.addEntry(x, y)
-
     }
 
-    fun clearSeries(){
-
-
-    }
+    fun clearSeries(){}
 
     fun addGraphPressureVolumeData(x: Float?, y: Float?, isRedrawRequired: Boolean) {
         if(isRedrawRequired) pressureVolumeChartFragment.clearSeries()
         else{
             if(x != null && y != null) pressureVolumeChartFragment.addEntry(x, y)
             Log.i("DIVIDE_QUAD_LOOP_GRAPH", "PV Value Of x = $x , Y = $y")
-
         }
     }
 
@@ -139,7 +127,6 @@ class DivideQuadFragmentGraph : GraphLayoutFragment("DivideQuadGraphFragment"){
     }
 
     fun addGraphFlowPressureData(x: Float?, y: Float?, isRedrawRequired: Boolean) {
-
         if(isRedrawRequired) flowPressureChartFragment.clearSeries()
         else{
             if(x != null && y != null) flowPressureChartFragment.addEntry(x, y)

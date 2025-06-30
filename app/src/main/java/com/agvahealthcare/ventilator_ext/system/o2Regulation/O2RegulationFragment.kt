@@ -278,7 +278,6 @@ class O2RegulationFragment(private var communicationService: CommunicationServic
         }
     }
 
-
     override fun onPause() {
 
         clickHold = false
@@ -478,7 +477,6 @@ class O2RegulationFragment(private var communicationService: CommunicationServic
                         dialog.show(childFragmentManager, SettingFragment.TAG)
                         dialog.startTimeoutWithDebounce()
                     }
-
                     showCalibrateScreen()
                 }
             }

@@ -356,19 +356,21 @@
                 android:text="For support scan Qr"
                 android:textAllCaps="true"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_7sdp"
+                android:textSize="@dimen/_6sdp"
                 android:textStyle="normal"
+                android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@+id/qrcode"
                 app:layout_constraintEnd_toEndOf="@+id/qrcode"
                 app:layout_constraintStart_toStartOf="@+id/qrcode" />
 
             <ImageView
                 android:id="@+id/qrcode"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_marginEnd="80dp"
-                android:layout_marginBottom="60dp"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
                 android:src="@drawable/ventiqrcode"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
@@ -397,7 +399,7 @@
                 android:gravity="center|start"
                 android:text="@string/battery_usage_disclaimer"
                 android:textColor="@color/offblack"
-                android:textSize="@dimen/_6sdp"
+                android:textSize="@dimen/_5sdp"
                 android:theme="@style/subheading_text_style_graph" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>

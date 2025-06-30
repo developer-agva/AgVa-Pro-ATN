@@ -23,7 +23,7 @@
             android:alpha="0.6"
             android:textAllCaps="false"
             android:theme="@style/subheading_text_style_unit"
-            android:textSize="@dimen/_7sdp"
+            android:textSize="@dimen/_5sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -51,7 +51,7 @@
         android:layout_gravity="center"
         android:alpha="0.6"
         android:theme="@style/subheading_text_style_graph"
-        android:textSize="@dimen/_6sdp"
+        android:textSize="@dimen/_5sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewValue" />

@@ -14,7 +14,7 @@
             android:text="@string/hint_female"
             android:textAllCaps="true"
             android:textStyle="bold"
-            android:textSize="@dimen/_8sdp"
+            android:textSize="@dimen/_7sdp"
             android:paddingStart="@dimen/_25sdp"
             android:paddingEnd="@dimen/_25sdp"
             app:layout_constraintStart_toStartOf="parent"

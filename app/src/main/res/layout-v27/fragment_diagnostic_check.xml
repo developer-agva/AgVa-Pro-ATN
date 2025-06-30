@@ -26,7 +26,9 @@
         android:id="@+id/mainViewPanelDiagnostic"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible">
+        android:visibility="visible"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/focusLayoutDiagnostic"
@@ -70,25 +72,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.86" />
+            app:layout_constraintGuide_percent="0.85" />
 
         <View
             android:id="@+id/horizontalView"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_1sdp"
-            android:background="@color/dolphin_grey"
             android:layout_marginTop="@dimen/_2sdp"
-            app:layout_constraintTop_toBottomOf="@id/txtHeading"/>
+            android:background="@color/dolphin_grey"
+            app:layout_constraintTop_toBottomOf="@id/txtHeading" />
 
         <View
             android:id="@+id/VerticalView"
             android:layout_width="@dimen/_1sdp"
             android:layout_height="0dp"
             android:background="@color/dolphin_grey"
-            app:layout_constraintStart_toStartOf="@id/guideline5"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/guideline5"
-            app:layout_constraintTop_toBottomOf="@id/horizontalView"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintStart_toStartOf="@id/guideline5"
+            app:layout_constraintTop_toBottomOf="@id/horizontalView" />
 
         <TextView
             android:id="@+id/txtHeading"
@@ -97,12 +99,12 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:fontFamily="@font/avenir_next_lt_pro_medium"
             android:text="@string/diagnostic_tool_check"
+            android:textAllCaps="true"
             android:textColor="@color/black"
             android:textSize="@dimen/_10sdp"
-            android:textAllCaps="true"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <!--  insp section-->
@@ -120,17 +122,17 @@
             android:id="@+id/txtInspPressueRawValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:theme="@style/subheading_text_style_diag"
+            android:text="value1"
             android:textStyle="bold"
+            android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline"
-            app:layout_constraintTop_toTopOf="@+id/txtInspPressureRaw"
-            android:text="value1" />
+            app:layout_constraintTop_toTopOf="@+id/txtInspPressureRaw" />
 
         <TextView
             android:id="@+id/txtInspPressure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:text="INSP Pressure"
             android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline0"
@@ -140,18 +142,18 @@
             android:id="@+id/txtInspPressueValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="value1"
             android:textStyle="bold"
             android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline"
-            app:layout_constraintTop_toTopOf="@+id/txtInspPressure"
-            android:text="value1" />
+            app:layout_constraintTop_toTopOf="@+id/txtInspPressure" />
 
 
         <TextView
             android:id="@+id/txtInspFlow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:text="INSP Flow"
             android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline0"
@@ -161,17 +163,17 @@
             android:id="@+id/txtInspFlowValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="value1"
             android:textStyle="bold"
             android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline"
-            app:layout_constraintTop_toTopOf="@+id/txtInspFlow"
-            android:text="value1" />
+            app:layout_constraintTop_toTopOf="@+id/txtInspFlow" />
 
         <TextView
             android:id="@+id/txtInspFlowVoltage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:text="INSP Flow Voltage"
             android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline0"
@@ -181,11 +183,11 @@
             android:id="@+id/txtInspFlowVoltageValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="value1"
             android:textStyle="bold"
             android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline"
-            app:layout_constraintTop_toTopOf="@+id/txtInspFlowVoltage"
-            android:text="value1" />
+            app:layout_constraintTop_toTopOf="@+id/txtInspFlowVoltage" />
 
 
         <!--        exp section-->
@@ -193,7 +195,7 @@
             android:id="@+id/txtExpPressureRaw"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:text="EXP Pressure Raw"
             android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline0"
@@ -203,17 +205,17 @@
             android:id="@+id/txtExpPressueRawValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:theme="@style/subheading_text_style_diag"
+            android:text="value1"
             android:textStyle="bold"
+            android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline"
-            app:layout_constraintTop_toTopOf="@+id/txtExpPressureRaw"
-            android:text="value1" />
+            app:layout_constraintTop_toTopOf="@+id/txtExpPressureRaw" />
 
         <TextView
             android:id="@+id/txtExpPressure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:text="EXP Pressure"
             android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline0"
@@ -223,18 +225,18 @@
             android:id="@+id/txtExpPressueValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:theme="@style/subheading_text_style_diag"
+            android:text="value1"
             android:textStyle="bold"
+            android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline"
-            app:layout_constraintTop_toTopOf="@+id/txtExpPressure"
-            android:text="value1" />
+            app:layout_constraintTop_toTopOf="@+id/txtExpPressure" />
 
 
         <TextView
             android:id="@+id/txtExpFlow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:text="EXP Flow"
             android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline0"
@@ -244,17 +246,17 @@
             android:id="@+id/txtExpFlowValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:theme="@style/subheading_text_style_diag"
+            android:text="value1"
             android:textStyle="bold"
+            android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline"
-            app:layout_constraintTop_toTopOf="@+id/txtExpFlow"
-            android:text="value1" />
+            app:layout_constraintTop_toTopOf="@+id/txtExpFlow" />
 
         <TextView
             android:id="@+id/txtExpDpRaw"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:text="EXP DP Raw"
             android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline0"
@@ -265,8 +267,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="value1"
-            android:theme="@style/subheading_text_style_diag"
             android:textStyle="bold"
+            android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline"
             app:layout_constraintTop_toTopOf="@+id/txtExpDpRaw" />
 
@@ -276,7 +278,7 @@
             android:id="@+id/txtOxyRawPressure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:text="OXY Pressure Raw"
             android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline0"
@@ -287,8 +289,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="value1"
-            android:theme="@style/subheading_text_style_diag"
             android:textStyle="bold"
+            android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline"
             app:layout_constraintTop_toTopOf="@+id/txtOxyRawPressure" />
 
@@ -296,7 +298,7 @@
             android:id="@+id/txtOxyPressure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:text="OXY Pressure"
             android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline0"
@@ -307,8 +309,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="value1"
-            android:theme="@style/subheading_text_style_diag"
             android:textStyle="bold"
+            android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline"
             app:layout_constraintTop_toTopOf="@+id/txtOxyPressure" />
 
@@ -316,7 +318,7 @@
             android:id="@+id/txtOxySensorVoltage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:text="OXY Sensor Voltage"
             android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline0"
@@ -327,17 +329,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="value1"
-            android:theme="@style/subheading_text_style_diag"
             android:textStyle="bold"
+            android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline"
             app:layout_constraintTop_toTopOf="@+id/txtOxySensorVoltage" />
 
-<!--        battery section-->
+        <!--        battery section-->
         <TextView
             android:id="@+id/txtBatteryCurrent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:text="Battery Current"
             android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline0"
@@ -348,8 +350,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="value1"
-            android:theme="@style/subheading_text_style_diag"
             android:textStyle="bold"
+            android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline"
             app:layout_constraintTop_toTopOf="@+id/txtBatteryCurrent" />
 
@@ -357,7 +359,7 @@
             android:id="@+id/txtBatteryVoltage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:text="Battery Voltage"
             android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline0"
@@ -368,8 +370,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="value1"
-            android:theme="@style/subheading_text_style_diag"
             android:textStyle="bold"
+            android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline"
             app:layout_constraintTop_toTopOf="@+id/txtBatteryVoltage" />
 
@@ -377,7 +379,7 @@
             android:id="@+id/txtBatterySoc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:text="Battery SOC"
             android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline0"
@@ -388,8 +390,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="value1"
-            android:theme="@style/subheading_text_style_diag"
             android:textStyle="bold"
+            android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline"
             app:layout_constraintTop_toTopOf="@+id/txtBatterySoc" />
 
@@ -397,7 +399,7 @@
             android:id="@+id/txtBatteryRemainingTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:text="Battery Remaining Time"
             android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline0"
@@ -408,8 +410,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="value1"
-            android:theme="@style/subheading_text_style_diag"
             android:textStyle="bold"
+            android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline"
             app:layout_constraintTop_toTopOf="@+id/txtBatteryRemainingTime" />
 
@@ -417,7 +419,7 @@
             android:id="@+id/txtBatteryState"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:text="Battery Charging Status"
             android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline0"
@@ -428,13 +430,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="value1"
-            android:theme="@style/subheading_text_style_diag"
             android:textStyle="bold"
+            android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline"
             app:layout_constraintTop_toTopOf="@+id/txtBatteryState" />
 
 
-<!--        power section -->
+        <!--        power section -->
         <TextView
             android:id="@+id/txtPowerConnection"
             android:layout_width="wrap_content"
@@ -448,19 +450,19 @@
             android:id="@+id/txtPowerConnectionValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:theme="@style/subheading_text_style_diag"
+            android:text="value1"
             android:textStyle="bold"
+            android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline2"
-            app:layout_constraintTop_toTopOf="@+id/txtPowerConnection"
-            android:text="value1" />
+            app:layout_constraintTop_toTopOf="@+id/txtPowerConnection" />
 
-<!--        spo2 section-->
+        <!--        spo2 section-->
         <TextView
             android:id="@+id/txtSpo2Status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
             android:text="SpO₂ Connection"
-            android:layout_marginTop="@dimen/_6sdp"
             android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline1"
             app:layout_constraintTop_toBottomOf="@id/txtPowerConnection" />
@@ -469,18 +471,18 @@
             android:id="@+id/txtSpo2StatusValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:theme="@style/subheading_text_style_diag"
+            android:text="value1"
             android:textStyle="bold"
+            android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline2"
-            app:layout_constraintTop_toTopOf="@+id/txtSpo2Status"
-            android:text="value1" />
+            app:layout_constraintTop_toTopOf="@+id/txtSpo2Status" />
 
         <TextView
             android:id="@+id/txtHR"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
             android:text="Heart Rate"
-            android:layout_marginTop="@dimen/_6sdp"
             android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline1"
             app:layout_constraintTop_toBottomOf="@id/txtSpo2Status" />
@@ -489,18 +491,18 @@
             android:id="@+id/txtHRValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:theme="@style/subheading_text_style_diag"
+            android:text="value1"
             android:textStyle="bold"
+            android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline2"
-            app:layout_constraintTop_toTopOf="@+id/txtHR"
-            android:text="value1" />
+            app:layout_constraintTop_toTopOf="@+id/txtHR" />
 
         <TextView
             android:id="@+id/txtSpo2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
             android:text="SpO₂"
-            android:layout_marginTop="@dimen/_6sdp"
             android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline1"
             app:layout_constraintTop_toBottomOf="@id/txtHR" />
@@ -509,19 +511,19 @@
             android:id="@+id/txtSpo2Value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:theme="@style/subheading_text_style_diag"
+            android:text="value1"
             android:textStyle="bold"
+            android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline2"
-            app:layout_constraintTop_toTopOf="@+id/txtSpo2"
-            android:text="value1" />
+            app:layout_constraintTop_toTopOf="@+id/txtSpo2" />
 
-<!--        pi and knob section-->
+        <!--        pi and knob section-->
         <TextView
             android:id="@+id/txtPiTemp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
             android:text="Pi Temp"
-            android:layout_marginTop="@dimen/_6sdp"
             android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline1"
             app:layout_constraintTop_toBottomOf="@id/txtSpo2" />
@@ -530,18 +532,18 @@
             android:id="@+id/txtPiTempValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:theme="@style/subheading_text_style_diag"
+            android:text="value1"
             android:textStyle="bold"
+            android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline2"
-            app:layout_constraintTop_toTopOf="@+id/txtPiTemp"
-            android:text="value1" />
+            app:layout_constraintTop_toTopOf="@+id/txtPiTemp" />
 
         <TextView
             android:id="@+id/txtScreenCpuTemp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
             android:text="Screen CPU Temp"
-            android:layout_marginTop="@dimen/_6sdp"
             android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline1"
             app:layout_constraintTop_toBottomOf="@id/txtPiTemp" />
@@ -550,18 +552,18 @@
             android:id="@+id/txtScreenCpuTempValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:theme="@style/subheading_text_style_diag"
+            android:text="value1"
             android:textStyle="bold"
+            android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline2"
-            app:layout_constraintTop_toTopOf="@+id/txtScreenCpuTemp"
-            android:text="value1" />
+            app:layout_constraintTop_toTopOf="@+id/txtScreenCpuTemp" />
 
         <TextView
             android:id="@+id/txtPiCpuLoad"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
             android:text="Pi CPU Load"
-            android:layout_marginTop="@dimen/_6sdp"
             android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline1"
             app:layout_constraintTop_toBottomOf="@id/txtScreenCpuTemp" />
@@ -570,18 +572,18 @@
             android:id="@+id/txtPiCpuLoadValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:theme="@style/subheading_text_style_diag"
+            android:text="value1"
             android:textStyle="bold"
+            android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline2"
-            app:layout_constraintTop_toTopOf="@+id/txtPiCpuLoad"
-            android:text="value1" />
+            app:layout_constraintTop_toTopOf="@+id/txtPiCpuLoad" />
 
         <TextView
             android:id="@+id/txtKnobPcbType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
             android:text="Knob PCB Type"
-            android:layout_marginTop="@dimen/_6sdp"
             android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline1"
             app:layout_constraintTop_toBottomOf="@id/txtPiCpuLoad" />
@@ -590,11 +592,11 @@
             android:id="@+id/txtKnobPcbTypeValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:theme="@style/subheading_text_style_diag"
+            android:text="value1"
             android:textStyle="bold"
+            android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline2"
-            app:layout_constraintTop_toTopOf="@+id/txtKnobPcbType"
-            android:text="value1" />
+            app:layout_constraintTop_toTopOf="@+id/txtKnobPcbType" />
 
 
         <!--   versions section-->
@@ -603,8 +605,8 @@
             android:id="@+id/txtKnobPCBVersion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
             android:text="Knob PCB Version"
-            android:layout_marginTop="@dimen/_6sdp"
             android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline1"
             app:layout_constraintTop_toBottomOf="@id/txtKnobPcbType" />
@@ -613,13 +615,13 @@
             android:id="@+id/txtKnobPCBVersionValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:theme="@style/subheading_text_style_diag"
+            android:text="value1"
             android:textStyle="bold"
+            android:theme="@style/subheading_text_style_diag"
             app:layout_constraintStart_toStartOf="@id/guideline2"
-            app:layout_constraintTop_toTopOf="@+id/txtKnobPCBVersion"
-            android:text="value1" />
+            app:layout_constraintTop_toTopOf="@+id/txtKnobPCBVersion" />
 
-<!--        ranges section-->
+        <!--        ranges section-->
 
         <TextView
             android:id="@+id/txtTurbineRanges"
@@ -627,9 +629,9 @@
             android:layout_height="wrap_content"
             android:text="Turbine PWM"
             android:theme="@style/subheading_text_style_diag"
+            app:layout_constraintBottom_toBottomOf="@id/btnTurbineRanges"
             app:layout_constraintStart_toStartOf="@id/guideline1"
-            app:layout_constraintTop_toTopOf="@id/btnTurbineRanges"
-            app:layout_constraintBottom_toBottomOf="@id/btnTurbineRanges"/>
+            app:layout_constraintTop_toTopOf="@id/btnTurbineRanges" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/btnTurbineRanges"
@@ -644,14 +646,14 @@
                 android:id="@+id/textViewTurbineRangesValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:translationZ="@dimen/_3sdp"
                 android:text=""
-                android:theme="@style/subheading_text_style_diag"
+                android:textSize="@dimen/_5sdp"
                 android:textStyle="bold"
-                android:textSize="@dimen/_7sdp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:theme="@style/subheading_text_style_diag"
+                android:translationZ="@dimen/_3sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -663,9 +665,9 @@
             android:layout_height="wrap_content"
             android:text="Exhale Valve PWM"
             android:theme="@style/subheading_text_style_diag"
+            app:layout_constraintBottom_toBottomOf="@id/btnExhaleValveRanges"
             app:layout_constraintStart_toStartOf="@id/guideline1"
-            app:layout_constraintTop_toTopOf="@id/btnExhaleValveRanges"
-            app:layout_constraintBottom_toBottomOf="@id/btnExhaleValveRanges" />
+            app:layout_constraintTop_toTopOf="@id/btnExhaleValveRanges" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/btnExhaleValveRanges"
@@ -680,14 +682,14 @@
                 android:id="@+id/textViewExhaleValveRangesValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:translationZ="@dimen/_3sdp"
                 android:text=""
-                android:theme="@style/subheading_text_style_diag"
+                android:textSize="@dimen/_5sdp"
                 android:textStyle="bold"
-                android:textSize="@dimen/_7sdp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:theme="@style/subheading_text_style_diag"
+                android:translationZ="@dimen/_3sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -699,9 +701,9 @@
             android:layout_height="wrap_content"
             android:text="Oxygen Valve PWM"
             android:theme="@style/subheading_text_style_diag"
+            app:layout_constraintBottom_toBottomOf="@id/btnOxygenValveRanges"
             app:layout_constraintStart_toStartOf="@id/guideline1"
-            app:layout_constraintTop_toTopOf="@id/btnOxygenValveRanges"
-            app:layout_constraintBottom_toBottomOf="@id/btnOxygenValveRanges" />
+            app:layout_constraintTop_toTopOf="@id/btnOxygenValveRanges" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/btnOxygenValveRanges"
@@ -716,14 +718,14 @@
                 android:id="@+id/textViewOxygenValveRangesValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:translationZ="@dimen/_3sdp"
                 android:text=""
-                android:theme="@style/subheading_text_style_diag"
+                android:textSize="@dimen/_5sdp"
                 android:textStyle="bold"
-                android:textSize="@dimen/_7sdp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:theme="@style/subheading_text_style_diag"
+                android:translationZ="@dimen/_3sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -734,79 +736,79 @@
         <include
             android:id="@+id/includeButtonTurbine"
             layout="@layout/content_button_center_layout"
-            android:layout_width="@dimen/_40sdp"
+            android:layout_width="@dimen/_35sdp"
             android:layout_height="@dimen/_15sdp"
             android:foreground="?attr/selectableItemBackgroundBorderless"
-            app:layout_constraintStart_toStartOf="@id/VerticalView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/txtInspPressureRaw"/>
+            app:layout_constraintStart_toStartOf="@id/VerticalView"
+            app:layout_constraintTop_toTopOf="@id/txtInspPressureRaw" />
 
         <include
             android:id="@+id/includeButtonExhaleValve"
             layout="@layout/content_button_center_layout"
-            android:layout_width="@dimen/_40sdp"
+            android:layout_width="@dimen/_35sdp"
             android:layout_height="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_7sdp"
             android:foreground="?attr/selectableItemBackgroundBorderless"
-            app:layout_constraintStart_toStartOf="@id/VerticalView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/includeButtonTurbine"/>
+            app:layout_constraintStart_toStartOf="@id/VerticalView"
+            app:layout_constraintTop_toBottomOf="@id/includeButtonTurbine" />
 
         <include
             android:id="@+id/includeButtonOxyValve"
             layout="@layout/content_button_center_layout"
-            android:layout_width="@dimen/_40sdp"
+            android:layout_width="@dimen/_35sdp"
             android:layout_height="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_7sdp"
             android:foreground="?attr/selectableItemBackgroundBorderless"
-            app:layout_constraintStart_toStartOf="@id/VerticalView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/includeButtonExhaleValve"/>
+            app:layout_constraintStart_toStartOf="@id/VerticalView"
+            app:layout_constraintTop_toBottomOf="@id/includeButtonExhaleValve" />
 
         <include
             android:id="@+id/includeButtonPurge"
             layout="@layout/content_button_center_layout"
-            android:layout_width="@dimen/_40sdp"
+            android:layout_width="@dimen/_35sdp"
             android:layout_height="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_7sdp"
             android:foreground="?attr/selectableItemBackgroundBorderless"
-            app:layout_constraintStart_toStartOf="@id/VerticalView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/includeButtonOxyValve"/>
+            app:layout_constraintStart_toStartOf="@id/VerticalView"
+            app:layout_constraintTop_toBottomOf="@id/includeButtonOxyValve" />
 
         <include
             android:id="@+id/includeButtonNebulizer"
             layout="@layout/content_button_center_layout"
-            android:layout_width="@dimen/_40sdp"
+            android:layout_width="@dimen/_35sdp"
             android:layout_height="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_7sdp"
             android:foreground="?attr/selectableItemBackgroundBorderless"
-            app:layout_constraintStart_toStartOf="@id/VerticalView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/includeButtonPurge"/>
+            app:layout_constraintStart_toStartOf="@id/VerticalView"
+            app:layout_constraintTop_toBottomOf="@id/includeButtonPurge" />
 
 
         <include
             android:id="@+id/includeButtonRedLED"
             layout="@layout/content_button_center_layout"
-            android:layout_width="@dimen/_40sdp"
+            android:layout_width="@dimen/_35sdp"
             android:layout_height="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_7sdp"
             android:foreground="?attr/selectableItemBackgroundBorderless"
-            app:layout_constraintStart_toStartOf="@id/VerticalView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/includeButtonNebulizer"/>
+            app:layout_constraintStart_toStartOf="@id/VerticalView"
+            app:layout_constraintTop_toBottomOf="@id/includeButtonNebulizer" />
 
         <include
             android:id="@+id/includeButtonAmberLED"
             layout="@layout/content_button_center_layout"
-            android:layout_width="@dimen/_40sdp"
+            android:layout_width="@dimen/_35sdp"
             android:layout_height="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_7sdp"
             android:foreground="?attr/selectableItemBackgroundBorderless"
-            app:layout_constraintStart_toStartOf="@id/VerticalView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/includeButtonRedLED"/>
+            app:layout_constraintStart_toStartOf="@id/VerticalView"
+            app:layout_constraintTop_toBottomOf="@id/includeButtonRedLED" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

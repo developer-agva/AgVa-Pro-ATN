@@ -150,7 +150,7 @@ class SetupActivity : BaseActivity(), onDropDownSelectionListener {
     }
 
     private fun navigateToSplash(dataString: String){
-        Intent(this@SetupActivity,SplashActivity::class.java).also {
+        Intent(this@SetupActivity,MainActivity::class.java).also {
             it.putExtra(Configs.CONFIGS_STRING,dataString)
             startActivity(it)
         }

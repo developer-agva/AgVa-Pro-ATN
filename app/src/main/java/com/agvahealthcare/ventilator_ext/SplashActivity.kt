@@ -685,7 +685,6 @@ class SplashActivity : AppCompatActivity(), SimpleCallbackListener,
         requestWindowFeature(Window.FEATURE_NO_TITLE)
 
         setContentView(R.layout.activity_splash)
-
         AppUtils.keepScreenAlive(this@SplashActivity, true)
 
         checkPermissions()
@@ -696,7 +695,6 @@ class SplashActivity : AppCompatActivity(), SimpleCallbackListener,
             if (dataStoreManager?.getCurrentActivity()?.first() == "Dash") {
                 dashsplashSecondaryLayout.visibility = View.VISIBLE
                 splashMainLayout.visibility = View.GONE
-
             } else {
                 dashsplashSecondaryLayout.visibility = View.GONE
                 splashMainLayout.visibility = View.VISIBLE

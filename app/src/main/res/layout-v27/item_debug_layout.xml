@@ -9,7 +9,7 @@
         android:id="@+id/txtDebugData"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textSize="@dimen/_7sdp"
+        android:textSize="@dimen/_6sdp"
         android:textColor="@color/white"
         android:singleLine="false"
         android:fontFamily="@font/avenir_next_lt_pro_regular"

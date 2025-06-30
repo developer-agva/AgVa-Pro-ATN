@@ -346,7 +346,6 @@ class StandbyControlDialogFragment : DialogFragment() {
 
     // knob highlight logic ends here
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -395,14 +394,12 @@ class StandbyControlDialogFragment : DialogFragment() {
         standbySmartFio2Fragment = null
     }
 
-
     override fun onStart() {
         super.onStart()
         val heightDialog = arguments?.getInt(StandbyControlDialogFragment.KEY_HEIGHT)
         val widthDialog = arguments?.getInt(StandbyControlDialogFragment.KEY_WIDTH)
         isStatus = arguments?.getBoolean(StandbyControlDialogFragment.KEY_STATUS)
         setHeightWidth(heightDialog, widthDialog, isStatus)
-
     }
 
     private fun checkMode() {
@@ -492,8 +489,7 @@ class StandbyControlDialogFragment : DialogFragment() {
 
         makeAllFragmentNull()
         basicControlParams?.let {
-            if (standbyBasicFragment == null) standbyBasicFragment =
-                StandbyBasicFragment(ArrayList(it), basicParameterClickListener)
+            if (standbyBasicFragment == null) standbyBasicFragment = StandbyBasicFragment(ArrayList(it), basicParameterClickListener)
 
             standbyBasicFragment?.apply {
                 replaceFragment(
@@ -502,7 +498,6 @@ class StandbyControlDialogFragment : DialogFragment() {
                     R.id.standbycontrol_nav_container
                 )
             }
-
         }
 
         includeButtonStandbyAdvanced.buttonView.setTextColor(
@@ -580,6 +575,7 @@ class StandbyControlDialogFragment : DialogFragment() {
                 }
             }
         }
+
         includeButtonStandbyBasic.buttonView.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
@@ -628,7 +624,6 @@ class StandbyControlDialogFragment : DialogFragment() {
                 R.color.white
             )
         )
-
 
         includeButtonStandbyVTas.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
     }
@@ -691,7 +686,6 @@ class StandbyControlDialogFragment : DialogFragment() {
             )
         )
 
-
         includeButtonStandbySmartFio2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
         includeButtonStandbyVTas.buttonView.setTextColor(
@@ -742,6 +736,7 @@ class StandbyControlDialogFragment : DialogFragment() {
                 )
             )
             includeButtonStandbyEtCuff.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
+
             includeButtonStandbyBasic.buttonView.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
@@ -756,8 +751,6 @@ class StandbyControlDialogFragment : DialogFragment() {
                     R.color.white
                 )
             )
-
-
             includeButtonStandbySmartFio2.buttonView.setBackgroundResource(R.drawable.background_primary_btn_rounded)
 
             includeButtonStandbyVTas.buttonView.setTextColor(

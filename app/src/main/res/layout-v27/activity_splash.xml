@@ -60,7 +60,7 @@
                 android:layout_marginEnd="@dimen/_2sdp"
                 android:textColor="@color/colorAccent"
                 android:visibility="visible"
-                android:textSize="@dimen/_35sdp"
+                android:textSize="@dimen/_30sdp"
                 android:theme="@style/subheading_text_style" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -70,7 +70,7 @@
                 android:text="@string/hint_pro"
                 android:textAllCaps="true"
                 android:textColor="@color/colorAccentPro"
-                android:textSize="@dimen/_35sdp"
+                android:textSize="@dimen/_30sdp"
                 android:theme="@style/subheading_text_style" />
 
 
@@ -351,7 +351,7 @@
                 android:fontFamily="@font/poppins_medium"
                 android:text="@string/hint_copyright"
                 android:textColor="#BE504F4F"
-                android:textSize="@dimen/_6sdp" />
+                android:textSize="@dimen/_5sdp" />
 
 
         </androidx.appcompat.widget.LinearLayoutCompat>
@@ -365,7 +365,7 @@
             android:fontFamily="@font/poppins_medium"
             android:text="Version aplha 1.0.1"
             android:textColor="#BE504F4F"
-            android:textSize="@dimen/_6sdp"
+            android:textSize="@dimen/_5sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

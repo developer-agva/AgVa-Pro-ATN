@@ -219,7 +219,7 @@
             android:fontFamily="@font/avenir_next_lt_pro_medium"
             android:text=""
             android:textColor="@color/black"
-            android:textSize="@dimen/_13sdp"
+            android:textSize="@dimen/_10sdp"
             android:layout_gravity="center"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -15,14 +15,14 @@
         android:layout_height="wrap_content"
         android:text="Label"
         android:textColor="@color/black"
-        android:textSize="@dimen/_6sdp"
+        android:textSize="@dimen/_5sdp"
         android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/valueTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/_5sdp"
+        android:textSize="@dimen/_4sdp"
         android:textColor="@color/black"
         android:text="Value"/>
 </LinearLayout>

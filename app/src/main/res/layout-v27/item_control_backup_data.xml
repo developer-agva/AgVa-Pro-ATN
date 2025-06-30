@@ -14,7 +14,7 @@
         android:alpha="0.6"
         android:text="BACKUP"
         android:textColor="@color/black"
-        android:textSize="@dimen/_6sdp" />
+        android:textSize="@dimen/_5sdp" />
 
     <ToggleButton
         android:id="@+id/toggleButton"

@@ -812,11 +812,11 @@
 
     <!--SOFTWARE ALARM PARAM LIMITS-->
     <string name="default_min_pip_limit">0</string>
-    <string name="default_max_pip_limit">60</string>
+    <string name="default_max_pip_limit">70</string>
     <string name="default_min_pip_ped_limit">0</string>
-    <string name="default_max_pip_ped_limit">50</string>
+    <string name="default_max_pip_ped_limit">60</string>
     <string name="default_min_pip_limit_neo">0</string>
-    <string name="default_max_pip_limit_neo">40</string>
+    <string name="default_max_pip_limit_neo">50</string>
 
     <string name="default_min_vti_limit">0</string>
     <string name="default_max_vti_limit">2000</string>
@@ -834,18 +834,18 @@
 
 
     <string name="default_min_peep_limit">0</string>
-    <string name="default_max_peep_limit">50</string>
+    <string name="default_max_peep_limit">60</string>
     <string name="default_min_peep_limit_neo">0</string>
-    <string name="default_max_peep_limit_neo">50</string>
+    <string name="default_max_peep_limit_neo">60</string>
     <string name="default_min_peep_ped_limit">0</string>
-    <string name="default_max_peep_ped_limit">40</string>
+    <string name="default_max_peep_ped_limit">50</string>
 
     <string name="default_min_rr_limit">2</string>
-    <string name="default_max_rr_limit">60</string>
+    <string name="default_max_rr_limit">70</string>
     <string name="default_min_rr_limit_neo">5</string>
-    <string name="default_max_rr_limit_neo">150</string>
+    <string name="default_max_rr_limit_neo">165</string>
     <string name="default_min_rr_ped_limit">5</string>
-    <string name="default_max_rr_ped_limit">150</string>
+    <string name="default_max_rr_ped_limit">165</string>
 
     <string name="default_min_mvi_limit">0</string>
     <string name="default_max_mvi_limit">100</string>

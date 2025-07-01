@@ -45,7 +45,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-
 class SetupActivity : BaseActivity(), onDropDownSelectionListener {
 
     enum class SelectedOption {
@@ -70,7 +69,6 @@ class SetupActivity : BaseActivity(), onDropDownSelectionListener {
     private var propostionalValveList = arrayListOf("CAMOZZI", "FESTO")
     private var nebTypeList = arrayListOf("PNEUMATIC", "ULTRASONIC")
     private var neoPCBTypeList = arrayListOf("TYPE-C", "GENERIC")
-
     private var clickedTile: SelectedOption? = null
     private var mAdapter: CommonSetupAdapter? = null
     private var commonList = ArrayList<String>()
@@ -151,7 +149,7 @@ class SetupActivity : BaseActivity(), onDropDownSelectionListener {
     }
 
     private fun navigateToSplash(dataString: String){
-        Intent(this@SetupActivity,DashBoardActivity::class.java).also {
+        Intent(this@SetupActivity,SplashActivity::class.java).also {
             it.putExtra(Configs.CONFIGS_STRING,dataString)
             startActivity(it)
         }
@@ -187,66 +185,77 @@ class SetupActivity : BaseActivity(), onDropDownSelectionListener {
             commonList = pressureSensorList
             setupDropDownAdapter()
         }
+
         pressureLayoutTwo.setOnClickListener {
             changeConstraintsOfLayout(it)
             clickedTile = SelectedOption.PRESSURE_SENSOR_TWO
             commonList = pressureSensorList
             setupDropDownAdapter()
         }
+
         pressureLayoutThree.setOnClickListener {
             changeConstraintsOfLayout(it)
             clickedTile = SelectedOption.PRESSURE_SENSOR_THREE
             commonList = pressureSensorList
             setupDropDownAdapter()
         }
+
         flowLayoutInsp.setOnClickListener {
             changeConstraintsOfLayout(it)
             clickedTile = SelectedOption.INSP_FLOW_SENSOR
             commonList = flowSensorList
             setupDropDownAdapter()
         }
+
         flowLayoutExp.setOnClickListener {
             changeConstraintsOfLayout(it)
             clickedTile = SelectedOption.EXP_FLOW_SENSOR
             commonList = flowSensorList
             setupDropDownAdapter()
         }
+
         oxygenLayout.setOnClickListener {
             changeConstraintsOfLayout(it)
             clickedTile = SelectedOption.OXYGEN_SENSOR
             commonList = oxygenSensorList
             setupDropDownAdapter()
         }
+
         neonateSensorLayout.setOnClickListener {
             changeConstraintsOfLayout(it)
             clickedTile = SelectedOption.NEO_SENSOR
             commonList = neoSensorList
             setupDropDownAdapter()
         }
+
         spo2SensorLayout.setOnClickListener {
             changeConstraintsOfLayout(it)
             clickedTile = SelectedOption.SPO2_SENSOR
             commonList = spo2SensorList
             setupDropDownAdapter()
         }
+
         valveLayout.setOnClickListener {
             changeConstraintsOfLayout(it)
             clickedTile = SelectedOption.PROPOSTIONAL_VALVE
             commonList = propostionalValveList
             setupDropDownAdapter()
         }
+
         neoPcbTypeLayout.setOnClickListener {
             changeConstraintsOfLayout(it)
             clickedTile = SelectedOption.NEO_PCB_TYPE
             commonList = neoPCBTypeList
             setupDropDownAdapter()
         }
+
         nebulizerTypeLayout.setOnClickListener {
             changeConstraintsOfLayout(it)
             clickedTile = SelectedOption.NEB_TYPE
             commonList = nebTypeList
             setupDropDownAdapter()
         }
+
         oxygenConcentratorLayout.setOnClickListener {
             prefManager?.apply { setOxyConcentrator(!readOxyConcentrator()) }
             updateOxyButton()
@@ -348,5 +357,4 @@ class SetupActivity : BaseActivity(), onDropDownSelectionListener {
 
         clickedTile = null
     }
-
 }

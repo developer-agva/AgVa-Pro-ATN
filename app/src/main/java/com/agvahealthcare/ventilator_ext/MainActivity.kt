@@ -3899,9 +3899,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     .toString()
             ) View.VISIBLE else View.INVISIBLE
 
-        buttonModes.isEnabled =
-            isExistingVentilationModeAvailable() && currentPatientType == prefManager?.readLastUid()
-                .toString()
+        buttonModes.isEnabled = isExistingVentilationModeAvailable() && currentPatientType == prefManager?.readLastUid().toString()
 
         if (isExistingVentilationModeAvailable() && currentPatientType == prefManager?.readLastUid()
                 .toString()
@@ -3930,40 +3928,28 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         highlightProfiles(buttonAdult)
                         currentPatientType = PatientProfile.TYPE_ADULT.toString()
                         checkPatientTypeAndHightlightSEV()
-                        if (isExistingVentilationModeAvailable() && currentPatientType == prefManager?.readCurrentUid()
-                                .toString()
-                        ) View.VISIBLE else View.INVISIBLE
-                        includeProgressHeight.param_progress_bar.maxProgress =
-                            PATIENT_ADULT_HEIGHT_UPPER.toDouble()
-                        includeProgressAge.param_progress_bar.maxProgress =
-                            PATIENT_AGE_UPPER.toDouble()
-                        includeProgressWeight.param_progress_bar.maxProgress =
-                            PATIENT_ADULT_WEIGHT_UPPER.toDouble()
+                        if (isExistingVentilationModeAvailable() && currentPatientType == prefManager?.readCurrentUid().toString()) View.VISIBLE else View.INVISIBLE
+                        includeProgressHeight.param_progress_bar.maxProgress = PATIENT_ADULT_HEIGHT_UPPER.toDouble()
+                        includeProgressAge.param_progress_bar.maxProgress = PATIENT_AGE_UPPER.toDouble()
+                        includeProgressWeight.param_progress_bar.maxProgress = PATIENT_ADULT_WEIGHT_UPPER.toDouble()
                     }
 
                     PatientProfile.TYPE_PED -> {
                         highlightProfiles(buttonPediatric)
                         currentPatientType = PatientProfile.TYPE_PED.toString()
                         checkPatientTypeAndHightlightSEV()
-                        includeProgressHeight.param_progress_bar.maxProgress =
-                            PED_HEIGHT_UPPER.toDouble()
-                        includeProgressAge.param_progress_bar.maxProgress =
-                            PATIENT_AGE_UPPER.toDouble()
-                        includeProgressWeight.param_progress_bar.maxProgress =
-                            PED_WEIGHT_UPPER.toDouble()
+                        includeProgressHeight.param_progress_bar.maxProgress = PED_HEIGHT_UPPER.toDouble()
+                        includeProgressAge.param_progress_bar.maxProgress = PATIENT_AGE_UPPER.toDouble()
+                        includeProgressWeight.param_progress_bar.maxProgress = PED_WEIGHT_UPPER.toDouble()
                     }
 
                     PatientProfile.TYPE_NEONAT -> {
                         if (readNeoNateActiveStatus()) highlightProfiles(buttonNeonatal)
                         currentPatientType = PatientProfile.TYPE_NEONAT.toString()
                         checkPatientTypeAndHightlightSEV()
-                        includeProgressHeight.param_progress_bar.maxProgress =
-                            NEO_HEIGHT_UPPER.toDouble()
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) includeProgressAge.param_progress_bar.maxProgress =
-                            NEO_AGE_UPPER.toDouble()
+                        includeProgressHeight.param_progress_bar.maxProgress = NEO_HEIGHT_UPPER.toDouble()
                         includeProgressAge.param_progress_bar.maxProgress = NEO_AGE_UPPER.toDouble()
-                        includeProgressWeight.param_progress_bar.maxProgress =
-                            NEO_WEIGHT_UPPER.toDouble()
+                        includeProgressWeight.param_progress_bar.maxProgress = NEO_WEIGHT_UPPER.toDouble()
                     }
                 }
             }
@@ -3973,15 +3959,10 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             if (Gender.TYPE_MALE == readGender()) setDataMale() else setDataFemale()
 
             if (isExistingVentilationModeAvailable()) setExistingVentilationMode(readLastVentMode())
-            checkMode.visibility =
-                if (isExistingVentilationModeAvailable()) View.VISIBLE else View.INVISIBLE
-            existinglabel.visibility =
-                if (isExistingVentilationModeAvailable()) View.VISIBLE else View.INVISIBLE
-            if (isExistingVentilationModeAvailable() && currentPatientType == prefManager?.readCurrentUid()
-                    .toString()
-            ) View.VISIBLE else View.INVISIBLE
-            layoutPanelMode.visibility =
-                if (isExistingVentilationModeAvailable()) View.VISIBLE else View.INVISIBLE
+            checkMode.visibility = if (isExistingVentilationModeAvailable()) View.VISIBLE else View.INVISIBLE
+            existinglabel.visibility = if (isExistingVentilationModeAvailable()) View.VISIBLE else View.INVISIBLE
+            if (isExistingVentilationModeAvailable() && currentPatientType == prefManager?.readCurrentUid().toString()) View.VISIBLE else View.INVISIBLE
+            layoutPanelMode.visibility = if (isExistingVentilationModeAvailable()) View.VISIBLE else View.INVISIBLE
         }
     }
 

@@ -3364,7 +3364,6 @@ public interface Configs {
                 alarmLimitsMap.put("mveLowerLimit", context.getString(R.string.default_min_mve_limit));
 
                 return alarmLimitsMap;
-                //return context.getString(R.string.default_max_pip_ped_limit);
             }
             case TYPE_PED: {
                 alarmLimitsMap.put("presserUpperLimit", context.getString(R.string.default_max_pip_ped_limit));
@@ -3383,12 +3382,10 @@ public interface Configs {
                 alarmLimitsMap.put("mveLowerLimit", context.getString(R.string.default_min_mve_ped_limit));
 
                 return alarmLimitsMap;
-                //return context.getString(R.string.default_max_pip_limit);
             }
             case TYPE_NEONAT: {
                 alarmLimitsMap.put("presserUpperLimit", context.getString(R.string.default_max_pip_limit_neo));
                 alarmLimitsMap.put("presserLowerLimit", context.getString(R.string.default_min_pip_limit_neo));
-
 
                 alarmLimitsMap.put("vteUpperLimit", context.getString(R.string.default_max_vte_limit_neo));
                 alarmLimitsMap.put("vteLowerLimit", context.getString(R.string.default_min_vte_limit_neo));
@@ -3403,7 +3400,6 @@ public interface Configs {
                 alarmLimitsMap.put("mveLowerLimit", context.getString(R.string.default_min_mve_limit_neo));
 
                 return alarmLimitsMap;
-                //return context.getString(R.string.default_max_pip_limit_neo);
             }
             default: {
                 return alarmLimitsMap;

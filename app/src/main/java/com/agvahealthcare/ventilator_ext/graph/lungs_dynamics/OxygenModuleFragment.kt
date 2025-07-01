@@ -340,7 +340,6 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
             Collections.addAll(trendThirdChart.yAxes, yAxis)
             Collections.addAll(trendThirdChart.renderableSeries, rs2)
         }
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -376,7 +375,6 @@ class OxygenModuleFragment(private var duration: String) : GraphFragment() {
                     initFirstGraph(list)
                     for (i in list.indices) {
                         spo2TimeList.add(list[i].split("~")[0])
-                        Log.i("OxygenModuleFragment", "readTrendsViaParamAndDuration: ${list[i].split("~")[0]}")
                         dataSeries1First?.append(i, list[i].split("~")[1].toFloat())
                     }
                 }

@@ -1,0 +1,1629 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name" translatable="false">ventilator_ext</string>
+
+    <!--Splash UI Design-->
+    <string name="hint_calibration_completed" translatable="false">Calibration completed</string>
+    <string name="hint_calibration_failure" translatable="false">Calibration failure</string>
+    <string name="hint_calibration_error" translatable="false">Calibration Error</string>
+    <string name="hint_handshake_completed" translatable="false">Handshake completed</string>
+    <string name="hint_entering_standby" translatable="false">Entering Standby</string>
+    <string name="hint_entering_ventilation" translatable="false">Entering Ventilation</string>
+    <string name="error_in_connection_restart_app" translatable="false">Unable to verify the connection automatically, please restart the app and try again</string>
+    <string name="hint_copyright" translatable="false">All Rights Reserved. Copyright © 2025</string>
+    <string name="press_switch_onn_manually" translatable="false">Press the power button at back of ventilator to switch on</string>
+    <string name="connection_timeout" translatable="false">Unable to start Ventilator Try Again</string>
+    <string name="press_switch_onn" translatable="false">Press the button to switch on the ventilator</string>
+    <string name="hint_version" translatable="false">Version</string>
+    <string name="hint_agva" translatable="false">AgVa</string>
+    <string name="hint_pro" translatable="false">Healthcare</string>
+    <string name="hint_agvac" translatable="false">D&amp;D</string>
+    <string name="hint_intelli" translatable="false">Intelli</string>
+    <string name="hint_oxy_plus" translatable="false">Oxy +</string>
+    <string name="hint_previous_mode" translatable="false">Previous Mode :</string>
+    <string name="hint_command_graph_xvalue" translatable="false">CM+GR</string>
+    <string name="wrong_peep_alarm" translatable="false">CHECK CIRCUIT</string>
+
+    <!--StandBy UI Design-->
+    <string name="hint_stand_by" translatable="false">StandBy</string>
+    <string name="hint_IRV_SETTING" translatable="false">IRV MODE</string>
+    <string name="hint_no_ventilation_delivered_to_the_patient_since">no ventilation delivered \n to the patient since</string>
+    <string name="hint_timer">00:03:22</string>
+    <string name="hint_male" translatable="false">Male</string>
+    <string name="hint_female" translatable="false">Female</string>
+    <string name="hint_preop_check">Preop Check</string>
+    <string name="hint_start_existing_ventilation">Ventilate &#160;&#160;Existing&#160;&#160;  Patient</string>
+    <string name="hint_no_vent_del" translatable="false">No Ventilation </string>
+    <string name="hint_delivery">Delivered since</string>
+    <string name="hint_start_new_ventilation">Ventilate &#160;&#160;  New&#160;&#160;   Patient</string>
+
+    <string name="hint_neonatal" translatable="false">Neonate</string>
+    <string name="hint_adult_Ped">Adult/Ped</string>
+    <string name="hint_last_patient" translatable="false">Last Patient</string>
+    <string name="hint_adult" translatable="false">Adult</string>
+    <string name="hint_ped" translatable="false">Pediatric</string>
+
+    <string name="hint_patientHeight" translatable="false">Height</string>
+    <string name="hint_patientWeight" translatable="false">Weight</string>
+    <string name="hint_patientAge" translatable="false">Age</string>
+    <string name="hint_adult_Ped_1">Adult/Ped. 1</string>
+    <string name="hint_adult_Ped_2">Adult/Ped. 2</string>
+    <string name="hint_adult_Ped_3">Adult/Ped. 3</string>
+
+
+    <!--Reading Data UI Design-->
+
+    <string name="hint_pPeak" translatable="false">Ppeak</string>
+    <string name="hint_upper_value">10</string>
+    <string name="hint_down_value">40</string>
+    <string name="hint_value_unit">40</string>
+    <!--Monitoring Dialog UI Design-->
+
+    <string name="hint_general" translatable="false">General</string>
+    <string name="hint_auto" translatable="false">Auto</string>
+
+    <string name="hint_electronic" translatable="false">Electronic</string>
+    <string name="hint_plateau_pressure" translatable="false">Plateau Pressure</string>
+    <string name="hint_auto_peep" translatable="false">Auto Peep</string>
+    <string name="hint_measure_time" translatable="false">Measure Time</string>
+
+    <string-array name="NIV_MODES">
+        <item>Non-Invasive</item>
+        <item>Invasive</item>
+    </string-array>
+
+    <!--Graphics Dialog UI Design-->
+
+    <string name="hint_layout_default">Default</string>
+    <string name="hint_layout_1">Layout 1</string>
+    <string name="hint_layout_2">Layout 2</string>
+    <string name="hint_layout_3">Layout 3</string>
+    <string name="hint_layout_4">Layout 4</string>
+    <string name="hint_layout_5">Layout 5</string>
+
+    <string name="hint_layout_loops">Loops</string>
+
+
+    <!--Maneuvers Dialog UI Design-->
+
+    <string name="hint_pv_tool">P/V Tool</string>
+    <string name="hint_utilities" translatable="false">Utilities</string>
+    <string name="hint_Nebuliser" translatable="false">Nebulizer</string>
+
+    <string name="hint_inspiration_hold" translatable="false">Inspiration Hold</string>
+    <string name="hint_expiration_hold" translatable="false">Expiration Hold</string>
+
+
+    <string name="hint_data_transfer" translatable="false">Data Transfer</string>
+    <string name="hint_export_logs" translatable="false">Export Logs</string>
+
+
+    <!--Logs Dialog UI Design-->
+
+    <string name="hint_events" translatable="false">Events</string>
+
+
+    <!--System Dialog UI Design-->
+
+    <string name="hint_nebulizer" translatable="false">Nebulizer</string>
+    <string name="hint_intelliCuf" translatable="false">IntelliCuff</string>
+    <string name="hint_humidifier" translatable="false">Humidifier</string>
+
+    <string name="hint_pneumatic" translatable="false">Pneumatic</string>
+    <string name="hint_aerogen" translatable="false">Aerogen</string>
+
+    <string name="hint_off">Off</string>
+    <string name="hint_manual">Manual</string>
+    <string name="hint_deflate">Deflate</string>
+    <string name="hint_hold">Hold</string>
+    <string name="hint_rel_pressure">Rel. pressure</string>
+    <string name="hint_min_pressure" translatable="false">Min. pressure</string>
+    <string name="hint_max_pressure">Max. pressure</string>
+    <string name="hint_cuff_pressure">Cuff. pressure</string>
+    <string name="hint_pcuff_value">20 Pcuff</string>
+    <string name="hint_ppeak_value">19 Ppeak</string>
+    <string name="hint_nasal_prongs">Nasal prongs</string>
+    <string name="hint_niv">Non - Invasive MODE</string>
+    <string name="hint_invasive">Invasive</string>
+    <string name="hint_flow_cycle">Flow Cycle</string>
+    <string name="hint_nc">Nasal Canula</string>
+
+    <string name="hint_exp_temperature_increase">Exp. temperature increase</string>
+    <string name="hint_set_temp">Set Temp</string>
+    <string name="hint_t_gradient">T Gradient</string>
+
+    <string name="hint_info">Info</string>
+    <string name="hint_test_calib">Calibration</string>
+    <string name="hint_sensors">Sensors</string>
+    <string name="hint_settings">Settings</string>
+    <string name="hint_tube">Tube</string>
+    <string name="hint_debug">Debug</string>
+    <string name="hint_update">Device Update</string>
+    <string name="hint_ota">OTA</string>
+    <string name="hint_diagnos">Diagnostic Check</string>
+    <string name="hint_reg_o2">O2 Regulation</string>
+    <string name="hint_advanced_calib">Advance Calibration</string>
+    <string name="hint_service">Service</string>
+    <string name="startup">Startup</string>
+    <string name="wifi">WiFi</string>
+    <string name="hl7Transfer">HL7 Transfer</string>
+
+    <string name="hint_info_1">Info 1</string>
+    <string name="hint_info_2">Info 2</string>
+    <string name="hint_info_3">Info 3</string>
+
+    <string name="hint_serial_number">Serial Number </string>
+    <string name="hint_hardware_serial_number">Hardware Serial Number </string>
+    <string name="hint_model">Model </string>
+    <string name="hint_soft_version">Software Version </string>
+    <string name="hint_Service_Hours">Hours since last service</string>
+    <string name="hint_internet_connectivity">Connection Status</string>
+    <string name="hint_internet_connected">Connected</string>
+    <string name="hint_internet_disconnected">Disconnected</string>
+
+    <string name="hint_Operating_Hours" translatable="false">Operating Hours</string>
+    <string name="hint_hard_version">Hardware Version </string>
+    <string name="hint_device_id">Log Device ID</string>
+    <string name="hint_operating_hours">Operating Hours </string>
+    <string name="hint_hours_since_startup">Hours since startup </string>
+    <string name="standby_mode">Ventilator on Standby</string>
+    <string name="hint_time_to_service">Time to service </string>
+    <string name="hint_battery_level" translatable="false">Battery Level </string>
+    <string name="hint_battery_health">Battery Health </string>
+    <string name="hint_battery_rem_time">Battery Remaining Time *</string>
+    <string name="hint_communication_board">Communication board </string>
+    <string name="hint_intelli_cuff">IntelliCuff : </string>
+    <string name="hint_agva_healthcare">AgVa Healthcare 0099 </string>
+
+    <string name="maxFio2">SPO2 Low Max Fio2 Reached</string>
+    <string name="fio2_leak">Fio₂ Low Leakage</string>
+    <string name="auto_peep_alarm">Auto Peep</string>
+    <string name="maxFio2HR">High PR Max Fio2 reached</string>
+
+    <string name="hint_Turbine_Calibration">Calibrate Turbine</string>
+    <string name="hint_Leak_Test_Text">Leak test</string>
+    <string name="hint__Insp_Flow_Calibration">Calibrate Insp Flow</string>
+    <string name="hint_Exp_Flow_Calibration">Calibrate Exp Flow</string>
+    <string name="hint_O2_Calibration">Calibrate Oxygen</string>
+    <string name="hint_ExhaleValve_Calibration">Calibrate Exhale Valve</string>
+
+    <string name="hint_compensation">Tube Compliance Calib.</string>
+    <string name="hint_resistance">Tube Resistance Calib.</string>
+
+    <string name="hint_tube_settings" translatable="false">Tube Settings</string>
+
+    <string name="hint_tightness" translatable="false">Turbine</string>
+    <string name="hint_flow_sensor" translatable="false">Flow Sensor</string>
+    <string name="hint_inhale_flow_sensor">Inspiratory Flow Sensor</string>
+    <string name="hint_exhale_flow_sensor">Expiratory Flow Sensor</string>
+    <string name="hint_neonate_flow_sensor">Neonate Flow Sensor</string>
+    <string name="hint_o2_sensor" translatable="false">O₂ Sensor</string>
+    <string name="hint_diaphragm_sensor" translatable="false">Diaphragm Sensor</string>
+    <string name="hint_ADC_sensor" translatable="false">ADC Sensor</string>
+    <string name="hint_insp_pressure_sensor">Inspiratory Pressure Sensor</string>
+    <string name="hint_exp_pressure_sensor">Expiratory Valve Pressure Sensor</string>
+    <string name="hint_high_pressure_O2_sensor">High Pressure O₂ Sensor</string>
+    <string name="hint_low_pressure_O2_sensor">Low Pressure O₂ Sensor</string>
+    <string name="hint_co2_sensor">CO₂ Sensor</string>
+    <string name="hint_low_flow_oxygen_sensor">Low Flow Oxygen Sensor</string>
+    <string name="hint_high_flow_oxygen_sensor">High Flow Oxygen Sensor</string>
+    <string name="hint_pressure_sensor">Pressure Sensor</string>
+    <string name="hint_temp_sensor">Temperature Sensor</string>
+    <string name="hint_exhale_vale">Exhale Valve</string>
+
+    //for neonate
+    <string name="neonate_sensor_connect">Neonate sensor connected</string>
+    <string name="neonate_sensor_not_connected">Neonate sensor not connected</string>
+    <string name="neonate_sensor_disconnect">Neonate sensor disconnected</string>
+    <string name="controls_are_desable">Controls are disabled</string>
+
+
+    <string name="hint_on_off">On/Off</string>
+    <string name="hint_spo2_sensor">SpO₂ Sensor</string>
+    <string name="hint_active">active</string>
+    <string name="hint_inactive">inactive</string>
+    <string name="hint_spo2_averaging_time">SpO₂ averaging time</string>
+    <string name="hint_spot_check">Spot Check</string>
+    <string name="hint_sensor_results">Sensor results</string>
+    <string name="hint_pvi_averaging_mode">PVI averaging mode</string>
+    <string name="hint_defaults">Defaults</string>
+
+
+    <string name="hint_loudness">Loudness</string>
+
+    <string name="hint_tube_comp">Tube Comp.</string>
+    <string name="hint_day_night">Day &amp; Night</string>
+    <string name="hint_date_time">Date &amp; Time</string>
+
+    <string name="hint_test">Test</string>
+
+    <string name="hint_brightness">Brightness</string>
+    <string name="hint_day">Day</string>
+    <string name="hint_night">Night</string>
+    <string name="hint_automatic">Automatic</string>
+    <string name="hint_change">Knob</string>
+
+    <string name="hint_year">Year</string>
+    <string name="hint_month">Month</string>
+    <string name="hint_hour">Hour</string>
+    <string name="hint_minute">Minute</string>
+    <string name="hint_date">Date</string>
+    <string name="hint_time">Time</string>
+    <string name="hint_apply">Apply</string>
+
+    <!--Modes Dialog UI Design-->
+
+    <string name="hint_volume_controlled">Volume controlled </string>
+    <string name="hint_volume_control">Volume control </string>
+
+    <string name="hint_vc_cmv">VC-CMV</string>
+    <string name="hint_vc_simv">VC-SIMV(PS)</string>
+    <string name="hfnc" translatable="false">HFNC</string>
+    <string name="NeoNatehfnc" translatable="false">n-HFNC</string>
+
+    <string name="hint_hfnc_mode" translatable="false">HFNC</string>
+    <string name="hint_vc_cv" translatable="false">VC-AC</string>
+    <string name="hint_prvc" translatable="false">PRVC</string>
+
+    <string name="hint_pressure_controlled">Pressure controlled</string>
+    <string name="hint_pressure_control">Pressure control</string>
+    <string name="auto_control">Auto Control</string>
+
+    <string name="hint_pc_cmv" translatable="false">PC-CMV</string>
+    <string name="hint_pc_imv" translatable="false">PC-SIMV</string>
+    <string name="hint_spont" translatable="false">PC-AC</string>
+    <string name="hint_psv" translatable="false">PC-PSV</string>
+    <string name="hint_pc_aprv" translatable="false">PC-APRV</string>
+    <string name="hint_hfnc" translatable="false">HFNC</string>
+    <string name="cmd_preop">CM+SA</string>
+
+    <string name="cmd_calibration_flow">CM+SC1</string>
+    <string name="cmd_calibration_presser">CM+SC2</string>
+    <string name="cmd_calibration_oxyzen">CM+SC3</string>
+    <string name="cmd_calibration_turbine">CM+SC4</string>
+
+
+    <string name="turbine_testing_dia">CM+TU</string>
+    <string name="valve_testing_dia">CM+VA</string>
+
+    <string name="diagnostic_start_cmd">CM+D1</string>
+    <string name="diagnostic_stop_cmd">CM+D2</string>
+    <string name="o2Regulation_start_cmd">CM+R1</string>
+    <string name="o2Regulation_stop_cmd">CM+R2</string>
+
+    <string name="release_cmd">CM+REL</string>
+    <string name="purge_cmd">CM+PG</string>
+
+    <string name="hint_intelligent_ventilation">Intelligent Ventilation</string>
+
+    <string name="hint_bpap" translatable="false">PC-BPAP</string>
+    <string name="hint_cpap" translatable="false">CPAP/PS</string>
+
+    <string name="hint_nc_cpap" translatable="false">NC-CPAP/PS</string>
+    <string name="hint_nccpap" translatable="false">NC-CPAP</string>
+
+
+    <string name="hint_nbpap" translatable="false">NiPPV</string>
+    <string name="hint_ncpap">N-CPAP</string>
+
+    <string name="hint_ai_vent">AI-VENT</string>
+
+    <string name="hint_noninvasive">Non Invasive</string>
+    <string name="hint_noninvasive_mask">NIV</string>
+    <string name="hint_spontaneous">Spontaneous</string>
+
+    <string name="hint_cancel">Cancel</string>
+    <string name="hint_confirm">Confirm</string>
+
+    <string name="hint_select_mode">Please select the ventilator mode</string>
+    <!--Control Dialog UI Design-->
+
+    <string name="hint_basic">Basic</string>
+    <string name="hint_more">More</string>
+    <string name="hint_backupsettings">Backup</string>
+    <string name="hint_advancedsettings" translatable="false">Advanced</string>
+    <string name="hint_apneasettings" translatable="false">Apnea</string>
+    <string name="hint_patient_height">Pat. height</string>
+    <string name="hint_patient" translatable="false">Patient</string>
+    <string name="hint_vtas_btn">V-TAS</string>
+    <string name="hint_etcuff_btn">EtCuff</string>
+    <string name="hint_smart_fio2_btn">Smart O₂</string>
+    <string name="hint_ventilation_time">Ventilation Time : </string>
+    <string name="hint_reset">Reset</string>
+    <string name="hint_reset_alarm">Reset Alarms</string>
+    <string name="hint_shutdown">Shutdown Ventilator</string>
+    <string name="hint_minVol">MinVol:</string>
+    <string name="hint_p_ramp">P-ramp</string>
+    <string name="hint_pasvLimit">Pasvlimit</string>
+    <string name="hint_ets">ETS</string>
+    <string name="hint_flow_trigger">Flow Trigger</string>
+    <string name="hint_minVol_percentage">%minVol</string>
+    <string name="hint_peep_cpap">PEEP/CPAP</string>
+    <string name="hint_oxygen">FiO2</string>
+    <string name="hint_f">F</string>
+    <string name="hint_p">P</string>
+
+    <!--Alarms Dialog UI Design-->
+
+    <string name="hint_limit_1">Limit 1</string>
+    <string name="hint_limit_2">Limit 2</string>
+    <string name="hint_basic_limits">Basic</string>
+    <string name="hint_advance_limits">Advance</string>
+    <string name="hint_buffer">Buffer</string>
+    <string name="hint_active_alarms">Active Alarms</string>
+    <string name="string_for_info_reset">Enter password to reset service hours</string>
+
+
+    <string name="hint_pressure_cmH2o">Pressure \n cmH₂O</string>
+    <string name="hint_mvi">MVi </string>
+    <string name="hint_mve">MVe </string>
+
+
+    <string name="hint_f_total">fTotal </string>
+    <string name="hint_b_min">b/min</string>
+    <string name="hint_vte">VTe</string>
+    <string name="hint_apnea_time">Apnea time</string>
+    <string name="hint_s">sec</string>
+    <string name="hint_petCO2">PetCO₂</string>
+    <string name="hint_mmHg">mmHg</string>
+    <string name="hint_litre">litre</string>
+    <string name="hint_compensated_vt">Compensated VT</string>
+
+
+    <string name="hint_spo2_percentage">SpO₂ \n    %</string>
+    <string name="hint_pulse">Pulse</string>
+
+
+    <!--DashBoard Graph Dialog UI Design-->
+
+    <string name="hint_trends">Trends</string>
+    <string name="hint_loops">Loops</string>
+    <string name="hint_waveforms">Waveforms</string>
+
+    <string name="hint_1_h">1 h</string>
+    <string name="hint_6_h">6 h</string>
+    <string name="hint_12_h">12 h</string>
+    <string name="hint_24_h">24 h</string>
+    <string name="hint_72_h">72 h</string>
+
+    <string name="hint_pressure_volume">Pressure/Volume</string>
+    <string name="hint_pressure_flow">Pressure/Flow</string>
+    <string name="hint_volume_flow">Pressure/Flow</string>
+    <string name="hint_volume_pco2">Pressure/PCO₂</string>
+    <string name="hint_volume_fco2">Pressure/FCO₂</string>
+    <string name="hint_pes_volume">Pes/Volume</string>
+    <string name="hint_ptranspulm_volume">Ptranspulm Volume</string>
+
+    <string name="hint_dynamic_lung">Dynamic Lung</string>
+    <string name="hint_vent_status">Vent Status</string>
+    <string name="hint_asv_graph">ASV Graph</string>
+
+    <string name="hint_time_scale">Time Scale</string>
+    <string name="hint_pressure">Pressure</string>
+    <string name="hint_pco2">PCO₂</string>
+    <string name="hint_pes">Pes</string>
+    <string name="hint_flow">Flow</string>
+    <string name="hint_fco2">FCO₂</string>
+    <string name="hint_ptranspulm">Ptranspulm</string>
+    <string name="hint_volume">Volume</string>
+    <string name="hint_plethysmogram">Plethysmogram</string>
+
+    <!--DashBoard UI Design-->
+
+    <string name="hint_pc_simv">PC-SIMV</string>
+    <string name="hint_ventilating">Ventilating</string>
+    <string name="hint_monitoring">Data</string>
+    <string name="hint_graphics">Layouts</string>
+    <string name="hint_maneuvers">Maneuvers</string>
+    <string name="inspiratory_hold_maneuver">Inspiratory Hold Maneuver</string>
+    <string name="expiratory_hold_maneuver">Expiratory Hold Maneuver</string>
+    <string name="hint_logs">Logs</string>
+    <string name="hint_system">System</string>
+    <string name="hint_mode">Modes</string>
+    <string name="hint_controls">Controls</string>
+    <string name="hint_alarms">Alarms</string>
+    <string name="hint_loop">Loops</string>
+    <string name="hint_years">35 Yrs</string>
+    <string name="hint_weight">70 Kg</string>
+
+    <string name="hint_ECO2">ECO₂</string>
+    <string name="hint_peak_flow">Flow Limit</string>
+    <string name="hint_i_e">I:E</string>
+    <string name="hint_pinsp">Pinsp</string>
+    <string name="hint_slope">Slope</string>
+    <!--Limits UI Design-->
+
+    <string name="hint_peep">PEEP</string>
+    <string name="hint_pip">PIP</string>
+    <string name="hint_rr">Rr</string>
+
+    <!--Number Range UI Design-->
+    <string name="hint_ppeak_high">Ppeak High</string>
+    <string name="hint_ppeak_low">Ppeak Low</string>
+    <string name="hint_ok">OK</string>
+    <!--//p̄-->
+
+    <!--Unit-->
+    <string name="hint_cmH2o">cmH₂O</string>
+    <string name="hint_co2">CO₂</string>
+    <string name="hint_spo2">SpO₂</string>
+    <string name="hint_mm">mm</string>
+    <string name="hint_ml">mL</string>
+    <string name="hint_min">min</string>
+    <string name="hint_bpm">bpm</string>
+    <string name="hint_l_min"> l/min</string>
+    <string name="hint_hz"> Hz</string>
+    <string name="hint_sec">sec</string>
+    <string name="hint_percentage">%</string>
+
+
+    <!--DATA CONFIGURATION SETTINGS-->
+
+    <string name="default_tube_dia">10</string>
+    <string name="min_tube_dia">8</string>
+    <string name="max_tube_dia">22</string>
+
+    <string name="default_nebuliser">10</string>
+    <string name="min_nebuliser_time">5</string>
+    <string name="max_nebuliser_time">30</string>
+
+    <string name="min_ie_ratio">1</string>
+    <string name="min_ie_ratio_irv">0.25</string>
+    <string name="max_ie_ratio">30</string>
+    <string name="max_ie_ratio_irv">12</string>
+
+
+    <!-- Suffix PED : Pediatric limits    -->
+    <string name="default_inhale_time_auto">1.4</string>
+
+    <string name="default_inhale_time">1.2</string>
+    <string name="min_inhale_time">0.5</string>
+    <string name="max_inhale_time">3.5</string>
+
+    <string name="min_inhale_time_ped">0.3</string>
+    <string name="max_inhale_time_ped">3.5</string>
+
+    <string name="default_inhale_time_neonate">0.5</string>
+    <string name="min_inhale_time_neonat">0.3</string>
+    <string name="max_inhale_time_neonat">1.5</string>
+    <string name="default_sensor">0.5</string>
+
+
+    <string name="default_tlow">1.94</string>
+    <string name="min_tlow">0.1</string>
+    <string name="max_tlow">22</string>
+
+    <string name="default_rr_auto">18</string>
+    <string name="default_rr">16</string>
+    <string name="default_rr_neo">30</string>
+    <string name="default_rr_spont">8</string>
+
+    <string name="min_rr">2</string>
+    <string name="max_rr">60</string>
+
+    <string name="min_rr_psv">8</string>
+    <string name="max_rr_psv">60</string>
+
+    <string name="min_rr_spont">8</string>
+    <string name="max_rr_spont">60</string>
+
+    <string name="min_rr_ped">2</string>
+    <string name="max_rr_ped">60</string>
+
+    <string name="min_rr_neonat">2</string>
+    <string name="max_rr_neonat">100</string>
+
+    <!--APNEA PARAMETERS -->
+    <string name="default_apnea_rr">16</string>
+    <string name="min_apnea_rr">10</string>
+    <string name="max_apnea_rr">60</string>
+
+
+    <string name="default_apnea_rr_ped">16</string>
+    <string name="min_apnea_rr_ped">10</string>
+    <string name="max_apnea_rr_ped">60</string>
+
+    <string name="default_apnea_rr_neo">30</string>
+    <string name="min_apnea_rr_neo">12</string>
+    <string name="max_apnea_rr_neo">100</string>
+
+
+    <string name="default_apnea_time">20</string>
+    <string name="min_apnea_time">10</string>
+    <string name="max_apnea_time">60</string>
+
+
+    <string name="default_apnea_trigflow">5.0</string>
+    <string name="min_apnea_trigflow">0.1</string>
+    <string name="max_apnea_trigflow">20.0</string>
+
+
+    <string name="default_apnea_vt">300</string>
+    <string name="min_apnea_vt">200</string>
+    <string name="max_apnea_vt">2000</string>
+
+    <string name="default_apnea_vt_ped">300</string>
+    <string name="min_apnea_vt_ped">50</string>
+    <string name="max_apnea_vt_ped">500</string>
+
+    <string name="default_apnea_vt_neo">30</string>
+    <string name="min_apnea_vt_neo">2</string>
+    <string name="max_apnea_vt_neo">75</string>
+
+    <string name="default_pip">40</string>
+    <string name="default_pip_neonate">30</string>
+
+
+    <string name="min_pip">20</string>
+    <string name="min_pip_neonate">10</string>
+    <string name="max_pip">70</string>
+    <string name="max_pip_neonate">40</string>
+
+    <string name="min_pip_ped">20</string>
+    <string name="max_pip_ped">70</string>
+
+    <string name="default_pip_psv">40</string>
+    <string name="min_pip_psv">5</string>
+    <string name="max_pip_psv">80</string>
+    <string name="min_pip_ped_psv">5</string>
+    <string name="max_pip_ped_psv">50</string>
+
+    <string name="default_peep_auto">3</string>
+
+    <string name="default_support_pressure">10</string>
+    <string name="min_support_pressure">0</string>
+    <string name="max_support_pressure">30</string>
+
+    <string name="default_inspiratory_pause">0</string>
+    <string name="min_inpiratory_pause">0</string>
+    <string name="max_inpiratory_pause">50</string>
+
+    <string name="default_peep_valve">5</string>
+    <string name="min_peep_valve">2</string>
+    <string name="max_peep_valve">9</string>
+
+    <string name="default_target_spo2">95</string>
+    <string name="min_target_spo2">85</string>
+    <string name="max_target_spo2">100</string>
+
+
+    <string name="default_hr_limit">90</string>
+    <string name="min_hr_limit">40</string>
+    <string name="max_hr_limit">120</string>
+
+
+    <string name="default_flow">10</string>
+
+
+    <string name="min_flow">5</string>
+    <string name="max_flow">60</string>
+
+    <string name="min_flow_ped">5</string>
+    <string name="max_flow_ped">60</string>
+
+    <string name="min_flow_neo">2</string>
+    <string name="max_flow_neo">30</string>
+
+    <string name="default_fio2_dev">10</string>
+    <string name="min_fio2_dev">0</string>
+    <string name="max_fio2_dev">25</string>
+
+    <string name="default_slope">0</string>
+    <string name="min_slope">0</string>
+    <string name="max_slope">2</string>
+
+    <string name="default_texp">75</string>
+    <!--  <string name="min_texp">25</string>
+    <string name="max_texp">75</string>-->
+
+    <!--For Testing Purpose-->
+    <string name="min_texp">5</string>
+    <string name="min_texp_non_inv">50</string>
+    <string name="max_texp">95</string>
+
+    <string name="default_peep">5</string>
+    <string name="default_peep_neo">5</string>
+    <string name="min_peep">0</string>
+    <string name="max_peep">30</string>
+    <string name="max_peep_invasive">30</string>
+    <string name="max_peep_nonInvasive">20</string>
+
+    <string name="min_peep_ped">0</string>
+    <string name="max_peep_ped">30</string>
+
+
+    <string name="min_peep_neonate">0</string>
+    <string name="max_peep_neonate">20</string>
+
+    <string name="default_et_pressure">5</string>
+    <string name="default_et_pressure_neo">5</string>
+    <string name="min_et_pressure">0</string>
+    <string name="max_et_pressure">30</string>
+
+    <string name="min_et_pressure_ped">0</string>
+    <string name="max_et_pressure_ped">30</string>
+
+
+    <string name="min_et_pressure_neonate">0</string>
+    <string name="max_et_pressure_neonate">20</string>
+
+    <string name="default_pplat">14</string>
+    <string name="min_pplat">1</string>
+    <string name="max_pplat">70</string>
+
+    <string name="default_spontVT"></string>
+    <string name="min_spont_vt">200</string>
+    <string name="max_spont_vt">2000</string>
+
+    <string name="default_pplat_ped">10</string>
+    <string name="min_pplat_ped">1</string>
+    <string name="max_pplat_ped">50</string>
+
+    <string name="default_pplat_neo">10</string>
+
+    <string name="min_pplat_psv">1</string>
+    <string name="max_pplat_psv">70</string>
+
+    <string name="min_pplat_ped_psv">1</string>
+    <string name="max_pplat_ped_psv">50</string>
+
+
+    <string name="default_trigflow_auto">3.0</string>
+    <string name="default_trigflow">3.0</string>
+    <string name="default_trigflow_adult">5.0</string>
+    <string name="default_trigflow_neo">0.5</string>
+
+    <string name="min_trigflow">1</string>
+    <string name="max_trigflow">20.0</string>
+
+    <string name="min_trigflow_ped">1</string>
+
+    <string name="max_trigflow_ped">20.0</string>
+
+    <string name="default_vti">500</string>
+    <string name="default_vti_neo">20</string>
+    <string name="min_vti">200</string>
+    <string name="max_vti">2000</string>
+
+    <string name="default_vti_neonate">50</string>
+    <string name="min_vti_neonate">2</string>
+    <string name="max_vti_neonate">100</string>
+
+    <string name="default_vti_ped">150</string>
+    <string name="min_vti_ped">20</string>
+    <string name="max_vti_ped">500</string>
+
+    <string name="min_vti_neonat">2</string>
+    <string name="max_vti_neonat">100</string>
+
+    <string name="default_peakflow_auto">150</string>
+    <string name="default_peakflow">150</string>
+
+    <string name="default_PHigh">5</string>
+    <string name="default_PLow">10</string>
+    <string name="default_THigh">3.0</string>
+    <string name="default_TLow">1.2</string>
+
+
+    <string name="min_peakflow">20</string>
+    <string name="max_peakflow">150</string>
+
+    <string name="min_peakflow_ped">20</string>
+    <string name="max_peakflow_ped">150</string>
+
+    <string name="min_mvi">0</string>
+    <string name="max_mvi">20</string>
+
+    <string name="min_mve">0</string>
+    <string name="max_mve">50</string>
+
+    <string name="min_titot">0</string>
+    <string name="max_titot">100</string>
+
+    <string name="default_fio2">21</string>
+    <string name="default_fio2_niv">21</string>
+
+    <string name="min_fio2">21</string>
+    <string name="max_fio2">100</string>
+
+    <string name="min_fio2_niv">21</string>
+    <string name="max_fio2_niv">100</string>
+
+    <string name="min_fio2_neonate">21</string>
+    <string name="max_fio2_neonate">100</string>
+
+    <string name="min_Pplat_neonate">21</string>
+    <string name="max_Pplat_neonate">100</string>
+
+
+    <!-- <string name="min_TrigFlow_neonate">0.1</string>
+    <string name="max_TrigFlow_neonate">5.0</string>-->
+
+    <string name="min_trigflow_neonate">0.1</string>
+    <string name="max_trigflow_neonate">5.0</string>
+
+    <string name="min_rr_neonate">10</string>
+    <string name="max_rr_neonate">100</string>
+    <string name="max_rr_neonate_test">200</string>
+
+    <string name="default_target_volume">10</string>
+    <string name="min_target_volume">2</string>
+    <string name="max_target_volume">100</string>
+
+    <string name="default_target_volume_ped">10</string>
+    <string name="min_target_volume_ped">50</string>
+    <string name="max_target_volume_ped">500</string>
+
+    <string name="default_frequency">10</string>
+    <string name="min_frequency">0</string>
+    <string name="max_frequency">20</string>
+
+    <string name="default_target_volume_adult">10</string>
+    <string name="min_target_volume_adult">200</string>
+    <string name="max_target_volume_adult">2000</string>
+
+    <string name="min_flow_neonate_test">1</string>
+    <string name="asmax_flow_neonate_test">150</string>
+
+    <string name="min_texp_neonate">10</string>
+    <string name="max_texp_neonate">50</string>
+
+    <string name="default_support_pressure_neonate">0</string>
+    <string name="min_support_pressure_neonate">0</string>
+    <string name="max_support_pressure_neonate">30</string>
+
+    <string name="default_pplat_neonate">10</string>
+    <string name="min_pplat_neonate">3</string>
+    <string name="max_pplat_neonate">30</string>
+
+    <string name="trigger_flow_step_neonate">0.1</string>
+    <string name="trigger_flow_step">0.5</string>
+    <string name="vt_step_normal">10</string>
+    <string name="vt_step_neo">1</string>
+
+
+    <!--    FOR IPAP  -->
+    <string name="default_ipap">10</string>
+    <string name="default_ipap_bpap">10</string>
+
+    <string name="min_ipap">1</string>
+    <string name="max_ipap">20</string>
+
+    <string name="min_ipap_bpap">1</string>
+    <string name="max_ipap_bpap">40</string>
+
+    <string name="min_ipap_ped">1</string>
+    <string name="max_ipap_ped">20</string>
+
+
+    <!--    FOR EPAP   -->
+    <string name="default_epap">3</string>
+
+    <string name="min_epap">2</string>
+    <string name="max_epap">50</string>
+
+    <string name="min_epap_ped">2</string>
+    <string name="max_epap_ped">10</string>
+
+    <!--Manuvers limits-->
+    <string name="default_min_manuvers_limit">1.0</string>
+    <string name="default_min_manuvers_limit_neo">0.5</string>
+    <string name="default_max_manuvers_limit">2.5</string>
+    <string name="default_max_manuvers_limit_neo">2.0</string>
+
+    <!--SOFTWARE ALARM PARAM LIMITS-->
+    <string name="default_min_pip_limit">0</string>
+    <string name="default_max_pip_limit">70</string>
+    <string name="default_min_pip_ped_limit">0</string>
+    <string name="default_max_pip_ped_limit">60</string>
+    <string name="default_min_pip_limit_neo">0</string>
+    <string name="default_max_pip_limit_neo">50</string>
+
+    <string name="default_min_vti_limit">0</string>
+    <string name="default_max_vti_limit">2000</string>
+
+    <string name="default_min_vti_limit_neo">0</string>
+    <string name="default_max_vti_limit_neo">2000</string>
+    <string name="default_min_vte_limit">0</string>
+    <string name="default_max_vte_limit">2000</string>
+    <string name="default_min_vti_ped_limit">0</string>
+    <string name="default_max_vti_ped_limit">400</string>
+    <string name="default_min_vte_ped_limit">0</string>
+    <string name="default_max_vte_ped_limit">550</string>
+    <string name="default_min_vte_limit_neo">0</string>
+    <string name="default_max_vte_limit_neo">200</string>
+
+
+    <string name="default_min_peep_limit">0</string>
+    <string name="default_max_peep_limit">60</string>
+    <string name="default_min_peep_limit_neo">0</string>
+    <string name="default_max_peep_limit_neo">60</string>
+    <string name="default_min_peep_ped_limit">0</string>
+    <string name="default_max_peep_ped_limit">50</string>
+
+    <string name="default_min_rr_limit">2</string>
+    <string name="default_max_rr_limit">70</string>
+    <string name="default_min_rr_limit_neo">5</string>
+    <string name="default_max_rr_limit_neo">165</string>
+    <string name="default_min_rr_ped_limit">5</string>
+    <string name="default_max_rr_ped_limit">165</string>
+
+    <string name="default_min_mvi_limit">0</string>
+    <string name="default_max_mvi_limit">100</string>
+
+    <string name="default_min_mve_limit">0</string>
+    <string name="default_max_mve_limit">50</string>
+    <string name="default_min_mve_limit_neo">0</string>
+    <string name="default_max_mve_limit_neo">50</string>
+    <string name="default_min_mve_ped_limit">0</string>
+    <string name="default_max_mve_ped_limit">30</string>
+
+
+    <string name="default_min_mvi_limit_neo">0</string>
+    <string name="default_max_mvi_limit_neo">50</string>
+    <string name="default_min_mvi_ped_limit">0</string>
+    <string name="default_max_mvi_ped_limit">20</string>
+
+    <string name="default_min_fio2_limit">21</string>
+    <string name="default_max_fio2_limit">100</string>
+
+
+    <string name="default_min_spo2_limit">80</string>
+    <string name="default_max_spo2_limit">100</string>
+
+
+    <string name="default_min_titot_limit">0</string>
+    <string name="default_max_titot_limit">100</string>
+    <string name="default_min_titot_ped_limit">0</string>
+    <string name="default_max_titot_ped_limit">100</string>
+
+    <string name="default_min_leak_limit">0</string>
+    <string name="default_max_leak_limit">100</string>
+
+    <string name="default_adult_body_weight">60</string>
+    <string name="default_adult_body_height">160</string>
+    <string name="default_adult_age">16</string>
+
+    <string name="adult_targetVolume_default">500</string>
+    <string name="ped_targetVolume_default">200</string>
+    <string name="neo_targetVolume_default">10</string>
+
+    <string name="default_ped_body_weight">40</string>
+    <string name="default_ped_body_height">110</string>
+    <string name="default_ped_age">8</string>
+
+    <string name="default_neo_body_weight">3</string>
+    <string name="default_neo_body_height">50</string>
+    <string name="default_neo_age">213</string>
+
+    <string name="default_volume">10</string>
+
+    <string name="start_vent">Start Ventilation</string>
+    <string name="update_settings">Update</string>
+
+    <string name="default_maneuvers">0.0</string>
+    <string name="default_date_time">06/9/2021 12:58:35</string>
+
+    <!--LIMITING ALARMS-->
+    <string name="min_o2_limit">21</string>
+    <string name="default_o2_limit">21</string>
+    <string name="max_o2_limit">100</string>
+
+    <string name="min_resp_hold_time">0.5</string>
+    <string name="max_resp_hold_time">2.5</string>
+    <string name="default_resp_hold_time">1.0</string>
+
+    <string name="min_leak_factor">20</string>
+    <string name="max_leak_factor">80</string>
+    <string name="default_leak_factor">20</string>
+
+
+    <!---Ventilator error-->
+    <string name="ventilator_error">VENTILATOR ERRORS</string>
+
+    <!-- Acknowledgement messages -->
+    <!--PRIMARY ACKs-->
+    <string name="ack_0">Accessory ID detection failed</string>  <!-- LOW PRIORITY -->
+    <string name="ack_1">Air supply low</string>
+    <string name="ack_2">Alarm limit not confirmed</string>
+    <string name="ack_3">Alarm system failure</string>
+    <string name="ack_4">Application already installed</string>
+    <string name="ack_5">Application transfer failed</string>
+    <string name="ack_6">Mains Disconnected</string>
+    <string name="ack_7">Battery charging deferred</string> <!-- Anti at ACK 57 --> <!-- LOW PRIORITY -->
+    <string name="ack_8">Battery check in progress</string> <!-- Anti at ACK 58 --> <!-- LOW PRIORITY -->
+    <string name="ack_9">Battery check recommended</string> <!-- Anti at ACK 59 --> <!-- LOW PRIORITY -->
+
+    <!--ERROR ACK-->
+    <string name="ack_10">Accessory ID detection failed nack</string>
+    <string name="ack_11">Air supply low nack</string>
+    <string name="ack_12">Alarm limit not confirmed nack</string>
+    <string name="ack_13">Alarm system failure nack</string>
+    <string name="ack_14">Application already installed nack</string>
+    <string name="ack_15">Application transfer failed nack</string> <!-- Read/Write failure : Save the settings -->
+    <string name="ack_16">Battery activated nack_lp</string>
+    <string name="ack_17">Battery charging deferred nack</string>
+    <string name="ack_18">Battery check in progress nack</string>
+    <string name="ack_19">Battery check recommended nack</string> <!-- ADC failure -->
+
+    <!--POSITIVE ACK -->
+    <string name="ack_20">Breathing circuit ID invalid</string>
+    <string name="ack_21">Calibration of expiratory flow sensor failed</string>
+    <string name="ack_22">Calibration of gas delivery system required</string>
+    <string name="ack_23">Continuous nebulization activated</string>
+    <string name="ack_24">Device check incomplete</string>
+    <string name="ack_25">Expiratory hold interrupted</string> <!-- Read/Write works -->
+    <string name="ack_26">Turbine communication failure</string>
+    <string name="ack_27">ID expiratory heated filter failure</string>
+    <string name="ack_28">ID tag of expiratory valve faulty</string>
+    <string name="ack_29">Import failed check settings</string> <!-- ADC works -->
+
+    <!--ERROR ACK-->
+    <string name="ack_30">Breathing circuit ID invalid nack</string>  <!-- Safe mode activated -->
+    <string name="ack_31">Calibration of expiratory flow sensor failed nack</string> <!-- 20% battery level  -->
+    <!--ACK 32 Positive ack is ACK 01-->
+    <string name="ack_32">Calibration of gas delivery system required nack lp</string> <!-- LOW PRIORITY -->
+    <string name="ack_33">Continuous nebulization activated nack</string> <!-- LOW PRIORITY -->
+    <string name="ack_34">Device check incomplete nack</string> <!-- Oxygen sensor replacement --> <!-- LOW PRIORITY -->
+    <string name="ack_35">Expiratory hold interrupted nack</string> <!-- Motor replacement -->
+    <string name="ack_36">Turbine communication failure nack</string> <!-- Low tidal volume --> <!-- LOW PRIORITY -->
+    <string name="ack_37">ID expiratory heated filter failure nack</string> <!-- Leak ic_warning -->
+    <string name="ack_38">ID tag of expiratory valve faulty nack</string>
+    <string name="ack_39">Import failed check settings nack</string>
+
+    <string name="na">N/A</string>
+
+    <!--POSITIVE ACK -->
+    <string name="ack_40">Import successful check settings</string>
+    <string name="ack_41">Incompatible flow sensor detected</string>
+    <string name="ack_42">Inspiratory hold interrupted</string>
+    <string name="ack_43">Leak in patient circuit</string>
+    <string name="ack_44">MEDIBUS communication failed</string>
+    <string name="ack_45">Nebulization finished</string>
+    <string name="ack_46">Neonatal flow sensor replaced</string>
+    <string name="ack_47">Neonatal flow sensor</string>
+    <string name="ack_48">No Air supply</string> <!-- Anti for backup ventilation -->
+    <string name="ack_49">No O2 supply</string> <!-- Anti for ACK 39 -->
+
+    <string name="ack_50">Import successful check settings nack</string> <!-- ventilator shutdown -->
+    <string name="ack_51">Incompatible flow sensor detected nack</string>
+    <string name="ack_52">Inspiratory hold interrupted nack</string>
+    <string name="ack_53">Leakage nack</string>
+    <string name="ack_54">MEDIBUS communication failed nack</string>
+    <string name="ack_55">Nebulization finished nack</string>
+    <string name="ack_56">Neonatal flow sensor replaced nack</string>
+    <string name="ack_57">Neonatal flow sensor nack</string> <!-- Anti of ACK 7 -->
+    <string name="ack_58">No Air supply nack</string> <!-- Anti of ACK 8 -->
+    <string name="ack_59">No O2 supply nack</string> <!-- Anti of ACK 9 -->
+
+    <string name="ack_60">Pressure limited</string>
+    <string name="ack_61">Pressure limited VT not reached</string>
+    <string name="ack_62">Product test Not for clinical use</string>
+    <string name="ack_63">Restart of ventilation unit delayed</string>  <!-- No Anti required -->
+    <string name="ack_64">Service date reached</string>
+    <string name="ack_65">Service date approaching</string>
+    <string name="ack_66">setting not confirmed</string>
+    <string name="ack_67">Suction maneuver overused</string>
+    <string name="ack_68">TVS import not possible</string> <!-- HIGH PRIORITY -->
+    <string name="ack_69">Apnea Ventilation</string>
+
+    <string name="ack_70">Pressure limited nack</string>
+    <string name="ack_71">Pressure limited VT not reached nack</string>
+    <string name="ack_72">Product test Not for clinical use nack</string>
+    <string name="ack_73">Restart of ventilation unit delayed nack</string>
+    <string name="ack_74">Service date reached nack</string>
+    <string name="ack_75">Service date approaching nack</string>
+    <string name="ack_76">setting not confirmed nack</string>
+    <string name="ack_77">Suction maneuver overused nack</string>
+    <string name="ack_78">TVS import not possible nack</string>
+    <string name="ack_79">Apnea Ventilation nack</string>
+
+    <string name="ack_80">VT not reached</string>
+    <string name="ack_81">VT not reached leakage</string> <!-- Low FiO2 -->
+    <string name="ack_82">VT not reached PLimit Reached </string>
+    <string name="ack_83">Wrong or invalid applications found</string>
+    <string name="ack_84">FiO2 sensor Inop</string>
+    <string name="ack_90">VT not reached nack</string>
+    <string name="ack_91">VT not reached leakage nack</string>
+    <string name="ack_92">VT not reached Pmax_active nack</string>
+    <string name="ack_93">Wrong or invalid applications found nack</string>
+    <string name="ack_94">FiO2 sensor Inop nack</string>
+
+    // medium priority alarm
+    <string name="ack_320">Ambient pressure sensor</string>
+    <string name="ack_321">Apnea Ventilation</string>
+
+    <string name="ack_322">Audio paused key used too often</string>
+    <string name="ack_323">Audio paused overused or stuck</string>
+    <string name="ack_324">Auxiliary acoustical alarm failure</string>
+    <string name="ack_325">Mains Disconnected</string>
+    <string name="ack_326">Battery Failure</string>
+    <string name="ack_327">Battery Low</string>
+    <string name="ack_328">Breathing circuit does not fit patient category</string>
+    <string name="ack_329">Breathing circuit does not match config</string>
+    <string name="ack_330">Ambient pressure sensor nack</string>
+    <string name="ack_331">Apnea Ventilation nack</string>
+    <string name="ack_332">Audio paused key used too often nack</string>
+    <string name="ack_333">Audio paused overused or stuck nack</string>
+    <string name="ack_334">Auxiliary acoustical alarm failure nack</string>
+    <string name="ack_335">Battery activated nack mp</string>
+    <string name="ack_336">Battery Failure nack</string>
+    <string name="ack_337">Battery Low nack mp</string>
+
+    <string name="ack_338">Breathing circuit does not fit patient category nack</string>
+    <string name="ack_339">Breathing circuit does not match config nack</string>
+    <string name="ack_340">Breathing hose kinked</string>
+    <string name="ack_341">Breathing hoses interchanged</string>
+    <string name="ack_342">Calibration of neonatal flow sensor failed</string>
+    <string name="ack_343">Calibration of neo flow sensor required</string>
+    <string name="ack_344">Check CO2 cuvette</string>
+    <string name="ack_345">Check settings</string>
+    <string name="ack_346">Check ventilation settings</string>
+    <string name="ack_347">Data loss</string>
+    <string name="ack_348">Device check failed</string>
+    <string name="ack_349">Device failure 13</string>
+
+    <string name="ack_350">Breathing hose kinked nack</string>
+    <string name="ack_351">Breathing hoses interchanged nack mp</string>
+    <string name="ack_352">calibration of neonatal flow sensor failed nack mp</string>
+    <string name="ack_353">Calibration of neo flow sensor required nack mp</string>
+    <string name="ack_354">Check CO2 cuvette nack</string>
+    <string name="ack_355">Check settings nack</string>
+    <string name="ack_356">Check ventilation settings nack</string>
+    <string name="ack_357">Data loss nack mp</string>
+    <string name="ack_358">Device check failed nack</string>
+    <string name="ack_359">Device failure 13 nack</string>
+    <string name="ack_360">Device failure 9</string>
+
+    <string name="ack_361">Device temperature measurement failed</string>
+    <string name="ack_362">Expiratory valve incompatible</string>
+    <string name="ack_363">Flow measurement inaccurate</string>
+    <string name="ack_364">Flow sensor Ventilation impaired</string>
+    <string name="ack_365">Turbine internal failure</string>
+    <string name="ack_366">ID tag of flow sensor faulty</string>
+    <string name="ack_367">Internal battery activated</string>
+    <string name="ack_368">Internal power supply failure</string>
+    <string name="ack_369">Nebulization canceled</string>
+    <string name="ack_370">Device failure 9 nack</string>
+    <string name="ack_371">Device temperature measurement failed nack</string>
+    <string name="ack_372">Expiratory valve incompatible  nack</string>
+    <string name="ack_373">Flow measurement inaccurate nack</string>
+    <string name="ack_374">Flow sensor Ventilation impaired nack</string>
+    <string name="ack_375">Turbine internal failure nack</string>
+    <string name="ack_376">ID tag of flow sensor faulty nack</string>
+    <string name="ack_377">Internal battery activated nack</string>
+    <string name="ack_378">Internal power supply failure nack</string>
+    <string name="ack_379">Nebulization canceled nack</string>
+    <string name="ack_380">Nebulizer uses Air only</string>
+    <string name="ack_381">Nebulizer uses O2 only</string>
+    <string name="ack_382">Neonatal flow measurement failed</string>
+    <string name="ack_383">Neonatal flow sensor failure</string>
+    <string name="ack_384">Neonatal flow sensor soiled</string>
+    <string name="ack_385">Neonatal flow sensor</string>
+    <string name="ack_386">Nurse call failure</string>
+    <string name="ack_387">O2 and Air supply pressures differ too much</string>
+    <string name="ack_388">Oxygenation maneuver failed</string>
+    <string name="ack_389">PEEP high</string>
+    <string name="ack_390">Nebulizer uses Air only nack</string>
+    <string name="ack_391">Nebulizer uses O2 only nack</string>
+    <string name="ack_392">Neonatal flow measurement failed nack</string>
+    <string name="ack_393">Neonatal flow sensor failure nack</string>
+    <string name="ack_394">Neonatal flow sensor soiled nack</string>
+    <string name="ack_395">Neonatal flow sensor nack mp</string>
+    <string name="ack_396">Nurse call failure nack</string>
+    <string name="ack_397">O2 and Air supply pressures differ too much nack</string>
+    <string name="ack_398">Oxygenation maneuver failed nack</string>
+    <string name="ack_399">PEEP high nack mp</string>
+    <string name="ack_400">Perform device and breathing circuit check</string>
+    <string name="ack_401">Pressure measurement impaired</string>
+    <string name="ack_402">Pressure measurement inaccurate</string>
+    <string name="ack_403">Pressure sensor Ventilation impaired</string>
+    <string name="ack_404">Rotary knob stuck or pressed too long</string>
+    <string name="ack_405">Rotary knob used too often</string>
+    <string name="ack_406">Suction maneuver failed</string>
+    <string name="ack_407">Ventilation unit restarted</string>
+    <string name="ack_408">VT high minimum pressure</string>
+    <string name="ack_409">PEEP LOW</string>
+
+    <string name="ack_410">Perform device and breathing circuit check nack</string>
+    <string name="ack_411">Pressure measurement impaired nack</string>
+    <string name="ack_412">Pressure measurement inaccurate nack</string>
+    <string name="ack_413">Pressure sensor Ventilation impaired nack</string>
+    <string name="ack_414">Rotary knob stuck or pressed too long nack</string>
+    <string name="ack_415">Rotary knob used too often nack</string>
+    <string name="ack_416">Suction maneuver failed nack</string>
+    <string name="ack_417">Ventilation unit restarted nack</string>
+    <string name="ack_418">VT high minimum pressure nack</string>
+    <string name="ack_419">VT high nack</string>
+    <string name="ack_420">VT low</string>
+    <string name="ack_421">VT not reached</string>
+    <string name="ack_422">VT not reached leakage</string>
+    <string name="ack_423">VT not reached pmax active</string>
+    <string name="ack_424">Pressure limited vt not reached</string>
+    <string name="ack_425">VTAS : VT low &#160;&#160; plimit reached</string>
+    <string name="prvc_alarm_custom">VT not reached : required pressure low</string>
+    <string name="ack_426">Low RR</string>
+    <string name="ack_427">High RR</string>
+    <string name="ack_428">Expiratory flow sensor fault</string>
+    <string name="ack_429">CHECK EXHALE VALVE</string>
+
+    <string name="ack_441">Charging inactive</string>
+
+    <string name="ack_430">VT low nack</string>
+    <string name="ack_431">VT not reached nack</string>
+    <string name="ack_432">VT not reached leakage nack</string>
+    <string name="ack_433">VT not reached pmax active nack</string>
+    <string name="ack_434">Pressure limited vt not reached nack</string>
+    <string name="ack_435">VTAS : VT low plimit reached nack</string>
+    <string name="ack_436">Low RR nack</string>
+    <string name="ack_437">High RR nack</string>
+    <string name="ack_438">Expiratory flow sensor fault nack</string>
+    <string name="ack_439">CHECK EXHALE VALVE nack</string>
+    <string name="ack_451">Charging inactive nack</string>
+
+
+    //high priority alarms
+    <string name="ack_640">Airway obstructed</string>
+    <string name="ack_641">Airway pressure high</string>
+    <string name="ack_642">Airway pressure low</string>
+    <string name="ack_643">Airway pressure negative</string>
+    <string name="ack_644">Apnea</string>
+    <string name="ack_645">Battey activated</string>
+    <string name="ack_646">Battery critically low</string>
+    <string name="ack_647">Battery Low</string>
+    <string name="ack_648">Calibration of gas delivery system required</string>
+    <string name="ack_649">Calibration of neo flow sensor required</string>
+    <string name="ack_650">Airway obstructed nack</string>
+
+
+    <string name="ack_651">Airway pressure high nack</string>
+    <string name="ack_652">Airway pressure low nack</string>
+    <string name="ack_653">Airway pressure negative nack</string>
+    <string name="ack_654">Apnea nack</string>
+    <string name="ack_655">Battey activated nack</string>
+    <string name="ack_656">Battery discharged nack</string>
+    <string name="ack_657">Battery Low nack hp</string>
+
+    <string name="ack_658">Calibration of gas delivery system required nack hp</string>
+    <string name="ack_659">Calibration of neo flow sensor required nack</string>
+    <string name="ack_660">calibration of neonatal flow sensor failed</string>
+
+    <string name="ack_661">Clean CO2 cuvette</string>
+    <string name="ack_662">CO2 measurement failed</string>
+    <string name="ack_663">CO2 sensor</string>
+    <string name="ack_664">CO2 zero calibration</string>
+    <string name="ack_665">Data loss</string>
+
+    <string name="ack_666">Device failure</string>
+    <string name="ack_667">Device failure_1</string>
+    <string name="ack_668">Battery System Failure</string>
+    <string name="ack_669">Device failure 11</string>
+    <string name="ack_670">calibration of neonatal flow sensor failed nack hp</string>
+    <string name="ack_671">Clean CO2 cuvette nack</string>
+    <string name="ack_672">CO2 measurement failed nack</string>
+    <string name="ack_673">CO2 sensor nack</string>
+
+    <string name="ack_674">CO2 zero calibration nack</string>
+    <string name="ack_675">Data loss nack hp</string>
+    <string name="ack_676">Device failure nack</string>
+    <string name="ack_677">Device failure 1 nack</string>
+    <string name="ack_678">Device failure 10 nack</string>
+    <string name="ack_679">Device failure 11 nack</string>
+
+    <string name="ack_680">Device failure 12</string>
+    <string name="ack_681">Device failure 2</string>
+    <string name="ack_682">Device failure 3</string>
+    <string name="ack_683">Device failure 4</string>
+    <string name="ack_684">Device failure 5</string>
+    <string name="ack_685">Device failure 6</string>
+    <string name="ack_686">Device failure 7</string>
+
+    <string name="ack_687">Device failure 8</string>
+    <string name="ack_688">Device temperature high</string>
+    <string name="ack_689">Disconnection</string>
+    <string name="ack_690">Device failure 12 nack</string>
+    <string name="ack_691">Device failure 2 nack</string>
+    <string name="ack_692">Device failure 3 nack</string>
+    <string name="ack_693">Device failure 4 nack</string>
+    <string name="ack_694">Device failure 5 nack</string>
+    <string name="ack_695">Device failure 6 nack</string>
+    <string name="ack_696">Device failure 7 nack</string>
+    <string name="ack_697">Device failure 8 nack</string>
+    <string name="ack_698">Device temperature high nack</string>
+    <string name="ack_699">Disconnection nack</string>
+    <string name="ack_700">etCO2 high</string>
+    <string name="ack_701">etCO2 low</string>
+    <string name="ack_702">Expiratory flow measurement failed</string>
+    <string name="ack_703">Expiratory valve faulty</string>
+    <string name="ack_704">Expiratory valve incompatible</string>
+    <string name="ack_705">FiO2 high</string>
+    <string name="ack_706">FiO2 low</string>
+    <string name="ack_707">Flow sensor Ventilation impaired</string>
+    <string name="ack_708">Turbine communication failure</string>
+    <string name="ack_709">Turbine failure</string>
+    <string name="ack_710">etCO2 high nack</string>
+    <string name="ack_711">etCO2 low nack</string>
+    <string name="ack_712">Expiratory flow measurement failed nack</string>
+    <string name="ack_713">Expiratory valve faulty nack</string>
+    <string name="ack_714">Expiratory valve incompatible nack hp</string>
+    <string name="ack_715">FiO2 high nack</string>
+    <string name="ack_716">FiO2 low nack</string>
+    <string name="ack_717">Flow sensor Ventilation impaired nack hp</string>
+    <string name="ack_718">Turbine communication failure nack hp</string>
+    <string name="ack_719">Turbine failure nack</string>
+    <string name="ack_720">Turbine internal failure</string>
+    <string name="ack_721">Turbine temperature too high</string>
+    <string name="ack_722">MV high</string>
+    <string name="ack_723">MV low</string>
+    <string name="ack_724">Neonatal flow measurement failed</string>
+    <string name="ack_725">Neonatal flow sensor failure</string>
+    <string name="ack_726">Neonatal flow sensor</string>
+    <string name="ack_727">No Air supply</string>
+    <string name="ack_728">No O2 supply</string>
+    <string name="ack_729">O2 measurement failed</string>
+    <string name="ack_730">Turbine internal failure nack hp</string>
+    <string name="ack_731">Turbine temperature too high nack</string>
+    <string name="ack_732">MV high nack</string>
+    <string name="ack_733">MV low nack</string>
+    <string name="ack_734">Neonatal flow measurement failed nack hp</string>
+    <string name="ack_735">Neonatal flow sensor failure nack hp</string>
+    <string name="ack_736">Neonatal flow sensor nack hp</string>
+    <string name="ack_737">No Air supply nack hp</string>
+    <string name="ack_738">No O2 supply nack hp</string>
+    <string name="ack_739">O2 measurement failed nack</string>
+    <string name="ack_740">PEEP high</string>
+    <string name="ack_741">PEEP low</string>
+    <string name="ack_742">Plow high</string>
+    <string name="ack_743">Plow low</string>
+    <string name="ack_744">Pressure measurement failed</string>
+    <string name="ack_745">Respiratory rate high</string>
+    <string name="ack_746">Standby mode activated</string>
+    <string name="ack_747">Expiratory flow sensor not found</string>
+    <string name="ack_748">Inspiratory flow sensor not found</string>
+    <string name="ack_749">Inspiratory pressure sensor not found</string>
+    <string name="ack_750">PEEP high nack hp</string>
+    <string name="ack_751">PEEP low nack</string>
+    <string name="ack_752">Plow high nack</string>
+    <string name="ack_753">Plow low nack</string>
+
+    <string name="ack_754">Pressure measurement failed nack</string>
+    <string name="ack_755">Respiratory rate high nack</string>
+    <string name="ack_756">Standby mode activated nack</string>
+    <string name="ack_757">Expiratory flow sensor not found nack</string>
+    <string name="ack_758">Inspiratory flow sensor not found nack</string>
+    <string name="ack_759">Inspiratory pressure sensor not found nack</string>
+    <string name="ack_760">Expiratory pressure sensor not found</string>
+    <string name="ack_761">Oxygen pressure sensor not found</string>
+    <string name="ack_762">Exp valve pressure sensor not found</string>
+    <string name="ack_763">High pressure O2 sensor not found</string>
+    <string name="ack_764">Low pressure O2 sensor not found</string>
+    <string name="ack_765">Processor temp sensor not found</string>
+    <string name="ack_766">Exhale valve temp sensor not found</string>
+    <string name="ack_767">Oxygen valve temp sensor not found</string>
+    <string name="ack_768">Nebulizer valve temp sensor not found</string>
+    <string name="ack_769">Pip high</string>
+    <string name="ack_770">Expiratory pressure sensor not found nack</string>
+    <string name="ack_771">Oxygen pressure sensor not found nack</string>
+    <string name="ack_772">Exp valve pressure sensor not found nack</string>
+    <string name="ack_773">High pressure O2 sensor not found nack</string>
+    <string name="ack_774">Low pressure O2 sensor not found nack</string>
+    <string name="ack_775">Processor temp sensor not found nack</string>
+    <string name="ack_776">Exhale valve temp sensor not found nack</string>
+    <string name="ack_777">Oxygen valve temp sensor not found nack</string>
+    <string name="ack_778">Nebulizer valve temp sensor not found nack</string>
+    <string name="ack_779">Pip high nack</string>
+    <string name="ack_780">Pip low</string>
+    <string name="ack_781">VT high</string>
+    <string name="ack_782">VT low</string>
+    <string name="ack_783">Respiratory rate low</string>
+    <string name="ack_784">Spo2 high</string>
+    <string name="ack_785">Spo2 low</string>
+    <string name="ack_786">Patient disconnected</string>
+    <string name="ack_787">Low O2 Supply</string>
+    <string name="ack_788">POWER BUTTON PRESSED</string>
+    <string name="ack_789">Exhale Valve disconnected</string>
+
+    <string name="ack_790">Pip low nack</string>
+    <string name="ack_791">VT high nack</string>
+    <string name="ack_792">VT low nack</string>
+    <string name="ack_793">Respiratory rate low nack</string>
+    <string name="ack_794">Spo2 high nack</string>
+    <string name="ack_795">Spo2 low nack</string>
+    <string name="ack_796">Patient dis nack</string>
+    <string name="ack_797">Low O2 Supply nack</string>
+
+    <string name="ack_799">Exhale Valve disconnected nack</string>
+    <string name="ack_800">Exhale tube disconnected</string>
+    <string name="ack_801">Airway Obstructed</string>
+    <string name="ack_802">Sustained Airway Pressure </string>
+    <string name="ack_803">Inspiratory flow sensor fault</string>
+    <string name="ack_804">Neo sensor cable disconnected</string>
+    <string name="ack_805">Neo flow sensor not found</string>
+    <string name="ack_806">Pressure sensor fault</string>
+    <string name="ack_807">Expiratory valve internal fault</string>
+    <string name="ack_809">O2 pressure high</string>
+
+    <string name="ack_810">Exhale tube disconnected nack</string>
+    <string name="ack_811">Airway Obstructed nack</string>
+    <string name="ack_812">Sustained Airway Pressure nack </string>
+    <string name="ack_813">Inspiratory flow sensor fault nack</string>
+    <string name="ack_814">Neo sensor disconnected nack</string>
+    <string name="ack_815">Neo flow sensor not found nack</string>
+    <string name="ack_816">Pressure sensor fault nack</string>
+    <string name="ack_817">Expiratory valve internal fault nack</string>
+    <string name="ack_819">O2 pressure high nack</string>
+    <string name="ack_821">Patient Disconnected</string>
+    <string name="ack_822">Flow occlusion</string>
+    <string name="ack_823">BATTERY  CHARGER FAILURE</string>
+    <string name="ack_824">BATTERY SYSTEM FAILURE</string>
+    <string name="ack_825">EXPIRATORY SENSOR NOT FOUND</string>
+    <string name="ack_826">SENSOR CABLE NOT FOUND</string>
+    <string name="ack_827">EXP. FLOW SENSOR FAILURE</string>
+
+    <string name="selected_item">Selected item:</string>
+
+    <string-array name="Colors">
+        <item>White</item>
+        <item>Wheat</item>
+        <item>Blue</item>
+        <item>Amber</item>
+        <item>Green</item>
+        <item>Pink</item>
+    </string-array>
+
+    <string name="ack_831">Patient Disconnected nack</string>
+    <string name="ack_832">Flow occlusion nack</string>
+    <string name="ack_833">BATTERY  CHARGER FAILURE nack</string>
+    <string name="ack_834">BATTERY SYSTEM FAILURE nack</string>
+    <string name="ack_835">EXPIRATORY SENSOR NOT FOUND nack</string>
+    <string name="ack_836">SENSOR CABLE NOT FOUND nack</string>
+    <string name="ack_837">EXP. FLOW SENSOR FAILURE nack</string>
+
+    <string name="ack_5001">IHOLD</string>
+    <string name="ack_5002">EHOLD</string>
+    <string name="ack_5003">SYSTEM SHUTDOWN</string>
+    <string name="ack_5004">HAND SHAKE</string>
+    <string name="ack_5005">SETTING SAVED</string>
+    <string name="ack_5006">MODE CHANGED</string>
+    <string name="ack_5007">ALARM LIMIT SAVE </string>
+    <string name="Usb_disconnected">Usb Device Disconnected</string>
+
+    <string name="tidal_volume">Compensated VT</string>
+    <string name="tidal_volume_ml">Compensated VT (ml)</string>
+    <string name="comp_vti">Compensated VT</string>
+    <string name="spont_vti">Spontaneous VT</string>
+    <string name="backup_comp_vti">Backup VT</string>
+    <string name="vti">VT </string>
+    <string name="comp_vti_ml">Compensated VT (ml)</string>
+    <string name="pip">PIP</string>
+    <string name="default_pip_via_vgv">30</string>
+    <string name="pip_cmh2o">PIP (cm H₂O)</string>
+    <string name="min_pressure">Minimum Pressure</string>
+    <string name="support_pressure">ΔPsupp </string>
+    <string name="ipap">IPAP</string>
+    <string name="epap">EPAP</string>
+    <string name="backup_peep">Backup PEEP</string>
+    <string name="support_pressure_cmh2o">Support Pressure (cm H₂O)</string>
+    <string name="inspiratory_support_pressure">Inspiratory Support Pressure</string>
+    <string name="inspiratory_support_pressure_cmh2o">Inspiratory Support Pressure (cm H₂O)</string>
+    <string name="expiratory_support_pressure">Expiratory Support Pressure</string>
+    <string name="expiratory_support_pressure_cmh2o">Expiratory Support Pressure (cm H₂O)</string>
+    <string name="respiratory_rate_bpm">RR (BPM)</string>
+    <string name="respiratory_rate">RR</string>
+
+    <string name="peep_cmh2o">PEEP (cm H₂O)</string>
+    <string name="peep">PEEP</string>
+    <string name="pinsp_cmh2o">PINSP (cm H₂O)</string>
+    <string name="pinsp">ΔPinsp</string>
+    <string name="plimit_cmh2o">Plimit (cm H₂O)</string>
+    <string name="plimit">Plimit</string>
+    <string name="thigh_cmh2o">Thigh (cm H₂O)</string>
+    <string name="thigh">Thigh</string>
+    <string name="phigh_cmh2o">Phigh (cm H₂O)</string>
+    <string name="phigh">Phigh</string>
+    <string name="plow_cmh2o">Plow (cm H₂O)</string>
+    <string name="plow">Plow</string>
+
+    <string name="apnea_respiratory_rate">RR apnea</string>
+    <string name="apnea_time">T apnea</string>
+    <string name="apnea_vt">VT apnea </string>
+    <string name="apnea_trigger_flow">Trigger apnea</string>
+    <string name="et_pressure">Cuff Pr.</string>
+
+    <string name="tHigh_cmh2o">PINSP (cm H₂O)</string>
+    <string name="tHigh">THigh</string>
+    <string name="tlow_sec">Tlow (Sec)</string>
+    <string name="tLow">Tlow</string>
+    <string name="tExp">Insp Term</string>
+    <string name="flow">Flow</string>
+    <string name="frequency">Frequency</string>
+
+    <string name="flow_l_min">Flow (l/min)</string>
+    <string name="pressure_l_min">Pressure (l/min)</string>
+    <string name="vol_l_min">Volume (mL)</string>
+    <string name="flow_vol_l_min">FV Loop</string>
+    <string name="flow_pressure_l_min">FP Loop</string>
+    <string name="pressure_vol_l_min">Pressure (cmH₂O) / Volume (ml)</string>
+    <string name="volume_pressure_l_min">PV Loop</string>
+
+    <string name="slope">Slope</string>
+    <string name="auto_flow">Auto Flow</string>
+    <string name="inspiratory_pause">In. Pause</string>
+    <string name="peep_valve">Peep Val.</string>
+    <string name="spont_vt">Spont VT</string>
+    <string name="target_spo2">Tg. SpO₂</string>
+    <string name="hr_Limit">PR Limit</string>
+    <string name="target_volume">Target VT</string>
+    <string name="fio2_dev">ΔFiO2</string>
+    <string name="trigger_flow_l_min">Trigger Flow (l/min)</string>
+    <string name="trigger_flow">Trigger</string>
+    <string name="plateau_pressure_cmh2o">Plateau Pressure (cm H₂O)</string>
+    <string name="plateau_pressure">Plateau Pressure</string>
+    <string name="inhale_time_sec">Inspiratory Time (sec)</string>
+    <string name="inhale_time">Ti</string>
+    <string name="mvi_l">MVI (litre)</string>
+    <string name="mvi">MVI</string>
+    <string name="mve">MVE</string>
+    <string name="mve_l">MVE (litre)</string>
+    <string name="fio2_timeout">FiO₂ Timeout</string>
+    <string name="fio2">FiO₂</string>
+    <string name="spo2">SpO₂</string>
+    <string name="fio2_percent">FiO₂ (%)</string>
+    <string name="titot">Ti/ToT</string>
+    <string name="titot_percent">Ti/ToT (%)</string>
+    <string name="avg_leak_percent">Average Leak (%)</string>
+    <string name="avg_leak">Average Leak</string>
+    <string name="vpeak">Vpeak</string>
+    <string name="peep_plus_ps">PEEP + PS</string>
+
+    <string name="low_value_msg_suffix">is low</string>
+    <string name="high_value_msg_suffix">is high</string>
+    <string name="normal_value_msg_suffix">is normal limit</string>
+    <string name="sensore_not_calibrated">Not calibrated</string>
+
+    <string name="standBrooklynLemonade">Brooklyn Lemonade</string>
+    <string name="standManhattanBourjeeSliders">Manhattan Bourjee Sliders</string>
+    <string name="standQueensAndCakes"><![CDATA[Queens & Cakes]]></string>
+    <string name="standBronxTea">Bronx Tea</string>
+
+    <!--VENTILATOR COMMANDS-->
+
+    <string name="prefix_inspiratory_hold">IH</string>
+    <string name="prefix_expiratory_hold">EH</string>
+    <string name="prefix_startup_check">CM+STC</string>
+
+
+    <string name="cmd_vent_shutdown">CM+SHUTDOWN</string>
+    <string name="cmd_vent_leak_compensation_stop">CM+LCOMP0</string>
+    <string name="cmd_vent_leak_compensation_start">CM+LCOMP1</string>
+    <string name="cmd_vent_motor_life">CM+MOTORLIFE</string>
+    <string name="cmd_vent_killall">CM+KILLALL</string>
+    <string name="cmd_vent_wakeup">CM+WAKEUP</string>
+    <string name="cmd_neo_sensor_check">CM+NEO</string>
+    <string name="cmd_oxygen_check">CM+CO2</string>
+    <string name="cmd_vent_standby">CM+STANDBY</string>
+    <string name="cmd_vent_fastboot">CMR+BOOT</string>
+    <string name="cmd_vent_selftest">CMR+STP</string>
+    <string name="cmd_vent_version_demand">CMR+VER</string>
+    <string name="cmd_vent_mute_alarm_permanent">CM+MUTE1</string>
+    <string name="cmd_vent_mute_alarm_temporary">CM+MUTE2</string>
+    <string name="cmd_vent_unmute_alarm">CM+MUTE0</string>
+    <string name="req_vent_device_name_requested">RQDN0</string>
+    <string name="req_vent_device_name_received">RQDN1</string>
+    <string name="req_vent_device_name_failure">RQDN2</string>
+    <string name="fio2_on_standby">21</string>
+    <string name="cmd_vent_breath">CM+BREATH</string>
+    <string name="cmd_vent_nebuliser">CM+NEB</string>
+    <string name="cmd_version">"CM+VER"</string>
+    <string name="cmd_vent_oxygen_calibrate">CM+CALIBRATE</string>
+    <string name="cmd_tube_resistance">CM+RES</string>
+    <string name="cmd_tube_compliance">CM+COMP</string>
+
+    <string name="info_otp_wrong">Wrong OTP..</string>
+
+    <string name="info_service_closed">service ticket successfully closed..</string>
+    <string name="info_otp_sent">Please fill the OTP sent to your mobile number for verification</string>
+    <string name="info_otp_verify">Thank you for registering a service request with us. You will receive a call from us soon.</string>
+
+    <string name="issue_1">General Service</string>
+    <string name="issue_2">Operating Support</string>
+    <string name="issue_3">Request for Consumables</string>
+    <string name="issue_4">Physical Damage</string>
+    <string name="issue_5">Issue in Ventilation</string>
+    <string name="issue_6">Performance Issues</string>
+    <string name="issue_7">Apply for CMC/AMC</string>
+
+
+    <string name="etco2_mmHg">EtCo2 (mmHg)</string>
+
+
+    <string name="raise_request">Raise Service Request</string>
+    <string name="service_title">Service Menu</string>
+    <string name="raise_service">RAISE NEW ISSUE</string>
+
+
+    <!--O2 CALIBRATION STEPS-->
+    <string name="step_1">Disconnect the oxygen supply</string>
+    <string name="step_2">Disconnect the patient</string>
+    <string name="step_3">Keep the ventilator plugged into power</string>
+
+    <!--Setting Save of failure Msg-->
+    <string name="hint_setting_saved">Success ! Your Setting is successfully saved.</string>
+    <string name="hint_setting_failure">Failure ! Your Setting is not saved.</string>
+    <string name="please_select_the_mode_with_knob">Press the knob to confirm</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hint_setting_of_pcv">CONTROL DESCRIPTION</string>
+    <string name="hint_setting_of_vcv">Setting of VCV</string>
+    <string name="hint_setting_of_simv">Setting of SIMV</string>
+
+    <string name="pi">PI</string>
+    <string name="vt">VT</string>
+    <string name="ti_max">TI max</string>
+    <string name="ti">TI </string>
+    <string name="tplat">Tplat </string>
+    <string name="te">Te </string>
+    <string name="ps">PS</string>
+    <string name="Inverseieratio">INV. I:E RATIO</string>
+    <string name="ieratio">I:E RATIO</string>
+    <string name="control_breathe">Controlled</string>
+    <string name="spontaneous_breathe">Spontaneous</string>
+    <string name="trig_exp">Trig Exp</string>
+
+
+    <string-array name="parameter_tile">
+        <item>PIP</item>
+        <item>PEEP</item>
+        <item>VTE</item>
+        <item>RR</item>
+        <item>PIP</item>
+        <item>PEEP</item>
+        <item>VTE</item>
+        <item>RR</item>
+        <item>PIP</item>
+        <item>PEEP</item>
+        <item>VTE</item>
+        <item>RR</item>
+    </string-array>
+
+    <!--patient connected and disconnected dialog messages-->
+    <string name="patient_connected_standby">Patient is connected right now. Do you want to shift ventilator to standby mode ?</string>
+    <string name="shutdown_command">To initiate shutdown confirm by pressing the rotatory knob.\nTo cancel switch on the main power switch.</string>
+    <string name="patient_disconnected_standby">Do you want to shift ventilator to standby mode ?</string>
+    <string name="patient_connected_shutdown">Patient is connected right now. Do you want to shutdown ventilator ?</string>
+    <string name="patient_disconnected_shutdown">Do you want to shutdown ventilator ?</string>
+    <string name="calibration_command">Ventilator is under sensor calibration process. </string>
+    <string name="calibration_error">Calibrartion stopped due to some error during calibration</string>
+    <string name="calibration_error_command">Error occurred during calibration process. </string>
+
+    <!--Disclaimer for Battery remaining time usage and conditions-->
+    <string name="battery_usage_disclaimer">* Battery remaining time is an approximation. It may vary upon usage &amp; conditions</string>
+    <string name="hint_litre_perminute">lpm</string>
+    // ota
+    <string name="downloading">Downloading...</string>
+    <string name="title_file_download">APK is downloading</string>
+    <string name="storage_access_required">Storage access is required to downloading the file.</string>
+    <string name="storage_permission_denied">Storage permission request was denied.</string>
+    <string name="ok">OK</string>
+    <string name="diagnostic_tool_check">Diagnostic Tool Check</string>
+    <string name="oxygen_reg">Oxygen Regulator Check</string>
+    <string name="old_services">Previous Services</string>
+    <string name="add_service">Add New Service</string>
+    <string name="submit">Submit</string>
+    <string name="add">Add</string>
+    <string name="service_serial_no">S.No</string>
+    <string name="service_serial_no_bold"><b>S.No</b></string>
+    <string name="service_desc">Service Description</string>
+    <string name="service_date">Date &amp; Time</string>
+    <string name="service_date_bold"><b>Date &amp; Time</b></string>
+    <string name="service_option_1">Quick Inspection Check</string>
+    <string name="service_option_2">Regular Inspection Check</string>
+    <string name="service_option_3">Part Change</string>
+    <string name="service_option_4">Repair</string>
+    <string name="service_option_5">Other</string>
+    <string name="network_info">Network Info</string>
+    <string name="config">Config</string>
+
+    <string name="sensor_check_string">Sensors check success, ventilation can be started</string>
+
+
+</resources>

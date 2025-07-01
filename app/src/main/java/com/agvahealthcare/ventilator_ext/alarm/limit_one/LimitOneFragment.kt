@@ -824,65 +824,68 @@ class LimitOneFragment(
             default_presserUpperLimit = filterAlarmLimitsbyPatientType(
                 prefManager?.readCurrentUid(),
                 requireContext()
-            )["presserUpperLimit"]?.toFloat()//requireActivity().getString(R.string.default_max_pip_limit).toFloat()
+            )["presserUpperLimit"]?.toFloat() // requireActivity().getString(R.string.default_max_pip_limit).toFloat()
             default_presserLowerLimit = filterAlarmLimitsbyPatientType(
                 prefManager?.readCurrentUid(),
                 requireContext()
-            )["presserLowerLimit"]?.toFloat()//requireActivity().getString(R.string.default_min_pip_limit).toFloat()
+            )["presserLowerLimit"]?.toFloat() // requireActivity().getString(R.string.default_min_pip_limit).toFloat()
             default_vtiUpperLimit = filterAlarmLimitsbyPatientType(
                 prefManager?.readCurrentUid(),
                 requireContext()
-            )["vtiUpperLimit"]?.toFloat()//requireActivity().getString(R.string.default_max_vti_limit).toFloat()
+            )["vtiUpperLimit"]?.toFloat() // requireActivity().getString(R.string.default_max_vti_limit).toFloat()
             default_vtiLowerLimit = filterAlarmLimitsbyPatientType(
                 prefManager?.readCurrentUid(),
                 requireContext()
-            )["vtiLowerLimit"]?.toFloat()//requireActivity().getString(R.string.default_min_vti_limit).toFloat()
+            )["vtiLowerLimit"]?.toFloat() // requireActivity().getString(R.string.default_min_vti_limit).toFloat()
             default_vteUpperLimit = filterAlarmLimitsbyPatientType(
                 prefManager?.readCurrentUid(),
                 requireContext()
-            )["vteUpperLimit"]?.toFloat()//requireActivity().getString(R.string.default_max_vte_limit).toFloat()
+            )["vteUpperLimit"]?.toFloat() // requireActivity().getString(R.string.default_max_vte_limit).toFloat()
             default_vteLowerLimit = filterAlarmLimitsbyPatientType(
                 prefManager?.readCurrentUid(),
                 requireContext()
-            )["vteLowerLimit"]?.toFloat()//requireActivity().getString(R.string.default_min_vte_limit).toFloat()
+            )["vteLowerLimit"]?.toFloat() // requireActivity().getString(R.string.default_min_vte_limit).toFloat()
             default_peepUpperLimit = filterAlarmLimitsbyPatientType(
                 prefManager?.readCurrentUid(),
                 requireContext()
-            )["peepUpperLimit"]?.toFloat()//requireActivity().getString(R.string.default_max_peep_limit).toFloat()
+            )["peepUpperLimit"]?.toFloat() // requireActivity().getString(R.string.default_max_peep_limit).toFloat()
             default_peepLowerLimit = filterAlarmLimitsbyPatientType(
                 prefManager?.readCurrentUid(),
                 requireContext()
-            )["peepLowerLimit"]?.toFloat()//requireActivity().getString(R.string.default_min_peep_limit).toFloat()
+            )["peepLowerLimit"]?.toFloat() // requireActivity().getString(R.string.default_min_peep_limit).toFloat()
             default_respiratoryUpperLimit = filterAlarmLimitsbyPatientType(
                 prefManager?.readCurrentUid(),
                 requireContext()
-            )["respiratoryUpperLimit"]?.toFloat()//requireActivity().getString(R.string.default_max_rr_limit).toFloat()
+            )["respiratoryUpperLimit"]?.toFloat() // requireActivity().getString(R.string.default_max_rr_limit).toFloat()
             default_respiratoryLowerLimit = filterAlarmLimitsbyPatientType(
                 prefManager?.readCurrentUid(),
                 requireContext()
-            )["respiratoryLowerLimit"]?.toFloat()//requireActivity().getString(R.string.default_min_rr_limit).toFloat()
+            )["respiratoryLowerLimit"]?.toFloat() // requireActivity().getString(R.string.default_min_rr_limit).toFloat()
             default_mveUpperLimit = filterAlarmLimitsbyPatientType(
                 prefManager?.readCurrentUid(),
                 requireContext()
-            )["mveUpperLimit"]?.toFloat()//requireActivity().getString(R.string.default_max_mve_limit).toFloat()
+            )["mveUpperLimit"]?.toFloat() // requireActivity().getString(R.string.default_max_mve_limit).toFloat()
             default_mveLowerLimit = filterAlarmLimitsbyPatientType(
                 prefManager?.readCurrentUid(),
                 requireContext()
-            )["mveLowerLimit"]?.toFloat()//requireActivity().getString(R.string.default_min_mve_limit).toFloat()
-
+            )["mveLowerLimit"]?.toFloat() // requireActivity().getString(R.string.default_min_mve_limit).toFloat()
 
             mEventViewModel =
                 ViewModelProvider(this@LimitOneFragment).get(EventViewModel::class.java)
             hideSystemUI()
             setupClickListener()
             createViewBindingMap()
-            Log.d("THELIFECYCLEOWNERSTART", "START method invoked")
         }
 
-        override fun onResume(owner: LifecycleOwner) {
-            super.onResume(owner)
-            Log.d("THELIFECYCLEOWNERRESUME", "RESUME method invoked")
-        }
+        // configuration changes like rotation, multi-window mode, etc.
+        // are handled in onPause and onStop
+        // so that the view can be recreated
+        // and the limits can be reset to default values
+        // this is to avoid any issues with the progress bar and the limits
+        // as the progress bar is not recreated on configuration changes
+        // this is a workaround for the issues
+        // as the progress bar is not recreated on configuration changes
+
 
         override fun onPause(owner: LifecycleOwner) {
             super.onPause(owner)
@@ -911,7 +914,6 @@ class LimitOneFragment(
             default_mveLowerLimit = null
 
             currentView = null
-
 
             presserUpperLimit = null
             presserLowerLimit = null

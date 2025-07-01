@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="popup_width">250dp</dimen>
+    <dimen name="popup_height">190dp</dimen>
+
+    <dimen name="seek_bar_thickness">4dp</dimen>
+    <dimen name="seek_bar_thumb_size">20dp</dimen>
+    <dimen name="graphic_tooltip_width">675dp</dimen>
+    <dimen name="knob_width">675dp</dimen>
+    <dimen name="knob_height">100dp</dimen>
+
+    <dimen name="parameter_unit_alpha">0.6</dimen>
+    <dimen name="parameter_title_alpha">0.6</dimen>
+    <dimen name="top_bar_height">92dp</dimen>
+</resources>

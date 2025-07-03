@@ -11,9 +11,7 @@ import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import com.agvahealthcare.ventilator_ext.MainActivity
 import com.agvahealthcare.ventilator_ext.R
-import com.agvahealthcare.ventilator_ext.logging.FileLogger
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.service.CommunicationService
 import com.agvahealthcare.ventilator_ext.system.SystemDialogFragment
@@ -23,7 +21,10 @@ import kotlinx.android.synthetic.main.content_button_layout.view.*
 import kotlinx.android.synthetic.main.fragment_advanced_calibration.*
 import kotlinx.android.synthetic.main.fragment_advanced_calibration.capgif
 import kotlinx.android.synthetic.main.fragment_advanced_calibration.ventigif
-
+import kotlinx.android.synthetic.main.fragment_test_calib.tvMainTitleTestCalib
+import kotlinx.android.synthetic.main.fragment_test_calib.tvtext1
+import kotlinx.android.synthetic.main.fragment_test_calib.tvtext2
+import kotlinx.android.synthetic.main.fragment_test_calib.tvtext3
 
 class AdvancedCalibrationFragment(private var communicationService: CommunicationService?) :
     Fragment(), View.OnClickListener {
@@ -33,9 +34,6 @@ class AdvancedCalibrationFragment(private var communicationService: Communicatio
     }
 
     var visibilityTimeout: CountDownTimer? = null
-    private var maxOfLeak = 0
-    private var minOfLeak = 0
-    private var step = 5
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,7 +55,7 @@ class AdvancedCalibrationFragment(private var communicationService: Communicatio
 
             0 -> if (topBarAdvancedCalib.isVisible) backBtnAdvancedCalib.callOnClick() else includeButtonTurbine.buttonView.callOnClick()
             1 -> if (topBarAdvancedCalib.isVisible) includeButtonSendCmdAdvancedCalib.buttonView.callOnClick() else includeButtonInspFlowSensor.buttonView.callOnClick()
-            2 -> includeButtonLeakTest.buttonView.callOnClick()
+            2 -> includeButtonO2Sensor.buttonView.callOnClick()
         }
     }
 
@@ -126,7 +124,7 @@ class AdvancedCalibrationFragment(private var communicationService: Communicatio
 
                 0 -> if (topBarAdvancedCalib.isVisible) backBtnAdvancedCalib else includeButtonTurbine
                 1 -> if (topBarAdvancedCalib.isVisible) includeButtonSendCmdAdvancedCalib else includeButtonInspFlowSensor
-                2 -> includeButtonLeakTest
+                2 -> includeButtonO2Sensor
 
                 else -> null
             }
@@ -155,13 +153,13 @@ class AdvancedCalibrationFragment(private var communicationService: Communicatio
             advancedCalibText.visibility = View.VISIBLE
             includeButtonTurbine.visibility = View.VISIBLE
             includeButtonInspFlowSensor.visibility = View.VISIBLE
-            includeButtonLeakTest.visibility = View.VISIBLE
+            includeButtonO2Sensor.visibility = View.VISIBLE
             ivTurbineSensorStatus.visibility = View.VISIBLE
             ivInspFlowSensorStatus.visibility = View.VISIBLE
-            ivLeakTestStatus.visibility = View.VISIBLE
+            ivO2SensorStatus.visibility = View.VISIBLE
             tvTurbineSensor.visibility = View.VISIBLE
             tvInspFlowSensor.visibility = View.VISIBLE
-            tvLeakTest.visibility = View.VISIBLE
+            tvO2Sensor.visibility = View.VISIBLE
         } else {
             // pre op check layout
             topBarAdvancedCalib.visibility = View.VISIBLE
@@ -177,13 +175,13 @@ class AdvancedCalibrationFragment(private var communicationService: Communicatio
             advancedCalibText.visibility = View.GONE
             includeButtonTurbine.visibility = View.GONE
             includeButtonInspFlowSensor.visibility = View.GONE
-            includeButtonLeakTest.visibility = View.GONE
+            includeButtonO2Sensor.visibility = View.GONE
             ivTurbineSensorStatus.visibility = View.GONE
             ivInspFlowSensorStatus.visibility = View.GONE
-            ivLeakTestStatus.visibility = View.GONE
+            ivO2SensorStatus.visibility = View.GONE
             tvTurbineSensor.visibility = View.GONE
             tvInspFlowSensor.visibility = View.GONE
-            tvLeakTest.visibility = View.GONE
+            tvO2Sensor.visibility = View.GONE
         }
     }
 
@@ -195,8 +193,7 @@ class AdvancedCalibrationFragment(private var communicationService: Communicatio
         setUpView()
         setUpOnClickListener()
 
-        maxOfLeak = getString(R.string.max_leak_factor).toInt()
-        minOfLeak = getString(R.string.min_leak_factor).toInt()
+
 
         hideGoneFunction(true)
     }
@@ -206,7 +203,7 @@ class AdvancedCalibrationFragment(private var communicationService: Communicatio
         includeButtonTurbine.buttonView.text = getString(R.string.hint_Turbine_Calibration)
         includeButtonInspFlowSensor.buttonView.text = getString(R.string.hint__Insp_Flow_Calibration)
         includeButtonSendCmdAdvancedCalib.buttonView.text = "START CALIBRATION"
-        includeButtonLeakTest.buttonView.text = getString(R.string.hint_Leak_Test_Text)
+        includeButtonO2Sensor.buttonView.text = getString(R.string.hint_O2_Calibration)
         includeButtonSendCmdAdvancedCalib.buttonView.textAlignment = View.TEXT_ALIGNMENT_INHERIT
         // includeButtonSendCmd.buttonView.isEnabled = false
         includeButtonSendCmdAdvancedCalib.buttonView.setBackgroundColor(R.drawable.background_black_border_white)
@@ -237,7 +234,7 @@ class AdvancedCalibrationFragment(private var communicationService: Communicatio
                 )
             }
 
-            includeButtonLeakTest.buttonView.setOnClickListener {
+            includeButtonO2Sensor.buttonView.setOnClickListener {
                 DialogBoxFactory.dismissDialogs()
                 DialogBoxFactory.showNeonateSensorDialog(
                     requireContext(),
@@ -245,11 +242,12 @@ class AdvancedCalibrationFragment(private var communicationService: Communicatio
                 )
             }
 
+
         } else {
             includeButtonTurbine.buttonView.setOnClickListener(this)
             includeButtonInspFlowSensor.buttonView.setOnClickListener(this)
             includeButtonSendCmdAdvancedCalib.buttonView.setOnClickListener(this)
-            includeButtonLeakTest.buttonView.setOnClickListener(this)
+            includeButtonO2Sensor.buttonView.setOnClickListener(this)
         }
 
         backBtnAdvancedCalib.setOnClickListener {
@@ -293,25 +291,24 @@ class AdvancedCalibrationFragment(private var communicationService: Communicatio
                 includeButtonSendCmdAdvancedCalib.buttonView.text = "Start calibration"
             }
 
-            includeButtonLeakTest.buttonView -> {
+            includeButtonO2Sensor.buttonView -> {
                 (parentFragment as SystemDialogFragment).highlightedIndex = -1
                 (parentFragment as SystemDialogFragment).sizeOfCurrentArray = 1
+                currentTag = "Oxygen"
                 hideGoneFunction(false)
-                currentTag = "Leak Test"
-                tvMainTitleAdvancedCalib.text = "System Leak Test"
-                tvtext1AdvancedCalib.text = "1. Insert calibration cap at inspiratory port"
-                tvtext2AdvancedCalib.text = "2. Make sure the ventilator is connected to mains supply"
-                tvtext3AdvancedCalib.text = ""
-                capgif.visibility = View.VISIBLE
-                ventigif.visibility = View.GONE
-                includeButtonSendCmdAdvancedCalib.buttonView.text = "Start leak test"
+                tvMainTitleAdvancedCalib.text = "Oxygen pre-calibration check"
+                tvtext1AdvancedCalib.text = "1. Make sure the ventilator is connected to mains supply"
+                tvtext2AdvancedCalib.text = "2. Connect calibration tubing"
+                tvtext3AdvancedCalib.text = "3. Ensure ventilator is connected to high pressure O2 line"
+                ventigif.visibility = View.VISIBLE
+                capgif.visibility = View.GONE
             }
 
             includeButtonSendCmdAdvancedCalib.buttonView -> {
                 when (currentTag) {
                     "Turbine" -> { sendCalibrationCommandToVentilator(Configs.TAG_SENSOR_TURBINE) }
 
-                    "Leak Test" -> { sendCalibrationCommandToVentilator(Configs.TAG_LEAK_TEST) }
+                    "Oxygen" -> { sendCalibrationCommandToVentilator(Configs.TAG_SENSOR_OXYGEN) }
 
                     "Insp Flow" -> { sendCalibrationCommandToVentilator(Configs.TAG_SENSOR_INSP_FLOW) }
                 }
@@ -343,14 +340,14 @@ class AdvancedCalibrationFragment(private var communicationService: Communicatio
                 ivInspFlowSensorStatus.setImageResource(R.drawable.ic_red_cross)
             }
 
-            // leak test sensor
-            if (readLeakTestCalibrationStatus()) {
-                tvLeakTest.text = readLeakTestCalibrationDate()
-                ivLeakTestStatus.setImageResource(R.drawable.ic_green_circle_tick)
+            if (readOxygenCalibrationStatus()) {
+                tvO2Sensor.text = readOxygenCalibrationDate()
+                ivO2SensorStatus.setImageResource(R.drawable.ic_green_circle_tick)
             } else {
-                tvLeakTest.text = getString(R.string.sensore_not_calibrated)
-                ivLeakTestStatus.setImageResource(R.drawable.ic_red_cross)
+                tvO2Sensor.text = getString(R.string.sensore_not_calibrated)
+                ivO2SensorStatus.setImageResource(R.drawable.ic_red_cross)
             }
+
         }
     }
 

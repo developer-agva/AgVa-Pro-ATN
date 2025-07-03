@@ -69,45 +69,7 @@
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    
-    
-    <!--    o2 sensor layout-->
-    <include
-        android:id="@+id/includeButtonO2Sensor"
-        layout="@layout/content_button_layout"
-        android:layout_width="@dimen/_75sdp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_15sdp"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="@id/testCalibText"
-        app:layout_constraintTop_toBottomOf="@id/testCalibText"/>
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/ivO2SensorStatus"
-        android:layout_width="@dimen/_10sdp"
-        android:layout_height="@dimen/_10sdp"
-        android:layout_gravity="center"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:src="@drawable/ic_red_cross"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/includeButtonO2Sensor"
-        app:layout_constraintStart_toEndOf="@id/includeButtonO2Sensor"
-        app:layout_constraintTop_toTopOf="@id/includeButtonO2Sensor" />
-
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvO2Sensor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_5sdp"
-        android:gravity="center"
-        android:textColor="@color/grey_dark"
-        android:theme="@style/subheading_text_style"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/includeButtonO2Sensor"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/ivO2SensorStatus"
-        app:layout_constraintTop_toTopOf="@id/includeButtonO2Sensor" />
 
     <!--    exhale valve layout-->
     <include
@@ -115,10 +77,10 @@
         layout="@layout/content_button_layout"
         android:layout_width="@dimen/_75sdp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_15sdp"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="@id/testCalibText"
-        app:layout_constraintTop_toBottomOf="@id/includeButtonO2Sensor" />
+        app:layout_constraintTop_toBottomOf="@id/testCalibText" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivExhaleValveStatus"
@@ -147,32 +109,31 @@
         app:layout_constraintStart_toEndOf="@id/ivExhaleValveStatus"
         app:layout_constraintTop_toTopOf="@id/includeButtonExhaleValve" />
 
-
-    <!--    exp flow sensor layout-->
+    <!--    leak test layout-->
     <include
-        android:id="@+id/includeButtonExpFlowSensor"
+        android:id="@+id/includeButtonLeakTest"
         layout="@layout/content_button_layout"
         android:layout_width="@dimen/_75sdp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_5sdp"
         android:visibility="gone"
-        app:layout_constraintStart_toStartOf="@id/includeButtonExhaleValve"
+        app:layout_constraintStart_toStartOf="@id/testCalibText"
         app:layout_constraintTop_toBottomOf="@id/includeButtonExhaleValve" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/ivExpFlowSensorStatus"
+        android:id="@+id/ivLeakTestStatus"
         android:layout_width="@dimen/_10sdp"
         android:layout_height="@dimen/_10sdp"
         android:layout_gravity="center"
         android:layout_marginStart="@dimen/_10sdp"
         android:src="@drawable/ic_red_cross"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/includeButtonExpFlowSensor"
-        app:layout_constraintStart_toEndOf="@id/includeButtonExpFlowSensor"
-        app:layout_constraintTop_toTopOf="@id/includeButtonExpFlowSensor" />
+        app:layout_constraintBottom_toBottomOf="@id/includeButtonLeakTest"
+        app:layout_constraintStart_toEndOf="@id/includeButtonLeakTest"
+        app:layout_constraintTop_toTopOf="@id/includeButtonLeakTest" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvExpFlowSensor"
+        android:id="@+id/tvLeakTest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_5sdp"
@@ -180,15 +141,53 @@
         android:textColor="@color/grey_dark"
         android:theme="@style/subheading_text_style"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/includeButtonExpFlowSensor"
+        app:layout_constraintBottom_toBottomOf="@id/includeButtonLeakTest"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/ivExpFlowSensorStatus"
-        app:layout_constraintTop_toTopOf="@id/includeButtonExpFlowSensor" />
+        app:layout_constraintStart_toEndOf="@id/ivLeakTestStatus"
+        app:layout_constraintTop_toTopOf="@id/includeButtonLeakTest" />
+
+
+    <!--    &lt;!&ndash;    exp flow sensor layout&ndash;&gt;-->
+    <!--    <include-->
+    <!--        android:id="@+id/includeButtonExpFlowSensor"-->
+    <!--        layout="@layout/content_button_layout"-->
+    <!--        android:layout_width="@dimen/_75sdp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginTop="@dimen/_5sdp"-->
+    <!--        android:visibility="gone"-->
+    <!--        app:layout_constraintStart_toStartOf="@id/includeButtonExhaleValve"-->
+    <!--        app:layout_constraintTop_toBottomOf="@id/includeButtonExhaleValve" />-->
+
+    <!--    <androidx.appcompat.widget.AppCompatImageView-->
+    <!--        android:id="@+id/ivExpFlowSensorStatus"-->
+    <!--        android:layout_width="@dimen/_10sdp"-->
+    <!--        android:layout_height="@dimen/_10sdp"-->
+    <!--        android:layout_gravity="center"-->
+    <!--        android:layout_marginStart="@dimen/_10sdp"-->
+    <!--        android:src="@drawable/ic_red_cross"-->
+    <!--        android:visibility="gone"-->
+    <!--        app:layout_constraintBottom_toBottomOf="@id/includeButtonExpFlowSensor"-->
+    <!--        app:layout_constraintStart_toEndOf="@id/includeButtonExpFlowSensor"-->
+    <!--        app:layout_constraintTop_toTopOf="@id/includeButtonExpFlowSensor" />-->
+
+    <!--    <androidx.appcompat.widget.AppCompatTextView-->
+    <!--        android:id="@+id/tvExpFlowSensor"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginStart="@dimen/_5sdp"-->
+    <!--        android:gravity="center"-->
+    <!--        android:textColor="@color/grey_dark"-->
+    <!--        android:theme="@style/subheading_text_style"-->
+    <!--        android:visibility="gone"-->
+    <!--        app:layout_constraintBottom_toBottomOf="@id/includeButtonExpFlowSensor"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toEndOf="@id/ivExpFlowSensorStatus"-->
+    <!--        app:layout_constraintTop_toTopOf="@id/includeButtonExpFlowSensor" />-->
 
     <!--    gif layout-->
 
     <pl.droidsonroids.gif.GifImageView
-        android:id="@+id/ventigif"
+        android:id="@+id/ventigifTest"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:background="#fff"
@@ -199,7 +198,7 @@
         android:visibility="gone" />
 
     <pl.droidsonroids.gif.GifImageView
-        android:id="@+id/capgif"
+        android:id="@+id/capgifTest"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:background="#fff"
@@ -210,7 +209,7 @@
         android:visibility="gone" />
 
     <pl.droidsonroids.gif.GifImageView
-        android:id="@+id/calibratorimg"
+        android:id="@+id/calibratorimgTest"
         android:layout_width="240dp"
         android:layout_height="172dp"
         android:background="#fff"

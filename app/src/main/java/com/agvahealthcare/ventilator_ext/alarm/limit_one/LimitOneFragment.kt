@@ -813,6 +813,7 @@ class LimitOneFragment(
         Log.i("ACTIVITY_LIFECYCLE", "ON_STOP $javaClass")
     }
 
+
     inner class LimitOneObserver : DefaultLifecycleObserver {
         override fun onCreate(owner: LifecycleOwner) {
             super.onCreate(owner)
@@ -885,7 +886,6 @@ class LimitOneFragment(
         // as the progress bar is not recreated on configuration changes
         // this is a workaround for the issues
         // as the progress bar is not recreated on configuration changes
-
 
         override fun onPause(owner: LifecycleOwner) {
             super.onPause(owner)

@@ -1,6 +1,5 @@
 package com.agvahealthcare.ventilator_ext.system
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -10,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,6 +27,7 @@ import com.agvahealthcare.ventilator_ext.system.info.InfoFragment
 import com.agvahealthcare.ventilator_ext.system.network.NetworkFragment
 import com.agvahealthcare.ventilator_ext.system.o2Regulation.O2RegulationFragment
 import com.agvahealthcare.ventilator_ext.system.ota.OTAFragment
+import com.agvahealthcare.ventilator_ext.system.selftest.SelfTestFragment
 import com.agvahealthcare.ventilator_ext.system.services.ServiceFragment
 import com.agvahealthcare.ventilator_ext.system.settings.SettingFragment
 import com.agvahealthcare.ventilator_ext.system.test_calib.TestCalibrationFragment
@@ -37,9 +36,6 @@ import com.agvahealthcare.ventilator_ext.system.wifi.WiFiFragment
 import com.agvahealthcare.ventilator_ext.utility.DialogBoxFactory
 import com.agvahealthcare.ventilator_ext.utility.replaceFragment
 import com.agvahealthcare.ventilator_ext.utility.setHeightWidthPercent
-import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_AND
-import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_MINUS
-import com.agvahealthcare.ventilator_ext.utility.utils.Configs.PREFIX_PLUS
 import kotlinx.android.synthetic.main.fragment_system_dialog.imageViewCrossSystem
 import kotlinx.android.synthetic.main.fragment_system_dialog.recyclerViewSystem
 
@@ -59,7 +55,8 @@ enum class SystemFragmentButtonTypes {
     Diagnos,
     O2_Reg,
     Network_Info,
-    Config
+    Config,
+    Self_Test
 }
 
 data class SystemButtonModelClass(
@@ -121,6 +118,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
     private var tubeDiaFragment: TubeDiaFragment? = null
     private var debugFragment: DebugFragment? = null
     private var settingFragment: SettingFragment? = null
+    private var selfTestFragment: SelfTestFragment? = null
     private var diagnosticCheckFragment: DiagnosticCheckFragment? = null
     private var o2RegulationFragment: O2RegulationFragment? = null
     private var serviceFragment: ServiceFragment? = null
@@ -195,6 +193,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
         otaFragment = null
         wifiFragment = null
         hL7CommunicationFragment = null
+        selfTestFragment = null
     }
 
     private fun showhl7CommunicationFragment() {
@@ -204,6 +203,17 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
             hL7CommunicationFragment = HL7CommunicationFragment()
 
         hL7CommunicationFragment?.apply {
+            replaceFragment(this, TAG, R.id.system_nav_container)
+        }
+    }
+
+    private fun showSelfTestFragment(communicationService: CommunicationService?) {
+        makeAllFragmentsNull()
+        sizeOfCurrentArray = 0
+        if (selfTestFragment == null)
+            selfTestFragment = SelfTestFragment(communicationService)
+
+        selfTestFragment?.apply {
             replaceFragment(this, TAG, R.id.system_nav_container)
         }
     }
@@ -240,6 +250,10 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
 
             SystemFragmentButtonTypes.Config ->{
                 showConfigFragment()
+            }
+
+            SystemFragmentButtonTypes.Self_Test -> {
+                showSelfTestFragment(communicationService)
             }
 
             SystemFragmentButtonTypes.Startup -> {
@@ -412,7 +426,8 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
             systemAdapter?.isEnable = true
             systemAdapter?.selectedIndexType = SystemFragmentButtonTypes.Diagnos
             systemAdapter?.updateList(dataListSystemItems)
-        } else {
+        }
+        else {
             setupDebugFragment()
 
             if (!dataListSystemItems.contains(
@@ -1009,6 +1024,18 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                     SystemFragmentButtonTypes.Diagnos
                 )
             )
+//            if (!dataListSystemItems.contains(
+//                    SystemButtonModelClass(
+//                        getString(R.string.hint_self_test),
+//                        SystemFragmentButtonTypes.Self_Test
+//                    )
+//                )
+//            ) dataListSystemItems.add(
+//                SystemButtonModelClass(
+//                    getString(R.string.hint_self_test),
+//                    SystemFragmentButtonTypes.Self_Test
+//                )
+//            )
             if (!dataListSystemItems.contains(
                     SystemButtonModelClass(
                         getString(R.string.hint_reg_o2),
@@ -1073,7 +1100,6 @@ class SystemDesignAdapter(
         dataList = newList
         notifyDataSetChanged()
     }
-
 
     override fun onBindViewHolder(holder: SystemDesignViewHolder, position: Int) {
         val data = dataList[position]

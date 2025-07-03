@@ -140,6 +140,7 @@
     <string name="hint_update">Device Update</string>
     <string name="hint_ota">OTA</string>
     <string name="hint_diagnos">Diagnostic Check</string>
+    <string name="hint_self_test">Self Test</string>
     <string name="hint_reg_o2">O2 Regulation</string>
     <string name="hint_advanced_calib">Advance Calibration</string>
     <string name="hint_service">Service</string>
@@ -180,7 +181,7 @@
     <string name="maxFio2HR">High PR Max Fio2 reached</string>
 
     <string name="hint_Turbine_Calibration">Calibrate Turbine</string>
-    <string name="hint_Leak_Test_Text">Leak test</string>
+    <string name="hint_Leak_Test_Text">Leak Test</string>
     <string name="hint__Insp_Flow_Calibration">Calibrate Insp Flow</string>
     <string name="hint_Exp_Flow_Calibration">Calibrate Exp Flow</string>
     <string name="hint_O2_Calibration">Calibrate Oxygen</string>

@@ -147,33 +147,32 @@
         app:layout_constraintStart_toEndOf="@id/ivInspFlowSensorStatus"
         app:layout_constraintTop_toTopOf="@id/includeButtonInspFlowSensor" />
 
-
-    <!--    leak test layout-->
+    <!--    o2 sensor layout-->
     <include
-        android:id="@+id/includeButtonLeakTest"
+        android:id="@+id/includeButtonO2Sensor"
         layout="@layout/content_button_layout"
         android:layout_width="@dimen/_75sdp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_5sdp"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="@id/advancedCalibText"
-        app:layout_constraintTop_toBottomOf="@id/includeButtonInspFlowSensor" />
+        app:layout_constraintTop_toBottomOf="@id/includeButtonInspFlowSensor"/>
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/ivLeakTestStatus"
+        android:id="@+id/ivO2SensorStatus"
         android:layout_width="@dimen/_10sdp"
         android:layout_height="@dimen/_10sdp"
         android:layout_gravity="center"
         android:layout_marginStart="@dimen/_10sdp"
         android:src="@drawable/ic_red_cross"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/includeButtonLeakTest"
-        app:layout_constraintStart_toEndOf="@id/includeButtonLeakTest"
-        app:layout_constraintTop_toTopOf="@id/includeButtonLeakTest" />
+        app:layout_constraintBottom_toBottomOf="@id/includeButtonO2Sensor"
+        app:layout_constraintStart_toEndOf="@id/includeButtonO2Sensor"
+        app:layout_constraintTop_toTopOf="@id/includeButtonO2Sensor" />
 
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvLeakTest"
+        android:id="@+id/tvO2Sensor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_5sdp"
@@ -181,10 +180,11 @@
         android:textColor="@color/grey_dark"
         android:theme="@style/subheading_text_style"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/includeButtonLeakTest"
+        app:layout_constraintBottom_toBottomOf="@id/includeButtonO2Sensor"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/ivLeakTestStatus"
-        app:layout_constraintTop_toTopOf="@id/includeButtonLeakTest" />
+        app:layout_constraintStart_toEndOf="@id/ivO2SensorStatus"
+        app:layout_constraintTop_toTopOf="@id/includeButtonO2Sensor" />
+
 
     <!--    gif layout-->
 

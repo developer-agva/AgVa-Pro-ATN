@@ -1396,9 +1396,9 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         Configs.SENSOR_CALIBRATION_FAILURE
                     )
                 )
+
                 // check if concerned view is visible , if yes then refresh to render it from preference
-                systemDialogFragment?.takeIf { it.isVisible }
-                    ?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
 
                 addEvents(
                     "Leak test failed due to flow greater than 4 LPM",
@@ -4011,8 +4011,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     }
 
     private fun neoSensorObserve() {
-        mMainActivityViewModel.isNeoNatalSensorConnected.observe(this)
-        {
+        mMainActivityViewModel.isNeoNatalSensorConnected.observe(this) {
+
             if (it == true || prefManager?.readNeoNateActiveStatus() == true) {
                 normalizeNeoBtn()
                 if (prefManager?.readCurrentUid() == PatientProfile.TYPE_NEONAT) {
@@ -4033,7 +4033,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         buttonControls.isClickable = true
         buttonAdult.isClickable = true
         buttonPediatric.isClickable = true
-//        buttonNeonatal.isEnabled = false
+//      buttonNeonatal.isEnabled = false
         batteryLayout.setOnClickListener(this)
         layouterrorsensor.setOnClickListener(this)
         layoutPanelPatientHeightMain.setOnClickListener(this)
@@ -4054,24 +4054,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         buttonNeonatal.setOnClickListener(this)
         buttonStartExistingVentilation.setOnClickListener(this)
         buttonStartNewVentilation.setOnClickListener(this)
-
-//        serviceLayout.setOnClickListener {
-//
-//            try {
-//                DialogBoxFactory.dismissDialogs()
-//            }catch (e:Exception){
-//                e.printStackTrace()
-//            }
-//
-//            prefManager?.apply {
-//                if (readDashBoardRunningTimeForService() > SERVICE_HOUR_LIMIT){
-//                    DialogBoxFactory.showBatteryFailureStatusDialog(this@MainActivity, "Please Contact Customer Support.")
-//                }
-//                else if (readDashBoardRunningTimeForService() in (SERVICE_HOUR_LIMIT * 0.90).toLong()..SERVICE_HOUR_LIMIT){
-//                    DialogBoxFactory.showBatteryFailureStatusDialog(this@MainActivity, "Please Contact Customer Support.")
-//                }
-//            }
-//        }
     }
 
     private fun setPaddingOnButtons() {
@@ -4117,7 +4099,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         }
         setPaddingOnButtons()
     }
-
 
     private fun normalizeProfiles() {
 
@@ -4173,7 +4154,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         setPaddingOnButtons()
     }
 
-
     private fun setDataMale() {
         includeMale.imageViewMale.setImageResource(R.drawable.ic_male_select)
         includeMale.buttonMale.setBackgroundResource(R.drawable.background_green_border)
@@ -4195,7 +4175,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         prefManager?.setGender(Gender.TYPE_FEMALE)
         gender = Gender.TYPE_FEMALE
     }
-
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
@@ -4240,7 +4219,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         startService(serviceIntent)
     }
 
-
     private fun doUnbindService() {
         if (isServiceBound) {
             try {
@@ -4255,9 +4233,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         }
     }
 
-    override fun onCalibration() {
-
-    }
+    override fun onCalibration() {}
 
     private fun sendConfigurationToVentilatorWithWatchDog() {
 
@@ -4266,7 +4242,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             settingsCountDownTimer.startRunning()
         }
     }
-
 
     // remove 38 & 39 mode functionality code as per embedded team concern
     fun sendControlModeToVentilator(mode: Int) {
@@ -4437,12 +4412,9 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
     override fun onClick(clickedView: View?) {
         AppUtils.hideKeyBoard(this@MainActivity, et_uhid)
-
         et_uhid.isCursorVisible = false
         et_uhid.setBackgroundColor(resources.getColor(R.color.uhid_grey, null))
-
         clickedView?.also { view ->
-
             when (view) {
 
                 batteryLayout -> {
@@ -4609,7 +4581,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     showKnobForBodyParams(view, param, encoder)
                 }
 
-
                 includeMale?.buttonMale -> {
                     setDataMale()
                 }
@@ -4682,7 +4653,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     systemDialogFragment?.isCancelable = false
                 }
 
-                //modified progressbar code  by masoom on 05 jan 2023
+                // modified progressbar code  by masoom on 05 jan 2023
                 buttonNeonatal -> {
                     Log.i(
                         "CHECK_PATIENT",
@@ -4858,7 +4829,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
                 }
 
-
                 buttonStartExistingVentilation -> {
                     isExistingVentilation = true
 
@@ -4921,7 +4891,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 }
 
                 buttonControls -> {
-
                     DialogBoxFactory.dismissDialogs()
                     DialogBoxFactory.showNeonateSensorDialog(
                         ctx,
@@ -4949,7 +4918,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     modeDialogFragment?.isCancelable = false
 
                 }
-
 
                 buttonStartNewVentilation -> {
 
@@ -5022,22 +4990,13 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
 
                 }
-
             }
-
-
         }
     }
 
-
     private fun sendShutDownCommandToVentilator() {
-        // ToastFactory.custom(ctx, communicationService.toString())
         communicationService?.send(getString(R.string.cmd_vent_shutdown))
     }
-
-    /*
-   * Customized countdown timer for Control settings
-   */
 
     open inner class SettingsCountDownTimer(millisInFuture: Long, countDownInterval: Long) :
         CountDownTimer(millisInFuture, countDownInterval) {
@@ -5138,7 +5097,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
                     advancedControlParameterList?.let {
                         selectAdvancedPosition?.apply {
-                            var lbl = it[this].ventKey
+                            val lbl = it[this].ventKey
                             val unit = it[this].units
 
                             updateParameter(lbl, newValue.toString())
@@ -5162,7 +5121,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                             val unit = it[this].units
 
                             updateParameter(lbl, newValue.toString())
-
 
                             addEvents(
                                 "Set $lbl from ${
@@ -5238,9 +5196,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                                     )
                                 }  $unit to $newValue $unit", prefManager?.readUHID().toString()
                             )
-
                             selectEtCuffPosition = null
-
                         }
                     }
                     Log.i("adawd", "2")
@@ -5251,8 +5207,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     }
                     progressDialog = null
                 }
-
-
             },
             onLimitChangeListener = object : OnLimitChangeListener {
                 override fun onLimitChange(previousValue: Float, newValue: Float) {
@@ -5261,7 +5215,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                             updateParameter(ventKey, newValue.toString())
                             updateGraphictoolTip(this)
                         }
-
                     }
 
                     selectAdvancedPosition?.let { pos ->
@@ -5269,11 +5222,13 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                             updateParameter(ventKey, newValue.toString())
                         }
                     }
+
                     selectedBackupPosition?.let { pos ->
                         backupControlParameterList?.getOrNull(pos)?.apply {
                             updateParameter(ventKey, newValue.toString())
                         }
                     }
+
                     // change here 8 feb
                     selectSmartFio2Position?.let { pos ->
                         smartFio2ControlParameterList?.getOrNull(pos)?.apply {
@@ -5286,12 +5241,12 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                             updateParameter(ventKey, newValue.toString())
                         }
                     }
+
                     selectEtCuffPosition?.let { pos ->
                         etCuffControlParameterList?.getOrNull(pos)?.apply {
                             updateParameter(ventKey, newValue.toString())
                         }
                     }
-
                 }
             },
             onCloseListener = object : OnDismissDialogListener {
@@ -5333,14 +5288,11 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
         view: View,
         param: KnobParameterModel?,
-        encoder: EncoderValue?,
+        encoder: EncoderValue?) {
 
-
-        ) {
         if (param != null && encoder != null) {
 
             hideKnob()
-
             progressDialog = KnobDialog.newInstance(
                 onKnobPressListener = onBodyParamsKnobPressListener,
                 onLimitChangeListener = onBodyParamsLimitChangeListener(view),
@@ -5360,8 +5312,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     private fun updateParameter(key: String, value: String) {
 
         val isDecimalSupported = Configs.supportPrecision(key, value)
-
-        Log.i("valueNuasdasd", "1yg2")
 
         basicControlParameterList
             ?.filter { it.ventKey == key }
@@ -5434,7 +5384,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             updateParameter(LBL_HR_LIMIT, readHrLimit().toInt().toString())
             updateParameter(LBL_TARGET_VOLUME, readTargetVolume().toInt().toString())
 
-            //Frequency
+            // Frequency
             updateParameter(LBL_FREQUENCY, readFrequency().toString())
             updateParameter(LBL_FLOW, readFlow().toInt().toString())
             updateParameter(LBL_FIO2_DEV, readFiO2Dev().toInt().toString())
@@ -5444,10 +5394,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             updateParameter(LBL_TAPNEA, readTApnea().toString())
             updateParameter(LBL_APNEA_TRIG_FLOW, readTrigFlowApnea().toInt().toString())
             updateParameter(LBL_ET_PRESSURE, readEtPressure().toInt().toString())
-//            updateParameter(LBL_TEXP,readTexp().toInt().toString())
         }
 
-        //Inspiratory Termination tile Change
         prefManager?.apply {
             if (VentilatorApp.selectedOptions == SELECTED_OPTIONS.NON_INVASIVE_NAME) {
                 if (requestedModeCode == MODE_NIV_CPAP || requestedModeCode == MODE_NIV_BPAP) {
@@ -5472,7 +5420,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 }
             } else {
                 if (requestedModeCode == MODE_NIV_CPAP || requestedModeCode == MODE_NIV_BPAP) {
-                    // note : we only need to handle first tym value because every time it receives value from preferences
+                    // note : We only need to handle first tym value because every time it receives value from preferences
                     if (isKnobPressedForControlTile) updateParameter(
                         LBL_TEXP,
                         readTexp().toInt().toString()
@@ -5493,52 +5441,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 }
             }
         }
-
-
-//        prefManager?.apply {
-//            if (VentilatorApp.selectedOptions == SELECTED_OPTIONS.NON_INVASIVE_NAME) {
-//                // note : we only need to handle first tym value because every time it receives value from preferences
-//                if(requestedModeCode == MODE_NIV_BPAP || requestedModeCode == MODE_NIV_CPAP){
-//                    if (isKnobPressedForControlTile) updateParameter(
-//                        LBL_TEXP,
-//                        readTexp().toInt().toString()
-//                    )
-//                    else updateParameter(
-//                        LBL_TEXP,
-//                        90.0f.toInt().toString()
-//                    )
-//                }else{
-//                    if (isKnobPressedForControlTile) updateParameter(
-//                        LBL_TEXP,
-//                        readTexp().toInt().toString()
-//                    )
-//                    else updateParameter(
-//                        LBL_TEXP,
-//                        50.0f.toInt().toString()
-//                    )
-//                }
-//            } else {
-//                if(requestedModeCode == MODE_NIV_BPAP || requestedModeCode == MODE_NIV_CPAP){
-//                    if (isKnobPressedForControlTile) updateParameter(
-//                        LBL_TEXP,
-//                        readTexp().toInt().toString()
-//                    )
-//                    else updateParameter(
-//                        LBL_TEXP,
-//                        90.0f.toInt().toString()
-//                    )
-//                }else{
-//                    if (isKnobPressedForControlTile) updateParameter(
-//                        LBL_TEXP,
-//                        readTexp().toInt().toString()
-//                    )
-//                    else updateParameter(
-//                        LBL_TEXP,
-//                        50.0f.toInt().toString()
-//                    )
-//                }
-//            }
-//        }
     }
 
     private fun highlightButton(btn: AppCompatButton) {
@@ -5551,7 +5453,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     }
 
     override fun onAdjustLoudness(volumeLevel: Float) {
-        Log.i("LOUDCHECK", "Adjusted loudness to $volumeLevel")
         mediaPlayer?.apply {
             setVolume(
                 volumeLevel / VOLUME_MAX_VALUE,
@@ -5585,7 +5486,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 start()
             }
         }
-
         object : CountDownTimer(5000, 1000) {
             override fun onTick(millisUntilFinished: Long) {}
 
@@ -5594,15 +5494,11 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 mediaPlayer = null;
             }
         }.start()
-
     }
 
     private fun updateModeAndSendParametersToVentilator(modeCode: Int) {
 
-        //Timer starting for receiving ACK after settings send...
-//        startAckTimer()
         if (modeCode == MODE_AUTO_VENTILATION) {
-            Log.i("CHECK_LOG_HERE", "HERE2")
             prefManager?.apply {
                 clearProfilePreferences(readCurrentUid())
                 setVentilationMode(modeCode)
@@ -5611,16 +5507,14 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     FileLogger.writeModeFile(this@MainActivity, modeCode.toString())
                 }
             }
-            Configs.getAllControlParameterLists(this@MainActivity, modeCode)
+            getAllControlParameterLists(this@MainActivity, modeCode)
                 ?.flatten()
                 ?.let {
-                    prefManager?.readApneaSettingsStatus()
-                        ?.let { it1 ->
+                    prefManager?.readApneaSettingsStatus()?.let { it1 ->
                             sendParametersToVentilator(it, it1)
                         }
                 }
         } else {
-            Log.i("CHECK_LOG_HERE", "HERE3")
             prefManager?.apply {
                 setVentilationMode(modeCode)
                 setLastVentMode(modeCode)
@@ -5628,13 +5522,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     FileLogger.writeModeFile(this@MainActivity, modeCode.toString())
                 }
             }
-            Log.i(
-                "check_vent_mode",
-                "updateModeAndSendParametersToVentilator else block  ${modeCode.toString()}"
-            )
 
             standbyControlFragment?.apply {
-                Log.i("MODE_CHECK", "Calling getAllCOntrolParameters")
                 getAllControlParameters().let {
                     prefManager?.readApneaSettingsStatus()
                         ?.let { it1 ->
@@ -5645,41 +5534,25 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         }
     }
 
-
     private fun sendParametersToVentilator(
         parameters: List<ControlParameterModel>,
         apneaStatus: Boolean
     ) {
-
         parameters.forEach {
             try {
-                Log.i(
-                    "ONSTARTVENTILATION",
-                    "${it.ventKey} updated with value = ${it.reading}"
-                )
-                prefManager?.updateParameterViaName(
-                    it.ventKey,
-                    it.reading.toFloat()
-                )
+                prefManager?.updateParameterViaName(it.ventKey, it.reading.toFloat())
             } catch (e: Exception) {
                 e.printStackTrace()
-                Log.i(
-                    "ONSTARTVENTILATION",
-                    "Unable to parse some parameters to Float"
-                )
             }
         }
         prefManager?.setApneaSettingsStatus(apneaStatus)
         sendConfigurationToVentilatorWithWatchDog()
     }
 
-
     private fun highlightParameterTile(params: List<ControlParameterModel>, at: Int) {
         if (at < params.size) {
-            Log.i("adawd", "6")
             normaliseParameterTiles()
-            params.get(at).isIsselected = true
-
+            params[at].isIsselected = true
         }
     }
 
@@ -5699,7 +5572,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     model.upperLimit.toFloat(),
                     model.step.toFloat()
                 )
-                //  showGraphicTooltip()
                 showKnob(knobModel, encoderValue)
             }
             standbyControlFragment?.notifyItemParameterAdapter(position)
@@ -5731,22 +5603,14 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     model.upperLimit.toFloat(),
                     model.step.toFloat()
                 )
-                // showGraphicTooltip()
                 showKnob(knobModel, encoderValue)
-
             }
             standbyControlFragment?.notifyItemParameterAdapter(position)
         }
 
         override fun onStateChange(isActive: Boolean, type: ControlSettingType, position: Int) {
-
-
-            if (type == ControlSettingType.BACKUP) prefManager?.setApneaSettingsStatusTemp(
-                isActive
-            )
-
+            if (type == ControlSettingType.BACKUP) prefManager?.setApneaSettingsStatusTemp(isActive)
         }
-
     }
 
     // change here 8 feb
@@ -5766,9 +5630,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     model.upperLimit.toFloat(),
                     model.step.toFloat()
                 )
-                //  showGraphicTooltip()
+                // BACK MIN QR STOP FLY HEX #DGJVWZ
                 showKnob(knobModel, encoderValue)
-
             }
             standbyControlFragment?.notifyItemParameterAdapter(position)
         }
@@ -5797,9 +5660,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     model.upperLimit.toFloat(),
                     model.step.toFloat()
                 )
-                //  showGraphicTooltip()
                 showKnob(knobModel, encoderValue)
-
             }
             standbyControlFragment?.notifyItemParameterAdapter(position)
         }
@@ -5808,6 +5669,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             if (type == ControlSettingType.VTas) prefManager?.setVGVStatusTemp(isActive)
         }
     }
+
 
     // change here 8 feb
     private val onEtCuffControlParameterClickListener = object : ControlParameterClickListener {
@@ -5826,10 +5688,9 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     model.upperLimit.toFloat(),
                     model.step.toFloat()
                 )
-                //  showGraphicTooltip()
                 showKnob(knobModel, encoderValue)
-
             }
+
             standbyControlFragment?.notifyItemParameterAdapter(position)
         }
 
@@ -5876,25 +5737,14 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 model.upperLimit.toFloat(),
                 model.step.toFloat()
             )
-            //   showGraphicTooltip()
             showKnob(knobModel, encoderValue)
-
-            //showKnobViews(knobModel,encoderValue)
-            //standbyControlFragment?.notifyParameterAdapter()
         }
-        //standbyControlFragment?.notifyParameterAdapter()
         standbyControlFragment?.notifyItemParameterAdapter(position)
-        //  ToastFactory.custom(this@MainActivity,"The clicked position is $position")
     }
 
     override fun onStateChange(isActive: Boolean, type: ControlSettingType, position: Int) {
-
-
         if (type == ControlSettingType.BACKUP) prefManager?.setApneaSettingsStatus(isActive)
-
-
     }
-
 
     override fun onUpdateBaseUrlListener(baseUrl: String) {
 //        CoroutineScope(Dispatchers.IO).launch {

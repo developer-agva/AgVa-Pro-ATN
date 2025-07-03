@@ -75,6 +75,8 @@ import java.util.Set;
 public class PreferenceManager {
 
     // venti configurations
+    private static final String PREF_SELF_TEST_DATA = "PREF_SELF_TEST_DATA";
+
     private static final String PREF_PRESSURE_SENSOR_ONE = "PREF_PRESSURE_SENSOR_ONE";
     private static final String PREF_PRESSURE_SENSOR_TWO = "PREF_PRESSURE_SENSOR_TWO";
     private static final String PREF_PRESSURE_SENSOR_THREE = "PREF_PRESSURE_SENSOR_THREE";
@@ -407,16 +409,26 @@ public class PreferenceManager {
         this.gson = new Gson();
     }
 
-    public void savePressurePaddingStatus(Boolean value) {
-        updateData(PREF_PRESSURE_PADDING_STATUS , value);
+    public void saveSelfTestData(String value) {
+        updateData(PREF_SELF_TEST_DATA, value);
     }
+
+    public String readSelfTestData() {
+        return sp.getString(PREF_SELF_TEST_DATA, "");
+    }
+
+    public void savePressurePaddingStatus(Boolean value) {
+        updateData(PREF_PRESSURE_PADDING_STATUS, value);
+    }
+
     public Boolean readPressurePaddingStatus() {
-        return sp.getBoolean(PREF_PRESSURE_PADDING_STATUS,false);
+        return sp.getBoolean(PREF_PRESSURE_PADDING_STATUS, false);
     }
 
     public void savePressureGraphTypeStatus(Boolean value) {
         updateData(PREF_PRESSURE_GRAPH_FILLED_STATUS, value);
     }
+
     public Boolean readPressureGraphTypeStatus() {
         return sp.getBoolean(PREF_PRESSURE_GRAPH_FILLED_STATUS, false);
     }
@@ -424,6 +436,7 @@ public class PreferenceManager {
     public void saveVolumeGraphTypeStatus(Boolean value) {
         updateData(PREF_VOLUME_GRAPH_FILLED_STATUS, value);
     }
+
     public Boolean readVolumeGraphTypeStatus() {
         return sp.getBoolean(PREF_VOLUME_GRAPH_FILLED_STATUS, false);
     }

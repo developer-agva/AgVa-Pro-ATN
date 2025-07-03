@@ -29,13 +29,9 @@ import androidx.lifecycle.*
 import androidx.lifecycle.Observer
 import antonkozyriatskyi.circularprogressindicator.CircularProgressIndicator
 import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.ack756Visibility
-import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.defaultOfExhaleValveRanges
-import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.defaultOfOxygenValveRanges
-import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.defaultOfTurbineRanges
 import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.globalCount
 import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.hidData
 import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.isLiveDataRequest
-import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.isLiveGraphDataRequest
 import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.latitude
 import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.logitude
 import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.startupCheckDialogFrag
@@ -44,14 +40,11 @@ import com.agvahealthcare.ventilator_ext.alarm.limit_one.EncoderValue
 import com.agvahealthcare.ventilator_ext.alarm.limit_one.KnobParameterModel
 import com.agvahealthcare.ventilator_ext.api.ServerLogger
 import com.agvahealthcare.ventilator_ext.api.model.calibrationDataModel.CalibrationRequestModel
-import com.agvahealthcare.ventilator_ext.api.model.serviceDataModel.PaymentStatusRequestModel
 import com.agvahealthcare.ventilator_ext.api.model.statusDataModel.StatusRequestModel
 import com.agvahealthcare.ventilator_ext.callback.*
 import com.agvahealthcare.ventilator_ext.connection.parser.RaspiParser
 import com.agvahealthcare.ventilator_ext.connection.support_threads.HandshakingTask
 import com.agvahealthcare.ventilator_ext.connection.support_threads.PingingTask
-import com.agvahealthcare.ventilator_ext.control.AutoVentilationFragment
-import com.agvahealthcare.ventilator_ext.control.basic.ControlParameterAdapter
 import com.agvahealthcare.ventilator_ext.control.basic.ControlParameterClickListener
 import com.agvahealthcare.ventilator_ext.dashboard.BaseLockActivity
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardActivity
@@ -77,8 +70,6 @@ import com.agvahealthcare.ventilator_ext.system.configuration.VentilatorType
 import com.agvahealthcare.ventilator_ext.system.debug.DebugViewModel
 import com.agvahealthcare.ventilator_ext.system.diagnosticCheck.DiagnosticCheckViewModel
 import com.agvahealthcare.ventilator_ext.system.o2Regulation.O2RegulationCheckViewModel
-import com.agvahealthcare.ventilator_ext.system.test_calib.TestCalibrationFragment
-import com.agvahealthcare.ventilator_ext.test.BottomSheetFragment
 import com.agvahealthcare.ventilator_ext.utility.*
 import com.agvahealthcare.ventilator_ext.utility.utils.*
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.*
@@ -137,12 +128,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     var lastUhidEvents = ""
     var lastUhid = ""
     var powerConnected = false
-    private var shutDownProgress: ProgressDialog? = null
-    private var ackVisibilities: BooleanArray = BooleanArray(6000)
 
     lateinit var downloadController: DownloadController
-
-    private val TOOLTIP_TAG = "Main"
 
     private var heightSize: Int? = null
     private var widthSize: Int? = null
@@ -191,19 +178,16 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     private var gender: Gender? = null
     private var height: Float? = null
 
-    private var sizeOfEvents = 1
 
     private var age: Float? = null
     private val locationPermissionCode = 2
     private var weight: Float? = null
 
     private var graphicTooltipFragment: GraphicTooltipFragment? = null
-    private var testCalibrationFragment: TestCalibrationFragment? = null
 
     internal var requestedModeCode: Int = 0
     private var tempModeType: Int = 0
 
-    private var controlParameterAdapter: ControlParameterAdapter? = null
 
     private lateinit var mEventViewModel: EventViewModel
     private lateinit var mDebugViewModel: DebugViewModel
@@ -216,15 +200,11 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     private var calibrationProgress: ProgressDialog? = null
 
     private var standbyControlFragment: StandbyControlDialogFragment? = null
-    private var autoVentilationFragment: AutoVentilationFragment? = null
 
     private var systemDialogFragment: SystemDialogFragment? = null
 
     private var mediaPlayer: CustomMediaPlayer? = null
     private var isExistingVentilation: Boolean? = null
-
-    private lateinit var ackTimer: CountDownTimer
-
 
     //variable for the mainactivity viewmodel for scoping the value in the child fragments as well
     private lateinit var mMainActivityViewModel: MainActivityViewModel
@@ -249,7 +229,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         }
     }
 
-    private var currentPatientType: String = "";
+    private var currentPatientType: String = ""
 
     // Service connection for bound services
     private val mServiceConnection: ServiceConnection = object : ServiceConnection {
@@ -503,19 +483,19 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     includeProgressWeight.param_progress_bar -> {
                         if (prefManager?.readCurrentUid() == PatientProfile.TYPE_NEONAT) {
                             view.let {
-                                (it.param_progress_bar as? CircularProgressIndicator)?.apply {
+                                it.param_progress_bar?.apply {
                                     this.setCurrentProgress(newValue.toDouble())
                                 }
-                                (it.textView as? TextView)?.apply {
+                                it.textView?.apply {
                                     this.text = String.format("%.1f", newValue)
                                 }
                             }
                         } else {
                             view.let {
-                                (it.param_progress_bar as? CircularProgressIndicator)?.apply {
+                                it.param_progress_bar?.apply {
                                     this.setCurrentProgress(newValue.toInt().toDouble())
                                 }
-                                (it.textView as? TextView)?.apply {
+                                it.textView?.apply {
                                     this.text = newValue.toInt().toString()
                                 }
                             }
@@ -525,10 +505,10 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
                     includeProgressHeight.param_progress_bar -> {
                         view.let {
-                            (it.param_progress_bar as? CircularProgressIndicator)?.apply {
+                            it.param_progress_bar?.apply {
                                 this.setCurrentProgress(newValue.toInt().toDouble())
                             }
-                            (it.textView as? TextView)?.apply {
+                            it.textView?.apply {
                                 this.text = newValue.toInt().toString()
                             }
                         }
@@ -536,10 +516,10 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
                     includeProgressAge.param_progress_bar -> {
                         view.let {
-                            (it.param_progress_bar as? CircularProgressIndicator)?.apply {
+                            it.param_progress_bar?.apply {
                                 this.setCurrentProgress(newValue.toInt().toDouble())
                             }
-                            (it.textView as? TextView)?.apply {
+                            it.textView?.apply {
                                 this.text = newValue.toInt().toString()
                             }
                         }
@@ -897,8 +877,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                              updateBatteryLevel(batteryLevel, batteryHealth, batteryRemainingTime)
                          }*/
 
-                        var tempBatteryLevel = mMainActivityViewModel.ventBatteryLevel.value
-                        var tempBatteryHealth = mMainActivityViewModel.ventBatteryHealth.value
+                        val tempBatteryLevel = mMainActivityViewModel.ventBatteryLevel.value
+                        val tempBatteryHealth = mMainActivityViewModel.ventBatteryHealth.value
                         var tempBatteryRemainingTime =
                             mMainActivityViewModel.ventBatteryRemainingTime.value
                         if (tempBatteryHealth == null || tempBatteryHealth != batteryHealth) {
@@ -2678,7 +2658,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
     private fun sendNeoSensorCheckCommand() {
         communicationService?.takeIf { it.isPortsConnected }?.apply {
-            Log.i("checkhere", " I WAS HERE" + isPortsConnected.toString())
+            Log.i("check_here", "I Was Here$isPortsConnected")
             send(resources.getString(R.string.cmd_neo_sensor_check))
         }
     }
@@ -3260,7 +3240,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         layouterrorsensor.visibility = View.VISIBLE
                         tvsensor.text = "BATTERY SYSTEM FAILURE"
                     } else {
-                        //  checkSesnsor()
+                        //  checkSensor()
                     }
                 }
             })
@@ -3499,7 +3479,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         VentilatorApp.logitude
                     )
                 }
-                Log.i("value_check_hours", "INVENTILATION $request")
+                Log.i("value_check_hours", "IN_VENTILATION $request")
                 if (!ServerLogger.sendStatusRequest(request)) ServerLogger.sendStatusRequest(request)
             }
         }
@@ -3675,7 +3655,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
     private fun showTubeCalibrationDialog(dialogDisplayMessage: String) {
 
-        if (calibrationConfirmDialog?.isShowing() == true) return;
+        if (calibrationConfirmDialog?.isShowing == true) return;
         calibrationConfirmDialog =
             DialogBoxFactory.showTubeDialog(dialogDisplayMessage, this@MainActivity) { ->
                 addEvents("Sensor Calibration requested", prefManager?.readUHID().toString())
@@ -3731,9 +3711,9 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     private fun initView() {
 
         includeButtonCalibrate.buttonView.text = "Here"
-        includeProgressHeight.param_progress_bar.background = AppCompatResources.getDrawable(this, R.drawable.progresscircle)
-        includeProgressWeight.param_progress_bar.background = AppCompatResources.getDrawable(this, R.drawable.progresscircle)
-        includeProgressAge.param_progress_bar.background = AppCompatResources.getDrawable(this, R.drawable.progresscircle)
+        includeProgressHeight .param_progress_bar .background = AppCompatResources.getDrawable(this, R.drawable.progresscircle)
+        includeProgressWeight .param_progress_bar .background = AppCompatResources.getDrawable(this, R.drawable.progresscircle)
+        includeProgressAge    .param_progress_bar .background = AppCompatResources.getDrawable(this, R.drawable.progresscircle)
 
         initViewViaPreferences()
 
@@ -3827,7 +3807,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     }
                 }
             }
-
 
             mDebugViewModel.ventiLiveData.value?.let {
                 val dataList = it
@@ -4045,7 +4024,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         includeFemale?.imageViewFemale?.setOnClickListener(this)
         buttonModes.setOnClickListener(this)
 
-
         buttonControls.setOnClickListener(this)
         buttonPreopCheck.setOnClickListener(this)
         buttonServiceCheck.setOnClickListener(this)
@@ -4135,7 +4113,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             it.setTextColor(ContextCompat.getColor(this, R.color.black))
         }
 
-        if (isExistingVentilationModeAvailable() == false && currentPatientType == prefManager?.readLastUid()
+        if (!isExistingVentilationModeAvailable() && currentPatientType == prefManager?.readLastUid()
                 .toString()
         ) {
             buttonModes.apply {
@@ -4201,7 +4179,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             mSocket?.emit("AndroidStopAuto", deviceId)
         }
 
-        // disconnect krne ke liye bhi command bhejo
+        // disconnect send command
         mSocket?.emit("AndroidDisconnect", deviceId)
         mSocket?.disconnect()
 
@@ -4300,7 +4278,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
     private fun setExistingVentilationMode(readVentilationMode: Int) {
         Log.i("READ_MODE_VALUE", readVentilationMode.toString())
-        Log.i("check_vent_mode", "setExistingVentilationMode ${readVentilationMode.toString()}")
+        Log.i("check_vent_mode", "setExistingVentilationMode $readVentilationMode")
         when (readVentilationMode) {
 
             MODE_VCV_CMV -> {
@@ -4653,7 +4631,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     systemDialogFragment?.isCancelable = false
                 }
 
-                // modified progressbar code  by masoom on 05 jan 2023
+                // modified progressbar code  by Masoom on 05 jan 2023
                 buttonNeonatal -> {
                     Log.i(
                         "CHECK_PATIENT",
@@ -4714,7 +4692,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     }
                 }
 
-                //modified progressbar code  by masoom on 05 jan 2023
+                //modified progressbar code  by Masoom on 05 jan 2023
                 buttonPediatric -> {
                     disablePresence()
                     highlightProfiles(buttonPediatric)
@@ -4722,7 +4700,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     progressIndicator.visibility = View.INVISIBLE
 
                     val textV: TextView = findViewById(R.id.age) as TextView
-                    textV.setText("Years")
+                    textV.text = "Years"
                     prefManager?.apply {
                         setPediatricStatus(true)
                         setNeoNateActiveStatus(false)
@@ -4771,14 +4749,14 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     }
                 }
 
-                //modified progressbar code  by masoom on 05 jan 2023
+                //modified progressbar code  by Masoom on 05 jan 2023
                 buttonAdult -> {
 
                     normalizeProgressBars()
                     disablePresence()
                     highlightProfiles(buttonAdult)
                     progressIndicator.visibility = View.INVISIBLE
-                    val textV: TextView = findViewById(R.id.age) as TextView
+                    val textV: TextView = findViewById(R.id.age)
                     textV.text = "Years"
                     prefManager?.apply {
                         setCurrentUid(PatientProfile.TYPE_ADULT)
@@ -5053,7 +5031,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         graphicTooltipFragment?.startTimeoutWithDebounce()
     }
 
-    private fun updateGraphictoolTip(controlParameterModel: ControlParameterModel) {
+    private fun updateGraphicalToolTip(controlParameterModel: ControlParameterModel) {
         graphicTooltipFragment?.takeIf { it.isVisible }?.updateDataOnView(controlParameterModel)
     }
 
@@ -5199,7 +5177,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                             selectEtCuffPosition = null
                         }
                     }
-                    Log.i("adawd", "2")
                     normaliseParameterTiles()
                     hideGraphicTooltip()
                     progressDialog?.takeIf { it.isVisible }?.apply {
@@ -5213,7 +5190,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     selectedBasicPosition?.let { pos ->
                         basicControlParameterList?.getOrNull(pos)?.apply {
                             updateParameter(ventKey, newValue.toString())
-                            updateGraphictoolTip(this)
+                            updateGraphicalToolTip(this)
                         }
                     }
 
@@ -5318,7 +5295,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             ?.takeIf { it.isNotEmpty() }
             ?.getOrNull(0)
             ?.apply {
-                updateGraphictoolTip(this)
+                updateGraphicalToolTip(this)
                 this.reading = supportPrecision(key, value)
             }
 

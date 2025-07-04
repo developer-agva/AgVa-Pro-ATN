@@ -49,7 +49,7 @@
             android:exported="false" />
 
         <activity
-            android:name="com.agvahealthcare.ventilator_ext.SplashActivity"
+            android:name="com.agvahealthcare.ventilator_ext.MainActivity"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
@@ -72,10 +72,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.agvahealthcare.ventilator_ext.dashboard.DashBoardActivity"/>
+        <activity android:name="com.agvahealthcare.ventilator_ext.SplashActivity"/>
 
         <activity
-            android:name="com.agvahealthcare.ventilator_ext.MainActivity"
+            android:name="com.agvahealthcare.ventilator_ext.dashboard.DashBoardActivity"
             android:windowSoftInputMode="adjustPan" />
 
         <service

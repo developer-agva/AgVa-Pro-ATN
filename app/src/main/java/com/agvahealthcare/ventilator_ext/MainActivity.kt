@@ -113,7 +113,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     UpdateHelper.OnUpdateBaseUrlListener,
     View.OnClickListener,
     ControlParameterClickListener,
-    OnLoudnessAdjustmentListener,ActivateVentilatorListener {
+    OnLoudnessAdjustmentListener, ActivateVentilatorListener {
     private val ctx = this@MainActivity
     private val TAG = MainActivity::class.java.simpleName
     private var handshakingTask: HandshakingTask? = null
@@ -765,7 +765,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             intent.action?.apply {
                 when (this) {
 
-                    IntentFactory.ACTION_SELF_TEST_DATA_AVAILABLE ->{
+                    IntentFactory.ACTION_SELF_TEST_DATA_AVAILABLE -> {
                         val data = intent.getStringExtra(SELF_TEST_CHECK)
                         data?.takeIf { it.isNotEmpty() }?.apply {
                             mSelfTestViewModel.selfTestData.postValue(this)
@@ -786,8 +786,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                                 "Handshake Timeout For Spo2 Data Not Available During Standby Case",
                                 prefManager?.readUHID().toString()
                             )
-                        }
-                        else if (isForKnob == null) {
+                        } else if (isForKnob == null) {
                             addEventsForDevelopers(
                                 "Handshake Timeout For Crash During Standby Case",
                                 prefManager?.readUHID().toString()
@@ -929,9 +928,10 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                                 }
 
                                 prefManager?.setComplianceTubeCalibration(data)
-                                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorTubeComplianceCalibrationViaPreference()
+                                systemDialogFragment?.takeIf { it.isVisible }
+                                    ?.updateSensorTubeComplianceCalibrationViaPreference()
 
-                                if(systemDialogFragment?.isVisible == true) {
+                                if (systemDialogFragment?.isVisible == true) {
                                     systemDialogFragment?.updateAck()
                                 }
                             }
@@ -967,9 +967,10 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                                 }
 
                                 prefManager?.setResistanceTubeCalibration(data)
-                                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorTubeResistanceCalibrationViaPreference()
+                                systemDialogFragment?.takeIf { it.isVisible }
+                                    ?.updateSensorTubeResistanceCalibrationViaPreference()
 
-                                if(systemDialogFragment?.isVisible == true) {
+                                if (systemDialogFragment?.isVisible == true) {
                                     systemDialogFragment?.updateAck()
                                 }
                             }
@@ -1086,7 +1087,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                                 } else if (modeDialogFragment?.isVisible == true) {
                                     // modeDialogFragment?.highlightViewWithFocus(data)
                                 } else if (systemDialogFragment?.isVisible == true) {
-                                     systemDialogFragment?.updateKnob(data)
+                                    systemDialogFragment?.updateKnob(data)
                                 } else {
                                     highlightViewWithFocus(data)
                                 }
@@ -1131,7 +1132,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 //                            )
                         )
                             handleAcknowledgements(ackValue)
-                        if(systemDialogFragment?.isVisible == true) {
+                        if (systemDialogFragment?.isVisible == true) {
                             systemDialogFragment?.updateAck()
                         }
                     }
@@ -1380,7 +1381,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 )
 
                 // check if concerned view is visible , if yes then refresh to render it from preference
-                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }
+                    ?.updateSensorsCalibrationStatusViaPreference()
 
                 addEvents(
                     "Leak test failed due to flow greater than 4 LPM",
@@ -2825,7 +2827,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
             12 -> buttonStartNewVentilation
             13 -> batteryLayout
-            14 ->  {
+            14 -> {
                 if (prefManager?.readVentilatorType() != VentilatorType.ONLY_NEO) {
                     buttonAdult
                 } else {
@@ -2835,6 +2837,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     }
                 }
             }
+
             15 -> {
                 if (prefManager?.readVentilatorType() != VentilatorType.ONLY_NEO) {
                     buttonPediatric
@@ -2845,6 +2848,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     }
                 }
             }
+
             16 -> {
                 if (prefManager?.readVentilatorType() != VentilatorType.ATP) {
                     buttonNeonatal
@@ -2910,6 +2914,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             if (isLiveDataRequest) mSocket?.emit("DataSendingAndroidDebug", "$deviceId^$debugData")
         }
     }
+
     var deviceId = ""
     private var isVentiLocked = false
 
@@ -2960,10 +2965,15 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
                         isVentiLocked = true
                         prefManager?.saveLockedStatus("Locked")
-                        val lockedStatusData = "$deviceId,false,true,${prefManager?.readLockedStatus()}"
+                        val lockedStatusData =
+                            "$deviceId,false,true,${prefManager?.readLockedStatus()}"
                         mSocket?.emit("NodeReceivingLockedStatus", lockedStatusData)
 
-                        if (it[0].toString().split("^")[2].trim().toInt() >= 100) prefManager?.setVentilatorNeedToLock(false) else prefManager?.setVentilatorNeedToLock(true)
+                        if (it[0].toString().split("^")[2].trim()
+                                .toInt() >= 100
+                        ) prefManager?.setVentilatorNeedToLock(false) else prefManager?.setVentilatorNeedToLock(
+                            true
+                        )
 
                     } else {
                         Log.i("Payment_Status", "else ${it[0]}")
@@ -2982,9 +2992,14 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         }
 
                         prefManager?.saveLockedStatus("Unlocked")
-                        if (it[0].toString().split("^")[2].toInt() >= 100) prefManager?.setVentilatorNeedToLock(false) else prefManager?.setVentilatorNeedToLock(true)
+                        if (it[0].toString()
+                                .split("^")[2].toInt() >= 100
+                        ) prefManager?.setVentilatorNeedToLock(false) else prefManager?.setVentilatorNeedToLock(
+                            true
+                        )
 
-                        val lockedStatusData = "$deviceId,true,false,${prefManager?.readLockedStatus()}"
+                        val lockedStatusData =
+                            "$deviceId,true,false,${prefManager?.readLockedStatus()}"
                         mSocket?.emit("NodeReceivingLockedStatus", lockedStatusData)
                     }
                 }
@@ -3155,7 +3170,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     }
 
 
-    private fun HandleUIChanges(){
+    private fun HandleUIChanges() {
         prefManager?.apply {
             if (readVentilatorType() == VentilatorType.ONLY_NEO) {
                 buttonNeonatal.visibility = View.VISIBLE
@@ -3231,7 +3246,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         sendDiagnosticDataToSocket()
         VentilatorApp.isNebuliserActive = true
         mDiagnosticCheckViewModel = ViewModelProvider(this)[DiagnosticCheckViewModel::class.java]
-        mO2RegulationCheckViewModel = ViewModelProvider(this)[O2RegulationCheckViewModel::class.java]
+        mO2RegulationCheckViewModel =
+            ViewModelProvider(this)[O2RegulationCheckViewModel::class.java]
 
         mMainActivityViewModel.setBAtteryConnectedFlag(false)
 
@@ -3288,8 +3304,10 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         normaliseButtons()
         disablePresence()
 
-        val deviceId = Settings.Secure.getString(this@MainActivity.contentResolver, Settings.Secure.ANDROID_ID)
-        val input = "https://wa.me/7330405060?text=Hi, i need support for this ventilator id - +${deviceId}"
+        val deviceId =
+            Settings.Secure.getString(this@MainActivity.contentResolver, Settings.Secure.ANDROID_ID)
+        val input =
+            "https://wa.me/7330405060?text=Hi, i need support for this ventilator id - +${deviceId}"
 
         val qrCodeBitmap = qrCode(input)
         qrCodeStandby.setImageBitmap(qrCodeBitmap)
@@ -3303,7 +3321,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         )
 
         locationClient.getLocationUpdates(5000L)
-            .catch { e->
+            .catch { e ->
                 e.printStackTrace()
                 Log.i("check_location", e.toString())
             }
@@ -3339,7 +3357,9 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         val updateHelper = UpdateHelper(this, this, this)
         updateHelper.checkForUpdates(this)
 
-        if (!prefManager?.readUHID().equals(FIRST_FILTER_NAME)) et_uhid.setText(prefManager?.readUHID())
+        if (!prefManager?.readUHID()
+                .equals(FIRST_FILTER_NAME)
+        ) et_uhid.setText(prefManager?.readUHID())
 
         et_uhid.setOnClickListener { it ->
             et_uhid.isCursorVisible = true
@@ -3377,7 +3397,11 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         normalizeProgressBars()
 
         val am = getSystemService(AUDIO_SERVICE) as AudioManager
-        am.setStreamVolume(AudioManager.STREAM_ALARM, am.getStreamMaxVolume(AudioManager.STREAM_ALARM), 0)
+        am.setStreamVolume(
+            AudioManager.STREAM_ALARM,
+            am.getStreamMaxVolume(AudioManager.STREAM_ALARM),
+            0
+        )
         mMainActivityViewModel.OPHours.value = calculateOperationalHourInTime()
         mMainActivityViewModel.serviceHours.value = calculateServiceHourInTime()
     }
@@ -3411,7 +3435,9 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             }
 
             CoroutineScope(Dispatchers.IO).launch {
-                FileLogger.writeServiceFile(prefManager?.readDashBoardRunningTimeForService().toString())
+                FileLogger.writeServiceFile(
+                    prefManager?.readDashBoardRunningTimeForService().toString()
+                )
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -3462,7 +3488,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         }
     }
 
-    private fun callRunningStatusApi(status: String,deviceStatus:String) {
+    private fun callRunningStatusApi(status: String, deviceStatus: String) {
 
         CoroutineScope(Dispatchers.IO).launch {
             val request = StatusRequestModel()
@@ -3547,14 +3573,18 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 dialog.cancel()
             } as DialogInterface.OnClickListener)
 
-        builder.setNegativeButton("Cancel", DialogInterface.OnClickListener { dialog: DialogInterface, which: Int -> dialog.cancel() } as DialogInterface.OnClickListener)
+        builder.setNegativeButton(
+            "Cancel",
+            DialogInterface.OnClickListener { dialog: DialogInterface, which: Int -> dialog.cancel() } as DialogInterface.OnClickListener)
 
         val alertDialog: AlertDialog = builder.create()
 
         // Show the Alert Dialog box
         alertDialog.show()
-        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(resources.getColor(R.color.white))
-        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(resources.getColor(R.color.white))
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+            .setTextColor(resources.getColor(R.color.white))
+        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+            .setTextColor(resources.getColor(R.color.white))
     }
 
     override fun onRequestPermissionsResult(
@@ -3628,7 +3658,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     private fun disablePresence() {
         listOf<AppCompatButton>(
             buttonControls,
-            ).forEach {
+        ).forEach {
             it.setBackgroundResource(R.drawable.background_light_grey_disable)
             it.setTextColor(ContextCompat.getColor(this, R.color.black))
         }
@@ -3714,9 +3744,12 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     private fun initView() {
 
         includeButtonCalibrate.buttonView.text = "Here"
-        includeProgressHeight .param_progress_bar .background = AppCompatResources.getDrawable(this, R.drawable.progresscircle)
-        includeProgressWeight .param_progress_bar .background = AppCompatResources.getDrawable(this, R.drawable.progresscircle)
-        includeProgressAge    .param_progress_bar .background = AppCompatResources.getDrawable(this, R.drawable.progresscircle)
+        includeProgressHeight.param_progress_bar.background =
+            AppCompatResources.getDrawable(this, R.drawable.progresscircle)
+        includeProgressWeight.param_progress_bar.background =
+            AppCompatResources.getDrawable(this, R.drawable.progresscircle)
+        includeProgressAge.param_progress_bar.background =
+            AppCompatResources.getDrawable(this, R.drawable.progresscircle)
 
         initViewViaPreferences()
 
@@ -3787,7 +3820,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     "continues check - $isVentiLocked ,${prefManager?.readVentilatorNeedToLock()}" +
                             ",$dayOfYear, $dispatchData"
                 )
-                if (( (dayOfYear - dispatchData.toInt()) >= 10 && !isVentiLocked) && prefManager?.readVentilatorNeedToLock() == true) {
+                if (((dayOfYear - dispatchData.toInt()) >= 10 && !isVentiLocked) && prefManager?.readVentilatorNeedToLock() == true) {
 
                     prefManager?.saveLockedStatus("Auto Locked")
                     isVentiLocked = true
@@ -3881,7 +3914,9 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     .toString()
             ) View.VISIBLE else View.INVISIBLE
 
-        buttonModes.isEnabled = isExistingVentilationModeAvailable() && currentPatientType == prefManager?.readLastUid().toString()
+        buttonModes.isEnabled =
+            isExistingVentilationModeAvailable() && currentPatientType == prefManager?.readLastUid()
+                .toString()
 
         if (isExistingVentilationModeAvailable() && currentPatientType == prefManager?.readLastUid()
                 .toString()
@@ -3910,28 +3945,38 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         highlightProfiles(buttonAdult)
                         currentPatientType = PatientProfile.TYPE_ADULT.toString()
                         checkPatientTypeAndHightlightSEV()
-                        if (isExistingVentilationModeAvailable() && currentPatientType == prefManager?.readCurrentUid().toString()) View.VISIBLE else View.INVISIBLE
-                        includeProgressHeight.param_progress_bar.maxProgress = PATIENT_ADULT_HEIGHT_UPPER.toDouble()
-                        includeProgressAge.param_progress_bar.maxProgress = PATIENT_AGE_UPPER.toDouble()
-                        includeProgressWeight.param_progress_bar.maxProgress = PATIENT_ADULT_WEIGHT_UPPER.toDouble()
+                        if (isExistingVentilationModeAvailable() && currentPatientType == prefManager?.readCurrentUid()
+                                .toString()
+                        ) View.VISIBLE else View.INVISIBLE
+                        includeProgressHeight.param_progress_bar.maxProgress =
+                            PATIENT_ADULT_HEIGHT_UPPER.toDouble()
+                        includeProgressAge.param_progress_bar.maxProgress =
+                            PATIENT_AGE_UPPER.toDouble()
+                        includeProgressWeight.param_progress_bar.maxProgress =
+                            PATIENT_ADULT_WEIGHT_UPPER.toDouble()
                     }
 
                     PatientProfile.TYPE_PED -> {
                         highlightProfiles(buttonPediatric)
                         currentPatientType = PatientProfile.TYPE_PED.toString()
                         checkPatientTypeAndHightlightSEV()
-                        includeProgressHeight.param_progress_bar.maxProgress = PED_HEIGHT_UPPER.toDouble()
-                        includeProgressAge.param_progress_bar.maxProgress = PATIENT_AGE_UPPER.toDouble()
-                        includeProgressWeight.param_progress_bar.maxProgress = PED_WEIGHT_UPPER.toDouble()
+                        includeProgressHeight.param_progress_bar.maxProgress =
+                            PED_HEIGHT_UPPER.toDouble()
+                        includeProgressAge.param_progress_bar.maxProgress =
+                            PATIENT_AGE_UPPER.toDouble()
+                        includeProgressWeight.param_progress_bar.maxProgress =
+                            PED_WEIGHT_UPPER.toDouble()
                     }
 
                     PatientProfile.TYPE_NEONAT -> {
                         if (readNeoNateActiveStatus()) highlightProfiles(buttonNeonatal)
                         currentPatientType = PatientProfile.TYPE_NEONAT.toString()
                         checkPatientTypeAndHightlightSEV()
-                        includeProgressHeight.param_progress_bar.maxProgress = NEO_HEIGHT_UPPER.toDouble()
+                        includeProgressHeight.param_progress_bar.maxProgress =
+                            NEO_HEIGHT_UPPER.toDouble()
                         includeProgressAge.param_progress_bar.maxProgress = NEO_AGE_UPPER.toDouble()
-                        includeProgressWeight.param_progress_bar.maxProgress = NEO_WEIGHT_UPPER.toDouble()
+                        includeProgressWeight.param_progress_bar.maxProgress =
+                            NEO_WEIGHT_UPPER.toDouble()
                     }
                 }
             }
@@ -3941,10 +3986,15 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             if (Gender.TYPE_MALE == readGender()) setDataMale() else setDataFemale()
 
             if (isExistingVentilationModeAvailable()) setExistingVentilationMode(readLastVentMode())
-            checkMode.visibility = if (isExistingVentilationModeAvailable()) View.VISIBLE else View.INVISIBLE
-            existinglabel.visibility = if (isExistingVentilationModeAvailable()) View.VISIBLE else View.INVISIBLE
-            if (isExistingVentilationModeAvailable() && currentPatientType == prefManager?.readCurrentUid().toString()) View.VISIBLE else View.INVISIBLE
-            layoutPanelMode.visibility = if (isExistingVentilationModeAvailable()) View.VISIBLE else View.INVISIBLE
+            checkMode.visibility =
+                if (isExistingVentilationModeAvailable()) View.VISIBLE else View.INVISIBLE
+            existinglabel.visibility =
+                if (isExistingVentilationModeAvailable()) View.VISIBLE else View.INVISIBLE
+            if (isExistingVentilationModeAvailable() && currentPatientType == prefManager?.readCurrentUid()
+                    .toString()
+            ) View.VISIBLE else View.INVISIBLE
+            layoutPanelMode.visibility =
+                if (isExistingVentilationModeAvailable()) View.VISIBLE else View.INVISIBLE
         }
     }
 
@@ -4057,9 +4107,12 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             includeProgressWeight,
             includeProgressAge
         ).forEach {
-            (it.param_progress_bar as? CircularProgressIndicator)?.background = ContextCompat.getDrawable(this, R.drawable.progresscircle)
-            (it.param_progress_bar as? CircularProgressIndicator)?.progressColor = ContextCompat.getColor(this, R.color.racing_green)
-            (it.param_progress_bar as? CircularProgressIndicator)?.dotColor = ContextCompat.getColor(this, R.color.racing_green)
+            (it.param_progress_bar as? CircularProgressIndicator)?.background =
+                ContextCompat.getDrawable(this, R.drawable.progresscircle)
+            (it.param_progress_bar as? CircularProgressIndicator)?.progressColor =
+                ContextCompat.getColor(this, R.color.racing_green)
+            (it.param_progress_bar as? CircularProgressIndicator)?.dotColor =
+                ContextCompat.getColor(this, R.color.racing_green)
 
             it.textView.setTextColor(Color.WHITE)
         }
@@ -4068,7 +4121,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     private fun highlightProgressBar(view: View?) {
         normalizeProgressBars()
         view.let {
-            (it?.param_progress_bar as? CircularProgressIndicator)?.background = ContextCompat.getDrawable(this, R.drawable.progresscircle_with_selection)
+            (it?.param_progress_bar as? CircularProgressIndicator)?.background =
+                ContextCompat.getDrawable(this, R.drawable.progresscircle_with_selection)
             (it?.textView as? TextView)?.setTextColor(Color.BLACK)
         }
     }
@@ -4163,6 +4217,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         heightSize = 800
         widthSize = 1150
         hideSystemUI()
+
     }
 
     override fun onStop() {
@@ -5268,7 +5323,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
         view: View,
         param: KnobParameterModel?,
-        encoder: EncoderValue?) {
+        encoder: EncoderValue?
+    ) {
 
         if (param != null && encoder != null) {
 
@@ -5491,8 +5547,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 ?.flatten()
                 ?.let {
                     prefManager?.readApneaSettingsStatus()?.let { it1 ->
-                            sendParametersToVentilator(it, it1)
-                        }
+                        sendParametersToVentilator(it, it1)
+                    }
                 }
         } else {
             prefManager?.apply {

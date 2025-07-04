@@ -58,7 +58,6 @@ class SelfTestFragment(private var communicationService: CommunicationService?) 
     }
 
     private fun setupSelfTestAdapter(selfTestList: ArrayList<SelfTestModelClass>) {
-
         selfTestAdapter = SelfTestAdapter(selfTestList)
         self_test_recycler_view.adapter = selfTestAdapter
     }

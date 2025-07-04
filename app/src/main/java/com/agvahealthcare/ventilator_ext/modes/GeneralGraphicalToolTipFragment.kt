@@ -1,8 +1,10 @@
 package com.agvahealthcare.ventilator_ext.modes
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import com.agvahealthcare.ventilator_ext.BuildConfig
 import com.agvahealthcare.ventilator_ext.MainActivity
 import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.VentilatorApp
@@ -39,9 +41,9 @@ class GeneralGraphicalToolTipFragment : GraphicTooltipFragment("SettingPcv") {
             closeListener: OnDismissDialogListener?,
         ): GeneralGraphicalToolTipFragment {
             val args = Bundle()
-            height?.let { args.putInt(GeneralGraphicalToolTipFragment.KEY_HEIGHT, it) }
-            width?.let { args.putInt(GeneralGraphicalToolTipFragment.KEY_WIDTH, it) }
-            status?.let { args.putBoolean(GeneralGraphicalToolTipFragment.KEY_STATUS, it) }
+            height?.let { args.putInt(KEY_HEIGHT, it) }
+            width?.let { args.putInt(KEY_WIDTH, it) }
+            status?.let { args.putBoolean(KEY_STATUS, it) }
 
             Log.i("valueHieght","$height, $width")
 
@@ -64,8 +66,6 @@ class GeneralGraphicalToolTipFragment : GraphicTooltipFragment("SettingPcv") {
 
     override fun onStart() {
         super.onStart()
-
-
 
         val heightDialog = arguments?.getInt(GeneralGraphicalToolTipFragment.KEY_HEIGHT)
         val widthDialog = arguments?.getInt(GeneralGraphicalToolTipFragment.KEY_WIDTH)
@@ -333,7 +333,7 @@ fun GeneralGraphicalToolTipFragment.setHeightWidth(
             params.y = 10
             params.width = 704
 //            params.height = 480
-            params.height = 390
+            if (Build.VERSION.SDK_INT >= 27) params.height = 441 else params.height = 390
             params.dimAmount = 0.0F
             params.screenBrightness = 5.0F
 

@@ -35,6 +35,8 @@ public interface IntentFactory {
     String ACTION_SENSOR_CALIBRATION_RESPONSE = "com.agvahealthcare.ventilator_ext.ACTION_SENSOR_CALIBRATION_RESPONSE";
     String ACTION_CHECK_USB_CONNECTIONS = "com.agvahealthcare.ventilator_ext.ACTION_CHECK_USB_CONNECTIONS";
 
+    String ACTION_SELF_TEST_DATA_AVAILABLE = "com.agvahealthcare.ventilator_ext.ACTION_SELF_TEST_DATA_AVAILABLE";
+
     String ACTION_STANDBY_STATUS_AVAILABLE = "com.agvahealthcare.ventilator_ext.ACTION_STANDBY_STATUS_AVAILABLE";
     String ACTION_SELF_TEST_STATUS_AVAILABLE = "com.agvahealthcare.ventilator_ext.ACTION_SELF_TEST_STATUS_AVAILABLE";
     String ACTION_DEVICE_NAME_REQUESTED = "com.agvahealthcare.ventilator_ext.ACTION_DEVICE_NAME_REQUESTED";

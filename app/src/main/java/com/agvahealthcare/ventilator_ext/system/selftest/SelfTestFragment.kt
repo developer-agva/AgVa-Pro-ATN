@@ -5,18 +5,39 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
 import com.agvahealthcare.ventilator_ext.MainActivityViewModel
 import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.service.CommunicationService
+import kotlinx.android.synthetic.main.fragment_self_test.dataProcessingTextView
+import kotlinx.android.synthetic.main.fragment_self_test.self_test_recycler_view
 
+
+data class SelfTestModelClass(
+    val sensorName: String,
+    val sensorStatus: Int
+)
 
 class SelfTestFragment(private var communicationService: CommunicationService?) : Fragment() {
 
-    private var selfTestViewModel : SelfTestViewModel? = null
-    private var preferenceManager : PreferenceManager? = null
+    private var selfTestViewModel: SelfTestViewModel? = null
+    private var preferenceManager: PreferenceManager? = null
+    private var selfTestAdapter: SelfTestAdapter? = null
 
+    private var listOfSensors = arrayListOf(
+        "Insp Flow Sensor",
+        "Exp Flow Sensor",
+        "ADC Response",
+        "Insp Pressure Sensor",
+        "Exp Pressure Sensor",
+        "Oxygen Pressure Sensor",
+        "Oxygen Voltage",
+        "Battery Current Sensor"
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,29 +57,65 @@ class SelfTestFragment(private var communicationService: CommunicationService?) 
         communicationService?.send("CM+SELF0")
     }
 
+    private fun setupSelfTestAdapter(selfTestList: ArrayList<SelfTestModelClass>) {
+
+        selfTestAdapter = SelfTestAdapter(selfTestList)
+        self_test_recycler_view.adapter = selfTestAdapter
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         selfTestViewModel = ViewModelProvider(requireActivity())[SelfTestViewModel::class.java]
         preferenceManager = PreferenceManager(requireContext())
-        initDataAsPerPreference()
 
         selfTestViewModel?.selfTestData?.observe(viewLifecycleOwner) { selfTestData ->
+            dataProcessingTextView.visibility = View.GONE
             if (selfTestData.isNotEmpty() && selfTestData != "null") {
-                preferenceManager?.saveSelfTestData(selfTestData)
-                initDataAsPerPreference()
+                showDataOnUI(selfTestData)
             }
         }
     }
 
-    private fun initDataAsPerPreference() {
-        val selfTestData = preferenceManager?.readSelfTestData()
-        if (!selfTestData.isNullOrEmpty()) {
-            selfTestViewModel?.selfTestData?.value = selfTestData
+    private fun showDataOnUI(selfTestData: String) {
+        val selfTestList = selfTestData.split(",") as ArrayList<String>
+        val selfTestModelList = ArrayList<SelfTestModelClass>()
 
-
-
+        for (i in 0 until selfTestList.size) {
+            if (selfTestList[i].isEmpty()) continue
+            val sensorStatus = if (selfTestList[i] == "1") 1 else 0
+            selfTestModelList.add(SelfTestModelClass(listOfSensors[i], sensorStatus))
         }
+        setupSelfTestAdapter(selfTestModelList)
+    }
+}
+
+class SelfTestAdapter(private var selfTestList: ArrayList<SelfTestModelClass>) :
+    RecyclerView.Adapter<SelfTestAdapter.SelfTestViewHolder>() {
+
+    inner class SelfTestViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+        val sensorName: TextView = itemView.findViewById(R.id.itemTitle)
+        val sensorStatus: ImageView = itemView.findViewById(R.id.itemStatus)
     }
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SelfTestViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.self_test_single_test, parent, false)
+        return SelfTestViewHolder(view)
+    }
+
+    override fun getItemCount(): Int {
+        return selfTestList.size
+    }
+
+    override fun onBindViewHolder(holder: SelfTestViewHolder, position: Int) {
+        val selfTestItem = selfTestList[position]
+
+        holder.sensorName.text = selfTestItem.sensorName
+
+        if (selfTestItem.sensorStatus == 1) holder.sensorStatus.setImageResource(R.drawable.ic_green_circle_tick)
+        else holder.sensorStatus.setImageResource(R.drawable.ic_red_cross)
+    }
 }
+

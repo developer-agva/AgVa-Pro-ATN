@@ -106,6 +106,7 @@ public abstract class CommunicationService extends Service {
     abstract protected void broadcastData(String data);
 
     abstract protected void broadcastDiagnosticData(String data);
+    abstract protected void broadcastSelfTestData(String data);
 
     abstract protected void broadcastStartupcheckData(String data);
 

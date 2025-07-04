@@ -6,6 +6,7 @@ import static com.agvahealthcare.ventilator_ext.utility.ConstantKt.GRAPH_LIMITS;
 import static com.agvahealthcare.ventilator_ext.utility.ConstantKt.HARDWARE_SERIAL_NUMBER;
 import static com.agvahealthcare.ventilator_ext.utility.ConstantKt.MUTE_UNMUTE_RESPONSE;
 import static com.agvahealthcare.ventilator_ext.utility.ConstantKt.OR_TOOL_CHECK;
+import static com.agvahealthcare.ventilator_ext.utility.ConstantKt.SELF_TEST_CHECK;
 import static com.agvahealthcare.ventilator_ext.utility.ConstantKt.SENSOR_ANALYSIS;
 import static com.agvahealthcare.ventilator_ext.utility.ConstantKt.TUBE_COMPLIANCE_CALIBRATION;
 import static com.agvahealthcare.ventilator_ext.utility.ConstantKt.TUBE_RESISTANCE_CALIBRATION;
@@ -216,6 +217,18 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
                                 dataBufferVentilator.delete(0, dataBufferVentilator.length());
                             }
                         }
+
+                        else if (buffData.contains("T@")){
+                            int selfTestStartIndex = buffData.indexOf("T@");
+                            int selfTestTerminalIndex = buffData.indexOf("!");
+                            if (selfTestStartIndex < selfTestTerminalIndex) {
+                                String selfTestData = buffData.substring(selfTestStartIndex + 2, selfTestTerminalIndex);
+                                Log.i("CHECK_SELF_TEST_DATA", selfTestData);
+                                broadcastSelfTestData(selfTestData);
+                                dataBufferVentilator.delete(selfTestStartIndex, selfTestTerminalIndex + 1);
+                            }
+                        }
+
                         else if (buffData.contains(Configs.PREFIX_OR_START)) {
 
                             int o2StartIndex = buffData.indexOf(Configs.PREFIX_OR_START);
@@ -1021,6 +1034,16 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
             Log.i("diaDataTesting", "DATA : " + data);
             Intent i = new Intent(IntentFactory.ACTION_DIAGNOSTIC_TOOL_CHECK);
             i.putExtra(DIAG_TOOL_CHECK, data);
+            sendBroadcast(i);
+        }
+    }
+
+    @Override
+    protected void broadcastSelfTestData(String data) {
+        if (data != null) {
+            Log.i("SELF_TEST_CHECK", "DATA : " + data);
+            Intent i = new Intent(IntentFactory.ACTION_SELF_TEST_DATA_AVAILABLE);
+            i.putExtra(SELF_TEST_CHECK, data);
             sendBroadcast(i);
         }
     }

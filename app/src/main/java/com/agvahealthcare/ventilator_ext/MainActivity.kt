@@ -70,6 +70,7 @@ import com.agvahealthcare.ventilator_ext.system.configuration.VentilatorType
 import com.agvahealthcare.ventilator_ext.system.debug.DebugViewModel
 import com.agvahealthcare.ventilator_ext.system.diagnosticCheck.DiagnosticCheckViewModel
 import com.agvahealthcare.ventilator_ext.system.o2Regulation.O2RegulationCheckViewModel
+import com.agvahealthcare.ventilator_ext.system.selftest.SelfTestViewModel
 import com.agvahealthcare.ventilator_ext.utility.*
 import com.agvahealthcare.ventilator_ext.utility.utils.*
 import com.agvahealthcare.ventilator_ext.utility.utils.Configs.*
@@ -208,6 +209,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
     //variable for the mainactivity viewmodel for scoping the value in the child fragments as well
     private lateinit var mMainActivityViewModel: MainActivityViewModel
+    private lateinit var mSelfTestViewModel: SelfTestViewModel
     private lateinit var mDiagnosticCheckViewModel: DiagnosticCheckViewModel
     private lateinit var mO2RegulationCheckViewModel: O2RegulationCheckViewModel
     private val settingsCountDownTimer = SettingsCountDownTimer(2500, 700)
@@ -560,6 +562,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
     private fun getIntentFilter(): IntentFilter {
         val intentFilter = IntentFilter()
+        intentFilter.addAction(IntentFactory.ACTION_SELF_TEST_DATA_AVAILABLE)
         intentFilter.addAction(IntentFactory.ACTION_HANDSHAKE_TIMEOUT)
         intentFilter.addAction(IntentFactory.ACTION_DEVICE_CONNECTED)
         intentFilter.addAction(IntentFactory.ACTION_O2_REGILATION_TOOL_CHECK)
@@ -762,6 +765,13 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             intent.action?.apply {
                 when (this) {
 
+                    IntentFactory.ACTION_SELF_TEST_DATA_AVAILABLE ->{
+                        val data = intent.getStringExtra(SELF_TEST_CHECK)
+                        data?.takeIf { it.isNotEmpty() }?.apply {
+                            mSelfTestViewModel.selfTestData.postValue(this)
+                        }
+                    }
+
                     IntentFactory.ACTION_HANDSHAKE_TIMEOUT -> {
                         // case for knob data knob available
                         if (isForKnob == true) {
@@ -776,7 +786,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                                 "Handshake Timeout For Spo2 Data Not Available During Standby Case",
                                 prefManager?.readUHID().toString()
                             )
-                        } else if (isForKnob == null) {
+                        }
+                        else if (isForKnob == null) {
                             addEventsForDevelopers(
                                 "Handshake Timeout For Crash During Standby Case",
                                 prefManager?.readUHID().toString()
@@ -870,12 +881,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                                 if (it > 30) it
                                 else -1
                             }
-                        //setbatteryLevelImage(batteryLevel)
-
-                        // update battery level on view
-                        /* if (batteryLevel in 0..100 && batteryHealth in 0..100 && batteryRemainingTime >= 0) {
-                             updateBatteryLevel(batteryLevel, batteryHealth, batteryRemainingTime)
-                         }*/
 
                         val tempBatteryLevel = mMainActivityViewModel.ventBatteryLevel.value
                         val tempBatteryHealth = mMainActivityViewModel.ventBatteryHealth.value
@@ -972,9 +977,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
                     }
 
-                    IntentFactory.ACTION_MUTE_UNMUTE -> {
-//                        Runtime.getRuntime().exec("reboot -p");
-                    }
 
                     IntentFactory.ACTION_SENSOR_AVAILABILITY_RESPONSE -> {
 
@@ -3191,6 +3193,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         mEventViewModel = ViewModelProvider(this)[EventViewModel::class.java]
         mDebugViewModel = ViewModelProvider(this)[DebugViewModel::class.java]
         mMainActivityViewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
+        mSelfTestViewModel = ViewModelProvider(this)[SelfTestViewModel::class.java]
 
         prefManager?.setRebootStatusForHandshake(false)
         prefManager?.setIETileStatus(false)

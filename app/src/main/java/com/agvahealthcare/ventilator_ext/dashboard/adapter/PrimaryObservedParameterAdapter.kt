@@ -128,7 +128,7 @@ class PrimaryObservedParameterAdapter(
 
                 else {
 
-                    if ((preferenceManager.readVGVStatus() && model.label == LBL_PIP) && preferenceManager?.readLastVentMode() != MODE_PC_PRVC){
+                    if ((preferenceManager.readVGVStatus() && model.label == LBL_PIP) && preferenceManager.readLastVentMode() != MODE_PC_PRVC){
                         Log.i("CHECK_COLOR","HERE 1")
                         if(model.isSelected) {
                             holder.apply {

@@ -628,8 +628,14 @@ fun KnobDialog.setHeightWidth(prefManager: PreferenceManager?, tag: String?) {
                 params.height = 0
             }
             else {
-                params.width = 500
-                params.height = 200
+
+                if (Build.VERSION.SDK_INT >= 27) {
+                    params.width = 500
+                    params.height = 173
+                }else{
+                    params.width = 500
+                    params.height = 200
+                }
             }
             attributes = params
         }

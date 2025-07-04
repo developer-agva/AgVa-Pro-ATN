@@ -331,9 +331,13 @@ fun GeneralGraphicalToolTipFragment.setHeightWidth(
 
             params.x = 80
             params.y = 10
-            params.width = 704
+
 //            params.height = 480
-            if (Build.VERSION.SDK_INT >= 27) params.height = 441 else params.height = 390
+            if (Build.VERSION.SDK_INT >= 27) params.height = 400 else params.height = 390
+            if (Build.VERSION.SDK_INT >= 27) params.width = 690 else params.width = 704
+
+            Log.i("valueHieght","${params.height}, ${params.width}")
+
             params.dimAmount = 0.0F
             params.screenBrightness = 5.0F
 

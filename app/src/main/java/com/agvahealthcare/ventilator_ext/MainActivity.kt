@@ -4217,7 +4217,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         heightSize = 800
         widthSize = 1150
         hideSystemUI()
-
     }
 
     override fun onStop() {
@@ -4247,7 +4246,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     }
 
     private fun doBindService() {
-
         if (!isServiceBound) {
             serviceIntent = Intent(this, UsbService::class.java)
             bindService(serviceIntent, mServiceConnection, BIND_AUTO_CREATE)
@@ -4263,7 +4261,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 e.printStackTrace()
             }
         }
-
         serviceIntent?.let {
             stopService(it)
         }

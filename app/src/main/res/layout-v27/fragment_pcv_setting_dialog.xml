@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -80,90 +79,60 @@
                 android:layout_marginTop="@dimen/_7sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:text="@string/titot"
-                android:theme="@style/subheading_text_style_graph" />
-
-            <!--changes made for the new graph
-                previous changes recorded
-                android:layout_marginTop="@dimen/_21sdp"
-                android:layout_gravity="center|top"
-            -->
+                android:theme="@style/subheading_text_style_graph_mini" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textViewTinsp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_28sdp"
-                android:layout_marginTop="@dimen/_18sdp"
+                android:layout_marginStart="@dimen/_25sdp"
+                android:layout_marginTop="@dimen/_19sdp"
                 android:text="@string/inhale_time"
-                android:theme="@style/subheading_text_style_graph" />
+                android:theme="@style/subheading_text_style_graph_mini" />
 
-            <!--old code
-            android:layout_marginStart="@dimen/_20sdp"-->
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textViewTexp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|top"
-                android:layout_marginTop="@dimen/_18sdp"
-                android:layout_marginEnd="@dimen/_73sdp"
+                android:layout_marginTop="@dimen/_19sdp"
+                android:layout_marginEnd="@dimen/_57sdp"
                 android:text="@string/inhale_time"
-                android:theme="@style/subheading_text_style_graph" />
-
-            <!--  <androidx.appcompat.widget.AppCompatTextView
-                  android:id="@+id/textViewSlope"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="@string/slope"
-                  android:layout_marginTop="@dimen/_17sdp"
-                  android:layout_marginStart="@dimen/_16sdp"
-                  android:theme="@style/subheading_text_style_graph"/>
-  -->
-            <!--previous values that can be done
-            android:layout_marginTop="@dimen/_34sdp"
-            android:layout_marginStart="@dimen/_16sdp"-->
+                android:theme="@style/subheading_text_style_graph_mini" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textViewPi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|right"
-                android:layout_marginRight="@dimen/_24sdp"
+                android:layout_marginRight="@dimen/_6sdp"
                 android:layout_marginTop="78dp"
                 android:text="@string/ps"
                 android:textAllCaps="true"
-                android:theme="@style/subheading_text_style_graph" />
+                android:theme="@style/subheading_text_style_graph_mini" />
 
-            <!--previous values
-            android:layout_marginTop="@dimen/_46sdp"
-            android:layout_marginStart="@dimen/_10sdp"-->
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textViewPeepPi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|center"
-                android:layout_marginRight="@dimen/_28sdp"
+                android:layout_marginRight="@dimen/_10sdp"
                 android:text="@string/pi"
-                android:textSize="@dimen/_4sdp"
-                android:theme="@style/subheading_text_style_graph" />
+                android:theme="@style/subheading_text_style_graph_mini" />
 
-            <!--
-                        previous values
-                        android:layout_marginTop="@dimen/_58sdp"
-                        android:layout_marginStart="@dimen/_10sdp"
-            -->
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textViewPeepPiSign"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|top"
                 android:layout_marginTop="@dimen/_11sdp"
-                android:layout_marginRight="@dimen/_25sdp"
+                android:layout_marginRight="@dimen/_20sdp"
                 android:visibility="gone"
                 android:text="@string/pinsp"
                 android:textAllCaps="true"
                 android:theme="@style/subheading_text_style_graph_mini" />
-            <!--New added textview for the I:E Ratio-->
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textViewIERatio"
                 android:layout_width="wrap_content"
@@ -173,43 +142,40 @@
                 android:layout_marginTop="33dp"
                 android:text="@string/ieratio"
                 android:textAllCaps="true"
-                android:textSize="@dimen/_4sdp"
-                android:theme="@style/subheading_text_style_graph" />
+                android:theme="@style/subheading_text_style_graph_mini" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/text_spontaneous_breathe"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|right"
-                android:layout_marginRight="@dimen/_30sdp"
+                android:layout_marginRight="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:text="@string/spontaneous_breathe"
                 android:textAllCaps="true"
-                android:textSize="@dimen/_4sdp"
-                android:theme="@style/subheading_text_style_graph" />
+                android:theme="@style/subheading_text_style_graph_mini" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/text_control_breathe"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|right"
-                android:layout_marginRight="@dimen/_75sdp"
+                android:layout_marginRight="@dimen/_55sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:text="@string/control_breathe"
                 android:textAllCaps="true"
-                android:textSize="@dimen/_4sdp"
-                android:theme="@style/subheading_text_style_graph" />
-            <!--New added textview for the TRIG.E Ratio-->
+                android:theme="@style/subheading_text_style_graph_mini" />
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textViewTrigERatio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|center"
-                android:layout_marginRight="@dimen/_25sdp"
+                android:layout_marginRight="@dimen/_10sdp"
                 android:layout_marginTop="44dp"
                 android:text="@string/trig_exp"
                 android:textAllCaps="true"
-                android:theme="@style/subheading_text_style_graph" />
+                android:theme="@style/subheading_text_style_graph_mini" />
 
         </FrameLayout>
 

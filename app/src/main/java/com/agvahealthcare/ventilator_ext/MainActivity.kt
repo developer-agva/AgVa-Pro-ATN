@@ -630,6 +630,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             map,
             RaspiParser.DATA_EXP_DP_RAW
         )?.let { mDiagnosticCheckViewModel.expDPRawData.value = "$it pa" }
+
         getMapValueFromLabel(
             map,
             RaspiParser.DATA_EXP_FLOW
@@ -640,14 +641,17 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             map,
             RaspiParser.DATA_BTRY_CURRENT
         )?.let { mDiagnosticCheckViewModel.batteryCurrentData.value = "$it Amp" }
+
         getMapValueFromLabel(
             map,
             RaspiParser.DATA_BTRY_VOLTAGE
         )?.let { mDiagnosticCheckViewModel.batteryVoltageData.value = "$it V" }
+
         getMapValueFromLabel(
             map,
             RaspiParser.DATA_BTRY_SOC
         )?.let { mDiagnosticCheckViewModel.batterySOCData.value = it }
+
         getMapValueFromLabel(
             map,
             RaspiParser.DATA_BTRY_STATE
@@ -883,8 +887,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
                         val tempBatteryLevel = mMainActivityViewModel.ventBatteryLevel.value
                         val tempBatteryHealth = mMainActivityViewModel.ventBatteryHealth.value
-                        var tempBatteryRemainingTime =
-                            mMainActivityViewModel.ventBatteryRemainingTime.value
+
+                        var tempBatteryRemainingTime = mMainActivityViewModel.ventBatteryRemainingTime.value
                         if (tempBatteryHealth == null || tempBatteryHealth != batteryHealth) {
                             mMainActivityViewModel.setVentBatteryHealth(batteryHealth)
                         }
@@ -950,6 +954,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                                         Configs.CALIBRATION_TUBE_RESISTANCE,
                                         CALIBRATION_FAILED
                                     )
+
                                     addEvents(
                                         "Tube Resistance Calibration Failed",
                                         prefManager?.readUHID().toString()
@@ -987,7 +992,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                                 Log.i("SENSOR_ANALYSE_CHECK", this.toString())
                                 prefManager?.setSensorExhaleFlow(this[0].toInt())
                                 prefManager?.setSensorInhaleFlow(this[1].toInt())
-                                //  prefManager?.setSensorLowFlowO2(this[2].toInt())
                                 prefManager?.setSensorHighFlowO2(this[3].toInt())
                                 prefManager?.setSensorSPO2(this[5].toInt())
                                 prefManager?.setSensorTemp(this[6].toInt())
@@ -999,8 +1003,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
                     IntentFactory.ACTION_SENSOR_CALIBRATION_RESPONSE -> {
                         val status = intent.getStringExtra(VENTILATOR_SENSOR_CALIBRATION_TAG)
-                        val calibResult =
-                            intent.getIntExtra(VENTILATOR_SENSOR_CALIBRATION_RESULT, -1)
+                        val calibResult = intent.getIntExtra(VENTILATOR_SENSOR_CALIBRATION_RESULT, -1)
 
                         try {
                             status?.apply {
@@ -1044,16 +1047,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                                         prefManager?.setExhaleValveCalibration(calibration)
                                     }
 
-                                    else -> {
-                                        Log.i(
-                                            "CALIBCHECK",
-                                            "Invalid sensor tag for calibration"
-                                        )
-                                        /*  ServerLogger.w(
-                                              context,
-                                              "Invalid sensor tag for calibration"
-                                          )*/
-                                    }
+                                    else -> { }
                                 }
                                 Log.i("CALIBCHECK", "out of when")
 
@@ -1125,12 +1119,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         val runningModeFromIntent = intent.getIntExtra(VENTILATOR_MODES, -1)
                         //code for the action ack 00
 
-                        if (ackValue != null && ackValue.isNotEmpty()
-//                            && isAcknowledgementAcceptable(
-//                                runningModeFromIntent,
-//                                ackValue
-//                            )
-                        )
+                        if (!ackValue.isNullOrEmpty())
                             handleAcknowledgements(ackValue)
                         if (systemDialogFragment?.isVisible == true) {
                             systemDialogFragment?.updateAck()
@@ -1142,19 +1131,10 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         Log.i("new_ventilation", "ACTION_MODE_SET")
                         requestedModeCode = intent.getIntExtra(VENTILATOR_MODES, -1)
                         Log.i("MODE_CODE", "MODE  $requestedModeCode")
-                        if (Configs.isValidVentilatorMode(
-                                this@MainActivity,
-                                requestedModeCode
-                            )
-                        ) {
+                        if (Configs.isValidVentilatorMode(this@MainActivity, requestedModeCode)) {
                             if (requestedModeCode == Configs.MODE_AUTO_VENTILATION) {
                                 sendControlModeToVentilator(requestedModeCode)
                             } else {
-
-                                Log.i(
-                                    "new_ventilation",
-                                    "ACtion_mode_Set in condition of AI vent else "
-                                )
                                 showStandbyControlFragment()
                             }
                         }
@@ -1163,21 +1143,15 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     IntentFactory.ACTION_MODE_TYPE -> {
                         tempModeType = intent.getIntExtra(VENTILATOR_MODE_TYPE, 1)
                         Log.i("MODE_TYPE_CHECK", "mode_type $tempModeType")
-
                     }
-
 
                     //Intent for the shutdown procedure initiation
                     IntentFactory.ACTION_POWER_OFF -> {
-                        //showShutDownConfirmation()
                         sendShutDownCommandToVentilator()
                     }
 
                     //Intent will only be fired when the power button will be pressed again
-                    IntentFactory.ACTION_POWER_ON -> {
-                        //  sendShutDownCommandToVentilator()
-                    }
-
+                    IntentFactory.ACTION_POWER_ON -> { }
 
                     IntentFactory.ACTION_NEO_SENSOR_CONNECT -> {
                         Log.i("HERE", "CHECK SENSOR VALUE RECEIVED")
@@ -1191,7 +1165,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         mMainActivityViewModel.setNeoNatalSensorConnectedFlag(false)
                         neonateIconLayout.visibility = View.INVISIBLE
                     }
-
 
                     IntentFactory.ACTION_BATTERY_CONNECTED -> {
                         mMainActivityViewModel.setBAtteryConnectedFlag(true)
@@ -1208,12 +1181,10 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     private fun hideAllDialogFragment() {
         standbyControlFragment?.takeIf { it.isVisible }?.apply {
             dismiss()
-
         }
 
         systemDialogFragment?.takeIf { it.isVisible }?.apply {
             dismiss()
-
         }
 
         modeDialogFragment?.takeIf { it.isVisible }?.apply {
@@ -1245,8 +1216,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
             ACK_CODE_5301 -> {
                 isOSReboot = false
-                systemDialogFragment?.getUpdateDeviceFragment()
-                    ?.showInfo("Checking For Internet...")
+                systemDialogFragment?.getUpdateDeviceFragment()?.showInfo("Checking For Internet...")
             }
 
             ACK_CODE_5302 -> {
@@ -1272,7 +1242,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
             ACK_CODE_5305 -> {
                 isOSReboot = false
-                prefManager?.downloadType = "Download Successfull"
+                prefManager?.downloadType = "Download Success"
                 prefManager?.downloadStatus = true
                 prefManager?.downloadTime = AppUtils.getCurrentDateTime()
                 systemDialogFragment?.getUpdateDeviceFragment()?.updateSensorCalibrationStatus()
@@ -1381,32 +1351,18 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 )
 
                 // check if concerned view is visible , if yes then refresh to render it from preference
-                systemDialogFragment?.takeIf { it.isVisible }
-                    ?.updateSensorsCalibrationStatusViaPreference()
-
-                addEvents(
-                    "Leak test failed due to flow greater than 4 LPM",
-                    prefManager?.readUHID().toString()
-                )
-
+                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
+                addEvents("Leak test failed due to flow greater than 4 LPM", prefManager?.readUHID().toString())
                 showCalibrationErrorDialog("Leak test failed due to flow greater than 4 LPM")
             }
 
             ACK_CODE_4022 -> {
                 callCalibrationApi(Configs.CALIBRATION_LEAK_TEST, Configs.CALIBRATION_SUCCESS)
                 calibrationConfirmDialog?.dismiss()
-
-                prefManager?.setLeakTestCalibration(
-                    SensorCalibration(
-                        AppUtils.getCurrentDateTime(),
-                        Configs.SENSOR_CALIBRATION_SUCCESS
-                    )
-                )
+                prefManager?.setLeakTestCalibration(SensorCalibration(AppUtils.getCurrentDateTime(), Configs.SENSOR_CALIBRATION_SUCCESS))
 
                 // check if concerned view is visible , if yes then refresh to render it from preference
-                systemDialogFragment?.takeIf { it.isVisible }
-                    ?.updateSensorsCalibrationStatusViaPreference()
-
+                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
                 addEvents("Leak test success", prefManager?.readUHID().toString())
             }
 
@@ -1416,7 +1372,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             }
 
             ACK_CODE_4010 -> {
-//                showStartupCheckDialog("Startup check result")
+//              showStartupCheckDialog("Startup check result")
             }
 
             ACK_CODE_4011 -> {
@@ -1424,39 +1380,29 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             }
 
             ACK_CODE_5133 -> {
-                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply {
-                    this.dismiss()
-                }
+                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply { this.dismiss() }
                 showCalibrationErrorDialog("External Flow Calibrator not found")
             }
 
             ACK_CODE_5134 -> {
-                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply {
-                    this.dismiss()
-                }
+                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply { this.dismiss() }
                 showCalibrationErrorDialog("External Flow Calibrator not found")
             }
 
             ACK_CODE_5135 -> {
-                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply {
-                    this.dismiss()
-                }
+                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply { this.dismiss() }
                 showCalibrationErrorDialog("Issue in Inspiratory flow Calibration")
             }
 
             ACK_CODE_5136 -> {
-                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply {
-                    this.dismiss()
-                }
+                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply { this.dismiss() }
                 showCalibrationErrorDialog("Issue in Inspiratory flow Calibration")
             }
 
             ACK_CODE_5121 -> {
                 callCalibrationApi(Configs.CALIBRATION_INSP_FLOW, Configs.CALIBRATION_FAILED)
 
-                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply {
-                    this.dismiss()
-                }
+                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply { this.dismiss() }
 
                 prefManager?.setInspFlowCalibration(
                     SensorCalibration(
@@ -1465,10 +1411,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     )
                 )
 
-                // check if concerned view is visible , if yes then refresh to render it from preference
-                systemDialogFragment?.takeIf { it.isVisible }
-                    ?.updateSensorsCalibrationStatusViaPreference()
-
+                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
                 showCalibrationErrorDialog("Calibration Stopped due to Error")
             }
 
@@ -1483,17 +1426,13 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     )
                 )
                 // check if concerned view is visible , if yes then refresh to render it from preference
-                systemDialogFragment?.takeIf { it.isVisible }
-                    ?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
             }
 
             ACK_CODE_5126 -> {
 
                 callCalibrationApi(Configs.CALIBRATION_EXP_FLOW, Configs.CALIBRATION_FAILED)
-                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply {
-                    this.dismiss()
-                }
-
+                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply { this.dismiss() }
                 showCalibrationErrorDialog("Calibration Stopped due to some issue in calibrator")
 
                 prefManager?.setExpFlowCalibration(
@@ -1504,8 +1443,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 )
 
                 // check if concerned view is visible , if yes then refresh to render it from preference
-                systemDialogFragment?.takeIf { it.isVisible }
-                    ?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
             }
 
             // ACK FOR EXP FLOW
@@ -1517,10 +1455,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             ACK_CODE_5124 -> {
 
                 callCalibrationApi(Configs.CALIBRATION_EXP_FLOW, Configs.CALIBRATION_FAILED)
-                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply {
-                    this.dismiss()
-                }
-
+                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply { this.dismiss() }
                 showCalibrationErrorDialog("Calibration Stopped due to Error")
 
                 prefManager?.setExpFlowCalibration(
@@ -1531,13 +1466,10 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 )
 
 
-                systemDialogFragment?.takeIf { it.isVisible }
-                    ?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
             }
 
             ACK_CODE_5125 -> {
-
-                Log.i("in_erroadadwr", "in error")
 
                 callCalibrationApi(Configs.CALIBRATION_EXP_FLOW, Configs.CALIBRATION_SUCCESS)
                 calibrationConfirmDialog?.dismiss()
@@ -1549,44 +1481,38 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     )
                 )
 
-                // check if concerned view is visible , if yes then refresh to render it from preference
-                systemDialogFragment?.takeIf { it.isVisible }
-                    ?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
             }
 
             // handshake completed
             ACK_CODE_5004 -> {
-                if (isForKnob == true) {
-                    addEventsForDevelopers(
-                        "Handshake Completed For Knob Data Not Available During Standby Case",
-                        prefManager?.readUHID().toString()
-                    )
-                }
-                // case for spo2 data knob available
-                else if (isForKnob == false) {
-                    addEventsForDevelopers(
-                        "Handshake Completed For Battery Data Not Available During Standby Case",
-                        prefManager?.readUHID().toString()
-                    )
-                } else if (isForKnob == null) {
-                    addEventsForDevelopers(
-                        "Handshake Completed For Crash During Standby Case",
-                        prefManager?.readUHID().toString()
-                    )
+                when (isForKnob) {
+                    true -> {
+                        addEventsForDevelopers(
+                            "Handshake Completed For Knob Data Not Available During Standby Case",
+                            prefManager?.readUHID().toString()
+                        )
+                    }
+                    false -> {
+                        addEventsForDevelopers(
+                            "Handshake Completed For Battery Data Not Available During Standby Case",
+                            prefManager?.readUHID().toString()
+                        )
+                    }
+                    null -> {
+                        addEventsForDevelopers(
+                            "Handshake Completed For Crash During Standby Case",
+                            prefManager?.readUHID().toString()
+                        )
+                    }
                 }
                 stopHandshaking()
             }
 
             ACK_CODE_5006 -> {
-                //Another Cancels here after ACK 5005
-//                ackTimer.cancel()
 
-                VentilatorApp.globalModeType?.let {
-                    prefManager?.setModeType(it)
-                }
-
+                VentilatorApp.globalModeType?.let { prefManager?.setModeType(it) }
                 VentilatorApp.globalModeType = null
-//                ack5006SendFlg = !ack5006SendFlg;
 
                 prefManager?.apply {
                     setSmartFiO2Status(false)
@@ -1597,10 +1523,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     setApneaSettingsStatus(readApneaSettingsStatusTemp())
                 }
 
-                Log.i(
-                    "backup_value",
-                    "${prefManager?.readApneaSettingsStatusTemp()}  ,1,  ${prefManager?.readIRVStatusTemp()}"
-                )
                 if (isExistingVentilation == true) {
 
                     if (tempPrefMapForExistingVentilationInteger.isNotEmpty() && tempPrefMapForExistingVentilationFloat.isNotEmpty()) {
@@ -1610,44 +1532,26 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     }
                     sendConfigurationToVentilatorWithWatchDog()
                 } else {
-                    // set selected options into preference
                     when (VentilatorApp.selectedOptions) {
-                        SELECTED_OPTIONS.PRONGS_NAME -> {
-                            prefManager?.setSelectedOptions(SELECTED_OPTIONS.PRONGS_NAME)
-                        }
-
-                        SELECTED_OPTIONS.INVASIVE_NAME -> {
-                            prefManager?.setSelectedOptions(SELECTED_OPTIONS.INVASIVE_NAME)
-                        }
-
-                        SELECTED_OPTIONS.NON_INVASIVE_NAME -> {
-                            prefManager?.setSelectedOptions(SELECTED_OPTIONS.NON_INVASIVE_NAME)
-                        }
+                        SELECTED_OPTIONS.PRONGS_NAME -> { prefManager?.setSelectedOptions(SELECTED_OPTIONS.PRONGS_NAME) }
+                        SELECTED_OPTIONS.INVASIVE_NAME -> { prefManager?.setSelectedOptions(SELECTED_OPTIONS.INVASIVE_NAME) }
+                        SELECTED_OPTIONS.NON_INVASIVE_NAME -> { prefManager?.setSelectedOptions(SELECTED_OPTIONS.NON_INVASIVE_NAME) }
+                        null -> {}
                     }
 
                     VentilatorApp.selectedOptions = null
                     updateModeAndSendParametersToVentilator(requestedModeCode)
                 }
-                //sendConfigurationToVentilatorWithWatchDog()
                 lastUhid = prefManager?.readUHID().toString()
-
-
             }
-
 
             ACK_CODE_5601 -> {
                 DialogBoxFactory.showNeoSensorFailureWarning(this@MainActivity)
             }
 
-            //setting saved
-
             ACK_CODE_5005 -> {
 
-
-                //Acknowledgement Timer cancels here..
-
                 activityCount++
-//                ack5005SendFlg = !ack5005SendFlg
                 prefManager?.setLastUid(prefManager?.readCurrentUid())
                 progressIndicator.visibility = View.VISIBLE
                 settingsCountDownTimer.safeStop()
@@ -1655,10 +1559,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 try {
                     standbyControlFragment?.takeIf { it.isVisible }?.dismiss()
                 } catch (e: Error) {
-                    Log.i(
-                        "STANBYCONTROL_CHECK",
-                        "Failed during standby control fragment dismiss"
-                    )
+                    e.printStackTrace()
                 }
                 if (isExistingVentilation == true && isfromStandby == true) {
                     //Code to be inserted here for the tiles to be rendered from the exisiting ventilation when the values get flushed.
@@ -1679,8 +1580,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     startActivity(intent)
                     finish()
                 }
-
-
             }
 
             ACK_CODE_5011 -> {
@@ -1689,11 +1588,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
             ACK_CODE_5012 -> {
                 callCalibrationApi(Configs.CALIBRATION_TURBINE, CALIBRATION_FAILED)
-                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply {
-                    this.dismiss()
-                }
+                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply { this.dismiss() }
                 showCalibrationErrorDialog("Check for the Inner Functionality")
-                // save time stamp in preference
                 prefManager?.setTurbineCalibration(
                     SensorCalibration(
                         AppUtils.getCurrentDateTime(),
@@ -1701,18 +1597,14 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     )
                 )
 
-                // check if concerned view is visible , if yes then refresh to render it from preference
-                systemDialogFragment?.takeIf { it.isVisible }
-                    ?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
             }
 
             ACK_CODE_5013 -> {
                 callCalibrationApi(Configs.CALIBRATION_TURBINE, CALIBRATION_FAILED)
-                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply {
-                    this.dismiss()
-                }
+                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply { this.dismiss() }
                 showCalibrationErrorDialog("Pressure Sensor Not Found")
-                // save time stamp in preference
+
                 prefManager?.setTurbineCalibration(
                     SensorCalibration(
                         AppUtils.getCurrentDateTime(),
@@ -1720,18 +1612,14 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     )
                 )
 
-                // check if concerned view is visible , if yes then refresh to render it from preference
-                systemDialogFragment?.takeIf { it.isVisible }
-                    ?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
             }
 
             ACK_CODE_5014 -> {
                 callCalibrationApi(Configs.CALIBRATION_TURBINE, CALIBRATION_FAILED)
-                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply {
-                    this.dismiss()
-                }
+                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply { this.dismiss() }
                 showCalibrationErrorDialog("Transfer Function Error")
-                // save time stamp in preference
+
                 prefManager?.setTurbineCalibration(
                     SensorCalibration(
                         AppUtils.getCurrentDateTime(),
@@ -1739,19 +1627,14 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     )
                 )
 
-                // check if concerned view is visible , if yes then refresh to render it from preference
-                systemDialogFragment?.takeIf { it.isVisible }
-                    ?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
             }
 
             ACK_CODE_5015 -> {
                 callCalibrationApi(Configs.CALIBRATION_TURBINE, CALIBRATION_FAILED)
-                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply {
-                    this.dismiss()
-                }
+                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply { this.dismiss() }
                 showCalibrationErrorDialog("Fatal Error !! Turbine not working")
 
-                // save time stamp in preference
                 prefManager?.setTurbineCalibration(
                     SensorCalibration(
                         AppUtils.getCurrentDateTime(),
@@ -1759,36 +1642,29 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     )
                 )
 
-                // check if concerned view is visible , if yes then refresh to render it from preference
-                systemDialogFragment?.takeIf { it.isVisible }
-                    ?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
             }
 
             ACK_CODE_5016 -> {
                 callCalibrationApi(Configs.CALIBRATION_TURBINE, CALIBRATION_FAILED)
-                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply {
-                    this.dismiss()
-                }
+                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply { this.dismiss() }
                 showCalibrationErrorDialog("Flow is greater than 5 Ltr/Min")
-                // save time stamp in preference
+
                 prefManager?.setTurbineCalibration(
                     SensorCalibration(
                         AppUtils.getCurrentDateTime(),
                         Configs.SENSOR_CALIBRATION_FAILURE
                     )
                 )
-                // check if concerned view is visible , if yes then refresh to render it from preference
-                systemDialogFragment?.takeIf { it.isVisible }
-                    ?.updateSensorsCalibrationStatusViaPreference()
+
+                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
             }
 
             ACK_CODE_5017 -> {
                 callCalibrationApi(Configs.CALIBRATION_TURBINE, CALIBRATION_FAILED)
-                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply {
-                    this.dismiss()
-                }
+                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply { this.dismiss() }
                 showCalibrationErrorDialog("Turbine not started")
-                // save time stamp in preference
+
                 prefManager?.setTurbineCalibration(
                     SensorCalibration(
                         AppUtils.getCurrentDateTime(),
@@ -1796,16 +1672,14 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     )
                 )
 
-                // check if concerned view is visible , if yes then refresh to render it from preference
-                systemDialogFragment?.takeIf { it.isVisible }
-                    ?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
             }
 
             ACK_CODE_5019 -> {
 
                 callCalibrationApi(Configs.CALIBRATION_TURBINE, CALIBRATION_SUCCESS)
                 calibrationConfirmDialog?.dismiss()
-                // save time stamp in preference
+
                 prefManager?.setTurbineCalibration(
                     SensorCalibration(
                         AppUtils.getCurrentDateTime(),
@@ -1813,9 +1687,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     )
                 )
 
-                // check if concerned view is visible , if yes then refresh to render it from preference
-                systemDialogFragment?.takeIf { it.isVisible }
-                    ?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
 
             }
 
@@ -1824,69 +1696,60 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             }
 
             ACK_CODE_5022 -> {
-                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply {
-                    this.dismiss()
-                }
+                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply { this.dismiss() }
                 showCalibrationErrorDialog("Calibration Stopped due to Error !! Fluke not found")
+
                 prefManager?.setExpFlowCalibration(
                     SensorCalibration(
                         AppUtils.getCurrentDateTime(),
                         Configs.SENSOR_CALIBRATION_FAILURE
                     )
                 )
-                systemDialogFragment?.takeIf { it.isVisible }
-                    ?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
             }
 
             ACK_CODE_5023 -> {
-                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply {
-                    this.dismiss()
-                }
+                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply { this.dismiss() }
                 showCalibrationErrorDialog("Calibration Stopped due to Error !! Turbine not working")
+
                 prefManager?.setExpFlowCalibration(
                     SensorCalibration(
                         AppUtils.getCurrentDateTime(),
                         Configs.SENSOR_CALIBRATION_FAILURE
                     )
                 )
-                systemDialogFragment?.takeIf { it.isVisible }
-                    ?.updateSensorsCalibrationStatusViaPreference()
+
+                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
             }
 
             ACK_CODE_5024 -> {
-                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply {
-                    this.dismiss()
-                }
+                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply { this.dismiss() }
                 showCalibrationErrorDialog("Calibration Stopped due to Error !! ")
+
                 prefManager?.setExpFlowCalibration(
                     SensorCalibration(
                         AppUtils.getCurrentDateTime(),
                         Configs.SENSOR_CALIBRATION_FAILURE
                     )
                 )
-                systemDialogFragment?.takeIf { it.isVisible }
-                    ?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
             }
 
             ACK_CODE_5025 -> {
-                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply {
-                    this.dismiss()
-                }
+                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply { this.dismiss() }
                 showCalibrationErrorDialog("Calibration Stopped due to Error !! Fatal Error")
+
                 prefManager?.setExpFlowCalibration(
                     SensorCalibration(
                         AppUtils.getCurrentDateTime(),
                         Configs.SENSOR_CALIBRATION_FAILURE
                     )
                 )
-                systemDialogFragment?.takeIf { it.isVisible }
-                    ?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
             }
 
             ACK_CODE_5026 -> {
-                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply {
-                    this.dismiss()
-                }
+                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply { this.dismiss() }
                 showCalibrationErrorDialog("Calibration Stopped . Fluke not Connected,Please re-connect it !!")
                 prefManager?.setExpFlowCalibration(
                     SensorCalibration(
@@ -1894,8 +1757,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         Configs.SENSOR_CALIBRATION_FAILURE
                     )
                 )
-                systemDialogFragment?.takeIf { it.isVisible }
-                    ?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
             }
 
             ACK_CODE_5028 -> {
@@ -1927,53 +1789,42 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             }
 
             ACK_CODE_5081 -> {
-
                 showCalibrationDialog("Ventilator is under Oxygen Calibration Process")
-
             }
 
             ACK_CODE_5082 -> {
 
-                Log.i("CHECK_CALIB", "CaLLED 1")
                 callCalibrationApi(Configs.CALIBRATION_OXYGEN, CALIBRATION_FAILED)
-                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply {
-                    this.dismiss()
-                }
+                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply { this.dismiss() }
                 showCalibrationErrorDialog("Calibration Stopped !! Pressure sensor not found")
+
                 prefManager?.setOxygenCalibration(
                     SensorCalibration(
                         AppUtils.getCurrentDateTime(),
                         Configs.SENSOR_CALIBRATION_FAILURE
                     )
                 )
-                systemDialogFragment?.takeIf { it.isVisible }
-                    ?.updateSensorsCalibrationStatusViaPreference()
-
+                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
             }
 
             ACK_CODE_5083 -> {
-                Log.i("CHECK_CALIB", "CaLLED 2")
+
                 callCalibrationApi(Configs.CALIBRATION_OXYGEN, CALIBRATION_FAILED)
-                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply {
-                    this.dismiss()
-                }
+                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply { this.dismiss() }
                 showCalibrationErrorDialog("Calibration Stopped !! No O2 Supply Connected")
+
                 prefManager?.setOxygenCalibration(
                     SensorCalibration(
                         AppUtils.getCurrentDateTime(),
                         Configs.SENSOR_CALIBRATION_FAILURE
                     )
                 )
-                systemDialogFragment?.takeIf { it.isVisible }
-                    ?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
             }
 
             ACK_CODE_5084 -> {
-                Log.i("CHECK_CALIB", "CaLLED 3")
                 callCalibrationApi(Configs.CALIBRATION_OXYGEN, CALIBRATION_FAILED)
-                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply {
-                    this.dismiss()
-                }
+                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply { this.dismiss() }
                 showCalibrationErrorDialog("Calibration Stopped due to low line pressure")
 
                 prefManager?.setOxygenCalibration(
@@ -1982,22 +1833,16 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         Configs.SENSOR_CALIBRATION_FAILURE
                     )
                 )
-                systemDialogFragment?.takeIf { it.isVisible }
-                    ?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
             }
 
             ACK_CODE_5140 -> {
-                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply {
-                    this.dismiss()
-                }
+                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply { this.dismiss() }
                 showO2RegulationDialog("Ventilator under O₂ regulator calibration")
             }
 
             ACK_CODE_5141 -> {
-
-                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply {
-                    this.dismiss()
-                }
+                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply { this.dismiss() }
             }
 
             ACK_CODE_5089 -> {
@@ -2008,34 +1853,21 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         Configs.SENSOR_CALIBRATION_SUCCESS
                     )
                 )
-                systemDialogFragment?.takeIf { it.isVisible }
-                    ?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
                 calibrationConfirmDialog?.dismiss()
             }
 
-            ACK_CODE_5051 -> {
+            ACK_CODE_5051 -> {}
 
-            }
+            ACK_CODE_5052 -> {}
 
-            ACK_CODE_5052 -> {
+            ACK_CODE_5053 -> {}
 
-            }
+            ACK_CODE_5054 -> {}
 
-            ACK_CODE_5053 -> {
+            ACK_CODE_5055 -> {}
 
-            }
-
-            ACK_CODE_5054 -> {
-
-            }
-
-            ACK_CODE_5055 -> {
-
-            }
-
-            ACK_CODE_5056 -> {
-
-            }
+            ACK_CODE_5056 -> {}
 
             ACK_CODE_5059 -> {
                 prefManager?.setOxygenCalibration(
@@ -2044,8 +1876,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         Configs.SENSOR_CALIBRATION_SUCCESS
                     )
                 )
-                systemDialogFragment?.takeIf { it.isVisible }
-                    ?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
                 calibrationConfirmDialog?.dismiss()
             }
 
@@ -2056,9 +1887,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             ACK_CODE_5072 -> {
 
                 callCalibrationApi(Configs.CALIBRATION_EXHALE_VALVE, CALIBRATION_FAILED)
-                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply {
-                    this.dismiss()
-                }
+                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply { this.dismiss() }
                 showCalibrationErrorDialog(
                     "Calibration Stopped due to Error : flow  ${mMainActivityViewModel.calibrationerrorflow.value}  " +
                             " Pressure : ${mMainActivityViewModel.calibrationerrorpressure.value}  Dutycycle : ${mMainActivityViewModel.calibrationerrordutycycle.value}"
@@ -2069,15 +1898,12 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         Configs.SENSOR_CALIBRATION_FAILURE
                     )
                 )
-                systemDialogFragment?.takeIf { it.isVisible }
-                    ?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
             }
 
             ACK_CODE_5073 -> {
                 callCalibrationApi(Configs.CALIBRATION_EXHALE_VALVE, CALIBRATION_FAILED)
-                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply {
-                    this.dismiss()
-                }
+                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply { this.dismiss() }
                 showCalibrationErrorDialog("Calibration Stopped due to Error !!")
 
                 prefManager?.setExhaleValveCalibration(
@@ -2086,15 +1912,12 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         Configs.SENSOR_CALIBRATION_FAILURE
                     )
                 )
-                systemDialogFragment?.takeIf { it.isVisible }
-                    ?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
             }
 
             ACK_CODE_5074 -> {
                 callCalibrationApi(Configs.CALIBRATION_EXHALE_VALVE, CALIBRATION_FAILED)
-                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply {
-                    this.dismiss()
-                }
+                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply { this.dismiss() }
                 showCalibrationErrorDialog("Calibration Stopped due to Error !! Fatal Error")
 
                 prefManager?.setExhaleValveCalibration(
@@ -2103,16 +1926,13 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         Configs.SENSOR_CALIBRATION_FAILURE
                     )
                 )
-                systemDialogFragment?.takeIf { it.isVisible }
-                    ?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
             }
 
 
             ACK_CODE_5075 -> {
                 callCalibrationApi(Configs.CALIBRATION_EXHALE_VALVE, CALIBRATION_FAILED)
-                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply {
-                    this.dismiss()
-                }
+                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply { this.dismiss() }
                 showCalibrationErrorDialog("Calibration Stopped due to Error !! Diaphragm not found")
 
                 prefManager?.setExhaleValveCalibration(
@@ -2121,25 +1941,16 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         Configs.SENSOR_CALIBRATION_FAILURE
                     )
                 )
-                systemDialogFragment?.takeIf { it.isVisible }
-                    ?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
             }
 
             ACK_CODE_5078 -> {
                 callCalibrationApi(Configs.CALIBRATION_EXHALE_VALVE, CALIBRATION_FAILED)
-                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply {
-                    this.dismiss()
-                }
+                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply { this.dismiss() }
                 showCalibrationErrorDialog("Calibration Stopped due to Error !! ADC not Connected")
 
-                prefManager?.setExhaleValveCalibration(
-                    SensorCalibration(
-                        AppUtils.getCurrentDateTime(),
-                        Configs.SENSOR_CALIBRATION_FAILURE
-                    )
-                )
-                systemDialogFragment?.takeIf { it.isVisible }
-                    ?.updateSensorsCalibrationStatusViaPreference()
+                prefManager?.setExhaleValveCalibration(SensorCalibration(AppUtils.getCurrentDateTime(), Configs.SENSOR_CALIBRATION_FAILURE))
+                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
             }
 
             ACK_CODE_5079 -> {
@@ -2150,8 +1961,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         Configs.SENSOR_CALIBRATION_SUCCESS
                     )
                 )
-                systemDialogFragment?.takeIf { it.isVisible }
-                    ?.updateSensorsCalibrationStatusViaPreference()
+
+                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
                 calibrationConfirmDialog?.dismiss()
             }
 
@@ -2160,18 +1971,12 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             }
 
             ACK_CODE_5095 -> {
-                Log.i("valuadadwad", "in success")
-                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply {
-                    this.dismiss()
-                }
+                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply { this.dismiss() }
             }
 
             ACK_CODE_5096 -> {
-                Log.i("valuadadwad", "in ack")
                 callCalibrationApi(Configs.CALIBRATION_TUBE_RESISTANCE, CALIBRATION_FAILED)
-                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply {
-                    this.dismiss()
-                }
+                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply { this.dismiss() }
                 showCalibrationErrorDialog(
                     "Tube Resistance calibration failed"
                 )
@@ -2181,8 +1986,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     prefManager?.readUHID().toString()
                 )
                 prefManager?.setResistanceTubeCalibrationStatus(false)
-                systemDialogFragment?.takeIf { it.isVisible }
-                    ?.updateSensorTubeResistanceCalibrationViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorTubeResistanceCalibrationViaPreference()
             }
 
             ACK_CODE_5101 -> {
@@ -2190,17 +1994,12 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             }
 
             ACK_CODE_5102 -> {
-
-                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply {
-                    this.dismiss()
-                }
+                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply { this.dismiss() }
             }
 
             ACK_CODE_5103 -> {
                 callCalibrationApi(Configs.CALIBRATION_TUBE_COMPLIANCE, CALIBRATION_FAILED)
-                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply {
-                    this.dismiss()
-                }
+                calibrationConfirmDialog?.takeIf { it.isShowing }?.apply { this.dismiss() }
                 showCalibrationErrorDialog(
                     "Tube Compliance calibration failed"
                     /*"Calibration Stopped due to Error : flow  ${mMainActivityViewModel.calibrationerrorflow.value}  " +
@@ -2208,8 +2007,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 )
 
                 prefManager?.setComplianceTubeCalibrationStatus(false)
-                systemDialogFragment?.takeIf { it.isVisible }
-                    ?.updateSensorTubeComplianceCalibrationViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorTubeComplianceCalibrationViaPreference()
 
                 addEvents(
                     "Tube Compliance Calibration Failed",
@@ -2225,47 +2023,22 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             }
 
             ACK_CODE_16 -> {
-                Log.d(
-                    "ackvaluemessage", "$ACK_CODE_16   ${
-                        MessageFactory.getAckMessage(
-                            this@MainActivity,
-                            ACK_CODE_16,
-                            prefManager?.readLastVentMode()
-                        )
-                    }"
-                )
                 mMainActivityViewModel.setBAtteryConnectedFlag(false)
             }
 
 
             ACK_CODE_6 -> {
-                Log.d(
-                    "ackvaluemessage", "$ACK_CODE_6   ${
-                        MessageFactory.getAckMessage(
-                            this@MainActivity,
-                            ACK_CODE_6,
-                            prefManager?.readLastVentMode()
-                        )
-                    }"
-                )
                 mMainActivityViewModel.setBAtteryConnectedFlag(true)
             }
         }
     }
 
     private fun onDeviceConnect() {
-        Log.i("connection_state", "ondeviceconnect in main")
-        Log.i("handshake_check", "ondevice connect")
         // FOR ALLOWING SCREEN AUTO LOCK
         AppUtils.keepScreenAlive(this@MainActivity, true)
-        Log.i("handshake_check", "onServiceConnect Second")
         communicationService?.takeIf { it.isPortsConnected }?.apply {
             validateConnectionState()
             if (!isReadingFromConnection) {
-                Log.i(
-                    "SERVICE_CHECK",
-                    "connection status = $isPortsConnected during DEVICE_CONNECTED check"
-                )
                 isReadingFromConnection = true
                 startReading()
                 startPinging()

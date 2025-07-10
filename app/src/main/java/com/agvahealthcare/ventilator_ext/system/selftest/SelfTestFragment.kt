@@ -19,7 +19,8 @@ import kotlinx.android.synthetic.main.fragment_self_test.self_test_recycler_view
 
 data class SelfTestModelClass(
     val sensorName: String,
-    val sensorStatus: Int
+    val sensorStatus: Int,
+    val sensorValue: String
 )
 
 class SelfTestFragment(private var communicationService: CommunicationService?) : Fragment() {
@@ -29,14 +30,18 @@ class SelfTestFragment(private var communicationService: CommunicationService?) 
     private var selfTestAdapter: SelfTestAdapter? = null
 
     private var listOfSensors = arrayListOf(
-        "Insp Flow Sensor",
-        "Exp Flow Sensor",
+        "CHECK I2C LINE",
         "ADC Response",
+        "Insp Flow Sensor",
+        "Exp Flow Sensor (SMI)",
         "Insp Pressure Sensor",
         "Exp Pressure Sensor",
+        "Battery Voltage",
+        "Battery Current",
         "Oxygen Pressure Sensor",
-        "Oxygen Voltage",
-        "Battery Current Sensor"
+        "Oxygen Sensor (Voltage)",
+        "NEO PCB CHECK",
+        "SPO2 SENSOR CHECK"
     )
 
     override fun onCreateView(
@@ -82,8 +87,8 @@ class SelfTestFragment(private var communicationService: CommunicationService?) 
 
         for (i in 0 until selfTestList.size) {
             if (selfTestList[i].isEmpty()) continue
-            val sensorStatus = if (selfTestList[i] == "1") 1 else 0
-            selfTestModelList.add(SelfTestModelClass(listOfSensors[i], sensorStatus))
+            val sensorStatus = if (selfTestList[i].split("|")[0] == "1") 1 else 0
+            selfTestModelList.add(SelfTestModelClass(listOfSensors[i], sensorStatus, selfTestList[i].split("|")[1]))
         }
         setupSelfTestAdapter(selfTestModelList)
     }
@@ -96,6 +101,7 @@ class SelfTestAdapter(private var selfTestList: ArrayList<SelfTestModelClass>) :
 
         val sensorName: TextView = itemView.findViewById(R.id.itemTitle)
         val sensorStatus: ImageView = itemView.findViewById(R.id.itemStatus)
+        val sensorValue: TextView = itemView.findViewById(R.id.itemValue)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SelfTestViewHolder {
@@ -112,6 +118,7 @@ class SelfTestAdapter(private var selfTestList: ArrayList<SelfTestModelClass>) :
         val selfTestItem = selfTestList[position]
 
         holder.sensorName.text = selfTestItem.sensorName
+        holder.sensorValue.text = selfTestItem.sensorValue
 
         if (selfTestItem.sensorStatus == 1) holder.sensorStatus.setImageResource(R.drawable.ic_green_circle_tick)
         else holder.sensorStatus.setImageResource(R.drawable.ic_red_cross)

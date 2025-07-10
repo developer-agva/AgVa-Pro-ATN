@@ -21,10 +21,6 @@ import kotlinx.android.synthetic.main.content_button_layout.view.*
 import kotlinx.android.synthetic.main.fragment_advanced_calibration.*
 import kotlinx.android.synthetic.main.fragment_advanced_calibration.capgif
 import kotlinx.android.synthetic.main.fragment_advanced_calibration.ventigif
-import kotlinx.android.synthetic.main.fragment_test_calib.tvMainTitleTestCalib
-import kotlinx.android.synthetic.main.fragment_test_calib.tvtext1
-import kotlinx.android.synthetic.main.fragment_test_calib.tvtext2
-import kotlinx.android.synthetic.main.fragment_test_calib.tvtext3
 
 class AdvancedCalibrationFragment(private var communicationService: CommunicationService?) :
     Fragment(), View.OnClickListener {
@@ -193,8 +189,6 @@ class AdvancedCalibrationFragment(private var communicationService: Communicatio
         setUpView()
         setUpOnClickListener()
 
-
-
         hideGoneFunction(true)
     }
 
@@ -303,6 +297,7 @@ class AdvancedCalibrationFragment(private var communicationService: Communicatio
                 ventigif.visibility = View.VISIBLE
                 capgif.visibility = View.GONE
             }
+
 
             includeButtonSendCmdAdvancedCalib.buttonView -> {
                 when (currentTag) {

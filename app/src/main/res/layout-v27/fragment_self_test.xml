@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".system.selftest.SelfTestFragment">
+
+    <TextView
+        android:id="@+id/self_test_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Self Test Window"
+        android:textAllCaps="true"
+        android:textSize="@dimen/_8sdp"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:fontFamily="@font/arial_bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/btnStartTest"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="@dimen/_3sdp"
+        android:background="@color/preCalib_amber"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/self_test_title"
+        app:layout_constraintBottom_toBottomOf="@id/self_test_title">
+
+        <TextView
+            android:id="@+id/txtTestStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_5sdp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/avenir_next_lt_pro_regular"
+            android:textStyle="bold"
+            android:text="Start Test"
+            android:textAllCaps="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        app:layout_constraintTop_toBottomOf="@id/self_test_title"
+        android:background="@color/black"
+        android:layout_marginTop="@dimen/_2sdp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/self_test_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        tools:listitem="@layout/self_test_single_test"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintTop_toBottomOf="@id/view"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/_10sdp"/>
+
+    <TextView
+        android:id="@+id/dataProcessingTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Data Processing..."
+        android:textAllCaps="true"
+        android:textSize="@dimen/_8sdp"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/_7sdp"
+        android:fontFamily="@font/avenir_next_lt_pro_medium"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="@id/self_test_recycler_view"
+        app:layout_constraintStart_toStartOf="@id/self_test_recycler_view"
+        app:layout_constraintEnd_toEndOf="@id/self_test_recycler_view"
+        app:layout_constraintBottom_toBottomOf="@id/self_test_recycler_view"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

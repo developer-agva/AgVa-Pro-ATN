@@ -2052,9 +2052,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     }
 
     private fun onDeviceDisconnect() {
-        Log.i("connection_state", "ondevicedisconnect in main")
-        Log.i("handshake_check", "ondevice disconnect")
-        // FOR ALLOWING SCREEN AUTO LOCK
         AppUtils.keepScreenAlive(this@MainActivity, false)
         stopHandshaking()
         if (isReadingFromConnection) {
@@ -2074,9 +2071,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         }
     }
 
-    /*
-  * This method will start handshaking countdown thread
-  */
     private fun startHandshakingWithThreadSafety() {
         Log.i("handshake_check", "in start handshaking thread safety")
         Handler(Looper.getMainLooper()).post {
@@ -2087,7 +2081,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             }
         }
     }
-
 
     private fun startHandshaking() {
         Log.i("handshake_check", "in start handshaking")
@@ -2124,21 +2117,16 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         }
     }
 
-    /*
-     * This method will stop handshaking thread
-     */
     private fun stopHandshaking() {
         Log.i("handshake_check", "in stop handshaking")
         isForKnob = null
         handshakingTask?.stop()
     }
 
-
     private fun saveTempPrefForExistingVentilation() {
         prefManager?.apply {
             val userid = readCurrentUid().toString()
-            tempPrefMapForExistingVentilationInteger["$userid.pref_ventilation_mode"] =
-                readVentilationMode()
+            tempPrefMapForExistingVentilationInteger["$userid.pref_ventilation_mode"] = readVentilationMode()
             tempPrefMapForExistingVentilationFloat["$userid.pref_pip"] = readPip()
             tempPrefMapForExistingVentilationFloat["$userid.pref_vti"] = readVti()
             tempPrefMapForExistingVentilationFloat["$userid.pref_rr"] = readRR()
@@ -2146,15 +2134,12 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             tempPrefMapForExistingVentilationFloat["$userid.pref_pplat"] = readPplat()
             tempPrefMapForExistingVentilationFloat["$userid.pref_peep"] = readPEEP()
             tempPrefMapForExistingVentilationFloat["$userid.pref_tisnp"] = readTinsp()
-            tempPrefMapForExistingVentilationFloat["$userid.pref_support_pressure"] =
-                readSupportPressure()
+            tempPrefMapForExistingVentilationFloat["$userid.pref_support_pressure"] = readSupportPressure()
             tempPrefMapForExistingVentilationFloat["$userid.pref_peak_flow"] = readPeakFlow()
             tempPrefMapForExistingVentilationFloat["$userid.pref_fio2"] = readFiO2()
-            tempPrefMapForExistingVentilationFloat["$userid.pref_insp_pause"] =
-                readInspiratoryPause()
+            tempPrefMapForExistingVentilationFloat["$userid.pref_insp_pause"] = readInspiratoryPause()
             tempPrefMapForExistingVentilationFloat["$userid.pref_peep_valve"] = readPeepValve()
-            tempPrefMapForExistingVentilationFloat["$userid.pref_target_volume"] =
-                readTargetVolume()
+            tempPrefMapForExistingVentilationFloat["$userid.pref_target_volume"] = readTargetVolume()
 
             tempPrefMapForExistingVentilationFloat["$userid.pref_frequency"] = readFrequency()
             tempPrefMapForExistingVentilationFloat["$userid.pref_flow"] = readFlow()
@@ -2164,9 +2149,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
             tempPrefMapForExistingVentilationFloat["$userid.pref_apnea_vti"] = readVtApnea()
             tempPrefMapForExistingVentilationFloat["$userid.pref_apnea_rr"] = readRRApnea()
-            tempPrefMapForExistingVentilationFloat["$userid.pref_apnea_trig_flow"] =
-                readTrigFlowApnea()
-
+            tempPrefMapForExistingVentilationFloat["$userid.pref_apnea_trig_flow"] = readTrigFlowApnea()
         }
     }
 
@@ -2228,7 +2211,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     Log.i("startupTurbine", "turbine error")
                 }
 
-
                 if (list.get(8) == "1") {
 
                 } else {
@@ -2244,14 +2226,12 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     tvsensor.setText("Inspiratory Flow Sensor Failed")
                 }
                 if (list.get(9) == "1") {
-//                tvsensor.setText("Inspiratory Pressure Sensor Pass")
                 } else {
                     layouterrorsensor.visibility = View.VISIBLE
                     ++i
                     tvsensor.setText("Inspiratory Pressure Sensor Failed")
                 }
                 if (list.get(10) == "1") {
-//                tvsensor.setText("O2 Pressure Sensor Pass")
                 } else {
                     layouterrorsensor.visibility = View.VISIBLE
                     ++i
@@ -2260,30 +2240,11 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
                 if (list.get(11) == "1") {
 
-//                tvsensor.setText("O2 Sensor Pass")
                 } else {
                     layouterrorsensor.visibility = View.VISIBLE
                     ++i
                     tvsensor.setText("O2 Sensor Failed")
                 }
-//                if (list.get(12) == "1") {
-//
-////                tvsensor.setText("Neo Sensor Pass")
-//                } else {
-//                    layouterrorsensor.visibility = View.VISIBLE
-//                    ++i
-//                    tvsensor.setText("Neo Sensor Disconnected")
-//                }
-
-//                if (list.get(13) == "1") {
-//
-////                tvsensor.setText("Neo Sensor Pass")
-//                } else {
-//                    layouterrorsensor.visibility = View.VISIBLE
-//                    ++i
-//                    tvsensor.setText("Neo Sensor Flow Check Failed")
-//                }
-
                 if (i > 1) {
                     tvsensor.text = "${tvsensor.text} + ${--i}"
                 }
@@ -2339,7 +2300,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         controlParameters[ControlSettingType.EtCuff]?.let {
             etCuffControlParameterList = it
         }
-//Inspiratory Termination Tile change
+
+        // Inspiratory Termination Tile change
         if (VentilatorApp.selectedOptions == SELECTED_OPTIONS.NON_INVASIVE_NAME) {
             if (requestedModeCode == MODE_NIV_BPAP || requestedModeCode == MODE_NIV_CPAP) {
                 advancedControlParameterList?.filter {
@@ -2352,7 +2314,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 advancedControlParameterList?.filter {
                     it.ventKey == LBL_TEXP
                 }?.apply {
-                    if (this.size != 0) {
+                    if (this.isNotEmpty()) {
                         this[0].reading = 75.0f.toInt().toString()
                         prefManager?.setTexp(75.0f)
                     }
@@ -2371,15 +2333,13 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 advancedControlParameterList?.filter {
                     it.ventKey == LBL_TEXP
                 }?.apply {
-                    if (this.size != 0) {
+                    if (this.isNotEmpty()) {
                         this[0].reading = 50.0f.toInt().toString()
                         prefManager?.setTexp(50.0f)
                     }
                 }
             }
-
         }
-
 
         prefManager?.apply {
             if (this@MainActivity.lastUhid != readUHID() && (backupControlParameterList == null || backupControlParameterList?.isEmpty() == true)) {
@@ -2449,14 +2409,11 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
             }
-
         } catch (e: Error) {
             Log.e("error", "Keyboard issue $e")
         }
         if (prefManager?.readUHID() != FIRST_FILTER_NAME) et_uhid.setText(prefManager?.readUHID())
-
         return true
-
     }
 
     private fun qrCode(inputValue: String): Bitmap? {
@@ -2482,12 +2439,10 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         } catch (e: WriterException) {
             e.printStackTrace()
         }
-
         return null
     }
 
     // knob highlight logic starts here
-
     private var highlightedIndex = 0
     private var visibilityTimeout: CountDownTimer? = null
 
@@ -2501,25 +2456,21 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             PREFIX_PLUS -> {
                 if (highlightedIndex < 16) highlightedIndex++
                 else highlightedIndex = 1
-
                 getViewForFocus(false)?.let { changeConstraintsOfFocusLayout(it) }
             }
 
             PREFIX_MINUS -> {
                 if (highlightedIndex > 1) highlightedIndex--
                 else highlightedIndex = 16
-
                 getViewForFocus(true)?.let { changeConstraintsOfFocusLayout(it) }
             }
 
             PREFIX_AND -> {
 
-                if (highlightedIndex == 6) {
-                    getViewForFocus(null)?.buttonMale?.callOnClick()
-                } else if (highlightedIndex == 7) {
-                    getViewForFocus(null)?.buttonFemale?.callOnClick()
-                } else {
-                    getViewForFocus(null)?.callOnClick()
+                when (highlightedIndex) {
+                    6 -> getViewForFocus(null)?.buttonMale?.callOnClick()
+                    7 -> getViewForFocus(null)?.buttonFemale?.callOnClick()
+                    else -> getViewForFocus(null)?.callOnClick()
                 }
             }
         }
@@ -2574,8 +2525,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     }
 
     private fun getViewForFocus(isMinus: Boolean?): View? {
-
-
         return when (highlightedIndex) {
             1 -> buttonModes
             2 -> buttonControls
@@ -2632,7 +2581,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     }
                 }
             }
-
             else -> null
         }
     }
@@ -2797,14 +2745,9 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
                 CoroutineScope(Dispatchers.Main).launch {
 
-
                     when (debugCommand) {
-
-
                         "Start Debug" -> {
-
                             systemDialogFragment?.let {
-
                                 if (it.isVisible) {
                                     it.switchBetweenDebugAndDiagnosticWindow("Debug")
                                 } else {
@@ -2823,7 +2766,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                                     systemDialogFragment?.isCancelable = false
                                 }
 
-                            } ?: kotlin.run {
+                            } ?:
+                            kotlin.run {
                                 highlightButton(buttonPreopCheck)
 
                                 systemDialogFragment = SystemDialogFragment.newInstance(
@@ -2851,7 +2795,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                                 sendDebugCommandInDebug(debugCommand)
                             }
                         }
-
                     }
                 }
             }
@@ -2887,7 +2830,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         "Start Diagnostic" -> {
 
                             systemDialogFragment?.let {
-
                                 if (it.isVisible) {
                                     it.switchBetweenDebugAndDiagnosticWindow("Diagnostic")
                                 } else {
@@ -2925,7 +2867,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         }
 
                         "Stop Diagnostic" -> {
-
                             systemDialogFragment?.takeIf { it.isVisible }?.apply {
                                 closeFragment()
                             }
@@ -2943,7 +2884,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     }
 
 
-    private fun HandleUIChanges() {
+    private fun handleUIChanges() {
         prefManager?.apply {
             if (readVentilatorType() == VentilatorType.ONLY_NEO) {
                 buttonNeonatal.visibility = View.VISIBLE
@@ -3066,7 +3007,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         lastUhid = prefManager?.readUHID().toString()
 
         setContentView(R.layout.activity_main)
-        HandleUIChanges()
+        handleUIChanges()
         hideSystemUI()
         neoSensorObserve()
         initView()
@@ -3077,15 +3018,13 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         normaliseButtons()
         disablePresence()
 
-        val deviceId =
-            Settings.Secure.getString(this@MainActivity.contentResolver, Settings.Secure.ANDROID_ID)
-        val input =
-            "https://wa.me/7330405060?text=Hi, i need support for this ventilator id - +${deviceId}"
+        val deviceId = Settings.Secure.getString(this@MainActivity.contentResolver, Settings.Secure.ANDROID_ID)
+        val input = "https://wa.me/7330405060?text=Hi, i need support for this ventilator id - +${deviceId}"
 
         val qrCodeBitmap = qrCode(input)
         qrCodeStandby.setImageBitmap(qrCodeBitmap)
 
-        //Location Update
+        // Location Update
         locationClient = DefaultLocationClient(
             applicationContext,
             LocationServices.getFusedLocationProviderClient(
@@ -3106,7 +3045,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 serviceScope.cancel()
 
                 CoroutineScope(Dispatchers.IO).launch {
-
                     if (ServerLogger.sendLocationRequest(
                             LocationFilter(this@MainActivity).getFullAddress(
                                 latitude,
@@ -3166,7 +3104,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 return false
             }
         })
-
         normalizeProgressBars()
 
         val am = getSystemService(AUDIO_SERVICE) as AudioManager
@@ -3181,7 +3118,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
     private fun setOpHoursInFile() {
         try {
-            // second installation time conditions
             if (prefManager?.readDashBoardRunningTime() == 0L) {
                 val data = FileLogger.readOPFile()
                 if (data != dataNotFound) {
@@ -3199,7 +3135,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
     private fun setServiceHoursInFile() {
         try {
-            // second installation time conditions
             if (prefManager?.readDashBoardRunningTimeForService() == 0L) {
                 val data = FileLogger.readServiceFile()
                 if (data != dataNotFound) {
@@ -3225,11 +3160,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 this@MainActivity.contentResolver,
                 Settings.Secure.ANDROID_ID
             )
-
             val response = ServerLogger.getVentiDetailsRequest(deviceId)
-            response?.let {
-                prefManager?.saveVentiDetails("${it.data.Ward_No},${it.data.Hospital_Name},${it.data.Department_Name}")
-            }
+            response?.let { prefManager?.saveVentiDetails("${it.data.Ward_No},${it.data.Hospital_Name},${it.data.Department_Name}") }
         }
 
         if (prefManager?.readLockedStatus() != "Unlocked") {
@@ -3238,7 +3170,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             isVentiLocked = true
             val lockedStatusData = "$deviceId,false,true,${prefManager?.readLockedStatus()}"
             mSocket?.emit("NodeReceivingLockedStatus", lockedStatusData)
-
             prefManager?.saveLockedStatus(prefManager?.readLockedStatus())
         }
     }
@@ -3296,15 +3227,11 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     }
 
     private fun checkStoragePermission() {
-        // Check if the storage permission has been granted
         if (checkSelfPermissionCompat(Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
             PackageManager.PERMISSION_GRANTED
         ) {
-            // start downloading
-            Log.i("testing_ota", "in check storage")
             downloadController.enqueueDownload()
         } else {
-            // Permission is missing and must be requested.
             requestStoragePermission()
         }
     }
@@ -3326,7 +3253,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 SplashActivity.PERMISSION_REQUEST_STORAGE
             )
         }
-
     }
 
     @SuppressLint("ResourceAsColor")
@@ -3335,7 +3261,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
         builder.setMessage("Due you want to install the updated file..")
         builder.setTitle(msg)
-
         builder.setIcon(R.drawable.ic_info_param)
         builder.setCancelable(false)
 
@@ -3354,10 +3279,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
         // Show the Alert Dialog box
         alertDialog.show()
-        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
-            .setTextColor(resources.getColor(R.color.white))
-        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
-            .setTextColor(resources.getColor(R.color.white))
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(resources.getColor(R.color.white))
+        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(resources.getColor(R.color.white))
     }
 
     override fun onRequestPermissionsResult(
@@ -3377,7 +3300,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         }
     }
 
-    //Service hours in hours and minutes.
     private fun calculateServiceHourInTime(): String {
         val totalRunningTime = prefManager?.readDashBoardRunningTimeForService() ?: 0L
         val hr = TimeUnit.MILLISECONDS.toHours(totalRunningTime)
@@ -3390,7 +3312,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         )
     }
 
-    //Operational hours in hours and minutes.
     private fun calculateOperationalHourInTime(): String {
         val totalRunningTime = prefManager?.readDashBoardRunningTime() ?: 0L
         val hr = TimeUnit.MILLISECONDS.toHours(totalRunningTime)
@@ -3495,9 +3416,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     }
 
     private fun showCalibrationDialog(dialogDisplayMessage: String) {
-        if (calibrationConfirmDialog?.isShowing() == true) return;
-        calibrationConfirmDialog =
-            DialogBoxFactory.showCalibrationStatusDialog(
+        if (calibrationConfirmDialog?.isShowing == true) return;
+        calibrationConfirmDialog = DialogBoxFactory.showCalibrationStatusDialog(
                 dialogDisplayMessage,
                 this@MainActivity
             ) { ->
@@ -3517,16 +3437,11 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     private fun initView() {
 
         includeButtonCalibrate.buttonView.text = "Here"
-        includeProgressHeight.param_progress_bar.background =
-            AppCompatResources.getDrawable(this, R.drawable.progresscircle)
-        includeProgressWeight.param_progress_bar.background =
-            AppCompatResources.getDrawable(this, R.drawable.progresscircle)
-        includeProgressAge.param_progress_bar.background =
-            AppCompatResources.getDrawable(this, R.drawable.progresscircle)
+        includeProgressHeight.param_progress_bar.background = AppCompatResources.getDrawable(this, R.drawable.progresscircle)
+        includeProgressWeight.param_progress_bar.background = AppCompatResources.getDrawable(this, R.drawable.progresscircle)
+        includeProgressAge.param_progress_bar.background = AppCompatResources.getDrawable(this, R.drawable.progresscircle)
 
         initViewViaPreferences()
-
-        Log.i("STAND_BY_STATUS", "Status" + isVentilatorInStandby())
 
         if (isVentilatorInStandby()) {
             textStandBy.visibility = View.VISIBLE
@@ -3564,12 +3479,9 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         initViewStandByTime()
     }
 
-    private fun initViewStandByTime() {
-        startTime()
-    }
+    private fun initViewStandByTime() { startTime() }
 
     private var isOSReboot = false
-
     private fun startTime() {
 
         val liveData: MutableLiveData<String> = MutableLiveData()
@@ -3588,11 +3500,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 val calendar = Calendar.getInstance()
                 val dayOfYear = calendar.get(Calendar.DAY_OF_YEAR)
 
-                androidx.media3.common.util.Log.i(
-                    "data_Date",
-                    "continues check - $isVentiLocked ,${prefManager?.readVentilatorNeedToLock()}" +
-                            ",$dayOfYear, $dispatchData"
-                )
                 if (((dayOfYear - dispatchData.toInt()) >= 10 && !isVentiLocked) && prefManager?.readVentilatorNeedToLock() == true) {
 
                     prefManager?.saveLockedStatus("Auto Locked")
@@ -3766,10 +3673,10 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             if (isExistingVentilationModeAvailable() && currentPatientType == prefManager?.readCurrentUid()
                     .toString()
             ) View.VISIBLE else View.INVISIBLE
-            layoutPanelMode.visibility =
-                if (isExistingVentilationModeAvailable()) View.VISIBLE else View.INVISIBLE
+            layoutPanelMode.visibility = if (isExistingVentilationModeAvailable()) View.VISIBLE else View.INVISIBLE
         }
     }
+
 
     private fun initBodyParamsViaPreferences() {
 
@@ -3801,6 +3708,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 includeProgressHeight.param_progress_bar.setCurrentProgress(it.toDouble())
                 includeProgressHeight.textView.text = it.toString()
             }
+
             readAge()?.toDouble()?.toInt()?.let {
                 includeProgressAge.param_progress_bar.setCurrentProgress(it.toDouble())
                 includeProgressAge.textView.text = it.toString()
@@ -3817,7 +3725,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
     private fun neoSensorObserve() {
         mMainActivityViewModel.isNeoNatalSensorConnected.observe(this) {
-
             if (it == true || prefManager?.readNeoNateActiveStatus() == true) {
                 normalizeNeoBtn()
                 if (prefManager?.readCurrentUid() == PatientProfile.TYPE_NEONAT) {
@@ -3831,14 +3738,11 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
     private fun setOnClickListener() {
 
-        prefManager?.readVentilationMode()?.apply {
-            buttonModes.isEnabled = isValidVentilatorMode(this@MainActivity, this)
-        }
+        prefManager?.readVentilationMode()?.apply { buttonModes.isEnabled = isValidVentilatorMode(this@MainActivity, this) }
         includeButtonCalibrate.buttonView.setOnClickListener(this)
         buttonControls.isClickable = true
         buttonAdult.isClickable = true
         buttonPediatric.isClickable = true
-//      buttonNeonatal.isEnabled = false
         batteryLayout.setOnClickListener(this)
         layouterrorsensor.setOnClickListener(this)
         layoutPanelPatientHeightMain.setOnClickListener(this)
@@ -3869,7 +3773,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         buttonNeonatal.setPadding(0, 25, 0, 25)
         buttonAdult.setPadding(0, 25, 0, 25)
         buttonPediatric.setPadding(0, 25, 0, 25)
-
         buttonStartExistingVentilation.setPadding(108, 25, 108, 25)
         buttonStartNewVentilation.setPadding(130, 25, 130, 25)
     }
@@ -3880,12 +3783,9 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             includeProgressWeight,
             includeProgressAge
         ).forEach {
-            (it.param_progress_bar as? CircularProgressIndicator)?.background =
-                ContextCompat.getDrawable(this, R.drawable.progresscircle)
-            (it.param_progress_bar as? CircularProgressIndicator)?.progressColor =
-                ContextCompat.getColor(this, R.color.racing_green)
-            (it.param_progress_bar as? CircularProgressIndicator)?.dotColor =
-                ContextCompat.getColor(this, R.color.racing_green)
+            (it.param_progress_bar as? CircularProgressIndicator)?.background = ContextCompat.getDrawable(this, R.drawable.progresscircle)
+            (it.param_progress_bar as? CircularProgressIndicator)?.progressColor = ContextCompat.getColor(this, R.color.racing_green)
+            (it.param_progress_bar as? CircularProgressIndicator)?.dotColor = ContextCompat.getColor(this, R.color.racing_green)
 
             it.textView.setTextColor(Color.WHITE)
         }
@@ -3894,8 +3794,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     private fun highlightProgressBar(view: View?) {
         normalizeProgressBars()
         view.let {
-            (it?.param_progress_bar as? CircularProgressIndicator)?.background =
-                ContextCompat.getDrawable(this, R.drawable.progresscircle_with_selection)
+            (it?.param_progress_bar as? CircularProgressIndicator)?.background = ContextCompat.getDrawable(this, R.drawable.progresscircle_with_selection)
             (it?.textView as? TextView)?.setTextColor(Color.BLACK)
         }
     }
@@ -3933,6 +3832,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         }
     }
 
+
     private fun normaliseButtons() {
         listOf<AppCompatButton>(
             buttonStartExistingVentilation,
@@ -3957,7 +3857,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 setTextColor(ContextCompat.getColor(this@MainActivity, R.color.black))
                 setPaddingOnButtons()
             }
-
         }
         setPaddingOnButtons()
     }
@@ -4005,11 +3904,10 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         customCountDownTimer?.stop()
 
         if (!isSocketStop) {
-            VentilatorApp.isLiveDataRequest = false
+            isLiveDataRequest = false
             mSocket?.emit("AndroidStopAuto", deviceId)
         }
 
-        // disconnect send command
         mSocket?.emit("AndroidDisconnect", deviceId)
         mSocket?.disconnect()
 
@@ -4057,8 +3955,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 Log.i("CHECK_HERE_MODE", VentilatorApp.selectedOptions.toString())
 
                 if (isExistingVentilation == true) {
-//                    if (VentilatorApp.selectedOptions == SELECTED_OPTIONS.NON_INVASIVE_NAME && (mode == MODE_NIV_CPAP)) send(Configs.INV_CPAP.toString())
-//                    else if (VentilatorApp.selectedOptions == SELECTED_OPTIONS.NON_INVASIVE_NAME && (mode == MODE_NIV_BPAP)) send(Configs.INV_BPAP.toString())
                     if (VentilatorApp.selectedOptions == SELECTED_OPTIONS.PRONGS_NAME && (mode != MODE_NC_CPAP && mode != MODE_HFNC)) send(
                         MODE_NC_IPPV.toString()
                     )
@@ -4068,8 +3964,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         send(mode.toString())
                     }
                 } else {
-//                    if (VentilatorApp.selectedOptions == SELECTED_OPTIONS.NON_INVASIVE_NAME && (mode == MODE_NIV_CPAP)) send(Configs.INV_CPAP.toString())
-//                    else if (VentilatorApp.selectedOptions == SELECTED_OPTIONS.NON_INVASIVE_NAME && (mode == MODE_NIV_BPAP)) send(Configs.INV_BPAP.toString())
                     if (VentilatorApp.selectedOptions == SELECTED_OPTIONS.PRONGS_NAME && (mode != MODE_NC_CPAP && mode != MODE_HFNC)) send(
                         MODE_NC_IPPV.toString()
                     )
@@ -4084,9 +3978,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         }
     }
 
-    /*
- * This method start pinging to ventilator
- */
     private fun startPinging() {
         communicationService?.apply {
             if (pingingTask == null) pingingTask = PingingTask(this)
@@ -4095,9 +3986,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
     }
 
-    /*
-* This method stop pinging to ventilator
-*/
     private fun stopPinging() {
         pingingTask?.apply {
             if (isRunning) stop()

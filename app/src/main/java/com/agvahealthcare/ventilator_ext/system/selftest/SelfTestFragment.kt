@@ -15,6 +15,8 @@ import com.agvahealthcare.ventilator_ext.MainActivityViewModel
 import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
 import com.agvahealthcare.ventilator_ext.service.CommunicationService
+import kotlinx.android.synthetic.main.fragment_self_test.btnBack
+import kotlinx.android.synthetic.main.fragment_self_test.btnStartTest
 import kotlinx.android.synthetic.main.fragment_self_test.dataProcessingTextView
 import kotlinx.android.synthetic.main.fragment_self_test.self_test_recycler_view
 
@@ -78,13 +80,40 @@ class SelfTestFragment(private var communicationService: CommunicationService?) 
 
         selfTestViewModel?.selfTestData?.observe(viewLifecycleOwner) { selfTestData ->
             dataProcessingTextView.visibility = View.GONE
+            btnBack.visibility = View.GONE
+            btnStartTest.visibility =View.VISIBLE
             if (selfTestData.isNotEmpty() && selfTestData != "null") {
                 showDataOnUI(selfTestData)
             }
         }
 
-    }
+        selfTestViewModel?.sensorTestData?.observe(viewLifecycleOwner) {
+            dataProcessingTextView.visibility = View.GONE
+            btnBack.visibility = View.VISIBLE
+            btnStartTest.visibility =View.GONE
+            if (it.isNotEmpty() && it != null){
+                showDataOnUI(it)
+            }
+        }
 
+        btnStartTest.setOnClickListener {
+            dataProcessingTextView.visibility = View.VISIBLE
+
+            // remove old data with filling empty array
+            setupSelfTestAdapter(ArrayList())
+            communicationService?.send("CM+SELF2")
+        }
+
+        btnBack.setOnClickListener {
+            dataProcessingTextView.visibility = View.VISIBLE
+
+            // remove old data with filling empty array
+            setupSelfTestAdapter(ArrayList())
+            communicationService?.send("CM+SELF1")
+        }
+
+    }
+    
     private fun showDataOnUI(selfTestData: String) {
         Log.i("SelfTestFragment", "Received self test data: $selfTestData")
         val selfTestList = selfTestData.split(",") as ArrayList<String>
@@ -129,7 +158,7 @@ class SelfTestAdapter(private var selfTestList: ArrayList<SelfTestModelClass>) :
     override fun onBindViewHolder(holder: SelfTestViewHolder, position: Int) {
         val selfTestItem = selfTestList[position]
 
-        if (position == 0){
+        if (position == 0) {
             holder.sensorStatusHeading.visibility = View.VISIBLE
             holder.sensorTitleHeading.visibility = View.VISIBLE
             holder.sensorValueHeading.visibility = View.VISIBLE
@@ -137,6 +166,7 @@ class SelfTestAdapter(private var selfTestList: ArrayList<SelfTestModelClass>) :
             holder.sensorStatus.visibility = View.GONE
             holder.sensorName.visibility = View.GONE
             holder.sensorValue.visibility = View.GONE
+
         } else {
             holder.sensorStatusHeading.visibility = View.GONE
             holder.sensorTitleHeading.visibility = View.GONE
@@ -150,7 +180,6 @@ class SelfTestAdapter(private var selfTestList: ArrayList<SelfTestModelClass>) :
         holder.sensorStatusHeading.text = selfTestItem.sensorStatusText
         holder.sensorValueHeading.text = selfTestItem.sensorValue
         holder.sensorTitleHeading.text = selfTestItem.sensorName
-
         holder.sensorName.text = selfTestItem.sensorName
         holder.sensorValue.text = selfTestItem.sensorValue
 

@@ -563,6 +563,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     private fun getIntentFilter(): IntentFilter {
         val intentFilter = IntentFilter()
         intentFilter.addAction(IntentFactory.ACTION_SELF_TEST_DATA_AVAILABLE)
+        intentFilter.addAction(IntentFactory.ACTION_SENSOR_TEST_DATA_AVAILABLE)
         intentFilter.addAction(IntentFactory.ACTION_HANDSHAKE_TIMEOUT)
         intentFilter.addAction(IntentFactory.ACTION_DEVICE_CONNECTED)
         intentFilter.addAction(IntentFactory.ACTION_O2_REGILATION_TOOL_CHECK)
@@ -773,6 +774,13 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         val data = intent.getStringExtra(SELF_TEST_CHECK)
                         data?.takeIf { it.isNotEmpty() }?.apply {
                             mSelfTestViewModel.selfTestData.postValue(this)
+                        }
+                    }
+
+                    IntentFactory.ACTION_SENSOR_TEST_DATA_AVAILABLE -> {
+                        val data = intent.getStringExtra(SENSOR_TEST_CHECK)
+                        data?.takeIf { it.isNotEmpty() }?.apply {
+                            mSelfTestViewModel.sensorTestData.postValue(this)
                         }
                     }
 

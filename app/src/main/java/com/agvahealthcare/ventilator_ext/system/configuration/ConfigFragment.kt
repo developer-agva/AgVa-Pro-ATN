@@ -134,6 +134,7 @@ class ConfigFragment : Fragment() {
             preferenceManager?.saveRolloverModifierStatus(!preferenceManager?.readRolloverModifierStatus()!!)
             initOthersFromPreferences()
         }
+
     }
 
     private fun broadcastAcknowledgement(ack: String) {
@@ -143,7 +144,6 @@ class ConfigFragment : Fragment() {
     }
 
     private fun broadcastTubeComplianceResponse(tubeComplianceResponse: String) {
-        Log.i("testingCompliance", "DATA : $tubeComplianceResponse")
         preferenceManager?.setTubeComplianceCalibrationDate()
         val i = Intent(IntentFactory.ACTION_COMPLIANCE_CALIBRATION_RESPONSE)
         i.putExtra(TUBE_COMPLIANCE_CALIBRATION, tubeComplianceResponse)
@@ -151,7 +151,6 @@ class ConfigFragment : Fragment() {
     }
 
     private fun broadcastTubeResistanceResponse(tubeResistanceResponse: String) {
-        Log.i("testingResistance", "DATA : $tubeResistanceResponse")
         preferenceManager?.setTubeResistanceCalibrationDate()
         val i = Intent(IntentFactory.ACTION_RESISTANCE_CALIBRATION_RESPONSE)
         i.putExtra(TUBE_RESISTANCE_CALIBRATION, tubeResistanceResponse)
@@ -225,11 +224,7 @@ class ConfigFragment : Fragment() {
             if (readOxygenCalibrationStatus()) btnOxygen.setBackgroundColor(resources.getColor(R.color.racing_green))
             else btnOxygen.setBackgroundColor(resources.getColor(R.color.light_grey))
 
-            if (readExhaleValveCalibrationStatus()) btnExhaleValve.setBackgroundColor(
-                resources.getColor(
-                    R.color.racing_green
-                )
-            )
+            if (readExhaleValveCalibrationStatus()) btnExhaleValve.setBackgroundColor(resources.getColor(R.color.racing_green))
             else btnExhaleValve.setBackgroundColor(resources.getColor(R.color.light_grey))
 
             if (readExpFlowCalibrationStatus()) btnExpFlow.setBackgroundColor(resources.getColor(R.color.racing_green))
@@ -244,11 +239,7 @@ class ConfigFragment : Fragment() {
             if (readLeakTestCalibrationStatus()) btnLeakTest.setBackgroundColor(resources.getColor(R.color.racing_green))
             else btnLeakTest.setBackgroundColor(resources.getColor(R.color.light_grey))
 
-            if (readComplianceTubeCalibrationStatus()) btnTubeComp.setBackgroundColor(
-                resources.getColor(
-                    R.color.racing_green
-                )
-            )
+            if (readComplianceTubeCalibrationStatus()) btnTubeComp.setBackgroundColor(resources.getColor(R.color.racing_green))
             else btnTubeComp.setBackgroundColor(resources.getColor(R.color.light_grey))
 
             if (readResistanceTubeCalibrationStatus()) btnTubeResistance.setBackgroundColor(

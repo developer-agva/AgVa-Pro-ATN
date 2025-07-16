@@ -20,6 +20,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <ImageView
+        android:layout_width="@dimen/_15sdp"
+        android:layout_height="@dimen/_15sdp"
+        android:id="@+id/btnBack"
+        android:src="@drawable/back_button_calib"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/_3sdp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@id/self_test_title"
+        app:layout_constraintBottom_toBottomOf="@id/self_test_title"/>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/btnStartTest"
         android:layout_width="@dimen/_50sdp"

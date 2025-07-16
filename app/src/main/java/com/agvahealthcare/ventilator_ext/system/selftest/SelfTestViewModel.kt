@@ -7,4 +7,5 @@ import androidx.lifecycle.MutableLiveData
 class SelfTestViewModel(application: Application) : AndroidViewModel(application) {
 
     var selfTestData = MutableLiveData<String>()
+    var sensorTestData = MutableLiveData<String>()
 }

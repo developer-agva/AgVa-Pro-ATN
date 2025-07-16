@@ -8,6 +8,7 @@ import static com.agvahealthcare.ventilator_ext.utility.ConstantKt.MUTE_UNMUTE_R
 import static com.agvahealthcare.ventilator_ext.utility.ConstantKt.OR_TOOL_CHECK;
 import static com.agvahealthcare.ventilator_ext.utility.ConstantKt.SELF_TEST_CHECK;
 import static com.agvahealthcare.ventilator_ext.utility.ConstantKt.SENSOR_ANALYSIS;
+import static com.agvahealthcare.ventilator_ext.utility.ConstantKt.SENSOR_TEST_CHECK;
 import static com.agvahealthcare.ventilator_ext.utility.ConstantKt.TUBE_COMPLIANCE_CALIBRATION;
 import static com.agvahealthcare.ventilator_ext.utility.ConstantKt.TUBE_RESISTANCE_CALIBRATION;
 import static com.agvahealthcare.ventilator_ext.utility.ConstantKt.USB_HID_DATA;
@@ -222,6 +223,15 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
                                 Log.i("CHECK_SELF_TEST_DATA", selfTestData);
                                 broadcastSelfTestData(selfTestData);
                                 dataBufferVentilator.delete(selfTestStartIndex, selfTestTerminalIndex + 1);
+                            }
+                        } else if (buffData.contains("M@")) {
+                            int sensorTestStartIndex = buffData.indexOf("M@");
+                            int sensorTestTerminalIndex = buffData.indexOf("!");
+                            if (sensorTestStartIndex < sensorTestTerminalIndex) {
+                                String sensorTestData = buffData.substring(sensorTestStartIndex + 2, sensorTestTerminalIndex);
+                                Log.i("CHECK_SELF_TEST_DATA", sensorTestData);
+                                broadcastSensorTestData(sensorTestData);
+                                dataBufferVentilator.delete(sensorTestStartIndex, sensorTestTerminalIndex + 1);
                             }
                         } else if (buffData.contains(Configs.PREFIX_OR_START)) {
 
@@ -1017,6 +1027,16 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
             Log.i("SELF_TEST_CHECK", "DATA : " + data);
             Intent i = new Intent(IntentFactory.ACTION_SELF_TEST_DATA_AVAILABLE);
             i.putExtra(SELF_TEST_CHECK, data);
+            sendBroadcast(i);
+        }
+    }
+
+    @Override
+    protected void broadcastSensorTestData(String data) {
+        if (data != null) {
+            Log.i("SENSOR_TEST_CHECK", "DATA : " + data);
+            Intent i = new Intent(IntentFactory.ACTION_SENSOR_TEST_DATA_AVAILABLE);
+            i.putExtra(SENSOR_TEST_CHECK, data);
             sendBroadcast(i);
         }
     }

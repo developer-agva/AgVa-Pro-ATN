@@ -131,7 +131,7 @@
         app:layout_constraintStart_toEndOf="@id/includeButtonInspFlowSensor"
         app:layout_constraintTop_toTopOf="@id/includeButtonInspFlowSensor" />
 
-
+    
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvInspFlowSensor"
         android:layout_width="wrap_content"
@@ -144,7 +144,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/includeButtonInspFlowSensor"
         app:layout_constraintStart_toEndOf="@id/ivInspFlowSensorStatus"
-        app:layout_constraintTop_toBottomOf="@id/includeButtonInspFlowSensor" />
+        app:layout_constraintTop_toTopOf="@id/includeButtonInspFlowSensor" />
 
     <!--    o2 sensor layout-->
     <include

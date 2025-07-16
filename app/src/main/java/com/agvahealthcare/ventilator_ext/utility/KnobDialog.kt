@@ -85,9 +85,9 @@ class KnobDialog : DialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         prefManager = PreferenceManager(requireContext());
-        mDashBoardViewModel =
-            ViewModelProvider(requireActivity()).get(DashBoardViewModel::class.java)
-        return inflater.inflate(R.layout.progress_dialog_view, container, false)
+        mDashBoardViewModel = ViewModelProvider(requireActivity()).get(DashBoardViewModel::class.java)
+        val view = inflater.inflate(R.layout.progress_dialog_view, container, false)
+        return view
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -117,6 +117,8 @@ class KnobDialog : DialogFragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("ClickableViewAccessibility")
     private fun setupView(view: View) {
+
+        Log.i("GenerationLag",view.toString())
 
         view.includeAccept.buttonView.text = "Accept"
         view.includeAccept.buttonView.textAlignment = View.TEXT_ALIGNMENT_CENTER

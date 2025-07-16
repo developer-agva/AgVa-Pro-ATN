@@ -19,7 +19,7 @@ class DataFromDataBaseAdapter(private var dataList: ArrayList<String>) :
     fun updateDataList(newList: ArrayList<String>) {
         dataList.clear()
         val paramList =
-            "Parameter,Mode,PIP,PEEP,Mean Airway,Vti,Vte,MVe,MVi,FiO₂,RR,I:E,Tinsp,Texp,Average Leak,Spo2,PR,Dyn Comp.,Spont VT,Spont RR"
+            "Parameter,Mode,PIP,PEEP,Mean Airway,Vti,Vte,MVe,MVi,FiO₂,RR,I:E,Tinsp,Texp,Avg Leak,Spo2,PR,Dyn Comp.,Spont VT,Spont RR"
         val unitList =
             "Unit,Mode Type,cmH₂O,cmH₂O,cmH₂O,mL,mL,litre,litre,%,BPM,Ratio,sec,sec,%,%,BPM,mL/cmH₂O,mL,BPM"
 

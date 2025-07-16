@@ -35,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.68" />
+        app:layout_constraintGuide_percent="0.66" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/horizontal2"
@@ -482,7 +482,7 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imageViewAlarm"
             android:layout_width="40dp"
-            android:layout_height="@dimen/_8sdp"
+            android:layout_height="@dimen/_6sdp"
             android:layout_gravity="center"
             android:layout_weight="1.0"
             android:visibility="visible"
@@ -497,7 +497,7 @@
             android:text="00 : 00"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="@dimen/_7sdp"
+            android:textSize="@dimen/_5sdp"
             android:visibility="gone" />
 
         <TextView
@@ -509,7 +509,7 @@
             android:text="Audio Paused"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="@dimen/_3sdp"
+            android:textSize="8sp"
             android:visibility="gone" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>

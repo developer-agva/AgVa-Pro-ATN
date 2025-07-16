@@ -45,8 +45,6 @@ class GeneralGraphicalToolTipFragment : GraphicTooltipFragment("SettingPcv") {
             width?.let { args.putInt(KEY_WIDTH, it) }
             status?.let { args.putBoolean(KEY_STATUS, it) }
 
-            Log.i("valueHieght","$height, $width")
-
             return GeneralGraphicalToolTipFragment().apply {
                 this.closeListener = closeListener
                 this.modeCode = mode
@@ -60,7 +58,10 @@ class GeneralGraphicalToolTipFragment : GraphicTooltipFragment("SettingPcv") {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        return inflater.inflate(R.layout.fragment_pcv_setting_dialog, container, false)
+        val view = inflater.inflate(R.layout.fragment_pcv_setting_dialog, container, false)
+
+
+        return view
 
     }
 
@@ -332,11 +333,8 @@ fun GeneralGraphicalToolTipFragment.setHeightWidth(
             params.x = 80
             params.y = 10
 
-//            params.height = 480
-            if (Build.VERSION.SDK_INT >= 27) params.height = 400 else params.height = 390
-            if (Build.VERSION.SDK_INT >= 27) params.width = 690 else params.width = 704
-
-            Log.i("valueHieght","${params.height}, ${params.width}")
+            params.height = 400
+            params.width = 780
 
             params.dimAmount = 0.0F
             params.screenBrightness = 5.0F
@@ -344,7 +342,6 @@ fun GeneralGraphicalToolTipFragment.setHeightWidth(
             attributes = params
         }
     }
-
 
 
     hideSystemUI()

@@ -85,7 +85,7 @@
                 android:id="@+id/textViewTinsp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_25sdp"
+                android:layout_marginStart="@dimen/_33sdp"
                 android:layout_marginTop="@dimen/_19sdp"
                 android:text="@string/inhale_time"
                 android:theme="@style/subheading_text_style_graph_mini" />
@@ -96,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|top"
                 android:layout_marginTop="@dimen/_19sdp"
-                android:layout_marginEnd="@dimen/_57sdp"
+                android:layout_marginEnd="@dimen/_78sdp"
                 android:text="@string/inhale_time"
                 android:theme="@style/subheading_text_style_graph_mini" />
 
@@ -105,19 +105,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|right"
-                android:layout_marginRight="@dimen/_6sdp"
+                android:layout_marginRight="@dimen/_28sdp"
                 android:layout_marginTop="78dp"
                 android:text="@string/ps"
                 android:textAllCaps="true"
                 android:theme="@style/subheading_text_style_graph_mini" />
-
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textViewPeepPi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|center"
-                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_32sdp"
                 android:text="@string/pi"
                 android:theme="@style/subheading_text_style_graph_mini" />
 
@@ -127,7 +126,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|top"
                 android:layout_marginTop="@dimen/_11sdp"
-                android:layout_marginRight="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_25sdp"
                 android:visibility="gone"
                 android:text="@string/pinsp"
                 android:textAllCaps="true"
@@ -149,7 +148,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|right"
-                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_32sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:text="@string/spontaneous_breathe"
                 android:textAllCaps="true"
@@ -160,7 +159,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|right"
-                android:layout_marginRight="@dimen/_55sdp"
+                android:layout_marginRight="@dimen/_77sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:text="@string/control_breathe"
                 android:textAllCaps="true"
@@ -171,7 +170,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|center"
-                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_30sdp"
                 android:layout_marginTop="44dp"
                 android:text="@string/trig_exp"
                 android:textAllCaps="true"

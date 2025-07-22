@@ -61,6 +61,7 @@ class VolumeChartFragment : GraphFragment() {
     private var minValue: Int? = 0
     private var maxValue: Int? = 0
     val titleStyle = FontStyle(14.0f, ColorUtil.White)
+    val titleXStyle = FontStyle(14.0f, ColorUtil.Black)
     private var mDashBoardViewModel: DashBoardViewModel? = null
 
     // created at 20 jan 2023
@@ -126,7 +127,7 @@ class VolumeChartFragment : GraphFragment() {
         val xPrimaryAxis: IAxis = sciChartBuilder.newNumericAxis()
             .withVisibleRange(DoubleRange(0.0, GRAPH_THRESHOLD.toDouble()))
             .withMaxAutoTicks(30)
-            .withTickLabelStyle(titleStyle)
+            .withTickLabelStyle(titleXStyle)
             .withAxisId("Visible Axis")
             .withAutoRangeMode(AutoRange.Never)
             .build()
@@ -134,7 +135,7 @@ class VolumeChartFragment : GraphFragment() {
         val xSecondaryAxis: IAxis = sciChartBuilder.newNumericAxis()
             .withVisibleRange(DoubleRange(0.0, xMaxRangeGlobal))
             .withMaxAutoTicks(5)
-            .withTickLabelStyle(titleStyle)
+            .withTickLabelStyle(titleXStyle)
             .withAxisId("HiddenXAxis")
             .withAutoRangeMode(AutoRange.Never)
             .build()

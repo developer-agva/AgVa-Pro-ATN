@@ -862,14 +862,8 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
     }
 
     fun updateSensorsCalibrationStatusViaPreference() {
-        testCalibrationFragment?.takeIf { it.isVisible }
-            ?.apply {
-                updateSensorCalibrationStatus()
-            }
-        advancedCalibrationFragment?.takeIf { it.isVisible }
-            ?.apply {
-                updateSensorCalibrationStatus()
-            }
+        testCalibrationFragment?.takeIf { it.isVisible }?.apply { updateSensorCalibrationStatus() }
+        advancedCalibrationFragment?.takeIf { it.isVisible }?.apply { updateSensorCalibrationStatus() }
     }
 
     fun updateOxygenCalibrateProgressStatus(
@@ -887,42 +881,24 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
     }
 
     fun setSoftWareUpdate(softwareUpdate: String?) {
-        infoFragment?.takeIf { it.isVisible }?.apply {
-            setSoftWareUpdate(softwareUpdate)
-        }
+        infoFragment?.takeIf { it.isVisible }?.apply { setSoftWareUpdate(softwareUpdate) }
     }
 
-    fun updateXValue(data: String?){
-        networkFragment?.takeIf { it.isVisible }?.apply {
-            updateKnobRawData(data.toString())
-        }
+    fun updateXValue(data: String?) {
+        networkFragment?.takeIf { it.isVisible }?.apply { updateKnobRawData(data.toString()) }
     }
 
     fun updateKnob(data: String?) {
-        settingFragment?.takeIf { it.isVisible }?.apply {
-            updateKnobSetting(data.toString())
-        }
-        networkFragment?.takeIf { it.isVisible }?.apply {
-            updateKnobRawData(data.toString())
-        }
-        diagnosticCheckFragment?.takeIf { it.isVisible }?.apply {
-            updateValueOnKnobChange(data)
-        }
-        advancedCalibrationFragment?.takeIf { it.isVisible }?.apply {
-            updateValueOnKnobChange(data)
-        }
-        o2RegulationFragment?.takeIf { it.isVisible }?.apply {
-            updateValueOnKnobChange(data)
-        }
-        serviceFragment?.takeIf { it.isVisible }?.apply {
-            updateValueOnKnobChange(data)
-        }
+        settingFragment?.takeIf { it.isVisible }?.apply { updateKnobSetting(data.toString()) }
+        networkFragment?.takeIf { it.isVisible }?.apply { updateKnobRawData(data.toString()) }
+        diagnosticCheckFragment?.takeIf { it.isVisible }?.apply { updateValueOnKnobChange(data) }
+        advancedCalibrationFragment?.takeIf { it.isVisible }?.apply { updateValueOnKnobChange(data) }
+        o2RegulationFragment?.takeIf { it.isVisible }?.apply { updateValueOnKnobChange(data) }
+        serviceFragment?.takeIf { it.isVisible }?.apply { updateValueOnKnobChange(data) }
     }
 
     fun updateAck(){
-        configFragment?.takeIf { it.isVisible }?.apply {
-            initCalibrationFromPreferences()
-        }
+        configFragment?.takeIf { it.isVisible }?.apply { initCalibrationFromPreferences() }
     }
 
     override fun closeDialog() {}
@@ -942,6 +918,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                     SystemFragmentButtonTypes.Network_Info
                 )
             )
+
             if (!dataListSystemItems.contains(
                     SystemButtonModelClass(
                         getString(R.string.hint_debug),
@@ -981,6 +958,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                         SystemFragmentButtonTypes.Wifi
                     )
                 )
+
                 if (!dataListSystemItems.contains(
                         SystemButtonModelClass(
                             getString(R.string.hint_ota),
@@ -1011,7 +989,9 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                 )
             }
         }
+
         else if (passWord == "8085"){
+
             if (!dataListSystemItems.contains(
                     SystemButtonModelClass(
                         getString(R.string.hint_diagnos),
@@ -1024,18 +1004,20 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                     SystemFragmentButtonTypes.Diagnos
                 )
             )
-//            if (!dataListSystemItems.contains(
-//                    SystemButtonModelClass(
-//                        getString(R.string.hint_self_test),
-//                        SystemFragmentButtonTypes.Self_Test
-//                    )
-//                )
-//            ) dataListSystemItems.add(
-//                SystemButtonModelClass(
-//                    getString(R.string.hint_self_test),
-//                    SystemFragmentButtonTypes.Self_Test
-//                )
-//            )
+
+            if (!dataListSystemItems.contains(
+                    SystemButtonModelClass(
+                        getString(R.string.hint_self_test),
+                        SystemFragmentButtonTypes.Self_Test
+                    )
+                )
+            ) dataListSystemItems.add(
+                SystemButtonModelClass(
+                    getString(R.string.hint_self_test),
+                    SystemFragmentButtonTypes.Self_Test
+                )
+            )
+
             if (!dataListSystemItems.contains(
                     SystemButtonModelClass(
                         getString(R.string.hint_reg_o2),
@@ -1048,6 +1030,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                     SystemFragmentButtonTypes.O2_Reg
                 )
             )
+
             if (!dataListSystemItems.contains(
                     SystemButtonModelClass(
                         getString(R.string.hint_update),
@@ -1060,6 +1043,7 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                     SystemFragmentButtonTypes.Device_Update
                 )
             )
+
             if (!dataListSystemItems.contains(
                     SystemButtonModelClass(
                         getString(R.string.hint_advanced_calib),

@@ -28,6 +28,22 @@
         android:visibility="visible" />
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/txtMinLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:translationZ="@dimen/_5sdp"
+        android:text="0"
+        android:padding="@dimen/_2sdp"
+        android:textColor="#FFFFFF"
+        android:textSize="@dimen/_4sdp"
+        android:layout_marginTop="@dimen/_1sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        app:layout_constraintBottom_toBottomOf="@id/chartSurface"
+        app:layout_constraintStart_toStartOf="parent"
+        android:fontFamily="@font/avenir_next_lt_pro_regular"
+        android:visibility="visible" />
+
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/txtMaxLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

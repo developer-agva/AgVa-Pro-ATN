@@ -61,6 +61,7 @@ class FlowChartFragment : GraphFragment() {
     private var minValue: Int? = 0
     private var maxValue: Int? = 0
     val titleStyle = FontStyle(14.0f, ColorUtil.White)
+    val titleXStyle = FontStyle(14.0f, ColorUtil.Black)
     private var prefManager: PreferenceManager? = null
     private var mDashBoardViewModel: DashBoardViewModel? = null
 
@@ -138,14 +139,14 @@ class FlowChartFragment : GraphFragment() {
         val xPrimaryAxis: IAxis = sciChartBuilder.newNumericAxis()
             .withVisibleRange(DoubleRange(0.0, GRAPH_THRESHOLD.toDouble()))
             .withAutoRangeMode(AutoRange.Never)
-            .withTickLabelStyle(titleStyle)
+            .withTickLabelStyle(titleXStyle)
             .withAxisId("Visible Axis")
             .withMaxAutoTicks(0)
             .build()
         val xSecondaryAxis: IAxis = sciChartBuilder.newNumericAxis()
             .withVisibleRange(DoubleRange(0.0, xMaxRangeGlobal))
             .withAutoRangeMode(AutoRange.Never)
-            .withTickLabelStyle(titleStyle)
+            .withTickLabelStyle(titleXStyle)
             .withAxisId("Hidden XAxis")
             .withMaxAutoTicks(10)
             .build()

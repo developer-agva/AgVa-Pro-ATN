@@ -92,7 +92,7 @@ class VentilatorApp : Application() {
         var logitude = 0.0
         var IERatio = ""
         var globalCount = 0
-        var xMaxRangeGlobal : Double = 0.0
+        var xMaxRangeGlobal : Double = 12.9
 
         var uhidDataListAlarm = ArrayList<String>()
         var uhidDataListEvent = ArrayList<String>()

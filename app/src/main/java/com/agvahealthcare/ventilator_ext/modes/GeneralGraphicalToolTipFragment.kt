@@ -94,9 +94,7 @@ class GeneralGraphicalToolTipFragment : GraphicTooltipFragment("SettingPcv") {
 
         checkMode()
         imageViewCross.setOnClickListener {
-
             closeListener?.handleDialogClose()
-
         }
 
     }

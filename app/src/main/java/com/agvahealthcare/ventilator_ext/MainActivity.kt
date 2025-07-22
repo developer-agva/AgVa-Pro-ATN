@@ -896,7 +896,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         val tempBatteryLevel = mMainActivityViewModel.ventBatteryLevel.value
                         val tempBatteryHealth = mMainActivityViewModel.ventBatteryHealth.value
 
-                        var tempBatteryRemainingTime = mMainActivityViewModel.ventBatteryRemainingTime.value
+                        var tempBatteryRemainingTime =
+                            mMainActivityViewModel.ventBatteryRemainingTime.value
                         if (tempBatteryHealth == null || tempBatteryHealth != batteryHealth) {
                             mMainActivityViewModel.setVentBatteryHealth(batteryHealth)
                         }
@@ -1011,7 +1012,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
                     IntentFactory.ACTION_SENSOR_CALIBRATION_RESPONSE -> {
                         val status = intent.getStringExtra(VENTILATOR_SENSOR_CALIBRATION_TAG)
-                        val calibResult = intent.getIntExtra(VENTILATOR_SENSOR_CALIBRATION_RESULT, -1)
+                        val calibResult =
+                            intent.getIntExtra(VENTILATOR_SENSOR_CALIBRATION_RESULT, -1)
 
                         try {
                             status?.apply {
@@ -1055,7 +1057,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                                         prefManager?.setExhaleValveCalibration(calibration)
                                     }
 
-                                    else -> { }
+                                    else -> {}
                                 }
                                 Log.i("CALIBCHECK", "out of when")
 
@@ -1159,7 +1161,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     }
 
                     //Intent will only be fired when the power button will be pressed again
-                    IntentFactory.ACTION_POWER_ON -> { }
+                    IntentFactory.ACTION_POWER_ON -> {}
 
                     IntentFactory.ACTION_NEO_SENSOR_CONNECT -> {
                         Log.i("HERE", "CHECK SENSOR VALUE RECEIVED")
@@ -1224,7 +1226,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
             ACK_CODE_5301 -> {
                 isOSReboot = false
-                systemDialogFragment?.getUpdateDeviceFragment()?.showInfo("Checking For Internet...")
+                systemDialogFragment?.getUpdateDeviceFragment()
+                    ?.showInfo("Checking For Internet...")
             }
 
             ACK_CODE_5302 -> {
@@ -1359,18 +1362,28 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 )
 
                 // check if concerned view is visible , if yes then refresh to render it from preference
-                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
-                addEvents("Leak test failed due to flow greater than 4 LPM", prefManager?.readUHID().toString())
+                systemDialogFragment?.takeIf { it.isVisible }
+                    ?.updateSensorsCalibrationStatusViaPreference()
+                addEvents(
+                    "Leak test failed due to flow greater than 4 LPM",
+                    prefManager?.readUHID().toString()
+                )
                 showCalibrationErrorDialog("Leak test failed due to flow greater than 4 LPM")
             }
 
             ACK_CODE_4022 -> {
                 callCalibrationApi(Configs.CALIBRATION_LEAK_TEST, Configs.CALIBRATION_SUCCESS)
                 calibrationConfirmDialog?.dismiss()
-                prefManager?.setLeakTestCalibration(SensorCalibration(AppUtils.getCurrentDateTime(), Configs.SENSOR_CALIBRATION_SUCCESS))
+                prefManager?.setLeakTestCalibration(
+                    SensorCalibration(
+                        AppUtils.getCurrentDateTime(),
+                        Configs.SENSOR_CALIBRATION_SUCCESS
+                    )
+                )
 
                 // check if concerned view is visible , if yes then refresh to render it from preference
-                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }
+                    ?.updateSensorsCalibrationStatusViaPreference()
                 addEvents("Leak test success", prefManager?.readUHID().toString())
             }
 
@@ -1419,7 +1432,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     )
                 )
 
-                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }
+                    ?.updateSensorsCalibrationStatusViaPreference()
                 showCalibrationErrorDialog("Calibration Stopped due to Error")
             }
 
@@ -1434,7 +1448,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     )
                 )
                 // check if concerned view is visible , if yes then refresh to render it from preference
-                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }
+                    ?.updateSensorsCalibrationStatusViaPreference()
             }
 
             ACK_CODE_5126 -> {
@@ -1451,7 +1466,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 )
 
                 // check if concerned view is visible , if yes then refresh to render it from preference
-                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }
+                    ?.updateSensorsCalibrationStatusViaPreference()
             }
 
             // ACK FOR EXP FLOW
@@ -1474,7 +1490,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 )
 
 
-                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }
+                    ?.updateSensorsCalibrationStatusViaPreference()
             }
 
             ACK_CODE_5125 -> {
@@ -1489,7 +1506,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     )
                 )
 
-                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }
+                    ?.updateSensorsCalibrationStatusViaPreference()
             }
 
             // handshake completed
@@ -1501,12 +1519,14 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                             prefManager?.readUHID().toString()
                         )
                     }
+
                     false -> {
                         addEventsForDevelopers(
                             "Handshake Completed For Battery Data Not Available During Standby Case",
                             prefManager?.readUHID().toString()
                         )
                     }
+
                     null -> {
                         addEventsForDevelopers(
                             "Handshake Completed For Crash During Standby Case",
@@ -1526,6 +1546,9 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     setSmartFiO2Status(false)
                     setEtCuffStatusTemp(false)
                     setIRVStatus(readIRVStatusTemp())
+                    if (prefManager?.readModeType() != ModeType.TYPE_Pressure) prefManager?.setVGVStatusTemp(
+                        false
+                    )
                     setVGVStatus(readVGVStatusTemp())
                     setDeflashedStatus(readDeflashedStatusTemp())
                     setApneaSettingsStatus(readApneaSettingsStatusTemp())
@@ -1541,9 +1564,18 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     sendConfigurationToVentilatorWithWatchDog()
                 } else {
                     when (VentilatorApp.selectedOptions) {
-                        SELECTED_OPTIONS.PRONGS_NAME -> { prefManager?.setSelectedOptions(SELECTED_OPTIONS.PRONGS_NAME) }
-                        SELECTED_OPTIONS.INVASIVE_NAME -> { prefManager?.setSelectedOptions(SELECTED_OPTIONS.INVASIVE_NAME) }
-                        SELECTED_OPTIONS.NON_INVASIVE_NAME -> { prefManager?.setSelectedOptions(SELECTED_OPTIONS.NON_INVASIVE_NAME) }
+                        SELECTED_OPTIONS.PRONGS_NAME -> {
+                            prefManager?.setSelectedOptions(SELECTED_OPTIONS.PRONGS_NAME)
+                        }
+
+                        SELECTED_OPTIONS.INVASIVE_NAME -> {
+                            prefManager?.setSelectedOptions(SELECTED_OPTIONS.INVASIVE_NAME)
+                        }
+
+                        SELECTED_OPTIONS.NON_INVASIVE_NAME -> {
+                            prefManager?.setSelectedOptions(SELECTED_OPTIONS.NON_INVASIVE_NAME)
+                        }
+
                         null -> {}
                     }
 
@@ -1605,7 +1637,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     )
                 )
 
-                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }
+                    ?.updateSensorsCalibrationStatusViaPreference()
             }
 
             ACK_CODE_5013 -> {
@@ -1620,7 +1653,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     )
                 )
 
-                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }
+                    ?.updateSensorsCalibrationStatusViaPreference()
             }
 
             ACK_CODE_5014 -> {
@@ -1635,7 +1669,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     )
                 )
 
-                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }
+                    ?.updateSensorsCalibrationStatusViaPreference()
             }
 
             ACK_CODE_5015 -> {
@@ -1650,7 +1685,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     )
                 )
 
-                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }
+                    ?.updateSensorsCalibrationStatusViaPreference()
             }
 
             ACK_CODE_5016 -> {
@@ -1665,7 +1701,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     )
                 )
 
-                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }
+                    ?.updateSensorsCalibrationStatusViaPreference()
             }
 
             ACK_CODE_5017 -> {
@@ -1680,7 +1717,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     )
                 )
 
-                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }
+                    ?.updateSensorsCalibrationStatusViaPreference()
             }
 
             ACK_CODE_5019 -> {
@@ -1695,7 +1733,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     )
                 )
 
-                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }
+                    ?.updateSensorsCalibrationStatusViaPreference()
 
             }
 
@@ -1713,7 +1752,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         Configs.SENSOR_CALIBRATION_FAILURE
                     )
                 )
-                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }
+                    ?.updateSensorsCalibrationStatusViaPreference()
             }
 
             ACK_CODE_5023 -> {
@@ -1727,7 +1767,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     )
                 )
 
-                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }
+                    ?.updateSensorsCalibrationStatusViaPreference()
             }
 
             ACK_CODE_5024 -> {
@@ -1740,7 +1781,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         Configs.SENSOR_CALIBRATION_FAILURE
                     )
                 )
-                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }
+                    ?.updateSensorsCalibrationStatusViaPreference()
             }
 
             ACK_CODE_5025 -> {
@@ -1753,7 +1795,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         Configs.SENSOR_CALIBRATION_FAILURE
                     )
                 )
-                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }
+                    ?.updateSensorsCalibrationStatusViaPreference()
             }
 
             ACK_CODE_5026 -> {
@@ -1765,7 +1808,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         Configs.SENSOR_CALIBRATION_FAILURE
                     )
                 )
-                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }
+                    ?.updateSensorsCalibrationStatusViaPreference()
             }
 
             ACK_CODE_5028 -> {
@@ -1812,7 +1856,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         Configs.SENSOR_CALIBRATION_FAILURE
                     )
                 )
-                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }
+                    ?.updateSensorsCalibrationStatusViaPreference()
             }
 
             ACK_CODE_5083 -> {
@@ -1827,7 +1872,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         Configs.SENSOR_CALIBRATION_FAILURE
                     )
                 )
-                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }
+                    ?.updateSensorsCalibrationStatusViaPreference()
             }
 
             ACK_CODE_5084 -> {
@@ -1841,7 +1887,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         Configs.SENSOR_CALIBRATION_FAILURE
                     )
                 )
-                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }
+                    ?.updateSensorsCalibrationStatusViaPreference()
             }
 
             ACK_CODE_5140 -> {
@@ -1861,7 +1908,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         Configs.SENSOR_CALIBRATION_SUCCESS
                     )
                 )
-                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }
+                    ?.updateSensorsCalibrationStatusViaPreference()
                 calibrationConfirmDialog?.dismiss()
             }
 
@@ -1884,7 +1932,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         Configs.SENSOR_CALIBRATION_SUCCESS
                     )
                 )
-                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }
+                    ?.updateSensorsCalibrationStatusViaPreference()
                 calibrationConfirmDialog?.dismiss()
             }
 
@@ -1906,7 +1955,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         Configs.SENSOR_CALIBRATION_FAILURE
                     )
                 )
-                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }
+                    ?.updateSensorsCalibrationStatusViaPreference()
             }
 
             ACK_CODE_5073 -> {
@@ -1920,7 +1970,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         Configs.SENSOR_CALIBRATION_FAILURE
                     )
                 )
-                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }
+                    ?.updateSensorsCalibrationStatusViaPreference()
             }
 
             ACK_CODE_5074 -> {
@@ -1934,7 +1985,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         Configs.SENSOR_CALIBRATION_FAILURE
                     )
                 )
-                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }
+                    ?.updateSensorsCalibrationStatusViaPreference()
             }
 
 
@@ -1949,7 +2001,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         Configs.SENSOR_CALIBRATION_FAILURE
                     )
                 )
-                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }
+                    ?.updateSensorsCalibrationStatusViaPreference()
             }
 
             ACK_CODE_5078 -> {
@@ -1957,8 +2010,14 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 calibrationConfirmDialog?.takeIf { it.isShowing }?.apply { this.dismiss() }
                 showCalibrationErrorDialog("Calibration Stopped due to Error !! ADC not Connected")
 
-                prefManager?.setExhaleValveCalibration(SensorCalibration(AppUtils.getCurrentDateTime(), Configs.SENSOR_CALIBRATION_FAILURE))
-                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
+                prefManager?.setExhaleValveCalibration(
+                    SensorCalibration(
+                        AppUtils.getCurrentDateTime(),
+                        Configs.SENSOR_CALIBRATION_FAILURE
+                    )
+                )
+                systemDialogFragment?.takeIf { it.isVisible }
+                    ?.updateSensorsCalibrationStatusViaPreference()
             }
 
             ACK_CODE_5079 -> {
@@ -1970,7 +2029,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     )
                 )
 
-                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorsCalibrationStatusViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }
+                    ?.updateSensorsCalibrationStatusViaPreference()
                 calibrationConfirmDialog?.dismiss()
             }
 
@@ -1994,7 +2054,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     prefManager?.readUHID().toString()
                 )
                 prefManager?.setResistanceTubeCalibrationStatus(false)
-                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorTubeResistanceCalibrationViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }
+                    ?.updateSensorTubeResistanceCalibrationViaPreference()
             }
 
             ACK_CODE_5101 -> {
@@ -2015,7 +2076,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 )
 
                 prefManager?.setComplianceTubeCalibrationStatus(false)
-                systemDialogFragment?.takeIf { it.isVisible }?.updateSensorTubeComplianceCalibrationViaPreference()
+                systemDialogFragment?.takeIf { it.isVisible }
+                    ?.updateSensorTubeComplianceCalibrationViaPreference()
 
                 addEvents(
                     "Tube Compliance Calibration Failed",
@@ -2134,7 +2196,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     private fun saveTempPrefForExistingVentilation() {
         prefManager?.apply {
             val userid = readCurrentUid().toString()
-            tempPrefMapForExistingVentilationInteger["$userid.pref_ventilation_mode"] = readVentilationMode()
+            tempPrefMapForExistingVentilationInteger["$userid.pref_ventilation_mode"] =
+                readVentilationMode()
             tempPrefMapForExistingVentilationFloat["$userid.pref_pip"] = readPip()
             tempPrefMapForExistingVentilationFloat["$userid.pref_vti"] = readVti()
             tempPrefMapForExistingVentilationFloat["$userid.pref_rr"] = readRR()
@@ -2142,12 +2205,15 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             tempPrefMapForExistingVentilationFloat["$userid.pref_pplat"] = readPplat()
             tempPrefMapForExistingVentilationFloat["$userid.pref_peep"] = readPEEP()
             tempPrefMapForExistingVentilationFloat["$userid.pref_tisnp"] = readTinsp()
-            tempPrefMapForExistingVentilationFloat["$userid.pref_support_pressure"] = readSupportPressure()
+            tempPrefMapForExistingVentilationFloat["$userid.pref_support_pressure"] =
+                readSupportPressure()
             tempPrefMapForExistingVentilationFloat["$userid.pref_peak_flow"] = readPeakFlow()
             tempPrefMapForExistingVentilationFloat["$userid.pref_fio2"] = readFiO2()
-            tempPrefMapForExistingVentilationFloat["$userid.pref_insp_pause"] = readInspiratoryPause()
+            tempPrefMapForExistingVentilationFloat["$userid.pref_insp_pause"] =
+                readInspiratoryPause()
             tempPrefMapForExistingVentilationFloat["$userid.pref_peep_valve"] = readPeepValve()
-            tempPrefMapForExistingVentilationFloat["$userid.pref_target_volume"] = readTargetVolume()
+            tempPrefMapForExistingVentilationFloat["$userid.pref_target_volume"] =
+                readTargetVolume()
 
             tempPrefMapForExistingVentilationFloat["$userid.pref_frequency"] = readFrequency()
             tempPrefMapForExistingVentilationFloat["$userid.pref_flow"] = readFlow()
@@ -2157,7 +2223,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
             tempPrefMapForExistingVentilationFloat["$userid.pref_apnea_vti"] = readVtApnea()
             tempPrefMapForExistingVentilationFloat["$userid.pref_apnea_rr"] = readRRApnea()
-            tempPrefMapForExistingVentilationFloat["$userid.pref_apnea_trig_flow"] = readTrigFlowApnea()
+            tempPrefMapForExistingVentilationFloat["$userid.pref_apnea_trig_flow"] =
+                readTrigFlowApnea()
         }
     }
 
@@ -2589,6 +2656,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     }
                 }
             }
+
             else -> null
         }
     }
@@ -2774,8 +2842,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                                     systemDialogFragment?.isCancelable = false
                                 }
 
-                            } ?:
-                            kotlin.run {
+                            } ?: kotlin.run {
                                 highlightButton(buttonPreopCheck)
 
                                 systemDialogFragment = SystemDialogFragment.newInstance(
@@ -3026,8 +3093,10 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         normaliseButtons()
         disablePresence()
 
-        val deviceId = Settings.Secure.getString(this@MainActivity.contentResolver, Settings.Secure.ANDROID_ID)
-        val input = "https://wa.me/7330405060?text=Hi, i need support for this ventilator id - +${deviceId}"
+        val deviceId =
+            Settings.Secure.getString(this@MainActivity.contentResolver, Settings.Secure.ANDROID_ID)
+        val input =
+            "https://wa.me/7330405060?text=Hi, i need support for this ventilator id - +${deviceId}"
 
         val qrCodeBitmap = qrCode(input)
         qrCodeStandby.setImageBitmap(qrCodeBitmap)
@@ -3287,8 +3356,10 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
         // Show the Alert Dialog box
         alertDialog.show()
-        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(resources.getColor(R.color.white))
-        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(resources.getColor(R.color.white))
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+            .setTextColor(resources.getColor(R.color.white))
+        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+            .setTextColor(resources.getColor(R.color.white))
     }
 
     override fun onRequestPermissionsResult(
@@ -3426,11 +3497,11 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     private fun showCalibrationDialog(dialogDisplayMessage: String) {
         if (calibrationConfirmDialog?.isShowing == true) return;
         calibrationConfirmDialog = DialogBoxFactory.showCalibrationStatusDialog(
-                dialogDisplayMessage,
-                this@MainActivity
-            ) { ->
-                addEvents("Sensor Calibration requested", prefManager?.readUHID().toString())
-            }
+            dialogDisplayMessage,
+            this@MainActivity
+        ) { ->
+            addEvents("Sensor Calibration requested", prefManager?.readUHID().toString())
+        }
     }
 
     private fun showCalibrationProgress(txt: String) {
@@ -3445,9 +3516,12 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     private fun initView() {
 
         includeButtonCalibrate.buttonView.text = "Here"
-        includeProgressHeight.param_progress_bar.background = AppCompatResources.getDrawable(this, R.drawable.progresscircle)
-        includeProgressWeight.param_progress_bar.background = AppCompatResources.getDrawable(this, R.drawable.progresscircle)
-        includeProgressAge.param_progress_bar.background = AppCompatResources.getDrawable(this, R.drawable.progresscircle)
+        includeProgressHeight.param_progress_bar.background =
+            AppCompatResources.getDrawable(this, R.drawable.progresscircle)
+        includeProgressWeight.param_progress_bar.background =
+            AppCompatResources.getDrawable(this, R.drawable.progresscircle)
+        includeProgressAge.param_progress_bar.background =
+            AppCompatResources.getDrawable(this, R.drawable.progresscircle)
 
         initViewViaPreferences()
 
@@ -3487,7 +3561,9 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         initViewStandByTime()
     }
 
-    private fun initViewStandByTime() { startTime() }
+    private fun initViewStandByTime() {
+        startTime()
+    }
 
     private var isOSReboot = false
     private fun startTime() {
@@ -3681,7 +3757,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             if (isExistingVentilationModeAvailable() && currentPatientType == prefManager?.readCurrentUid()
                     .toString()
             ) View.VISIBLE else View.INVISIBLE
-            layoutPanelMode.visibility = if (isExistingVentilationModeAvailable()) View.VISIBLE else View.INVISIBLE
+            layoutPanelMode.visibility =
+                if (isExistingVentilationModeAvailable()) View.VISIBLE else View.INVISIBLE
         }
     }
 
@@ -3746,7 +3823,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
     private fun setOnClickListener() {
 
-        prefManager?.readVentilationMode()?.apply { buttonModes.isEnabled = isValidVentilatorMode(this@MainActivity, this) }
+        prefManager?.readVentilationMode()
+            ?.apply { buttonModes.isEnabled = isValidVentilatorMode(this@MainActivity, this) }
         includeButtonCalibrate.buttonView.setOnClickListener(this)
         buttonControls.isClickable = true
         buttonAdult.isClickable = true
@@ -3791,9 +3869,12 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             includeProgressWeight,
             includeProgressAge
         ).forEach {
-            (it.param_progress_bar as? CircularProgressIndicator)?.background = ContextCompat.getDrawable(this, R.drawable.progresscircle)
-            (it.param_progress_bar as? CircularProgressIndicator)?.progressColor = ContextCompat.getColor(this, R.color.racing_green)
-            (it.param_progress_bar as? CircularProgressIndicator)?.dotColor = ContextCompat.getColor(this, R.color.racing_green)
+            (it.param_progress_bar as? CircularProgressIndicator)?.background =
+                ContextCompat.getDrawable(this, R.drawable.progresscircle)
+            (it.param_progress_bar as? CircularProgressIndicator)?.progressColor =
+                ContextCompat.getColor(this, R.color.racing_green)
+            (it.param_progress_bar as? CircularProgressIndicator)?.dotColor =
+                ContextCompat.getColor(this, R.color.racing_green)
 
             it.textView.setTextColor(Color.WHITE)
         }
@@ -3802,7 +3883,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     private fun highlightProgressBar(view: View?) {
         normalizeProgressBars()
         view.let {
-            (it?.param_progress_bar as? CircularProgressIndicator)?.background = ContextCompat.getDrawable(this, R.drawable.progresscircle_with_selection)
+            (it?.param_progress_bar as? CircularProgressIndicator)?.background =
+                ContextCompat.getDrawable(this, R.drawable.progresscircle_with_selection)
             (it?.textView as? TextView)?.setTextColor(Color.BLACK)
         }
     }
@@ -4760,10 +4842,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
     }
 
     private fun hideGraphicTooltip() {
-        if (graphicTooltipFragment?.isVisible == true) {
-            graphicTooltipFragment?.dismiss()
-            graphicTooltipFragment = null
-        }
+        graphicTooltipFragment?.dismissAllowingStateLoss()
+        graphicTooltipFragment = null
     }
 
     // change here 8 feb
@@ -4778,7 +4858,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     isKnobPressedForControlTile = true
                     basicControlParameterList?.let {
                         selectedBasicPosition?.apply {
-                            var lbl = it[this].ventKey
+                            val lbl = it[this].ventKey
                             val unit = it[this].units
 
                             updateParameter(lbl, newValue.toString())
@@ -4817,6 +4897,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                             prefManager?.updateParameterViaName(lbl, newValue)
                         }
                     }
+
                     backupControlParameterList?.let {
                         selectedBackupPosition?.apply {
                             val lbl = it[this].ventKey
@@ -4882,6 +4963,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
 
                         }
                     }
+
                     // change here 9 feb 2023
                     etCuffControlParameterList?.let {
                         selectEtCuffPosition?.apply {
@@ -4901,6 +4983,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                             selectEtCuffPosition = null
                         }
                     }
+
                     normaliseParameterTiles()
                     hideGraphicTooltip()
                     progressDialog?.takeIf { it.isVisible }?.apply {
@@ -4984,16 +5067,13 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
         }
     }
 
-
     private fun showKnobForBodyParams(
-
         view: View,
         param: KnobParameterModel?,
         encoder: EncoderValue?
     ) {
 
         if (param != null && encoder != null) {
-
             hideKnob()
             progressDialog = KnobDialog.newInstance(
                 onKnobPressListener = onBodyParamsKnobPressListener,
@@ -5040,7 +5120,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                 this.reading = supportPrecision(key, value)
             }
 
-        // change here 8 feb
         smartFio2ControlParameterList
             ?.filter { it.ventKey == key }
             ?.takeIf { it.isNotEmpty() }
@@ -5085,8 +5164,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             updateParameter(LBL_TARGET_SPO2, readTargetSpo2().toInt().toString())
             updateParameter(LBL_HR_LIMIT, readHrLimit().toInt().toString())
             updateParameter(LBL_TARGET_VOLUME, readTargetVolume().toInt().toString())
-
-            // Frequency
             updateParameter(LBL_FREQUENCY, readFrequency().toString())
             updateParameter(LBL_FLOW, readFlow().toInt().toString())
             updateParameter(LBL_FIO2_DEV, readFiO2Dev().toInt().toString())

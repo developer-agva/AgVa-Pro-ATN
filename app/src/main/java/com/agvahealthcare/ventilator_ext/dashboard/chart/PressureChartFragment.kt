@@ -76,6 +76,7 @@ class PressureChartFragment : GraphFragment() {
     var annotationLabel: AnnotationLabel? = null
     var horizontalLineAnnotation1: HorizontalLineAnnotation? = null
     val titleStyle = FontStyle(14.0f, ColorUtil.White)
+    val titleXStyle = FontStyle(14.0f, ColorUtil.Black)
     private var mDashBoardViewModel: DashBoardViewModel? = null
 
     // created at 20 jan 2023
@@ -149,14 +150,14 @@ class PressureChartFragment : GraphFragment() {
         val xPRimaryAxis: IAxis = sciChartBuilder.newNumericAxis()
             .withVisibleRange(DoubleRange(0.0, GRAPH_THRESHOLD.toDouble()))
             .withMaxAutoTicks(4)
-            .withTickLabelStyle(titleStyle)
+            .withTickLabelStyle(titleXStyle)
             .withAxisId("OLD")
             .withAutoRangeMode(AutoRange.Never)
             .build()
 
         val xsecondaryAxis: IAxis = sciChartBuilder.newNumericAxis()
             .withVisibleRange(DoubleRange(0.0, xMaxRangeGlobal))
-            .withTickLabelStyle(titleStyle)
+            .withTickLabelStyle(titleXStyle)
             .withMaxAutoTicks(5)
             .withAxisId("HiddenXAxis")
             .withAutoRangeMode(AutoRange.Never)

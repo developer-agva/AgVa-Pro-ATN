@@ -7,6 +7,7 @@ import static com.agvahealthcare.ventilator_ext.utility.ConstantKt.GRAPH_THRESHO
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
 import android.util.Log;
 import android.util.Pair;
 
@@ -2515,7 +2516,6 @@ public interface Configs {
         List<ControlParameterModel> vTasParameters = new ArrayList<>();
         List<ControlParameterModel> etCuffParamters = new ArrayList<>();
 
-
         //apneaParameters.add(triggerFlowApnea);
 
         switch (modeCode) {
@@ -3294,10 +3294,16 @@ public interface Configs {
                         apneaParameters.add(vtApnea);
                         break;
                 }
+
+
                 break;
 
         }
 
+        // for no slope code in ATN 24
+        if (Build.VERSION.SDK_INT >= 27) {
+            advancedParameters.remove(slope);
+        }
 
         Map<ControlSettingType, List<ControlParameterModel>> parameters = new HashMap<ControlSettingType, List<ControlParameterModel>>();
 
@@ -3317,7 +3323,6 @@ public interface Configs {
         return parameters;
 
     }
-
 
 
 /*    static String[] getAckFromAntiAck(String antiAckCode){

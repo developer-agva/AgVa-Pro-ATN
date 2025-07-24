@@ -3,6 +3,7 @@ package com.agvahealthcare.ventilator_ext.service;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -358,12 +359,17 @@ public abstract class CommunicationService extends Service {
 
         // Doing it reverse as per embedded Team instruction..
         String slope = "";
-        if(compensatedSlopeValue == 20){
+
+        if (Build.VERSION.SDK_INT >= 27) {
             slope = "0";
-        } else if (compensatedSlopeValue == 0) {
-            slope = "20";
-        }else{
-            slope = String.valueOf(compensatedSlopeValue);
+        } else {
+            if(compensatedSlopeValue == 20){
+                slope = "0";
+            } else if (compensatedSlopeValue == 0) {
+                slope = "20";
+            }else{
+                slope = String.valueOf(compensatedSlopeValue);
+            }
         }
 
         String inspPause = String.valueOf(0);

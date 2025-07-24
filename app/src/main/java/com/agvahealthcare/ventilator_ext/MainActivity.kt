@@ -4747,13 +4747,8 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         highlightButton(buttonModes)
                         if (isVentilatorInStandby()) {
 
-                            Log.i("new_ventilation", "buttonStartNewVentilation click")
                             communicationService?.takeIf { it.isPortsConnected }
                                 ?.apply {
-                                    Log.i(
-                                        "new_ventilation",
-                                        "buttonStartNewVentilation click inside condition"
-                                    )
                                     send(resources.getString(R.string.cmd_vent_wakeup))
                                 }
                         }
@@ -4812,7 +4807,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             isRunning = false
         }
     }
-
 
     private fun hideKnob() {
         progressDialog?.dismiss()
@@ -4913,9 +4907,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                                     )
                                 }  $unit to $newValue $unit", prefManager?.readUHID().toString()
                             )
-
                             selectedBackupPosition = null
-
                         }
                     }
 
@@ -5033,6 +5025,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     }
                 }
             },
+
             onCloseListener = object : OnDismissDialogListener {
                 override fun handleDialogClose() {
                     selectedBasicPosition = null
@@ -5041,9 +5034,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                     selectSmartFio2Position = null
                     selectVtasPosition = null
                     selectEtCuffPosition = null
-                    progressDialog?.takeIf { it.isVisible }?.apply {
-                        this.dismiss()
-                    }
+                    progressDialog?.takeIf { it.isVisible }?.apply { this.dismiss() }
                     normaliseParameterTiles()
                     hideGraphicTooltip()
                     renderControlParameterTilesViaPreference()
@@ -5310,6 +5301,7 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
                         }
                 }
             }
+
         }
     }
 

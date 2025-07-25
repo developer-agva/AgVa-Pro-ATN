@@ -79,6 +79,7 @@ class SelfTestFragment(private var communicationService: CommunicationService?) 
         preferenceManager = PreferenceManager(requireContext())
 
         selfTestViewModel?.selfTestData?.observe(viewLifecycleOwner) { selfTestData ->
+
             dataProcessingTextView.visibility = View.GONE
             btnBack.visibility = View.GONE
             btnStartTest.visibility =View.VISIBLE
@@ -113,7 +114,7 @@ class SelfTestFragment(private var communicationService: CommunicationService?) 
         }
 
     }
-    
+
     private fun showDataOnUI(selfTestData: String) {
         Log.i("SelfTestFragment", "Received self test data: $selfTestData")
         val selfTestList = selfTestData.split(",") as ArrayList<String>
@@ -125,8 +126,6 @@ class SelfTestFragment(private var communicationService: CommunicationService?) 
             val sensorStatus = if (selfTestList[i].split("|")[1] == "1") 1 else 0
             selfTestModelList.add(SelfTestModelClass(listOfSensors[i], sensorStatus, "", selfTestList[i].split("|")[0]))
         }
-
-        Log.i("SelfTestFragment", "Received self test data: ${selfTestModelList.size}")
         setupSelfTestAdapter(selfTestModelList)
     }
 

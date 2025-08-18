@@ -446,6 +446,18 @@ class SplashActivity : AppCompatActivity(), SimpleCallbackListener,
                     }
                 }
 
+                IntentFactory.ACTION_HARDWARE_SERIAL_NUMBER -> {
+                    val HMACdata = intent.getStringExtra("Hardware_MAC")
+                    Log.i("Hardware_MAC","Hardware MAC is -> " + HMACdata)
+
+                    HMACdata?.let { mac ->
+                        // Save to DataStore
+                        CoroutineScope(Dispatchers.IO).launch {
+                            dataStoreManager?.saveHardwareMACAddress(mac)
+                        }
+                    }
+                }
+
                 IntentFactory.ACTION_ACK_AVAILABLE -> {
                     val ack = intent.getStringExtra(VENTILATOR_ACK)
                     Log.i("ACK_CHECK", "ACK received @$ack")
@@ -516,6 +528,13 @@ class SplashActivity : AppCompatActivity(), SimpleCallbackListener,
                                             communicationService?.takeIf { it.isPortsConnected }
                                                 ?.apply {
                                                     send("CM+STC")
+                                                }
+                                            delay(1000)
+
+                                            //HardwareMAC Address
+                                            communicationService?.takeIf { it.isPortsConnected }
+                                                ?.apply {
+                                                    send("CM+HMAC")
                                                 }
                                         }
                                     }
@@ -654,6 +673,7 @@ class SplashActivity : AppCompatActivity(), SimpleCallbackListener,
                 applicationContext
             )
         )
+
 
         //Below Code for the Location of the client and the data to be received for tracking of the ventilator..
         locationClient.getLocationUpdates(2000L)

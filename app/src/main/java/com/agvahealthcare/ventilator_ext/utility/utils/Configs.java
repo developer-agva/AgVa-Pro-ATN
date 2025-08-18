@@ -154,6 +154,9 @@ public interface Configs {
     String LIMITTER_ALARM_PRIORITY = "Z,";
     String DELIMETER_ALARM_PRIORITY = ",#";
 
+    String  LIMITER_HARDWARE_MAC = "HMAC@";
+    String DELIMITER_HARDWARE_MAC = "#";
+
     Character COMMON_TUBE_LIMITER = '@';
     Character COMMON_TUBE_DELIMETER = '!';
 

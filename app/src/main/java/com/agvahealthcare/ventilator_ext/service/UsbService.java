@@ -243,7 +243,25 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
                             Log.i("value_ors", o2Data);
                             broadcastOxygenRegulationData(o2Data);
                             dataBufferVentilator.delete(o2BeginIndex, o2TerminalIndex + 1);
-                        } else if (buffData.contains(Configs.PREFIX_TUBE_RESISTANCE)) {
+                        }
+                        else if (buffData.contains(Configs.LIMITER_HARDWARE_MAC)) {
+
+                            Log.i("HMAC_TESTING", "HMAC");
+                            int hardwareMACStartIndex = buffData.indexOf(Configs.LIMITER_HARDWARE_MAC);
+                            int hardwareMACTerminalIndex = buffData.indexOf(Configs.DELIMITER_HARDWARE_MAC);
+
+                            if (hardwareMACStartIndex != -1 && hardwareMACTerminalIndex != -1 && hardwareMACStartIndex < hardwareMACTerminalIndex) {
+                                Log.i("HMAC_TESTING", buffData.substring(hardwareMACStartIndex + 1, hardwareMACTerminalIndex));
+                                String hardwareMacAddressData = buffData.substring(hardwareMACStartIndex + 1, hardwareMACTerminalIndex);
+                                Log.i("HMAC_TESTING", "Hardware MAC Address " + hardwareMacAddressData);
+                                broadcastHardwareSerialNumber(hardwareMacAddressData);
+                                dataBufferVentilator.delete(hardwareMACStartIndex, hardwareMACTerminalIndex + 1);
+
+                            }
+                        }
+
+
+                        else if (buffData.contains(Configs.PREFIX_TUBE_RESISTANCE)) {
 
                             Log.i("testing", "resistance");
                             int tubeResistanceStartIndex = buffData.indexOf(Configs.COMMON_TUBE_LIMITER);
@@ -1115,6 +1133,11 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
     }
 
     @Override
+    protected void broadcastHMACDataResponse() {
+        sendBroadcast(new Intent(IntentFactory.ACTION_DEVICE_HMAC));
+    }
+
+    @Override
     protected void broadcastOxygenResponse(String value) {
         Intent i = new Intent(IntentFactory.ACTION_OXYGEN_100);
         i.putExtra(FIO2_RESPONSE, value);
@@ -1321,10 +1344,13 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
     }
 
     @Override
-    protected void broadcastHardwareSerialNumber(String data) {
-        Intent i = new Intent(IntentFactory.ACTION_HARDWARE_SERIAL_NUMBER);
-        i.putExtra(HARDWARE_SERIAL_NUMBER, data);
-        sendBroadcast(i);
+    protected void broadcastHardwareSerialNumber(String hardwareMACdata) {
+        if(hardwareMACdata != null){
+            Log.i("Hardware_MAC",hardwareMACdata);
+            Intent i = new Intent(IntentFactory.ACTION_HARDWARE_SERIAL_NUMBER);
+            i.putExtra(HARDWARE_SERIAL_NUMBER, hardwareMACdata);
+            sendBroadcast(i);
+        }
     }
 
     protected void finalize() {

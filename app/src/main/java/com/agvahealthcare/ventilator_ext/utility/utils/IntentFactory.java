@@ -93,6 +93,7 @@ public interface IntentFactory {
      // Quick button hardware integration
     String ACTION_MUTE_UNMUTE="com.agvahealthcare.ventilator_ext.ACTION_MUTE_UNMUTE";
     String ACTION_NEBULISER="com.agvahealthcare.ventilator_ext.ACTION_NEBULISER";
+    String ACTION_DEVICE_HMAC="com.agvahealthcare.ventilator_ext.ACTION_DEVICE_HMAC";
     String ACTION_OXYGEN_100 ="com.agvahealthcare.ventilator_ext.ACTION_OXYGEN";
     String ACTION_INSPIRATORY_HOLD="com.agvahealthcare.ventilator_ext.ACTION_INSPIRATORY_HOLD";
     String ACTION_EXPIRATORY_HOLD="com.agvahealthcare.ventilator_ext.ACTION_EXPIRATORY_HOLD";

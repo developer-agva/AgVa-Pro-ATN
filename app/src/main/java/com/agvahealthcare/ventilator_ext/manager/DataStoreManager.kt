@@ -26,6 +26,7 @@ class DataStoreManager( val context: Context) {
     private val STARTUP_CHECK_VALUE = stringPreferencesKey("startup_check_value")
     private val CHECK_DASH_REBOOT = booleanPreferencesKey("dashboard_reboot_status")
     private val CHECK_KNOB_REBOOT = booleanPreferencesKey("knob_reboot_status")
+    private val HARDWARE_MAC_DATA_KEY = stringPreferencesKey("hardware_mac_key")
     private val CHECK_CURRENT_ACTIIVTY = stringPreferencesKey("check_current_activity")
 
     suspend fun  saveCurrentActivity(value: String){
@@ -44,6 +45,8 @@ class DataStoreManager( val context: Context) {
         }
     }
 
+
+
     fun getKnobRebootStatusFlag() : Flow<Boolean> = context.ventiPref.data.map {
         it[CHECK_KNOB_REBOOT] ?: true
     }
@@ -51,6 +54,16 @@ class DataStoreManager( val context: Context) {
     suspend fun  saveDashRebootStatusFlag(value: Boolean){
         context.ventiPref.edit {
             it[CHECK_DASH_REBOOT] = value
+        }
+    }
+    fun getHardwareMACAddress(): Flow<String> = context.ventiPref.data
+        .map { preferences ->
+            preferences[HARDWARE_MAC_DATA_KEY] ?: ""
+        }
+
+    suspend fun saveHardwareMACAddress(value:String){
+        context.ventiPref.edit {
+            it[HARDWARE_MAC_DATA_KEY] = value
         }
     }
 
@@ -78,6 +91,8 @@ class DataStoreManager( val context: Context) {
     fun getStartUpCheckFlag() : Flow<Boolean> = context.ventiPref.data.map {
         it[STARTUP_CHECK_FLAG] ?: true
     }
+
+
 
     suspend fun saveStartUpCheckValue(value: String){
         context.ventiPref.edit {

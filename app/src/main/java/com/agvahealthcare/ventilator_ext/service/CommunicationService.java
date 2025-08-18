@@ -257,6 +257,8 @@ public abstract class CommunicationService extends Service {
 
     abstract protected void broadcastNebuliserResponse();
 
+    abstract protected void broadcastHMACDataResponse();
+
     abstract protected void broadcastOxygenResponse(String value);
 
     abstract protected void broadcastInspiratoryHoldResponse();
@@ -352,6 +354,7 @@ public abstract class CommunicationService extends Service {
         int pplatReading = isPplatDeltaRequired ? (prefManager.readPplat().intValue() + prefManager.readPEEP().intValue()) : prefManager.readPEEP().intValue() + prefManager.readPplat().intValue();
         pPlatValue = String.valueOf(pplatReading);
         String inhaleTime = String.format("%.1f", prefManager.readTinsp());
+        String neoMinInhaleTime = "0.6";
         String peakFlow = String.valueOf(prefManager.readPeakFlow().intValue());
         String fio2 = String.valueOf(prefManager.readFiO2().intValue());
         String supportPressure = String.valueOf(prefManager.readSupportPressure().intValue() + prefManager.readPEEP().intValue()); // SP = SP + PEEP
@@ -443,7 +446,11 @@ public abstract class CommunicationService extends Service {
         configs.add(rr);
         configs.add(trigFlow);
         configs.add(pPlatValue);
-        configs.add(inhaleTime);
+        if(prefManager.readCurrentUid() == Configs.PatientProfile.TYPE_NEONAT && inhaleTime == "0.5") {
+            configs.add(neoMinInhaleTime);
+        } else{
+            configs.add(inhaleTime);
+        }
         configs.add(flow);
         if (Configs.isFio2SettingAvailable) configs.add(fio2);
         configs.add(supportPressure);

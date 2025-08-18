@@ -1005,18 +1005,18 @@ class SystemDialogFragment : DialogFragment(), PasswordCallbackListener, SimpleC
                 )
             )
 
-//            if (!dataListSystemItems.contains(
-//                    SystemButtonModelClass(
-//                        getString(R.string.hint_self_test),
-//                        SystemFragmentButtonTypes.Self_Test
-//                    )
-//                )
-//            ) dataListSystemItems.add(
-//                SystemButtonModelClass(
-//                    getString(R.string.hint_self_test),
-//                    SystemFragmentButtonTypes.Self_Test
-//                )
-//            )
+            if (!dataListSystemItems.contains(
+                    SystemButtonModelClass(
+                        getString(R.string.hint_self_test),
+                        SystemFragmentButtonTypes.Self_Test
+                    )
+                )
+            ) dataListSystemItems.add(
+                SystemButtonModelClass(
+                    getString(R.string.hint_self_test),
+                    SystemFragmentButtonTypes.Self_Test
+                )
+            )
 
             if (!dataListSystemItems.contains(
                     SystemButtonModelClass(

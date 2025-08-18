@@ -36,6 +36,7 @@
         android:id="@+id/btnStartTest"
         android:layout_width="@dimen/_50sdp"
         android:layout_height="0dp"
+        android:visibility="gone"
         android:layout_marginEnd="@dimen/_3sdp"
         android:background="@color/preCalib_amber"
         app:layout_constraintEnd_toEndOf="parent"

@@ -49,6 +49,16 @@ class SelfTestFragment(private var communicationService: CommunicationService?) 
         "SPO2 SENSOR CHECK"
     )
 
+    private var listOftests = arrayListOf(
+        "Turbine Pass",
+        "Exhale Valve Pass",
+        "Buck 12 Volt Pass",
+        "Leak Valve Pass",
+        "Camozzi Calibration Pass",
+        "Breaking Pass",
+        "Calibration Test Pass",
+    )
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -78,22 +88,25 @@ class SelfTestFragment(private var communicationService: CommunicationService?) 
         selfTestViewModel = ViewModelProvider(requireActivity())[SelfTestViewModel::class.java]
         preferenceManager = PreferenceManager(requireContext())
 
-        selfTestViewModel?.selfTestData?.observe(viewLifecycleOwner) { selfTestData ->
+        selfTestViewModel?.selfTestData?.postValue(null)
+        selfTestViewModel?.sensorTestData?.postValue(null)
 
-            dataProcessingTextView.visibility = View.GONE
-            btnBack.visibility = View.GONE
-            btnStartTest.visibility =View.VISIBLE
-            if (selfTestData.isNotEmpty() && selfTestData != "null") {
-                showDataOnUI(selfTestData)
+        selfTestViewModel?.selfTestData?.observe(viewLifecycleOwner) { it ->
+
+            if (it != null) {
+                dataProcessingTextView.visibility = View.GONE
+                btnBack.visibility = View.GONE
+                btnStartTest.visibility =View.VISIBLE
+                showDataOnUI(it)
             }
         }
 
         selfTestViewModel?.sensorTestData?.observe(viewLifecycleOwner) {
-            dataProcessingTextView.visibility = View.GONE
-            btnBack.visibility = View.VISIBLE
-            btnStartTest.visibility =View.GONE
-            if (it.isNotEmpty() && it != null){
-                showDataOnUI(it)
+            if (it != null){
+                dataProcessingTextView.visibility = View.GONE
+                btnBack.visibility = View.VISIBLE
+                btnStartTest.visibility =View.GONE
+                showDataOnUiForTests(it)
             }
         }
 
@@ -129,6 +142,21 @@ class SelfTestFragment(private var communicationService: CommunicationService?) 
         setupSelfTestAdapter(selfTestModelList)
     }
 
+    private fun showDataOnUiForTests(selfTestData: String) {
+        Log.i("SelfTestFragment", "Received self test data: $selfTestData")
+        val selfTestList = selfTestData.split(",") as ArrayList<String>
+        val selfTestModelList = ArrayList<SelfTestModelClass>()
+        selfTestModelList.add(SelfTestModelClass("SENSOR NAME", 0, "SENSOR STATUS", "SENSOR VALUE"))
+
+        for (i in 0 until selfTestList.size) {
+
+            if (selfTestList[i].split("|")[1] == "-") break;
+            if (selfTestList[i].isEmpty()) continue
+            val sensorStatus = if (selfTestList[i].split("|")[1] == "1") 1 else 0
+            selfTestModelList.add(SelfTestModelClass(listOftests[i], sensorStatus, "", selfTestList[i].split("|")[0]))
+        }
+        setupSelfTestAdapter(selfTestModelList)
+    }
 }
 
 class SelfTestAdapter(private var selfTestList: ArrayList<SelfTestModelClass>) :
@@ -184,6 +212,7 @@ class SelfTestAdapter(private var selfTestList: ArrayList<SelfTestModelClass>) :
 
         if (selfTestItem.sensorStatus == 1) holder.sensorStatus.setImageResource(R.drawable.ic_green_circle_tick)
         else holder.sensorStatus.setImageResource(R.drawable.ic_red_cross)
+
     }
 }
 

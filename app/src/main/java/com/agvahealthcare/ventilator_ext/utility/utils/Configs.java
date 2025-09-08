@@ -1400,7 +1400,6 @@ public interface Configs {
         int minVTApnea = 0;
         int maxVTApnea = 0;
 
-
         switch (prefManager.readCurrentUid()) {
 
             case TYPE_PED: {
@@ -1448,13 +1447,11 @@ public interface Configs {
                 minPeakFlow = Integer.valueOf(ctx.getResources().getString(R.string.min_peakflow_ped));
                 maxPeakFlow = Integer.valueOf(ctx.getResources().getString(R.string.max_peakflow_ped));
 
-
                 minTargetVolume = Integer.valueOf(ctx.getResources().getString(R.string.min_target_volume_ped));
                 maxTargetVolume = Integer.valueOf(ctx.getResources().getString(R.string.max_target_volume_ped));
 
                 minFrequency = Integer.valueOf(ctx.getResources().getString(R.string.min_frequency));
                 maxFrequency = Integer.valueOf(ctx.getResources().getString(R.string.max_frequency));
-
 
                 minTrigFlow = Float.valueOf(ctx.getResources().getString(R.string.min_trigflow_ped));
                 maxTrigFlow = Float.valueOf(ctx.getResources().getString(R.string.max_trigflow_ped));
@@ -1464,7 +1461,6 @@ public interface Configs {
 
                 minRRApnea = Integer.parseInt(ctx.getResources().getString(R.string.min_apnea_rr));
                 maxRRApnea = Integer.parseInt(ctx.getResources().getString(R.string.max_apnea_rr));
-
 
                 minTApnea = Integer.parseInt(ctx.getResources().getString(R.string.min_apnea_time));
                 maxTApnea = Integer.parseInt(ctx.getResources().getString(R.string.max_apnea_time));

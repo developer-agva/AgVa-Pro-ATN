@@ -636,8 +636,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/btnTurbineRanges"
             android:layout_width="@dimen/_35sdp"
-            android:layout_height="@dimen/_15sdp"
-            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_height="@dimen/_13sdp"
+            android:layout_marginTop="@dimen/_3sdp"
             android:background="@drawable/background_light_grey"
             app:layout_constraintStart_toStartOf="@id/guideline2"
             app:layout_constraintTop_toBottomOf="@id/txtKnobPCBVersion">
@@ -672,8 +672,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/btnExhaleValveRanges"
             android:layout_width="@dimen/_35sdp"
-            android:layout_height="@dimen/_15sdp"
-            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_height="@dimen/_14sdp"
+            android:layout_marginTop="@dimen/_4sdp"
             android:background="@drawable/background_light_grey"
             app:layout_constraintStart_toStartOf="@id/guideline2"
             app:layout_constraintTop_toBottomOf="@id/btnTurbineRanges">
@@ -708,14 +708,51 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/btnOxygenValveRanges"
             android:layout_width="@dimen/_35sdp"
-            android:layout_height="@dimen/_15sdp"
-            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_height="@dimen/_14sdp"
+            android:layout_marginTop="@dimen/_4sdp"
             android:background="@drawable/background_light_grey"
             app:layout_constraintStart_toStartOf="@id/guideline2"
             app:layout_constraintTop_toBottomOf="@id/btnExhaleValveRanges">
 
             <TextView
                 android:id="@+id/textViewOxygenValveRangesValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="@dimen/_5sdp"
+                android:textStyle="bold"
+                android:theme="@style/subheading_text_style_diag"
+                android:translationZ="@dimen/_3sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/txtNeoRanges"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Neo"
+            android:visibility="visible"
+            android:theme="@style/subheading_text_style_diag"
+            app:layout_constraintBottom_toBottomOf="@id/btnNeoRanges"
+            app:layout_constraintStart_toStartOf="@id/guideline1"
+            app:layout_constraintTop_toTopOf="@id/btnNeoRanges" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/btnNeoRanges"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_14sdp"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:visibility="visible"
+            android:background="@drawable/background_light_grey"
+            app:layout_constraintStart_toStartOf="@id/guideline2"
+            app:layout_constraintTop_toBottomOf="@id/btnOxygenValveRanges">
+
+            <TextView
+                android:id="@+id/textViewNeoRangesValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
@@ -766,6 +803,18 @@
             app:layout_constraintTop_toBottomOf="@id/includeButtonExhaleValve" />
 
         <include
+            android:id="@+id/includeButtonNeo"
+            layout="@layout/content_button_center_layout"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_7sdp"
+            android:visibility="visible"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/VerticalView"
+            app:layout_constraintTop_toBottomOf="@id/includeButtonOxyValve" />
+
+        <include
             android:id="@+id/includeButtonPurge"
             layout="@layout/content_button_center_layout"
             android:layout_width="@dimen/_35sdp"
@@ -774,7 +823,7 @@
             android:foreground="?attr/selectableItemBackgroundBorderless"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/VerticalView"
-            app:layout_constraintTop_toBottomOf="@id/includeButtonOxyValve" />
+            app:layout_constraintTop_toBottomOf="@id/includeButtonNeo" />
 
         <include
             android:id="@+id/includeButtonNebulizer"

@@ -5,6 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.flow.Flow
 
 interface ConnectivityObserver {
+    fun observe(): LiveData<Status>
 
-    fun observe(): MutableLiveData<Boolean>
+    enum class Status {
+        Available, Unavailable, Losing, Lost
+    }
+
 }

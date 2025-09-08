@@ -20,6 +20,7 @@ import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.VentilatorApp
 import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.globalCount
 import com.agvahealthcare.ventilator_ext.api.BatteryHealthStaus
+import com.agvahealthcare.ventilator_ext.connection.internetConnection.ConnectivityObserver
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardViewModel
 import com.agvahealthcare.ventilator_ext.manager.DataStoreManager
 import com.agvahealthcare.ventilator_ext.manager.PreferenceManager
@@ -145,9 +146,7 @@ class InfoFragment(private var communicationService: CommunicationService?) : Fr
                 })
         }
         if (tag == "MainActivity") {
-
             layout_content.visibility = View.VISIBLE
-
         }
         prefManager?.apply {
             try {
@@ -204,13 +203,23 @@ class InfoFragment(private var communicationService: CommunicationService?) : Fr
             Toast.makeText(requireContext(), "" + e.printStackTrace(), Toast.LENGTH_LONG).show()
         }
 
-        VentilatorApp.connectivityObserver?.observe()?.distinctUntilChanged()
-            ?.observe(viewLifecycleOwner) {
-                if (it) textViewInternetConnectivityData.text = "Connected"
-                else textViewInternetConnectivityData.text = "Disconnected"
+        VentilatorApp.connectivityObserver?.observe(this) { status ->
+            when(status){
+                ConnectivityObserver.Status.Available -> {
+                    textViewInternetConnectivityData.text = "Available"
+                }
+                ConnectivityObserver.Status.Unavailable -> {
+                    textViewInternetConnectivityData.text = "Unavailable"
+                }
+                ConnectivityObserver.Status.Losing -> {
+                    textViewInternetConnectivityData.text = "Unavailable"
+                }
+                ConnectivityObserver.Status.Lost -> {
+                    textViewInternetConnectivityData.text = "Unavailable"
+                }
             }
+        }
     }
-
 
     private fun calculateOperationalHourInTime(
         startTimeInMillis: Long,

@@ -5,6 +5,7 @@ import static com.agvahealthcare.ventilator_ext.utility.ConstantKt.FIO2_RESPONSE
 import static com.agvahealthcare.ventilator_ext.utility.ConstantKt.GRAPH_LIMITS;
 import static com.agvahealthcare.ventilator_ext.utility.ConstantKt.HARDWARE_SERIAL_NUMBER;
 import static com.agvahealthcare.ventilator_ext.utility.ConstantKt.MUTE_UNMUTE_RESPONSE;
+import static com.agvahealthcare.ventilator_ext.utility.ConstantKt.M_STRING_CHECK;
 import static com.agvahealthcare.ventilator_ext.utility.ConstantKt.OR_TOOL_CHECK;
 import static com.agvahealthcare.ventilator_ext.utility.ConstantKt.SELF_TEST_CHECK;
 import static com.agvahealthcare.ventilator_ext.utility.ConstantKt.SENSOR_ANALYSIS;
@@ -215,7 +216,17 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
                             } catch (Exception e) {
                                 dataBufferVentilator.delete(0, dataBufferVentilator.length());
                             }
-                        } else if (buffData.contains("T@")) {
+                        } else if (buffData.contains("M-")) {
+                            int selfTestStartIndex = buffData.indexOf("M-");
+                            int selfTestTerminalIndex = buffData.indexOf("!");
+                            if (selfTestStartIndex < selfTestTerminalIndex) {
+                                String selfTestData = buffData.substring(selfTestStartIndex + 2, selfTestTerminalIndex);
+                                Log.i("CHECK_M_String", selfTestData);
+                                broadcastMStringData(selfTestData);
+                                dataBufferVentilator.delete(selfTestStartIndex, selfTestTerminalIndex + 1);
+                            }
+                        }
+                        else if (buffData.contains("T@")) {
                             int selfTestStartIndex = buffData.indexOf("T@");
                             int selfTestTerminalIndex = buffData.indexOf("!");
                             if (selfTestStartIndex < selfTestTerminalIndex) {
@@ -1045,6 +1056,16 @@ public class UsbService extends CommunicationService implements SerialInputOutpu
             Log.i("SELF_TEST_CHECK", "DATA : " + data);
             Intent i = new Intent(IntentFactory.ACTION_SELF_TEST_DATA_AVAILABLE);
             i.putExtra(SELF_TEST_CHECK, data);
+            sendBroadcast(i);
+        }
+    }
+
+    @Override
+    protected void broadcastMStringData(String data) {
+        if (data != null) {
+            Log.i("CHECK_M_String", "DATA : " + data);
+            Intent i = new Intent(IntentFactory.ACTION_M_STRING_AVAILABLE);
+            i.putExtra(M_STRING_CHECK, data);
             sendBroadcast(i);
         }
     }

@@ -19,6 +19,7 @@ import com.agvahealthcare.ventilator_ext.MainActivity
 import com.agvahealthcare.ventilator_ext.MainActivityViewModel
 import com.agvahealthcare.ventilator_ext.R
 import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.defaultOfExhaleValveRanges
+import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.defaultOfNeoRanges
 import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.defaultOfOxygenValveRanges
 import com.agvahealthcare.ventilator_ext.VentilatorApp.Companion.defaultOfTurbineRanges
 import com.agvahealthcare.ventilator_ext.service.CommunicationService
@@ -37,8 +38,9 @@ import java.io.InputStreamReader
 
 enum class RangeType {
     OXYGEN_VALVE,
+    Neo,
     EXHALE_VALVE,
-    TURBINE,
+    TURBINE
 }
 
 class DiagnosticCheckFragment(private var communicationService: CommunicationService?) :
@@ -51,9 +53,11 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
     private var clickValve = false
     private var clickNebulizer = false
     private var clickOxyValve = false
+    private var clickNeoValve = false
     private var timer: CountDownTimer? = null
     private var testTurbineTimer: CountDownTimer? = null
     private var testOxygenValveTimer: CountDownTimer? = null
+    private var testNeoTimer: CountDownTimer? = null
     private var testValveTimer: CountDownTimer? = null
     var buttonState: RangeType? = null
     private var maxPWM = 100
@@ -65,11 +69,13 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
         testOxygenValveTimer?.cancel()
         testTurbineTimer?.cancel()
         testValveTimer?.cancel()
+        testNeoTimer?.cancel()
         timer?.cancel()
         buttonState = null
         defaultOfTurbineRanges = "0"
         defaultOfExhaleValveRanges = "0"
         defaultOfOxygenValveRanges = "0"
+        defaultOfNeoRanges = "0"
         (requireActivity() as MainActivity).returnCommandsToSocket("Start Diagnostic")
         // send command to stop data
         communicationService?.takeIf { it.isPortsConnected }
@@ -86,13 +92,14 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
             0 -> btnTurbineRanges.callOnClick()
             1 -> btnExhaleValveRanges.callOnClick()
             2 -> btnOxygenValveRanges.callOnClick()
-            3 -> includeButtonTurbine.buttonView.callOnClick()
-            4 -> includeButtonExhaleValve.buttonView.callOnClick()
-            5 -> includeButtonOxyValve.buttonView.callOnClick()
-            6 -> includeButtonPurge.buttonView.callOnClick()
-            7 -> includeButtonNebulizer.buttonView.callOnClick()
-            8 -> includeButtonRedLED.buttonView.callOnClick()
-            9 -> includeButtonAmberLED.buttonView.callOnClick()
+            3 -> btnNeoRanges.callOnClick()
+            4 -> includeButtonTurbine.buttonView.callOnClick()
+            5 -> includeButtonExhaleValve.buttonView.callOnClick()
+            6 -> includeButtonOxyValve.buttonView.callOnClick()
+            7 -> includeButtonPurge.buttonView.callOnClick()
+            8 -> includeButtonNebulizer.buttonView.callOnClick()
+            9 -> includeButtonRedLED.buttonView.callOnClick()
+            10 -> includeButtonAmberLED.buttonView.callOnClick()
         }
     }
 
@@ -162,13 +169,14 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
                 0 -> btnTurbineRanges
                 1 -> btnExhaleValveRanges
                 2 -> btnOxygenValveRanges
-                3 -> includeButtonTurbine
-                4 -> includeButtonExhaleValve
-                5 -> includeButtonOxyValve
-                6 -> includeButtonPurge
-                7 -> includeButtonNebulizer
-                8 -> includeButtonRedLED
-                9 -> includeButtonAmberLED
+                3 -> btnNeoRanges
+                4 -> includeButtonTurbine
+                5 -> includeButtonExhaleValve
+                6 -> includeButtonOxyValve
+                7 -> includeButtonPurge
+                8 -> includeButtonNebulizer
+                9 -> includeButtonRedLED
+                10 -> includeButtonAmberLED
 
                 else -> null
             }
@@ -199,6 +207,7 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
         includeButtonExhaleValve.buttonView.text = "Exhale Valve"
         includeButtonPurge.buttonView.text = "Purge"
         includeButtonOxyValve.buttonView.text = "Oxy Valve"
+        includeButtonNeo.buttonView.text = "Neo"
         includeButtonNebulizer.buttonView.text = "Nebulizer"
         includeButtonRedLED.buttonView.text = "Red LED Bar"
         includeButtonAmberLED.buttonView.text = "Amber LED Bar"
@@ -216,10 +225,12 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
             defaultOfTurbineRanges = ranges.split(",")[0]
             defaultOfExhaleValveRanges = ranges.split(",")[1]
             defaultOfOxygenValveRanges = ranges.split(",")[2]
+            defaultOfNeoRanges = ranges.split(",")[3]
 
             textViewTurbineRangesValue.text = defaultOfTurbineRanges
             textViewExhaleValveRangesValue.text = defaultOfExhaleValveRanges
             textViewOxygenValveRangesValue.text = defaultOfOxygenValveRanges
+            textViewNeoRangesValue.text = defaultOfNeoRanges
     }
 
     fun getCommandsFromLiveWindow(command: String) {
@@ -237,6 +248,13 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
             }
             "Stop Oxygen" -> {
                 includeButtonOxyValve.buttonView.callOnClick()
+            }
+
+            "Start Neo" -> {
+                includeButtonNeo.buttonView.callOnClick()
+            }
+            "Stop Neo" -> {
+                includeButtonNeo.buttonView.callOnClick()
             }
 
             "Start Exhale" -> {
@@ -458,16 +476,18 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
         defaultOfTurbineRanges = "0"
         defaultOfExhaleValveRanges = "0"
         defaultOfOxygenValveRanges = "0"
+        defaultOfNeoRanges = "0"
 
         textViewExhaleValveRangesValue.text = defaultOfExhaleValveRanges
         textViewTurbineRangesValue.text = defaultOfTurbineRanges
         textViewOxygenValveRangesValue.text = defaultOfOxygenValveRanges
+        textViewNeoRangesValue.text = defaultOfNeoRanges
 
         clickTurbine = false
         clickValve = false
         clickNebulizer = false
         clickOxyValve = false
-
+        clickNeoValve = false
     }
 
     private fun highlightButtons(view: View, textView: TextView) {
@@ -477,14 +497,23 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
                 requireContext(), R.color.black
             )
         )
+
         btnExhaleValveRanges.setBackgroundResource(R.drawable.background_grey_border_white)
         textViewExhaleValveRangesValue.setTextColor(
             ContextCompat.getColor(
                 requireContext(), R.color.black
             )
         )
+
         btnOxygenValveRanges.setBackgroundResource(R.drawable.background_grey_border_white)
         textViewOxygenValveRangesValue.setTextColor(
+            ContextCompat.getColor(
+                requireContext(), R.color.black
+            )
+        )
+
+        btnNeoRanges.setBackgroundResource(R.drawable.background_grey_border_white)
+        textViewNeoRangesValue.setTextColor(
             ContextCompat.getColor(
                 requireContext(), R.color.black
             )
@@ -508,6 +537,7 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
             defaultOfExhaleValveRanges = textViewExhaleValveRangesValue.text.toString()
             textViewTurbineRangesValue.text = defaultOfTurbineRanges
             textViewOxygenValveRangesValue.text = defaultOfOxygenValveRanges
+            textViewNeoRangesValue.text = defaultOfNeoRanges
             (requireActivity() as MainActivity).sendRangesToSocket("$defaultOfTurbineRanges,$defaultOfExhaleValveRanges,$defaultOfOxygenValveRanges")
         }
 
@@ -518,6 +548,18 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
             defaultOfOxygenValveRanges = textViewOxygenValveRangesValue.text.toString()
             textViewTurbineRangesValue.text = defaultOfTurbineRanges
             textViewExhaleValveRangesValue.text = defaultOfExhaleValveRanges
+            textViewNeoRangesValue.text = defaultOfNeoRanges
+            (requireActivity() as MainActivity).sendRangesToSocket("$defaultOfTurbineRanges,$defaultOfExhaleValveRanges,$defaultOfOxygenValveRanges")
+        }
+
+        btnNeoRanges.setOnClickListener {
+
+            buttonState = RangeType.Neo
+            highlightButtons(btnNeoRanges, textViewNeoRangesValue)
+            defaultOfNeoRanges = textViewNeoRangesValue.text.toString()
+            textViewTurbineRangesValue.text = defaultOfTurbineRanges
+            textViewExhaleValveRangesValue.text = defaultOfExhaleValveRanges
+            textViewOxygenValveRangesValue.text = defaultOfOxygenValveRanges
             (requireActivity() as MainActivity).sendRangesToSocket("$defaultOfTurbineRanges,$defaultOfExhaleValveRanges,$defaultOfOxygenValveRanges")
         }
 
@@ -528,6 +570,7 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
             defaultOfTurbineRanges = textViewTurbineRangesValue.text.toString()
             textViewOxygenValveRangesValue.text = defaultOfOxygenValveRanges
             textViewExhaleValveRangesValue.text = defaultOfExhaleValveRanges
+            textViewNeoRangesValue.text = defaultOfNeoRanges
             (requireActivity() as MainActivity).sendRangesToSocket("$defaultOfTurbineRanges,$defaultOfExhaleValveRanges,$defaultOfOxygenValveRanges")
         }
 
@@ -634,30 +677,6 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
             }
         }
 
-//        includeButtonI2C.buttonView.setOnClickListener {
-//            includeButtonI2C.buttonView.setBackgroundResource(R.color.racing_green)
-//            includeButtonI2C.buttonView.setTextColor(
-//                ContextCompat.getColor(
-//                    requireContext(), R.color.white
-//                )
-//            )
-//            communicationService?.takeIf { it.isPortsConnected }?.apply {
-//                send(getString(R.string.valve_testing_dia)+"300")
-//            }
-//
-//            (requireActivity() as MainActivity).returnCommandsToSocket("Stop I2C")
-//
-//            Handler(Looper.getMainLooper()).postDelayed({
-//                includeButtonI2C.buttonView.setBackgroundResource(R.color.dolphin_grey)
-//                includeButtonI2C.buttonView.setTextColor(
-//                    ContextCompat.getColor(
-//                        requireContext(), R.color.black
-//                    )
-//                )
-//                (requireActivity() as MainActivity).returnCommandsToSocket("Start I2C")
-//            }, 500)
-//        }
-
         includeButtonExhaleValve.buttonView.setOnClickListener {
 
             if (clickValve) {
@@ -732,6 +751,17 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
 
         }
 
+        includeButtonNeo.buttonView.setOnClickListener {
+
+            val value = textViewNeoRangesValue.text.toString()
+
+            communicationService?.takeIf { it.isPortsConnected }?.apply {
+                send(getString(R.string.valve_testing_dia) + (value.toInt() + 400))
+            }
+
+        }
+        
+
         includeButtonTurbine.buttonView.setOnClickListener {
 
             if (clickTurbine) {
@@ -804,6 +834,12 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
                     "${value.toInt() + stepPWM}"
             }
 
+            RangeType.Neo -> {
+                val value = textViewNeoRangesValue.text.toString()
+                if (value.toInt() + stepPWM <= maxPWM) textViewNeoRangesValue.text =
+                    "${value.toInt() + stepPWM}"
+            }
+
             else -> {}
         }
     }
@@ -826,6 +862,12 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
             RangeType.OXYGEN_VALVE -> {
                 val value = textViewOxygenValveRangesValue.text.toString()
                 if (value.toInt() - stepPWM >= minPWM) textViewOxygenValveRangesValue.text =
+                    "${value.toInt() - stepPWM}"
+            }
+
+            RangeType.Neo -> {
+                val value = textViewNeoRangesValue.text.toString()
+                if (value.toInt() - stepPWM >= minPWM) textViewNeoRangesValue.text =
                     "${value.toInt() - stepPWM}"
             }
 
@@ -860,6 +902,15 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
                 defaultOfOxygenValveRanges = textViewOxygenValveRangesValue.text.toString()
                 btnOxygenValveRanges.setBackgroundResource(R.drawable.background_grey_border_white)
                 textViewOxygenValveRangesValue.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(), R.color.black
+                    )
+                )
+            }
+            RangeType.Neo -> {
+                defaultOfNeoRanges = textViewNeoRangesValue.text.toString()
+                btnNeoRanges.setBackgroundResource(R.drawable.background_grey_border_white)
+                textViewNeoRangesValue.setTextColor(
                     ContextCompat.getColor(
                         requireContext(), R.color.black
                     )
@@ -912,6 +963,27 @@ class DiagnosticCheckFragment(private var communicationService: CommunicationSer
                     )
                 )
                 includeButtonOxyValve.buttonView.text = "Oxy Valve"
+            }
+        }.start()
+    }
+
+    private fun setTestNeoTimer() {
+        testNeoTimer = object : CountDownTimer(120000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                includeButtonNeo.buttonView.text = "${(millisUntilFinished / 1000)} sec"
+            }
+
+            override fun onFinish() {
+                communicationService?.takeIf { it.isPortsConnected }?.apply {
+                    send(getString(R.string.valve_testing_dia) + "400")
+                }
+                includeButtonNeo.buttonView.setBackgroundResource(R.drawable.background_grey_border_white)
+                includeButtonNeo.buttonView.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(), R.color.black
+                    )
+                )
+                includeButtonNeo.buttonView.text = "Neo"
             }
         }.start()
     }

@@ -7,11 +7,13 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.NameNotFoundException
 import android.database.ContentObserver
+import android.os.Build
 import android.os.Handler
 import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.LiveData
 import com.agvahealthcare.ventilator_ext.connection.internetConnection.ConnectivityObserver
 import com.agvahealthcare.ventilator_ext.connection.internetConnection.NetworkConnectivityObserver
 import com.agvahealthcare.ventilator_ext.dashboard.DashBoardActivity
@@ -47,6 +49,7 @@ class VentilatorApp : Application() {
         var defaultOfTurbineRanges = "0"
         var defaultOfExhaleValveRanges = "0"
         var defaultOfOxygenValveRanges = "0"
+        var defaultOfNeoRanges = "0"
         var isPatientDisconnected = false
 
         var currentActivityName = "Splash"
@@ -112,7 +115,8 @@ class VentilatorApp : Application() {
         private var sInstance: VentilatorApp? = null
         private var appVersion = "N/A"
         private var settingsContentObserver:SettingsContentObserver?= null
-        var connectivityObserver : ConnectivityObserver? = null
+
+        var connectivityObserver : LiveData<ConnectivityObserver.Status>? = null
         var remoteConfig : FirebaseRemoteConfig? = null
         fun getInstance(): VentilatorApp? {
             return sInstance

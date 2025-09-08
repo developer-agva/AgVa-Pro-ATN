@@ -103,12 +103,9 @@ import java.net.URISyntaxException
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
-
 interface ActivateVentilatorListener {
     fun activateVentilatorListener()
 }
-
-
 class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpdateCheckListener,
     UpdateHelper.OnUpdateBaseUrlListener,
     View.OnClickListener,
@@ -4073,7 +4070,6 @@ class MainActivity : BaseLockActivity(), OnCalibrationOxygen, UpdateHelper.OnUpd
             if (pingingTask == null) pingingTask = PingingTask(this)
             if (pingingTask?.isRunning == false) pingingTask?.start()
         }
-
     }
 
     private fun stopPinging() {

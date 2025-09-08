@@ -29,15 +29,16 @@ public class PingingTask
         @Override
         public void onTick(long millisUntilFinished) {
             sendPinging();
-
         }
 
         @Override
         public void onFinish() {
             Log.w(TAG, "Pinging thread rebooted itself");
-//            this.start();
+            pingingTimer.start();
         }
     };
+
+
 
     public boolean isRunning() {
         return this.isRunning;
@@ -46,12 +47,6 @@ public class PingingTask
     public void setRunningState(boolean isRunning) {
         this.isRunning = isRunning;
     }
-
-    /*
-     * Sends handshake to ventilator
-     * NOTE : use only after gatt connects
-     */
-
     private void sendPinging(){
         // INFORM VENTILATOR ABOUT THE CONNECTION
         if(service != null) {
